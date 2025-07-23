@@ -1,3 +1,4 @@
+import { AuthProvider } from '@/components/auth/auth-context';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -19,7 +20,9 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <div className="min-h-screen bg-background">{children}</div>
+          <div className="min-h-screen bg-background">
+            <AuthProvider>{children}</AuthProvider>
+          </div>
         </body>
       </html>
     </ClerkProvider>

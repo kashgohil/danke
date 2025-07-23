@@ -1,52 +1,56 @@
+import { AuthHeader } from '@/components/auth/auth-header';
 import { Button } from '@/components/ui/button';
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from '@clerk/nextjs';
+import { SignedIn, SignedOut, SignUpButton } from '@clerk/nextjs';
+import Link from 'next/link';
 
 export default function HomePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header with authentication */}
       <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold">Appreciation Board</h2>
-        <div className="flex items-center space-x-4">
-          <SignedOut>
-            <SignInButton>
-              <Button variant="outline">Sign In</Button>
-            </SignInButton>
-            <SignUpButton>
-              <Button>Sign Up</Button>
-            </SignUpButton>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </div>
+        <Link
+          href="/"
+          className="text-2xl font-bold hover:text-blue-600 transition-colors"
+        >
+          Appreciation Board
+        </Link>
+        <AuthHeader />
       </div>
 
       {/* Main content */}
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">
+      <div className="text-center max-w-4xl mx-auto">
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
           Welcome to Appreciation Board
         </h1>
-        <p className="text-lg text-muted-foreground mb-8">
+        <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
           Create beautiful appreciation boards to collect messages and memories
-          from your community
+          from your community. Share the love and celebrate special moments
+          together.
         </p>
-        <div className="space-x-4">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <SignedIn>
-            <Button size="lg">Create Board</Button>
+            <Button size="lg" className="min-w-[140px]">
+              Create Board
+            </Button>
+            <Link href="/profile">
+              <Button variant="outline" size="lg" className="min-w-[140px]">
+                View Profile
+              </Button>
+            </Link>
           </SignedIn>
           <SignedOut>
             <SignUpButton>
-              <Button size="lg">Get Started</Button>
+              <Button size="lg" className="min-w-[140px]">
+                Get Started
+              </Button>
             </SignUpButton>
+            <Link href="/profile">
+              <Button variant="outline" size="lg" className="min-w-[140px]">
+                View Profile
+              </Button>
+            </Link>
           </SignedOut>
-          <Button variant="outline" size="lg">
+          <Button variant="outline" size="lg" className="min-w-[140px]">
             View Sample Board
           </Button>
         </div>
