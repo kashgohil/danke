@@ -1,8 +1,8 @@
-CREATE TABLE IF NOT EXISTS "boards" (
+CREATE TABLE "boards" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"title" varchar(255) NOT NULL,
 	"recipient_name" varchar(255) NOT NULL,
-	"creator_id" uuid NOT NULL,
+	"creator_id" varchar(255) NOT NULL,
 	"view_token" varchar(255) NOT NULL,
 	"post_token" varchar(255) NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
@@ -11,10 +11,10 @@ CREATE TABLE IF NOT EXISTS "boards" (
 	CONSTRAINT "boards_post_token_unique" UNIQUE("post_token")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "posts" (
+CREATE TABLE "posts" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"board_id" uuid NOT NULL,
-	"creator_id" uuid NOT NULL,
+	"creator_id" varchar(255) NOT NULL,
 	"content" json NOT NULL,
 	"media_urls" text[],
 	"created_at" timestamp DEFAULT now() NOT NULL,
@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS "posts" (
 	"is_deleted" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "users" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+CREATE TABLE "users" (
+	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"avatar_url" varchar(255),
@@ -32,20 +32,6 @@ CREATE TABLE IF NOT EXISTS "users" (
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "boards" ADD CONSTRAINT "boards_creator_id_users_id_fk" FOREIGN KEY ("creator_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "posts" ADD CONSTRAINT "posts_board_id_boards_id_fk" FOREIGN KEY ("board_id") REFERENCES "public"."boards"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "posts" ADD CONSTRAINT "posts_creator_id_users_id_fk" FOREIGN KEY ("creator_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ALTER TABLE "boards" ADD CONSTRAINT "boards_creator_id_users_id_fk" FOREIGN KEY ("creator_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "posts" ADD CONSTRAINT "posts_board_id_boards_id_fk" FOREIGN KEY ("board_id") REFERENCES "public"."boards"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "posts" ADD CONSTRAINT "posts_creator_id_users_id_fk" FOREIGN KEY ("creator_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
