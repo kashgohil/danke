@@ -2,6 +2,7 @@
 
 import { PostContent } from '@/components/posts/post-content';
 import { Card } from '@/components/ui/card';
+import { MediaPreview } from '@/components/ui/media-preview';
 import Image from 'next/image';
 
 interface Board {
@@ -75,14 +76,38 @@ function PostCard({ post }: { post: Post }) {
           />
         </div>
 
-        {/* Media content placeholder */}
         {post.mediaUrls && post.mediaUrls.length > 0 && (
-          <div className="text-xs text-gray-500">
-            Media attachments: {post.mediaUrls.length}
+          <div className="space-y-3">
+            {post.mediaUrls.map((url, index) => {
+              const getMediaType = (
+                url: string
+              ): 'image' | 'video' | 'audio' => {
+                const extension = url.split('.').pop()?.toLowerCase();
+                if (
+                  ['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(
+                    extension || ''
+                  )
+                ) {
+                  return 'image';
+                }
+                if (['mp4', 'webm'].includes(extension || '')) {
+                  return 'video';
+                }
+                return 'audio';
+              };
+
+              return (
+                <MediaPreview
+                  key={index}
+                  url={url}
+                  type={getMediaType(url)}
+                  className="w-full"
+                />
+              );
+            })}
           </div>
         )}
 
-        {/* Creator info */}
         <div className="flex items-center space-x-2 pt-2 border-t border-gray-100">
           <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center">
             {post.creator.avatarUrl ? (
@@ -112,7 +137,6 @@ function PostCard({ post }: { post: Post }) {
 export function BoardView({ board, posts }: BoardViewProps) {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="text-center">
@@ -126,7 +150,6 @@ export function BoardView({ board, posts }: BoardViewProps) {
         </div>
       </div>
 
-      {/* Main content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {posts.length === 0 ? (
           <EmptyState recipientName={board.recipientName} />

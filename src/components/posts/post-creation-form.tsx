@@ -2,6 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { MediaPreview } from '@/components/ui/media-preview';
+import { MediaUpload, type MediaFile } from '@/components/ui/media-upload';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { createPostSchema, type RichTextContent } from '@/lib/validations/post';
 import { useAuth } from '@clerk/nextjs';
@@ -21,7 +23,7 @@ export function PostCreationForm({
 }: PostCreationFormProps) {
   const { isSignedIn, userId } = useAuth();
   const [content, setContent] = useState<RichTextContent | null>(null);
-  const [mediaUrls, setMediaUrls] = useState<string[]>([]);
+  const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,9 +40,27 @@ export function PostCreationForm({
       return;
     }
 
+    const unuploadedFiles = mediaFiles.filter(
+      (file) => !file.url && !file.error
+    );
+    if (unuploadedFiles.length > 0) {
+      setError('Please wait for all media files to upload or remove them');
+      return;
+    }
+
+    const filesWithErrors = mediaFiles.filter((file) => file.error);
+    if (filesWithErrors.length > 0) {
+      setError('Please fix or remove media files with errors');
+      return;
+    }
+
     try {
       setIsSubmitting(true);
       setError(null);
+
+      const mediaUrls = mediaFiles
+        .filter((file) => file.url)
+        .map((file) => file.url!);
 
       const validatedData = createPostSchema.parse({
         content,
@@ -66,7 +86,7 @@ export function PostCreationForm({
       const post = await response.json();
 
       setContent(null);
-      setMediaUrls([]);
+      setMediaFiles([]);
 
       onPostCreated?.(post);
     } catch (error) {
@@ -82,6 +102,10 @@ export function PostCreationForm({
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const removeMediaFile = (id: string) => {
+    setMediaFiles((files) => files.filter((file) => file.id !== id));
   };
 
   if (!isSignedIn) {
@@ -102,7 +126,7 @@ export function PostCreationForm({
         <CardTitle>Add Your Appreciation</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <RichTextEditor
               content={content}
@@ -112,8 +136,32 @@ export function PostCreationForm({
             />
           </div>
 
-          <div className="text-sm text-gray-500">
-            Media upload functionality will be available soon.
+          <div>
+            <h4 className="text-sm font-medium text-gray-900 mb-3">
+              Add Media (Optional)
+            </h4>
+            <MediaUpload
+              onFilesChange={setMediaFiles}
+              maxFiles={5}
+              className="mb-4"
+            />
+
+            {mediaFiles.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                {mediaFiles.map(
+                  (file) =>
+                    file.url && (
+                      <MediaPreview
+                        key={file.id}
+                        url={file.url}
+                        type={file.type}
+                        filename={file.file.name}
+                        onRemove={() => removeMediaFile(file.id)}
+                      />
+                    )
+                )}
+              </div>
+            )}
           </div>
 
           {error && (

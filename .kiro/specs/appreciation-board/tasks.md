@@ -48,7 +48,7 @@
   - Add post creation form with content validation
   - _Requirements: 3.1, 3.2, 3.4, 3.5, 6.1, 6.2, 6.3, 6.4, 6.5_
 
-- [ ] 7. Build media upload functionality
+- [x] 7. Build media upload functionality
 
   - Create media upload API endpoint with file validation
   - Implement file storage integration (local or cloud)

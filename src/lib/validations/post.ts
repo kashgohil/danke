@@ -7,7 +7,11 @@ const richTextContentSchema = z.object({
 
 export const createPostSchema = z.object({
   content: richTextContentSchema,
-  mediaUrls: z.array(z.string().url()).optional().default([]),
+  mediaUrls: z
+    .array(z.string().url())
+    .max(5, 'Maximum 5 media files allowed')
+    .optional()
+    .default([]),
 });
 
 export const updatePostSchema = z.object({
