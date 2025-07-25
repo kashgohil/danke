@@ -72,7 +72,7 @@
   - Add edit button with conditional display based on time limit
   - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6_
 
-- [ ] 10. Implement post moderation system
+- [x] 10. Implement post moderation system
 
   - Create post deletion API endpoint with creator verification
   - Add moderation controls for board creators

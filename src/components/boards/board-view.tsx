@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/card';
 import { MasonryLayout } from '@/components/ui/masonry-layout';
 import { MediaPreview } from '@/components/ui/media-preview';
 import { useAuth } from '@clerk/nextjs';
-import { Edit2 } from 'lucide-react';
+import { Edit2, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -15,6 +15,7 @@ interface Board {
   id: string;
   title: string;
   recipientName: string;
+  creatorId: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -35,6 +36,7 @@ interface BoardViewProps {
   board: Board;
   posts: Post[];
   onPostUpdated?: (updatedPost: Post) => void;
+  onPostDeleted?: (postId: string) => void;
 }
 
 function EmptyState({ recipientName }: { recipientName: string }) {
@@ -67,14 +69,20 @@ function EmptyState({ recipientName }: { recipientName: string }) {
 
 function PostCard({
   post,
+  board,
   onPostUpdated,
+  onPostDeleted,
 }: {
   post: Post;
+  board: Board;
   onPostUpdated?: (updatedPost: Post) => void;
+  onPostDeleted?: (postId: string) => void;
 }) {
   const { userId } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
+  const [canDelete, setCanDelete] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const getMediaType = (url: string): 'image' | 'video' | 'audio' => {
     const extension = url.split('.').pop()?.toLowerCase();
@@ -88,25 +96,31 @@ function PostCard({
   };
 
   useEffect(() => {
-    const checkCanEdit = () => {
-      if (!userId || userId !== post.creator.id) {
+    const checkPermissions = () => {
+      if (!userId) {
         setCanEdit(false);
+        setCanDelete(false);
         return;
       }
 
-      const now = new Date();
-      const createdAt = new Date(post.createdAt);
-      const timeDiff = now.getTime() - createdAt.getTime();
-      const tenMinutesInMs = 10 * 60 * 1000;
+      if (userId === post.creator.id) {
+        const now = new Date();
+        const createdAt = new Date(post.createdAt);
+        const timeDiff = now.getTime() - createdAt.getTime();
+        const tenMinutesInMs = 10 * 60 * 1000;
+        setCanEdit(timeDiff <= tenMinutesInMs);
+      } else {
+        setCanEdit(false);
+      }
 
-      setCanEdit(timeDiff <= tenMinutesInMs);
+      setCanDelete(userId === post.creator.id || userId === board.creatorId);
     };
 
-    checkCanEdit();
+    checkPermissions();
 
-    const interval = setInterval(checkCanEdit, 60000);
+    const interval = setInterval(checkPermissions, 60000);
     return () => clearInterval(interval);
-  }, [userId, post.creator.id, post.createdAt]);
+  }, [userId, post.creator.id, post.createdAt, board.creatorId]);
 
   const handlePostUpdated = (updatedPost: any) => {
     setIsEditing(false);
@@ -115,6 +129,31 @@ function PostCard({
 
   const handleCancelEdit = () => {
     setIsEditing(false);
+  };
+
+  const handleDelete = async () => {
+    if (!confirm('Are you sure you want to delete this post?')) {
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/posts/${post.id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        onPostDeleted?.(post.id);
+      } else {
+        const error = await response.json();
+        alert(error.error || 'Failed to delete post');
+      }
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      alert('Failed to delete post');
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   if (isEditing) {
@@ -184,23 +223,41 @@ function PostCard({
             </div>
           </div>
 
-          {canEdit && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsEditing(true)}
-              className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
-            >
-              <Edit2 className="h-4 w-4" />
-            </Button>
-          )}
+          <div className="flex items-center space-x-1">
+            {canEdit && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsEditing(true)}
+                className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
+              >
+                <Edit2 className="h-4 w-4" />
+              </Button>
+            )}
+            {canDelete && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="h-8 w-8 p-0 text-gray-400 hover:text-red-600"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </Card>
   );
 }
 
-export function BoardView({ board, posts, onPostUpdated }: BoardViewProps) {
+export function BoardView({
+  board,
+  posts,
+  onPostUpdated,
+  onPostDeleted,
+}: BoardViewProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white shadow-sm border-b">
@@ -225,7 +282,9 @@ export function BoardView({ board, posts, onPostUpdated }: BoardViewProps) {
               <PostCard
                 key={post.id}
                 post={post}
+                board={board}
                 onPostUpdated={onPostUpdated}
+                onPostDeleted={onPostDeleted}
               />
             ))}
           </MasonryLayout>

@@ -1,5 +1,5 @@
 import { and, desc, eq } from 'drizzle-orm';
-import { db, posts, type NewPost, type Post } from '../db';
+import { boards, db, posts, type NewPost, type Post } from '../db';
 import {
   createPostSchema,
   updatePostSchema,
@@ -78,14 +78,42 @@ export class PostModel {
     return post || null;
   }
 
-  static async delete(id: string, creatorId: string): Promise<boolean> {
-    // Soft delete - set isDeleted to true
+  static async delete(id: string, userId: string): Promise<boolean> {
+    const post = await this.getById(id);
+    if (!post) {
+      return false;
+    }
+
+    const canDelete = await this.canDelete(id, userId);
+    if (!canDelete) {
+      return false;
+    }
+
     const result = await db
       .update(posts)
       .set({ isDeleted: true, updatedAt: new Date() })
-      .where(and(eq(posts.id, id), eq(posts.creatorId, creatorId)));
+      .where(eq(posts.id, id));
 
     return result.count > 0;
+  }
+
+  static async canDelete(postId: string, userId: string): Promise<boolean> {
+    const post = await this.getById(postId);
+    if (!post) {
+      return false;
+    }
+
+    if (post.creatorId === userId) {
+      return true;
+    }
+
+    const result = await db
+      .select({ boardCreatorId: boards.creatorId })
+      .from(posts)
+      .innerJoin(boards, eq(posts.boardId, boards.id))
+      .where(eq(posts.id, postId));
+
+    return result.length > 0 && result[0].boardCreatorId === userId;
   }
 
   static async canEdit(postId: string, creatorId: string): Promise<boolean> {
@@ -94,7 +122,6 @@ export class PostModel {
       return false;
     }
 
-    // Check if post is within edit time limit (10 minutes)
     const now = new Date();
     const createdAt = new Date(post.createdAt);
     const timeDiff = now.getTime() - createdAt.getTime();

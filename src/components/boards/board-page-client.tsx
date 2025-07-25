@@ -7,6 +7,7 @@ interface Board {
   id: string;
   title: string;
   recipientName: string;
+  creatorId: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -42,11 +43,18 @@ export function BoardPageClient({
     );
   };
 
+  const handlePostDeleted = (postId: string) => {
+    setPosts((currentPosts) =>
+      currentPosts.filter((post) => post.id !== postId)
+    );
+  };
+
   return (
     <BoardView
       board={initialBoard}
       posts={posts}
       onPostUpdated={handlePostUpdated}
+      onPostDeleted={handlePostDeleted}
     />
   );
 }

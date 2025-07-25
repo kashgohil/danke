@@ -89,7 +89,7 @@ export async function DELETE(
     if (!success) {
       return NextResponse.json(
         { error: 'Post not found or you do not have permission to delete it' },
-        { status: 404 }
+        { status: 403 }
       );
     }
 

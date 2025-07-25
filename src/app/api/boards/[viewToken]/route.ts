@@ -56,6 +56,7 @@ export async function GET(
         id: board.id,
         title: board.title,
         recipientName: board.recipientName,
+        creatorId: board.creatorId,
         createdAt: board.createdAt.toISOString(),
         updatedAt: board.updatedAt.toISOString(),
       },
