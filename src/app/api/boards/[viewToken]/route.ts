@@ -30,6 +30,7 @@ export async function GET(
       posts.map(async (post) => {
         const [creator] = await db
           .select({
+            id: users.id,
             name: users.name,
             avatarUrl: users.avatarUrl,
           })
@@ -41,7 +42,11 @@ export async function GET(
           content: post.content,
           mediaUrls: post.mediaUrls || [],
           createdAt: post.createdAt.toISOString(),
-          creator: creator || { name: 'Unknown User', avatarUrl: null },
+          creator: creator || {
+            id: post.creatorId,
+            name: 'Unknown User',
+            avatarUrl: null,
+          },
         };
       })
     );

@@ -1,10 +1,15 @@
 'use client';
 
 import { PostContent } from '@/components/posts/post-content';
+import { PostEditForm } from '@/components/posts/post-edit-form';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { MasonryLayout } from '@/components/ui/masonry-layout';
 import { MediaPreview } from '@/components/ui/media-preview';
+import { useAuth } from '@clerk/nextjs';
+import { Edit2 } from 'lucide-react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 interface Board {
   id: string;
@@ -20,6 +25,7 @@ interface Post {
   mediaUrls?: string[];
   createdAt: string;
   creator: {
+    id: string;
     name: string;
     avatarUrl?: string;
   };
@@ -28,6 +34,7 @@ interface Post {
 interface BoardViewProps {
   board: Board;
   posts: Post[];
+  onPostUpdated?: (updatedPost: Post) => void;
 }
 
 function EmptyState({ recipientName }: { recipientName: string }) {
@@ -58,7 +65,17 @@ function EmptyState({ recipientName }: { recipientName: string }) {
   );
 }
 
-function PostCard({ post }: { post: Post }) {
+function PostCard({
+  post,
+  onPostUpdated,
+}: {
+  post: Post;
+  onPostUpdated?: (updatedPost: Post) => void;
+}) {
+  const { userId } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
+  const [canEdit, setCanEdit] = useState(false);
+
   const getMediaType = (url: string): 'image' | 'video' | 'audio' => {
     const extension = url.split('.').pop()?.toLowerCase();
     if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(extension || '')) {
@@ -69,6 +86,47 @@ function PostCard({ post }: { post: Post }) {
     }
     return 'audio';
   };
+
+  useEffect(() => {
+    const checkCanEdit = () => {
+      if (!userId || userId !== post.creator.id) {
+        setCanEdit(false);
+        return;
+      }
+
+      const now = new Date();
+      const createdAt = new Date(post.createdAt);
+      const timeDiff = now.getTime() - createdAt.getTime();
+      const tenMinutesInMs = 10 * 60 * 1000;
+
+      setCanEdit(timeDiff <= tenMinutesInMs);
+    };
+
+    checkCanEdit();
+
+    const interval = setInterval(checkCanEdit, 60000);
+    return () => clearInterval(interval);
+  }, [userId, post.creator.id, post.createdAt]);
+
+  const handlePostUpdated = (updatedPost: any) => {
+    setIsEditing(false);
+    onPostUpdated?.(updatedPost);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
+
+  if (isEditing) {
+    return (
+      <PostEditForm
+        post={post}
+        onPostUpdated={handlePostUpdated}
+        onCancel={handleCancelEdit}
+        className="w-full h-fit"
+      />
+    );
+  }
 
   return (
     <Card className="w-full h-fit p-4 hover:shadow-lg transition-shadow duration-200">
@@ -95,42 +153,54 @@ function PostCard({ post }: { post: Post }) {
           </div>
         )}
 
-        {/* User info and timestamp */}
-        <div className="flex items-center space-x-2 pt-2 border-t border-gray-100">
-          <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
-            {post.creator.avatarUrl ? (
-              <Image
-                src={post.creator.avatarUrl}
-                alt={post.creator.name}
-                width={24}
-                height={24}
-                className="w-6 h-6 rounded-full object-cover"
-              />
-            ) : (
-              <span className="text-xs text-gray-600 font-medium">
-                {post.creator.name.charAt(0).toUpperCase()}
+        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+          <div className="flex items-center space-x-2">
+            <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
+              {post.creator.avatarUrl ? (
+                <Image
+                  src={post.creator.avatarUrl}
+                  alt={post.creator.name}
+                  width={24}
+                  height={24}
+                  className="w-6 h-6 rounded-full object-cover"
+                />
+              ) : (
+                <span className="text-xs text-gray-600 font-medium">
+                  {post.creator.name.charAt(0).toUpperCase()}
+                </span>
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <span className="text-sm text-gray-600 font-medium truncate block">
+                {post.creator.name}
               </span>
-            )}
+              <span className="text-xs text-gray-400">
+                {new Date(post.createdAt).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </span>
+            </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <span className="text-sm text-gray-600 font-medium truncate block">
-              {post.creator.name}
-            </span>
-            <span className="text-xs text-gray-400">
-              {new Date(post.createdAt).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-              })}
-            </span>
-          </div>
+
+          {canEdit && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsEditing(true)}
+              className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
+            >
+              <Edit2 className="h-4 w-4" />
+            </Button>
+          )}
         </div>
       </div>
     </Card>
   );
 }
 
-export function BoardView({ board, posts }: BoardViewProps) {
+export function BoardView({ board, posts, onPostUpdated }: BoardViewProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white shadow-sm border-b">
@@ -152,7 +222,11 @@ export function BoardView({ board, posts }: BoardViewProps) {
         ) : (
           <MasonryLayout className="w-full" minColumnWidth={320} gap={24}>
             {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
+              <PostCard
+                key={post.id}
+                post={post}
+                onPostUpdated={onPostUpdated}
+              />
             ))}
           </MasonryLayout>
         )}

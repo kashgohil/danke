@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { FileText, Image, Music, Upload, Video, X } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export interface MediaFile {
   id: string;
@@ -17,6 +17,7 @@ interface MediaUploadProps {
   onFilesChange: (files: MediaFile[]) => void;
   maxFiles?: number;
   className?: string;
+  existingFiles?: MediaFile[];
 }
 
 const ALLOWED_IMAGE_TYPES = [
@@ -57,9 +58,14 @@ export function MediaUpload({
   onFilesChange,
   maxFiles = 5,
   className,
+  existingFiles = [],
 }: MediaUploadProps) {
-  const [files, setFiles] = useState<MediaFile[]>([]);
+  const [files, setFiles] = useState<MediaFile[]>(existingFiles);
   const [isDragOver, setIsDragOver] = useState(false);
+
+  useEffect(() => {
+    setFiles(existingFiles);
+  }, [existingFiles]);
 
   const updateFiles = useCallback(
     (newFiles: MediaFile[]) => {

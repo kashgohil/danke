@@ -1,4 +1,4 @@
-import { BoardView } from '@/components/boards/board-view';
+import { BoardPageClient } from '@/components/boards/board-page-client';
 import { notFound } from 'next/navigation';
 
 interface BoardPageProps {
@@ -63,7 +63,9 @@ export default async function BoardPage({ params }: BoardPageProps) {
     notFound();
   }
 
-  return <BoardView board={data.board} posts={data.posts} />;
+  return (
+    <BoardPageClient initialBoard={data.board} initialPosts={data.posts} />
+  );
 }
 
 export async function generateMetadata({ params }: BoardPageProps) {
