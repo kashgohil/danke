@@ -29,9 +29,11 @@ export default function HomePage() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <SignedIn>
-            <Button size="lg" className="min-w-[140px]">
-              Create Board
-            </Button>
+            <Link href="/create-board">
+              <Button size="lg" className="min-w-[140px]">
+                Create Board
+              </Button>
+            </Link>
             <Link href="/profile">
               <Button variant="outline" size="lg" className="min-w-[140px]">
                 View Profile
