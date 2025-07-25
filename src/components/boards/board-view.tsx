@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { MasonryLayout } from '@/components/ui/masonry-layout';
 import { MediaPreview } from '@/components/ui/media-preview';
+import { UserAvatar } from '@/components/ui/user-avatar';
 import { useAuth } from '@clerk/nextjs';
 import { Edit2, Trash2 } from 'lucide-react';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 interface Board {
@@ -192,34 +192,26 @@ function PostCard({
           </div>
         )}
 
-        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-          <div className="flex items-center space-x-2">
-            <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
-              {post.creator.avatarUrl ? (
-                <Image
-                  src={post.creator.avatarUrl}
-                  alt={post.creator.name}
-                  width={24}
-                  height={24}
-                  className="w-6 h-6 rounded-full object-cover"
-                />
-              ) : (
-                <span className="text-xs text-gray-600 font-medium">
-                  {post.creator.name.charAt(0).toUpperCase()}
-                </span>
-              )}
-            </div>
+        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+          <div className="flex items-center space-x-3">
+            <UserAvatar
+              user={post.creator}
+              size="md"
+              className="flex-shrink-0"
+            />
             <div className="flex-1 min-w-0">
-              <span className="text-sm text-gray-600 font-medium truncate block">
+              <div className="text-sm font-medium text-gray-900 truncate">
                 {post.creator.name}
-              </span>
-              <span className="text-xs text-gray-400">
+              </div>
+              <div className="text-xs text-gray-500">
                 {new Date(post.createdAt).toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric',
                   year: 'numeric',
+                  hour: 'numeric',
+                  minute: '2-digit',
                 })}
-              </span>
+              </div>
             </div>
           </div>
 

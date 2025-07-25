@@ -1,10 +1,10 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { UserAvatar } from '@/components/ui/user-avatar';
 import { SignInButton } from '@clerk/nextjs';
 import { AlertCircle, Calendar, Mail, RefreshCw, User } from 'lucide-react';
 import { useAuth } from './auth-context';
@@ -78,15 +78,6 @@ export function UserProfile() {
     );
   }
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
-
   const formatJoinDate = (date: string | Date) => {
     try {
       return new Date(date).toLocaleDateString('en-US', {
@@ -103,15 +94,11 @@ export function UserProfile() {
     <Card className="w-full max-w-md">
       <CardHeader className="text-center">
         <div className="flex justify-center mb-4">
-          <Avatar className="h-20 w-20 ring-2 ring-blue-100">
-            <AvatarImage
-              src={user.avatarUrl || undefined}
-              alt={`${user.name}'s avatar`}
-            />
-            <AvatarFallback className="text-lg bg-blue-100 text-blue-700">
-              {getInitials(user.name)}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            user={user}
+            size="lg"
+            className="h-20 w-20 ring-2 ring-blue-100"
+          />
         </div>
         <CardTitle className="text-xl">{user.name}</CardTitle>
         <div className="flex justify-center mt-2">

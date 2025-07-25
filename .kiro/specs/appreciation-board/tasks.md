@@ -80,7 +80,7 @@
   - Update masonry layout to handle post removal
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 7.5_
 
-- [ ] 11. Add user information display to posts
+- [x] 11. Add user information display to posts
 
   - Update post display component to show creator name and avatar
   - Implement user data fetching for post creators
