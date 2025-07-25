@@ -12,7 +12,7 @@ export default function HomePage() {
           href="/"
           className="text-2xl font-bold hover:text-blue-600 transition-colors"
         >
-          Appreciation Board
+          Danke
         </Link>
         <AuthHeader />
       </div>
@@ -20,7 +20,7 @@ export default function HomePage() {
       {/* Main content */}
       <div className="text-center max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          Welcome to Appreciation Board
+          Welcome to Danke
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
           Create beautiful appreciation boards to collect messages and memories
