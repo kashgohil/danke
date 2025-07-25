@@ -49,7 +49,8 @@ export function RichTextEditor({
     editorProps: {
       attributes: {
         class: cn(
-          'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[120px] p-4',
+          'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none',
+          editable ? 'min-h-[120px] p-4' : 'p-0',
           className
         ),
       },
@@ -156,7 +157,10 @@ export function RichTextEditor({
 
       <EditorContent
         editor={editor}
-        className={cn('min-h-[120px]', !editable && 'cursor-default')}
+        className={cn(
+          editable ? 'min-h-[120px]' : 'min-h-0',
+          !editable && 'cursor-default'
+        )}
         placeholder={placeholder}
       />
     </div>

@@ -2,6 +2,7 @@
 
 import { PostContent } from '@/components/posts/post-content';
 import { Card } from '@/components/ui/card';
+import { MasonryLayout } from '@/components/ui/masonry-layout';
 import { MediaPreview } from '@/components/ui/media-preview';
 import Image from 'next/image';
 
@@ -57,18 +58,22 @@ function EmptyState({ recipientName }: { recipientName: string }) {
   );
 }
 
-function MasonryLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
-      {children}
-    </div>
-  );
-}
-
 function PostCard({ post }: { post: Post }) {
+  const getMediaType = (url: string): 'image' | 'video' | 'audio' => {
+    const extension = url.split('.').pop()?.toLowerCase();
+    if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(extension || '')) {
+      return 'image';
+    }
+    if (['mp4', 'webm'].includes(extension || '')) {
+      return 'video';
+    }
+    return 'audio';
+  };
+
   return (
-    <Card className="break-inside-avoid mb-6 p-4">
+    <Card className="w-full h-fit p-4 hover:shadow-lg transition-shadow duration-200">
       <div className="space-y-3">
+        {/* Rich text content */}
         <div className="text-sm text-gray-900">
           <PostContent
             content={post.content}
@@ -76,58 +81,49 @@ function PostCard({ post }: { post: Post }) {
           />
         </div>
 
+        {/* Media content */}
         {post.mediaUrls && post.mediaUrls.length > 0 && (
           <div className="space-y-3">
-            {post.mediaUrls.map((url, index) => {
-              const getMediaType = (
-                url: string
-              ): 'image' | 'video' | 'audio' => {
-                const extension = url.split('.').pop()?.toLowerCase();
-                if (
-                  ['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(
-                    extension || ''
-                  )
-                ) {
-                  return 'image';
-                }
-                if (['mp4', 'webm'].includes(extension || '')) {
-                  return 'video';
-                }
-                return 'audio';
-              };
-
-              return (
-                <MediaPreview
-                  key={index}
-                  url={url}
-                  type={getMediaType(url)}
-                  className="w-full"
-                />
-              );
-            })}
+            {post.mediaUrls.map((url, index) => (
+              <MediaPreview
+                key={index}
+                url={url}
+                type={getMediaType(url)}
+                className="w-full"
+              />
+            ))}
           </div>
         )}
 
+        {/* User info and timestamp */}
         <div className="flex items-center space-x-2 pt-2 border-t border-gray-100">
-          <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center">
+          <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
             {post.creator.avatarUrl ? (
               <Image
                 src={post.creator.avatarUrl}
                 alt={post.creator.name}
                 width={24}
                 height={24}
-                className="w-6 h-6 rounded-full"
+                className="w-6 h-6 rounded-full object-cover"
               />
             ) : (
-              <span className="text-xs text-gray-600">
+              <span className="text-xs text-gray-600 font-medium">
                 {post.creator.name.charAt(0).toUpperCase()}
               </span>
             )}
           </div>
-          <span className="text-sm text-gray-600">{post.creator.name}</span>
-          <span className="text-xs text-gray-400">
-            {new Date(post.createdAt).toLocaleDateString()}
-          </span>
+          <div className="flex-1 min-w-0">
+            <span className="text-sm text-gray-600 font-medium truncate block">
+              {post.creator.name}
+            </span>
+            <span className="text-xs text-gray-400">
+              {new Date(post.createdAt).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+            </span>
+          </div>
         </div>
       </div>
     </Card>
@@ -154,7 +150,7 @@ export function BoardView({ board, posts }: BoardViewProps) {
         {posts.length === 0 ? (
           <EmptyState recipientName={board.recipientName} />
         ) : (
-          <MasonryLayout>
+          <MasonryLayout className="w-full" minColumnWidth={320} gap={24}>
             {posts.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}

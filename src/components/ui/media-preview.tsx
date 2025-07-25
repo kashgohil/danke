@@ -51,27 +51,29 @@ export function MediaPreview({
       )}
 
       {type === 'image' && (
-        <div className="relative">
+        <div className="relative overflow-hidden rounded-lg">
           <Image
             src={url}
             alt={filename || 'Uploaded image'}
             width={400}
             height={300}
-            className="w-full h-auto rounded-lg max-h-96 object-cover"
+            className="w-full h-auto object-cover transition-transform duration-200 hover:scale-105"
             loading="lazy"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
           />
         </div>
       )}
 
       {type === 'video' && (
-        <div className="relative">
+        <div className="relative overflow-hidden rounded-lg bg-black">
           <video
             src={url}
-            className="w-full h-auto rounded-lg max-h-96"
+            className="w-full h-auto object-contain"
             controls
             preload="metadata"
             onPlay={(e) => handleVideoPlay(e.currentTarget)}
             onPause={(e) => handleVideoPlay(e.currentTarget)}
+            style={{ maxHeight: '400px' }}
           >
             Your browser does not support the video tag.
           </video>
@@ -99,17 +101,22 @@ export function MediaPreview({
       )}
 
       {type === 'audio' && (
-        <div className="bg-gray-100 rounded-lg p-4">
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border">
           <div className="flex items-center space-x-3 mb-3">
-            <Volume2 className="h-5 w-5 text-gray-500" />
-            <span className="text-sm font-medium text-gray-900">
-              {filename || 'Audio file'}
-            </span>
+            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <Volume2 className="h-5 w-5 text-blue-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <span className="text-sm font-medium text-gray-900 block truncate">
+                {filename || 'Audio file'}
+              </span>
+              <span className="text-xs text-gray-500">Audio</span>
+            </div>
           </div>
 
           <audio
             src={url}
-            className="w-full"
+            className="w-full h-8"
             controls
             preload="metadata"
             onPlay={(e) => handleAudioPlay(e.currentTarget)}
