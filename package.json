@@ -23,6 +23,7 @@
     "@tiptap/starter-kit": "^2.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "dotenv": "^17.2.0",
     "drizzle-kit": "^0.31.4",
     "drizzle-orm": "^0.44.3",
     "lucide-react": "^0.427.0",
