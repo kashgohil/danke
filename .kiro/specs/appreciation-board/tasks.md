@@ -32,7 +32,7 @@
   - Add board creation page with authentication protection
   - _Requirements: 1.1, 1.2, 1.3, 1.4_
 
-- [ ] 5. Build board viewing functionality
+- [x] 5. Build board viewing functionality
 
   - Create board retrieval API endpoint using view_token
   - Implement board view page component with responsive design
