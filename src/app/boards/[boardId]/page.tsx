@@ -1,5 +1,4 @@
 import { BoardView } from '@/components/boards/board-view';
-import { BoardModel } from '@/lib/models/board';
 import { notFound } from 'next/navigation';
 
 interface BoardPageProps {
@@ -8,32 +7,23 @@ interface BoardPageProps {
   };
 }
 
-async function getBoardData(identifier: string) {
+async function getBoardData(viewToken: string) {
   try {
-    // First try to get by view token (most common case for viewing)
-    let board = await BoardModel.getByViewToken(identifier);
+    const response = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+      }/api/boards/${viewToken}`,
+      { cache: 'no-store' } // Always fetch fresh data
+    );
 
-    // If not found by view token, try by board ID (less common, but possible)
-    if (!board) {
-      board = await BoardModel.getById(identifier);
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null;
+      }
+      throw new Error('Failed to fetch board data');
     }
 
-    if (!board) {
-      return null;
-    }
-
-    // TODO: In future tasks, we'll also fetch posts for this board
-    // For now, we'll return the board with an empty posts array
-    return {
-      board: {
-        id: board.id,
-        title: board.title,
-        recipientName: board.recipientName,
-        createdAt: board.createdAt.toISOString(),
-        updatedAt: board.updatedAt.toISOString(),
-      },
-      posts: [], // Will be populated in future tasks
-    };
+    return await response.json();
   } catch (error) {
     console.error('Error fetching board data:', error);
     throw error;

@@ -40,7 +40,7 @@
   - Add error handling for invalid board tokens
   - _Requirements: 2.1, 2.3, 2.4_
 
-- [ ] 6. Implement post creation system
+- [x] 6. Implement post creation system
 
   - Create post creation API endpoint with authentication
   - Implement post model and database operations

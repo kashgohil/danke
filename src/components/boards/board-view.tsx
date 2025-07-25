@@ -1,5 +1,6 @@
 'use client';
 
+import { PostContent } from '@/components/posts/post-content';
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 
@@ -67,10 +68,11 @@ function PostCard({ post }: { post: Post }) {
   return (
     <Card className="break-inside-avoid mb-6 p-4">
       <div className="space-y-3">
-        {/* Post content will be implemented in future tasks */}
         <div className="text-sm text-gray-900">
-          {/* Placeholder for rich text content */}
-          <p>Post content will be rendered here</p>
+          <PostContent
+            content={post.content}
+            className="border-0 p-0 min-h-0"
+          />
         </div>
 
         {/* Media content placeholder */}

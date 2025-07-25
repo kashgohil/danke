@@ -1,4 +1,7 @@
+import { db, users } from '@/lib/db';
 import { BoardModel } from '@/lib/models/board';
+import { PostModel } from '@/lib/models/post';
+import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
@@ -21,8 +24,28 @@ export async function GET(
       return NextResponse.json({ error: 'Board not found' }, { status: 404 });
     }
 
-    // TODO: In future tasks, we'll also fetch posts for this board
-    // For now, we'll return the board with an empty posts array
+    const posts = await PostModel.getByBoardId(board.id);
+
+    const postsWithCreators = await Promise.all(
+      posts.map(async (post) => {
+        const [creator] = await db
+          .select({
+            name: users.name,
+            avatarUrl: users.avatarUrl,
+          })
+          .from(users)
+          .where(eq(users.id, post.creatorId));
+
+        return {
+          id: post.id,
+          content: post.content,
+          mediaUrls: post.mediaUrls || [],
+          createdAt: post.createdAt.toISOString(),
+          creator: creator || { name: 'Unknown User', avatarUrl: null },
+        };
+      })
+    );
+
     const response = {
       board: {
         id: board.id,
@@ -31,7 +54,7 @@ export async function GET(
         createdAt: board.createdAt.toISOString(),
         updatedAt: board.updatedAt.toISOString(),
       },
-      posts: [], // Will be populated in future tasks
+      posts: postsWithCreators,
     };
 
     return NextResponse.json(response);
