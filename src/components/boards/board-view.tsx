@@ -11,7 +11,7 @@ import { useAuth } from '@clerk/nextjs';
 import { Edit2, Heart, MessageCircle, Trash2, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-interface Board {
+export interface Board {
   id: string;
   title: string;
   recipientName: string;
@@ -20,7 +20,7 @@ interface Board {
   updatedAt: string;
 }
 
-interface Post {
+export interface Post {
   id: string;
   content: any;
   mediaUrls?: string[];
