@@ -1,63 +1,94 @@
-@config {
-	content: [ "./src/app/**/*.{js,ts,jsx,tsx,mdx}", "./src/components/**/*.{js,ts,jsx,tsx,mdx}"];
-}
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme {
+	--color-border: hsl(var(--border));
+	--color-input: hsl(var(--input));
+	--color-ring: hsl(var(--ring));
+	--color-background: hsl(var(--background));
+	--color-foreground: hsl(var(--foreground));
+	--color-primary: hsl(var(--primary));
+	--color-primary-foreground: hsl(var(--primary-foreground));
+	--color-secondary: hsl(var(--secondary));
+	--color-secondary-foreground: hsl(var(--secondary-foreground));
+	--color-destructive: hsl(var(--destructive));
+	--color-destructive-foreground: hsl(var(--destructive-foreground));
+	--color-muted: hsl(var(--muted));
+	--color-muted-foreground: hsl(var(--muted-foreground));
+	--color-accent: hsl(var(--accent));
+	--color-accent-foreground: hsl(var(--accent-foreground));
+	--color-popover: hsl(var(--popover));
+	--color-popover-foreground: hsl(var(--popover-foreground));
+	--color-card: hsl(var(--card));
+	--color-card-foreground: hsl(var(--card-foreground));
+	--color-danke-50: hsl(31, 70%, 98%);
+	--color-danke-100: hsl(31, 70%, 95%);
+	--color-danke-200: hsl(31, 70%, 90%);
+	--color-danke-300: hsl(31, 70%, 80%);
+	--color-danke-400: hsl(31, 70%, 70%);
+	--color-danke-500: hsl(31, 70%, 54%);
+	--color-danke-600: hsl(31, 70%, 45%);
+	--color-danke-700: hsl(31, 70%, 35%);
+	--color-danke-800: hsl(30, 47%, 25%);
+	--color-danke-900: hsl(30, 47%, 15%);
+	--color-danke-gold: hsl(43, 96%, 64%);
+	--color-danke-brown: hsl(29, 44%, 35%);
+	--radius-lg: var(--radius);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-sm: calc(var(--radius) - 4px);
+}
 
 @layer base {
 	:root {
-		--background: 0 0% 100%;
-		--foreground: 222.2 84% 4.9%;
-		--card: 0 0% 100%;
-		--card-foreground: 222.2 84% 4.9%;
-		--popover: 0 0% 100%;
-		--popover-foreground: 222.2 84% 4.9%;
-		--primary: 222.2 47.4% 11.2%;
-		--primary-foreground: 210 40% 98%;
-		--secondary: 210 40% 96%;
-		--secondary-foreground: 222.2 47.4% 11.2%;
-		--muted: 210 40% 96%;
-		--muted-foreground: 215.4 16.3% 46.9%;
-		--accent: 210 40% 96%;
-		--accent-foreground: 222.2 47.4% 11.2%;
-		--destructive: 0 84.2% 60.2%;
-		--destructive-foreground: 210 40% 98%;
-		--border: 214.3 31.8% 91.4%;
-		--input: 214.3 31.8% 91.4%;
-		--ring: 222.2 84% 4.9%;
+		--background: 31 70% 98%;
+		--foreground: 30 47% 15%;
+		--card: 31 70% 99%;
+		--card-foreground: 30 47% 15%;
+		--popover: 31 70% 99%;
+		--popover-foreground: 30 47% 15%;
+		--primary: 31 70% 54%;
+		--primary-foreground: 31 70% 98%;
+		--secondary: 43 96% 64%;
+		--secondary-foreground: 30 47% 15%;
+		--muted: 29 44% 35%;
+		--muted-foreground: 30 47% 25%;
+		--accent: 43 96% 64%;
+		--accent-foreground: 30 47% 15%;
+		--destructive: 0 84% 60%;
+		--destructive-foreground: 31 70% 98%;
+		--border: 29 44% 35%;
+		--input: 29 44% 35%;
+		--ring: 31 70% 54%;
 		--radius: 0.5rem;
 	}
 
 	.dark {
-		--background: 222.2 84% 4.9%;
-		--foreground: 210 40% 98%;
-		--card: 222.2 84% 4.9%;
-		--card-foreground: 210 40% 98%;
-		--popover: 222.2 84% 4.9%;
-		--popover-foreground: 210 40% 98%;
-		--primary: 210 40% 98%;
-		--primary-foreground: 222.2 47.4% 11.2%;
-		--secondary: 217.2 32.6% 17.5%;
-		--secondary-foreground: 210 40% 98%;
-		--muted: 217.2 32.6% 17.5%;
-		--muted-foreground: 215 20.2% 65.1%;
-		--accent: 217.2 32.6% 17.5%;
-		--accent-foreground: 210 40% 98%;
-		--destructive: 0 62.8% 30.6%;
-		--destructive-foreground: 210 40% 98%;
-		--border: 217.2 32.6% 17.5%;
-		--input: 217.2 32.6% 17.5%;
-		--ring: 212.7 26.8% 83.9%;
+		--background: 30 47% 8%;
+		--foreground: 31 70% 90%;
+		--card: 30 47% 12%;
+		--card-foreground: 31 70% 90%;
+		--popover: 30 47% 12%;
+		--popover-foreground: 31 70% 90%;
+		--primary: 31 70% 54%;
+		--primary-foreground: 30 47% 8%;
+		--secondary: 43 96% 64%;
+		--secondary-foreground: 30 47% 8%;
+		--muted: 29 44% 25%;
+		--muted-foreground: 31 70% 70%;
+		--accent: 43 96% 64%;
+		--accent-foreground: 30 47% 8%;
+		--destructive: 0 62% 30%;
+		--destructive-foreground: 31 70% 90%;
+		--border: 29 44% 25%;
+		--input: 29 44% 25%;
+		--ring: 31 70% 54%;
 	}
-}
 
-@layer base {
 	* {
 		@apply border-border;
 	}
+
 	body {
 		@apply bg-background text-foreground;
+		font-feature-settings: "rlig" 1, "calt" 1;
 	}
 }
