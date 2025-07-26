@@ -39,3 +39,8 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # uploads
 public/uploads
+
+#playwright
+playwright-report
+
+test-results
