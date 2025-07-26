@@ -3,13 +3,13 @@ import { BoardModel } from '@/lib/models/board';
 import { notFound } from 'next/navigation';
 
 interface PostPageProps {
-  params: {
+  params: Promise<{
     postToken: string;
-  };
+  }>;
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const { postToken } = params;
+  const { postToken } = await params;
 
   const board = await BoardModel.getByPostToken(postToken);
 

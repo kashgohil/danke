@@ -5,11 +5,11 @@ import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
-  req: NextRequest,
-  { params }: { params: { viewToken: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ viewToken: string }> }
 ) {
   try {
-    const { viewToken } = params;
+    const { viewToken } = await params;
 
     if (!viewToken) {
       return NextResponse.json(

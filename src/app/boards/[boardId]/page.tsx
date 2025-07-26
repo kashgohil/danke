@@ -1,10 +1,11 @@
 import { BoardPageClient } from '@/components/boards/board-page-client';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 interface BoardPageProps {
-  params: {
+  params: Promise<{
     boardId: string; // This will actually be the viewToken
-  };
+  }>;
 }
 
 async function getBoardData(viewToken: string) {
@@ -31,7 +32,7 @@ async function getBoardData(viewToken: string) {
 }
 
 export default async function BoardPage({ params }: BoardPageProps) {
-  const { boardId } = params; // Can be either viewToken or actual board ID
+  const { boardId } = await params; // Can be either viewToken or actual board ID
 
   let data;
   try {
@@ -48,12 +49,12 @@ export default async function BoardPage({ params }: BoardPageProps) {
           <p className="text-gray-600 mb-6">
             We encountered an error while loading this board.
           </p>
-          <a
+          <Link
             href="/"
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
           >
             Go Home
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -69,7 +70,7 @@ export default async function BoardPage({ params }: BoardPageProps) {
 }
 
 export async function generateMetadata({ params }: BoardPageProps) {
-  const { boardId } = params;
+  const { boardId } = await params;
 
   try {
     const data = await getBoardData(boardId);

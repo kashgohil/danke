@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -24,12 +26,12 @@ export default function NotFound() {
           The board you&apos;re looking for doesn&apos;t exist or the link may
           be invalid. Please check the URL and try again.
         </p>
-        <a
+        <Link
           href="/"
           className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
         >
           Go Home
-        </a>
+        </Link>
       </div>
     </div>
   );

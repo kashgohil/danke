@@ -173,7 +173,9 @@ export function MediaUpload({
 
     try {
       const updatedFiles = files.map((f) =>
-        f.id === mediaFile.id ? { ...f, uploadProgress: 0 } : f
+        f.id === mediaFile.id
+          ? { ...f, uploadProgress: 0, error: undefined }
+          : f
       );
       updateFiles(updatedFiles);
 
@@ -183,11 +185,17 @@ export function MediaUpload({
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Upload failed');
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage =
+          errorData.error || `Upload failed (${response.status})`;
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();
+
+      if (!result.url) {
+        throw new Error('Upload completed but no file URL received');
+      }
 
       const finalFiles = files.map((f) =>
         f.id === mediaFile.id
@@ -196,11 +204,26 @@ export function MediaUpload({
       );
       updateFiles(finalFiles);
     } catch (error) {
+      console.error('Upload error:', error);
+
+      let errorMessage = 'Upload failed';
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      }
+
+      if (errorMessage.includes('fetch') || errorMessage.includes('network')) {
+        errorMessage =
+          'Network error. Please check your connection and try again.';
+      }
+
       const errorFiles = files.map((f) =>
         f.id === mediaFile.id
           ? {
               ...f,
-              error: error instanceof Error ? error.message : 'Upload failed',
+              error: errorMessage,
               uploadProgress: undefined,
             }
           : f

@@ -12,22 +12,23 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 interface BoardManagePageProps {
-  params: {
+  params: Promise<{
     boardId: string;
-  };
+  }>;
 }
 
 export default async function BoardManagePage({
   params,
 }: BoardManagePageProps) {
   const { userId } = await auth();
+  const { boardId } = await params;
 
   if (!userId) {
-    redirect('/sign-in?redirect_url=/boards/' + params.boardId + '/manage');
+    redirect('/sign-in?redirect_url=/boards/' + boardId + '/manage');
   }
 
   try {
-    const board = await BoardModel.getById(params.boardId);
+    const board = await BoardModel.getById(boardId);
 
     if (!board) {
       return (
