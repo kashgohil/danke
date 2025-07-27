@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface MasonryLayoutProps {
   children: React.ReactNode;
@@ -18,23 +18,43 @@ export function MasonryLayout({
 }: MasonryLayoutProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState(1);
+  const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    const updateColumns = () => {
-      if (containerRef.current) {
-        const containerWidth = containerRef.current.offsetWidth;
-        const newColumns = Math.max(
-          1,
-          Math.floor((containerWidth + gap) / (minColumnWidth + gap))
-        );
+  const updateColumns = useCallback(() => {
+    if (containerRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      const newColumns = Math.max(
+        1,
+        Math.floor((containerWidth + gap) / (minColumnWidth + gap))
+      );
+      if (newColumns !== columns) {
         setColumns(newColumns);
       }
-    };
+    }
+  }, [gap, minColumnWidth, columns]);
 
+  const debouncedUpdateColumns = useCallback(() => {
+    if (resizeTimeoutRef.current) {
+      clearTimeout(resizeTimeoutRef.current);
+    }
+    resizeTimeoutRef.current = setTimeout(updateColumns, 150);
+  }, [updateColumns]);
+
+  useEffect(() => {
     updateColumns();
-    window.addEventListener('resize', updateColumns);
-    return () => window.removeEventListener('resize', updateColumns);
-  }, [gap, minColumnWidth]);
+
+    const resizeObserver = new ResizeObserver(debouncedUpdateColumns);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+    };
+  }, [updateColumns, debouncedUpdateColumns]);
 
   const childrenArray = Array.isArray(children) ? children : [children];
 
@@ -47,10 +67,18 @@ export function MasonryLayout({
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
         gap: `${gap}px`,
         alignItems: 'start',
+        willChange: 'transform',
       }}
     >
       {childrenArray.map((child, index) => (
-        <div key={index} className="w-full">
+        <div
+          key={index}
+          className="w-full"
+          style={{
+            breakInside: 'avoid',
+            transform: 'translateZ(0)', // Force hardware acceleration
+          }}
+        >
           {child}
         </div>
       ))}
