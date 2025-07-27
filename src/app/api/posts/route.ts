@@ -1,3 +1,4 @@
+import { cache, cacheKeys } from '@/lib/cache';
 import { BoardModel } from '@/lib/models/board';
 import { PostModel } from '@/lib/models/post';
 import { createPostSchema } from '@/lib/validations/post';
@@ -41,6 +42,9 @@ export async function POST(request: NextRequest) {
       userId,
       boardId
     );
+
+    cache.delete(cacheKeys.boardPosts(boardId));
+    cache.delete(cacheKeys.board(board.viewToken));
 
     return NextResponse.json(post, { status: 201 });
   } catch (error) {
