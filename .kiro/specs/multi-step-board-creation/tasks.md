@@ -24,7 +24,7 @@
   - Style component to match existing design system
   - _Requirements: 4.1, 4.6_
 
-- [ ] 4. Implement basic information step (Step 1)
+- [x] 4. Implement basic information step (Step 1)
 
   - Create BasicInfoStep component with board type selection
   - Add recipient name input with validation
