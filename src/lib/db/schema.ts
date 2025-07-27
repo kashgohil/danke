@@ -36,6 +36,24 @@ export const boards = pgTable(
       .references(() => users.id),
     viewToken: varchar('view_token', { length: 255 }).notNull().unique(),
     postToken: varchar('post_token', { length: 255 }).notNull().unique(),
+    // New multi-step board creation fields
+    boardType: varchar('board_type', { length: 50 })
+      .default('general')
+      .notNull(),
+    nameType: varchar('name_type', { length: 50 })
+      .default('full-name')
+      .notNull(),
+    postingMode: varchar('posting_mode', { length: 50 })
+      .default('multiple')
+      .notNull(),
+    moderationEnabled: boolean('moderation_enabled').default(false).notNull(),
+    allowAnonymous: boolean('allow_anonymous').default(true).notNull(),
+    maxPostsPerUser: varchar('max_posts_per_user', { length: 10 }), // Using varchar to handle null/unlimited
+    boardVisibility: varchar('board_visibility', { length: 50 })
+      .default('public')
+      .notNull(),
+    expirationDate: timestamp('expiration_date'),
+    typeConfig: json('type_config'), // Store type-specific configuration as JSON
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
