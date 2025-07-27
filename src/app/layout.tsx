@@ -9,8 +9,19 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Danke',
-  description: 'share and care',
+  title: 'Danke - Appreciation Board',
+  description:
+    'Create beautiful appreciation boards to collect heartfelt messages and memories',
+  keywords: ['danke', 'appreciation', 'gratitude', 'messages', 'board', 'memories'],
+  authors: [{ name: 'Danke Team' }],
+  viewport: 'width=device-width, initial-scale=1',
+  robots: 'index, follow',
+  openGraph: {
+    title: 'Danke - Appreciation Board',
+    description:
+      'Create beautiful appreciation boards to collect heartfelt messages and memories',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({
@@ -21,6 +32,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin="anonymous"
+          />
+        </head>
         <body className={inter.className}>
           <div className="min-h-screen bg-background">
             <ErrorBoundary>
