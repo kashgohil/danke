@@ -1,6 +1,12 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { cache, cacheKeys, cacheTTL } from '../lib/cache';
-import { measureSync, perf } from '../lib/performance';
+import {
+  measureAsync,
+  measureSync,
+  perf,
+  trackApiCall,
+  trackDbQuery,
+} from '../lib/performance';
 
 describe('Performance Optimizations', () => {
   describe('Cache', () => {
@@ -75,6 +81,59 @@ describe('Performance Optimizations', () => {
     it('should return null for non-existent metrics', () => {
       const metrics = perf.getMetrics('non-existent');
       expect(metrics).toBeNull();
+    });
+
+    it('should measure async operations', async () => {
+      perf.clear();
+
+      const result = await measureAsync('async-test', async () => {
+        await new Promise((resolve) => setTimeout(resolve, 10));
+        return 'success';
+      });
+
+      expect(result).toBe('success');
+
+      const metrics = perf.getMetrics('async-test');
+      expect(metrics).toBeTruthy();
+      expect(metrics!.count).toBe(1);
+      expect(metrics!.avg).toBeGreaterThan(0);
+    });
+
+    it('should track API calls', async () => {
+      perf.clear();
+
+      const mockApiCall = vi.fn().mockResolvedValue({ data: 'test' });
+      const result = await trackApiCall('test-api', mockApiCall);
+
+      expect(result).toEqual({ data: 'test' });
+      expect(mockApiCall).toHaveBeenCalledOnce();
+
+      const metrics = perf.getMetrics('api-test-api');
+      expect(metrics).toBeTruthy();
+      expect(metrics!.count).toBe(1);
+    });
+
+    it('should track database queries', async () => {
+      perf.clear();
+
+      const mockDbQuery = vi.fn().mockResolvedValue([{ id: 1, name: 'test' }]);
+      const result = await trackDbQuery('test-query', mockDbQuery);
+
+      expect(result).toEqual([{ id: 1, name: 'test' }]);
+      expect(mockDbQuery).toHaveBeenCalledOnce();
+
+      const metrics = perf.getMetrics('db-test-query');
+      expect(metrics).toBeTruthy();
+      expect(metrics!.count).toBe(1);
+    });
+
+    it('should track cache operations', () => {
+      perf.clear();
+
+      cache.set('test-key', { data: 'test' }, 1000);
+      const result = cache.get('test-key');
+
+      expect(result).toEqual({ data: 'test' });
     });
   });
 });
