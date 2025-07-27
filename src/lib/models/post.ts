@@ -1,5 +1,6 @@
 import { and, desc, eq } from 'drizzle-orm';
 import { boards, db, posts, type NewPost, type Post } from '../db';
+import { trackDbQuery } from '../performance';
 import {
   createPostSchema,
   updatePostSchema,
@@ -13,37 +14,43 @@ export class PostModel {
     creatorId: string,
     boardId: string
   ): Promise<Post> {
-    const validatedData = createPostSchema.parse(data);
+    return trackDbQuery('post-create', async () => {
+      const validatedData = createPostSchema.parse(data);
 
-    const newPost: NewPost = {
-      ...validatedData,
-      creatorId,
-      boardId,
-    };
+      const newPost: NewPost = {
+        ...validatedData,
+        creatorId,
+        boardId,
+      };
 
-    const [post] = await db.insert(posts).values(newPost).returning();
+      const [post] = await db.insert(posts).values(newPost).returning();
 
-    if (!post) {
-      throw new Error('Failed to create post');
-    }
+      if (!post) {
+        throw new Error('Failed to create post');
+      }
 
-    return post;
+      return post;
+    });
   }
 
   static async getById(id: string): Promise<Post | null> {
-    const [post] = await db
-      .select()
-      .from(posts)
-      .where(and(eq(posts.id, id), eq(posts.isDeleted, false)));
-    return post || null;
+    return trackDbQuery('post-get-by-id', async () => {
+      const [post] = await db
+        .select()
+        .from(posts)
+        .where(and(eq(posts.id, id), eq(posts.isDeleted, false)));
+      return post || null;
+    });
   }
 
   static async getByBoardId(boardId: string): Promise<Post[]> {
-    return await db
-      .select()
-      .from(posts)
-      .where(and(eq(posts.boardId, boardId), eq(posts.isDeleted, false)))
-      .orderBy(desc(posts.createdAt));
+    return trackDbQuery('post-get-by-board', async () => {
+      return await db
+        .select()
+        .from(posts)
+        .where(and(eq(posts.boardId, boardId), eq(posts.isDeleted, false)))
+        .orderBy(desc(posts.createdAt));
+    });
   }
 
   static async update(
