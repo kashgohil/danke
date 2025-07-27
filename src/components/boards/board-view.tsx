@@ -166,6 +166,7 @@ function PostCard({
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const getMediaType = (url: string): 'image' | 'video' | 'audio' => {
     const extension = url.split('.').pop()?.toLowerCase();
@@ -186,7 +187,7 @@ function PostCard({
         return;
       }
 
-      if (userId === post.creator.id) {
+      if (userId === post.creator?.id) {
         const now = new Date();
         const createdAt = new Date(post.createdAt);
         const timeDiff = now.getTime() - createdAt.getTime();
@@ -196,14 +197,14 @@ function PostCard({
         setCanEdit(false);
       }
 
-      setCanDelete(userId === post.creator.id || userId === board.creatorId);
+      setCanDelete(userId === post.creator?.id || userId === board.creatorId);
     };
 
     checkPermissions();
 
     const interval = setInterval(checkPermissions, 60000);
     return () => clearInterval(interval);
-  }, [userId, post.creator.id, post.createdAt, board.creatorId]);
+  }, [userId, post.creator?.id, post.createdAt, board.creatorId]);
 
   const handlePostUpdated = (updatedPost: any) => {
     setIsEditing(false);
@@ -251,7 +252,11 @@ function PostCard({
   }
 
   return (
-    <Card className="w-full h-fit p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-0 shadow-lg bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
+    <Card
+      className="w-full h-fit p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-0 shadow-lg bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm focus-within:ring-2 focus-within:ring-pink-500 focus-within:ring-opacity-50"
+      role="article"
+      aria-label={`Post by ${post.creator.name}`}
+    >
       <div className="space-y-4">
         <div className="text-sm text-gray-900 dark:text-gray-100">
           <PostContent
@@ -262,7 +267,11 @@ function PostCard({
 
         {/* Media content */}
         {post.mediaUrls && post.mediaUrls.length > 0 && (
-          <div className="space-y-3">
+          <div
+            className="space-y-3"
+            role="group"
+            aria-label="Media attachments"
+          >
             {post.mediaUrls.map((url, index) => (
               <MediaPreview
                 key={index}
@@ -286,24 +295,31 @@ function PostCard({
                 {post.creator.name}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-400">
-                {new Date(post.createdAt).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric',
-                  hour: 'numeric',
-                  minute: '2-digit',
-                })}
+                <time dateTime={post.createdAt}>
+                  {new Date(post.createdAt).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                  })}
+                </time>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center space-x-1">
+          <div
+            className="flex items-center space-x-1"
+            role="group"
+            aria-label="Post actions"
+          >
             {canEdit && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsEditing(true)}
                 className="h-8 w-8 p-0 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+                aria-label="Edit post"
               >
                 <Edit2 className="h-4 w-4" />
               </Button>
@@ -315,6 +331,7 @@ function PostCard({
                 onClick={handleDelete}
                 disabled={isDeleting}
                 className="h-8 w-8 p-0 text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+                aria-label={isDeleting ? 'Deleting post...' : 'Delete post'}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -336,11 +353,11 @@ export function BoardView({
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative">
       <DoodleBackground />
 
-      <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm border-b border-gray-200/50 dark:border-gray-700/50">
+      <header className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm border-b border-gray-200/50 dark:border-gray-700/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-100 to-purple-100 dark:from-pink-900/20 dark:to-purple-900/20 text-pink-700 dark:text-pink-300 px-4 py-2 rounded-full text-sm font-medium mb-4">
-              <Heart className="w-4 h-4" />
+              <Heart className="w-4 h-4" aria-hidden="true" />
               <span>Danke Board</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
@@ -352,37 +369,45 @@ export function BoardView({
                 {board.recipientName}
               </span>
             </p>
-            <div className="flex justify-center items-center gap-6 mt-6 text-sm text-gray-500 dark:text-gray-400">
+            <div
+              className="flex justify-center items-center gap-6 mt-6 text-sm text-gray-500 dark:text-gray-400"
+              role="group"
+              aria-label="Board statistics"
+            >
               <div className="flex items-center gap-2">
-                <Users className="w-4 h-4" />
-                <span>{posts.length} messages</span>
+                <Users className="w-4 h-4" aria-hidden="true" />
+                <span aria-label={`${posts.length} messages on this board`}>
+                  {posts.length} messages
+                </span>
               </div>
               <div className="flex items-center gap-2">
-                <MessageCircle className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4" aria-hidden="true" />
                 <span>Share your love</span>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {posts.length === 0 ? (
           <EmptyState recipientName={board.recipientName} />
         ) : (
-          <MasonryLayout className="w-full" minColumnWidth={320} gap={24}>
-            {posts.map((post) => (
-              <PostCard
-                key={post.id}
-                post={post}
-                board={board}
-                onPostUpdated={onPostUpdated}
-                onPostDeleted={onPostDeleted}
-              />
-            ))}
-          </MasonryLayout>
+          <section aria-label="Appreciation messages">
+            <MasonryLayout className="w-full" minColumnWidth={320} gap={24}>
+              {posts.map((post) => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  board={board}
+                  onPostUpdated={onPostUpdated}
+                  onPostDeleted={onPostDeleted}
+                />
+              ))}
+            </MasonryLayout>
+          </section>
         )}
-      </div>
+      </main>
     </div>
   );
 }
