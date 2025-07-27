@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { MasonryLayout } from '@/components/ui/masonry-layout';
 import { MediaPreview } from '@/components/ui/media-preview';
 import { UserAvatar } from '@/components/ui/user-avatar';
+import { perf } from '@/lib/performance';
 import { useAuth } from '@clerk/nextjs';
 import { Edit2, Heart, MessageCircle, Trash2, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -349,6 +350,14 @@ export function BoardView({
   onPostUpdated,
   onPostDeleted,
 }: BoardViewProps) {
+  
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'test') {
+      const stopTimer = perf.startTimer('component-render-board-view');
+      return stopTimer;
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative">
       <DoodleBackground />

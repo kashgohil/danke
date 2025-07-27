@@ -7,10 +7,11 @@ import { MediaPreview } from '@/components/ui/media-preview';
 import { MediaUpload, type MediaFile } from '@/components/ui/media-upload';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
+import { perf } from '@/lib/performance';
 import { createPostSchema, type RichTextContent } from '@/lib/validations/post';
 import { useAuth } from '@clerk/nextjs';
 import { Heart, Image, MessageCircle, Send } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface PostCreationFormProps {
   boardId: string;
@@ -28,6 +29,13 @@ function PostCreationFormContent({
   const [content, setContent] = useState<RichTextContent | null>(null);
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'test') {
+      const stopTimer = perf.startTimer('component-render-post-creation-form');
+      return stopTimer;
+    }
+  }, []);
   const [error, setError] = useState<string | null>(null);
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string>
