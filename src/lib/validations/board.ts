@@ -15,7 +15,22 @@ export const boardSchema = z.object({
   viewToken: z.string().min(1, 'View token is required'),
   postToken: z.string().min(1, 'Post token is required'),
   // New multi-step fields
-  boardType: z.enum(['appreciation', 'birthday', 'farewell', 'general']),
+  boardType: z.enum([
+    'appreciation',
+    'birthday',
+    'farewell',
+    'welcome',
+    'congratulations',
+    'get-well',
+    'sympathy',
+    'holiday',
+    'anniversary',
+    'retirement',
+    'graduation',
+    'baby-shower',
+    'wedding',
+    'general',
+  ]),
   nameType: z.enum(['first-name', 'full-name', 'nickname']),
   postingMode: z.enum(['single', 'multiple']),
   moderationEnabled: z.boolean(),
@@ -51,7 +66,22 @@ export const createMultiStepBoardSchema = z.object({
     .string()
     .min(1, 'Recipient name is required')
     .max(255, 'Recipient name too long'),
-  boardType: z.enum(['appreciation', 'birthday', 'farewell', 'general']),
+  boardType: z.enum([
+    'appreciation',
+    'birthday',
+    'farewell',
+    'welcome',
+    'congratulations',
+    'get-well',
+    'sympathy',
+    'holiday',
+    'anniversary',
+    'retirement',
+    'graduation',
+    'baby-shower',
+    'wedding',
+    'general',
+  ]),
   nameType: z.enum(['first-name', 'full-name', 'nickname']),
 
   // Board configuration (Step 3)
@@ -78,7 +108,22 @@ export const createMultiStepBoardSchema = z.object({
 
 // Step-specific validation schemas
 export const basicInfoStepSchema = z.object({
-  boardType: z.enum(['appreciation', 'birthday', 'farewell', 'general']),
+  boardType: z.enum([
+    'appreciation',
+    'birthday',
+    'farewell',
+    'welcome',
+    'congratulations',
+    'get-well',
+    'sympathy',
+    'holiday',
+    'anniversary',
+    'retirement',
+    'graduation',
+    'baby-shower',
+    'wedding',
+    'general',
+  ]),
   recipientName: z
     .string()
     .min(1, 'Recipient name is required')

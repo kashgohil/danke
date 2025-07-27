@@ -1,7 +1,21 @@
 // Multi-step form types and interfaces
 
 export interface BasicInfoData {
-  boardType: 'appreciation' | 'birthday' | 'farewell' | 'general';
+  boardType:
+    | 'appreciation'
+    | 'birthday'
+    | 'farewell'
+    | 'welcome'
+    | 'congratulations'
+    | 'get-well'
+    | 'sympathy'
+    | 'holiday'
+    | 'anniversary'
+    | 'retirement'
+    | 'graduation'
+    | 'baby-shower'
+    | 'wedding'
+    | 'general';
   recipientName: string;
   nameType: 'first-name' | 'full-name' | 'nickname';
   title?: string; // Auto-generated based on type and name, but editable
