@@ -1,3 +1,4 @@
+import { cache, cacheKeys, cacheTTL } from '@/lib/cache';
 import { db, users } from '@/lib/db';
 import { BoardModel } from '@/lib/models/board';
 import { PostModel } from '@/lib/models/post';
@@ -18,25 +19,55 @@ export async function GET(
       );
     }
 
+    const cacheKey = cacheKeys.board(viewToken);
+    const cachedData = cache.get(cacheKey);
+
+    if (cachedData) {
+      return NextResponse.json(cachedData, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=300',
+        },
+      });
+    }
+
     const board = await BoardModel.getByViewToken(viewToken);
 
     if (!board) {
       return NextResponse.json({ error: 'Board not found' }, { status: 404 });
     }
 
-    const posts = await PostModel.getByBoardId(board.id);
+    const postsCacheKey = cacheKeys.boardPosts(board.id);
+    let postsWithCreators = cache.get(postsCacheKey);
 
-    const postsWithCreators = await Promise.all(
-      posts.map(async (post) => {
-        const [creator] = await db
-          .select({
-            id: users.id,
-            name: users.name,
-            avatarUrl: users.avatarUrl,
-          })
-          .from(users)
-          .where(eq(users.id, post.creatorId));
+    if (!postsWithCreators) {
+      const posts = await PostModel.getByBoardId(board.id);
 
+      const creatorIds = [...new Set(posts.map((post) => post.creatorId))];
+      const creatorMap = new Map();
+
+      for (const creatorId of creatorIds) {
+        const cachedUser = cache.get(cacheKeys.user(creatorId));
+        if (cachedUser) {
+          creatorMap.set(creatorId, cachedUser);
+        } else {
+          const [creator] = await db
+            .select({
+              id: users.id,
+              name: users.name,
+              avatarUrl: users.avatarUrl,
+            })
+            .from(users)
+            .where(eq(users.id, creatorId));
+
+          if (creator) {
+            creatorMap.set(creatorId, creator);
+            cache.set(cacheKeys.user(creatorId), creator, cacheTTL.user);
+          }
+        }
+      }
+
+      postsWithCreators = posts.map((post) => {
+        const creator = creatorMap.get(post.creatorId);
         return {
           id: post.id,
           content: post.content,
@@ -48,8 +79,10 @@ export async function GET(
             avatarUrl: null,
           },
         };
-      })
-    );
+      });
+
+      cache.set(postsCacheKey, postsWithCreators, cacheTTL.posts);
+    }
 
     const response = {
       board: {
@@ -63,7 +96,13 @@ export async function GET(
       posts: postsWithCreators,
     };
 
-    return NextResponse.json(response);
+    cache.set(cacheKey, response, cacheTTL.board);
+
+    return NextResponse.json(response, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=300',
+      },
+    });
   } catch (error) {
     console.error('Error fetching board:', error);
     return NextResponse.json(
