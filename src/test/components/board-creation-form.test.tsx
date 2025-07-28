@@ -1,4 +1,4 @@
-import { BoardCreationForm } from '@/components/boards/board-creation-form';
+import { MultiStepBoardCreationForm } from '@/components/boards/board-creation-form';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -14,7 +14,7 @@ vi.mock('next/navigation', () => ({
 // Mock fetch
 global.fetch = vi.fn();
 
-describe('BoardCreationForm', () => {
+describe('MultiStepBoardCreationForm', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(fetch).mockResolvedValue({
@@ -32,7 +32,7 @@ describe('BoardCreationForm', () => {
   });
 
   it('renders form fields correctly', () => {
-    render(<BoardCreationForm />);
+    render(<MultiStepBoardCreationForm />);
 
     expect(screen.getByLabelText(/board title/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/recipient name/i)).toBeInTheDocument();
@@ -43,7 +43,7 @@ describe('BoardCreationForm', () => {
 
   it('shows validation errors for empty fields', async () => {
     const user = userEvent.setup();
-    render(<BoardCreationForm />);
+    render(<MultiStepBoardCreationForm />);
 
     const submitButton = screen.getByRole('button', { name: /create board/i });
     await user.click(submitButton);
@@ -58,7 +58,7 @@ describe('BoardCreationForm', () => {
 
   it('submits form with valid data', async () => {
     const user = userEvent.setup();
-    render(<BoardCreationForm />);
+    render(<MultiStepBoardCreationForm />);
 
     const titleInput = screen.getByLabelText(/board title/i);
     const recipientInput = screen.getByLabelText(/recipient name/i);
@@ -112,7 +112,7 @@ describe('BoardCreationForm', () => {
         )
     );
 
-    render(<BoardCreationForm />);
+    render(<MultiStepBoardCreationForm />);
 
     const titleInput = screen.getByLabelText(/board title/i);
     const recipientInput = screen.getByLabelText(/recipient name/i);
@@ -138,7 +138,7 @@ describe('BoardCreationForm', () => {
         }),
     } as Response);
 
-    render(<BoardCreationForm />);
+    render(<MultiStepBoardCreationForm />);
 
     const titleInput = screen.getByLabelText(/board title/i);
     const recipientInput = screen.getByLabelText(/recipient name/i);
@@ -155,7 +155,7 @@ describe('BoardCreationForm', () => {
 
   it('validates title length', async () => {
     const user = userEvent.setup();
-    render(<BoardCreationForm />);
+    render(<MultiStepBoardCreationForm />);
 
     const titleInput = screen.getByLabelText(/board title/i);
     const longTitle = 'a'.repeat(101); // Assuming max length is 100
@@ -170,7 +170,7 @@ describe('BoardCreationForm', () => {
 
   it('validates recipient name length', async () => {
     const user = userEvent.setup();
-    render(<BoardCreationForm />);
+    render(<MultiStepBoardCreationForm />);
 
     const recipientInput = screen.getByLabelText(/recipient name/i);
     const longName = 'a'.repeat(101); // Assuming max length is 100
