@@ -1,198 +1,278 @@
 'use client';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { LoadingButton } from '@/components/ui/loading-states';
-import { useFormValidation } from '@/hooks/use-form-validation';
-import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
-import {
-  createBoardSchema,
-  type CreateBoardSchema,
-} from '@/lib/validations/board';
-import { AlertCircle, ArrowRight, Edit3, Sparkles, Users } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { StepIndicator } from '@/components/ui/step-indicator';
+import { useMultiStepForm } from '@/hooks/use-multi-step-form';
+import { Board } from '@/lib/db';
+import { useCallback, useEffect } from 'react';
+import { BasicInfoStep } from './basic-info-step';
+import { BoardConfigStep } from './board-config-step';
+import { NavigationControls } from './navigation-controls';
+import { TypeConfigStep } from './type-config-step';
 
-interface BoardCreationFormProps {
-  onSuccess?: (board: any) => void;
+interface MultiStepBoardCreationFormProps {
+  onSuccess?: (board: Board) => void;
+  onCancel?: () => void;
 }
 
-function BoardCreationFormContent({ onSuccess }: BoardCreationFormProps) {
-  const router = useRouter();
-  const { handleError } = useApiErrorHandler();
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+const STEP_LABELS = ['Basic Info', 'Board Settings', 'Configuration'];
 
+function MultiStepBoardCreationFormContent({
+  onSuccess,
+  onCancel,
+}: MultiStepBoardCreationFormProps) {
   const {
-    values,
-    errors,
-    isValid,
-    setValue,
-    validateAll,
-    clearAllErrors,
-    reset,
-    getFieldProps,
-  } = useFormValidation<CreateBoardSchema>({
-    schema: createBoardSchema,
-    mode: 'onBlur',
-    reValidateMode: 'onChange',
-  });
+    currentStep,
+    stepData,
+    isSubmitting,
+    submitError,
+    completedSteps,
+    currentStepErrors,
+    goToStep,
+    nextStep,
+    prevStep,
+    canGoNext,
+    canGoBack,
+    isLastStep,
+    updateBasicInfo,
+    updateTypeConfig,
+    updateBoardConfig,
+    validateCurrentStep,
+    validateAllSteps,
+    setSubmitting,
+    setSubmitError,
+    resetForm,
+  } = useMultiStepForm();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitError(null);
+  // Validate current step whenever step data changes
+  useEffect(() => {
+    validateCurrentStep();
+  }, [validateCurrentStep]);
 
-    const isFormValid = await validateAll();
-    if (!isFormValid) {
-      return;
+  // Handle step navigation
+  const handleNext = useCallback(() => {
+    const validation = validateCurrentStep();
+    if (validation.isValid) {
+      nextStep();
     }
+  }, [validateCurrentStep, nextStep]);
 
-    setIsLoading(true);
+  const handleBack = useCallback(() => {
+    prevStep();
+  }, [prevStep]);
 
+  const handleSubmit = useCallback(async () => {
     try {
-      const data = await apiRequest('/api/boards', {
+      setSubmitting(true);
+      setSubmitError(null);
+
+      const isValid = validateAllSteps();
+      if (!isValid) {
+        setSubmitError('Please fix all validation errors before submitting.');
+        return;
+      }
+
+      const submissionData = {
+        // Basic info
+        title: stepData.basicInfo.title || '',
+        recipientName: stepData.basicInfo.recipientName,
+        boardType: stepData.basicInfo.boardType,
+        nameType: stepData.basicInfo.nameType,
+
+        // Board configuration
+        postingMode: stepData.boardConfig.postingMode,
+        moderationEnabled: stepData.boardConfig.moderationEnabled,
+        allowAnonymous: stepData.boardConfig.allowAnonymous,
+        maxPostsPerUser:
+          stepData.boardConfig.maxPostsPerUser?.toString() || null,
+        boardVisibility: stepData.boardConfig.boardVisibility,
+        expirationDate: stepData.boardConfig.expirationDate
+          ? stepData.boardConfig.expirationDate
+          : undefined,
+
+        // Type-specific configuration
+        typeConfig: stepData.typeConfig as Record<string, unknown>,
+      };
+
+      const response = await fetch('/api/boards', {
         method: 'POST',
-        body: JSON.stringify(values),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData),
       });
 
-      reset();
-      clearAllErrors();
-
-      if (onSuccess) {
-        onSuccess(data.board);
-      } else {
-        router.push(`/boards/${data.board.id}/manage`);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || `HTTP ${response.status}: ${response.statusText}`
+        );
       }
+
+      const result = await response.json();
+      const board = result.board;
+
+      if (!board) {
+        throw new Error('No board data received from server');
+      }
+
+      onSuccess?.(board);
     } catch (error) {
-      const errorMessage = handleError(error);
+      console.error('Error creating board:', error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'An unexpected error occurred while creating the board.';
       setSubmitError(errorMessage);
     } finally {
-      setIsLoading(false);
+      setSubmitting(false);
+    }
+  }, [stepData, validateAllSteps, setSubmitting, setSubmitError, onSuccess]);
+
+  const handleBasicInfoValidationChange = useCallback((isValid: boolean) => {},
+  []);
+
+  const handleTypeConfigValidationChange = useCallback((isValid: boolean) => {},
+  []);
+
+  const handleBoardConfigValidationChange = useCallback(
+    (isValid: boolean) => {},
+    []
+  );
+
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 0:
+        return (
+          <BasicInfoStep
+            data={stepData.basicInfo}
+            onChange={updateBasicInfo}
+            onValidationChange={handleBasicInfoValidationChange}
+            errors={currentStepErrors}
+          />
+        );
+      case 1:
+        return (
+          <TypeConfigStep
+            boardType={stepData.basicInfo.boardType}
+            data={stepData.typeConfig}
+            onChange={updateTypeConfig}
+            onValidationChange={handleTypeConfigValidationChange}
+            errors={currentStepErrors}
+          />
+        );
+      case 2:
+        return (
+          <BoardConfigStep
+            data={stepData.boardConfig}
+            onChange={updateBoardConfig}
+            onValidationChange={handleBoardConfigValidationChange}
+            errors={currentStepErrors}
+          />
+        );
+      default:
+        return null;
     }
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <Card className="border-0 shadow-lg overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-primary to-secondary p-6 text-primary-foreground">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary-foreground/20 rounded-lg flex items-center justify-center">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div>
-              <CardTitle className="text-xl text-primary-foreground">
-                Create Danke Board
-              </CardTitle>
-              <CardDescription className="text-primary-foreground/80">
-                Start collecting heartfelt messages for someone special
-              </CardDescription>
-            </div>
-          </div>
-        </CardHeader>
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
+      <div className="text-center space-y-2">
+        <h1 className="text-3xl font-bold">Create Your Board</h1>
+        <p className="text-muted-foreground">
+          Follow these steps to create a personalized board for your occasion
+        </p>
+      </div>
 
-        <CardContent className="p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="title" className="flex items-center gap-2">
-                  <Edit3 className="w-4 h-4 text-primary" />
-                  Board Title
-                  <span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="title"
-                  type="text"
-                  value={getFieldProps('title').value}
-                  onChange={(e) => setValue('title', e.target.value)}
-                  onBlur={getFieldProps('title').onBlur}
-                  placeholder="e.g., Sarah's Birthday Celebration"
-                  error={getFieldProps('title').error}
-                  disabled={isLoading}
-                />
-                {errors.title && (
-                  <div className="flex items-center gap-2 text-sm text-destructive">
-                    <AlertCircle className="h-4 w-4" />
-                    <span>{errors.title}</span>
-                  </div>
-                )}
-              </div>
+      <StepIndicator
+        currentStep={currentStep + 1}
+        totalSteps={3}
+        stepLabels={STEP_LABELS}
+        completedSteps={Array.from(completedSteps).map((step) => step + 1)}
+        className="mb-8"
+      />
 
-              <div className="space-y-2">
-                <Label
-                  htmlFor="recipientName"
-                  className="flex items-center gap-2"
-                >
-                  <Users className="w-4 h-4 text-secondary" />
-                  Recipient Name
-                  <span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="recipientName"
-                  type="text"
-                  value={getFieldProps('recipientName').value}
-                  onChange={(e) => setValue('recipientName', e.target.value)}
-                  onBlur={getFieldProps('recipientName').onBlur}
-                  placeholder="e.g., Sarah Johnson"
-                  error={getFieldProps('recipientName').error}
-                  disabled={isLoading}
-                />
-                {errors.recipientName && (
-                  <div className="flex items-center gap-2 text-sm text-destructive">
-                    <AlertCircle className="h-4 w-4" />
-                    <span>{errors.recipientName}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {submitError && (
-              <div className="flex items-center gap-2 p-3 rounded-md bg-destructive/10 border border-destructive/20">
-                <AlertCircle className="h-4 w-4 text-destructive flex-shrink-0" />
-                <span className="text-sm text-destructive">{submitError}</span>
-              </div>
-            )}
-
-            <div className="pt-4">
-              <LoadingButton
-                type="submit"
-                size="lg"
-                className="w-full"
-                loading={isLoading}
-                loadingText="Creating Board..."
-                disabled={!isValid}
+      {submitError && (
+        <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+          <div className="flex items-start space-x-3">
+            <div className="flex-shrink-0">
+              <svg
+                className="h-5 w-5 text-destructive"
+                viewBox="0 0 20 20"
+                fill="currentColor"
               >
-                <div className="flex items-center gap-2">
-                  Create Board
-                  <ArrowRight className="w-5 h-5" />
-                </div>
-              </LoadingButton>
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clipRule="evenodd"
+                />
+              </svg>
             </div>
+            <div className="flex-1">
+              <h3 className="text-sm font-medium text-destructive">
+                Error Creating Board
+              </h3>
+              <p className="mt-1 text-sm text-destructive/80">{submitError}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSubmitError(null)}
+              className="flex-shrink-0 text-destructive/60 hover:text-destructive"
+            >
+              <span className="sr-only">Dismiss</span>
+              <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
 
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground">
-                Your board will be created with unique sharing links for viewing
-                and posting
-              </p>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+      <div className="bg-card border border-border rounded-lg p-6">
+        {renderStepContent()}
+      </div>
+
+      <NavigationControls
+        currentStep={currentStep}
+        totalSteps={3}
+        canGoNext={canGoNext}
+        canGoBack={canGoBack}
+        isSubmitting={isSubmitting}
+        onNext={handleNext}
+        onBack={handleBack}
+        onSubmit={handleSubmit}
+      />
+
+      {onCancel && (
+        <div className="text-center pt-4">
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isSubmitting}
+            className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Cancel and return to dashboard
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
-export function BoardCreationForm(props: BoardCreationFormProps) {
+export function MultiStepBoardCreationForm(
+  props: MultiStepBoardCreationFormProps
+) {
   return (
-    <ErrorBoundary>
-      <BoardCreationFormContent {...props} />
+    <ErrorBoundary
+      onError={(error, errorInfo) => {
+        console.error('MultiStepBoardCreationForm error:', error, errorInfo);
+      }}
+    >
+      <MultiStepBoardCreationFormContent {...props} />
     </ErrorBoundary>
   );
 }

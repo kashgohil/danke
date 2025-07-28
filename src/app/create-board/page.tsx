@@ -1,5 +1,5 @@
 import { AuthHeader } from '@/components/auth/auth-header';
-import { BoardCreationForm } from '@/components/boards/board-creation-form';
+import { MultiStepBoardCreationForm } from '@/components/boards/board-creation-form';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -133,7 +133,7 @@ export default async function CreateBoardPage() {
           </div>
 
           <div className="lg:w-1/2 lg:sticky lg:top-24">
-            <BoardCreationForm />
+            <MultiStepBoardCreationForm />
           </div>
         </div>
       </div>
