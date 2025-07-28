@@ -43,7 +43,7 @@
   - Integrate step validation and navigation controls
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8_
 
-- [ ] 6. Implement board-specific configuration step (Step 3)
+- [x] 6. Implement board-specific configuration step (Step 3)
 
   - Create BoardConfigStep component for posting and visibility settings
   - Add single vs multiple post mode selection
