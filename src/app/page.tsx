@@ -21,7 +21,7 @@ import logo from 'public/danke.png';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-danke-50 via-white to-danke-100 dark:from-danke-700 dark:via-danke-300 dark:to-danke-600 backdrop:blur-2xl">
+    <div className="min-h-screen bg-gradient-to-br from-danke-50 via-white to-danke-100 dark:from-danke-700 dark:via-danke-300 dark:to-danke-600">
       <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 xl:top-4 xl:rounded-xl z-40 xl:mx-auto w-full xl:max-w-1/2">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
@@ -37,7 +37,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="relative overflow-hidden py-20 px-4 ">
+      <section className="relative overflow-hidden py-20 px-4 backdrop-blur-lg">
         <div className="container mx-auto text-center">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
@@ -50,7 +50,7 @@ export default function HomePage() {
             <h1 className="text-5xl md:text-7xl font-bold mb-6 text-danke-900 dark:text-danke-900 leading-tight">
               Create Beautiful
               <br />
-              Appreciation Boards
+              Danke Boards
             </h1>
 
             <p className="text-xl md:text-2xl text-danke-900 dark:text-danke-900 mb-8 max-w-3xl mx-auto leading-relaxed">
@@ -112,10 +112,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-background/50">
+      <section className="py-20 px-4 bg-background/50 backdrop-blur-lg lg:mx-30 sm:mx-8 rounded-lg">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-danke-900">
               Everything you need to celebrate together
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -206,7 +206,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gradient-to-r from-danke-600 to-danke-gold text-white">
+      <section className="py-20 px-4 backdrop-blur-lg text-white">
         <div className="container mx-auto text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-danke-900 dark:text-danke-900">
