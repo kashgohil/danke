@@ -71,7 +71,7 @@
   - Connect form submission to existing board creation API
   - _Requirements: 1.1, 4.5, 5.3, 5.4, 5.5_
 
-- [ ] 9. Update board creation API to handle extended schema
+- [x] 9. Update board creation API to handle extended schema
 
   - Modify board creation endpoint to accept new multi-step form data
   - Update BoardModel.create method to handle extended board properties
@@ -80,7 +80,7 @@
   - Add proper error handling for new validation scenarios
   - _Requirements: 1.7, 2.8, 3.7, 5.3_
 
-- [ ] 10. Integrate multi-step form into create board page
+- [x] 10. Integrate multi-step form into create board page
 
   - Update create-board page to use new multi-step form component
   - Add feature flag or toggle to switch between old and new forms
