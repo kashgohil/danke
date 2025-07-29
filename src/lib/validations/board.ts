@@ -56,55 +56,89 @@ export const createBoardSchema = z.object({
 });
 
 // Multi-step board creation schema
-export const createMultiStepBoardSchema = z.object({
-  // Basic info (Step 1)
-  title: z
-    .string()
-    .min(1, 'Board title is required')
-    .max(255, 'Title too long'),
-  recipientName: z
-    .string()
-    .min(1, 'Recipient name is required')
-    .max(255, 'Recipient name too long'),
-  boardType: z.enum([
-    'appreciation',
-    'birthday',
-    'farewell',
-    'welcome',
-    'congratulations',
-    'get-well',
-    'sympathy',
-    'holiday',
-    'anniversary',
-    'retirement',
-    'graduation',
-    'baby-shower',
-    'wedding',
-    'general',
-  ]),
-  nameType: z.enum(['first-name', 'full-name', 'nickname']),
+export const createMultiStepBoardSchema = z
+  .object({
+    // Basic info (Step 1)
+    title: z
+      .string()
+      .min(1, 'Board title is required')
+      .max(255, 'Title too long')
+      .trim(),
+    recipientName: z
+      .string()
+      .min(1, 'Recipient name is required')
+      .max(255, 'Recipient name too long')
+      .trim(),
+    boardType: z.enum(
+      [
+        'appreciation',
+        'birthday',
+        'farewell',
+        'welcome',
+        'congratulations',
+        'get-well',
+        'sympathy',
+        'holiday',
+        'anniversary',
+        'retirement',
+        'graduation',
+        'baby-shower',
+        'wedding',
+        'general',
+      ],
+      {
+        message: 'Please select a valid board type',
+      }
+    ),
+    nameType: z.enum(['first-name', 'full-name', 'nickname'], {
+      message: 'Please select how to display the recipient name',
+    }),
 
-  // Board configuration (Step 3)
-  postingMode: z.enum(['single', 'multiple']),
-  moderationEnabled: z.boolean().default(false),
-  allowAnonymous: z.boolean().default(true),
-  maxPostsPerUser: z
-    .string()
-    .regex(/^\d+$/, 'Must be a valid number')
-    .transform((val) => (val === '' ? null : val))
-    .nullable()
-    .optional(),
-  boardVisibility: z.enum(['public', 'private']).default('public'),
-  expirationDate: z
-    .string()
-    .datetime()
-    .transform((val) => new Date(val))
-    .optional()
-    .nullable(),
+    // Board configuration (Step 3)
+    postingMode: z.enum(['single', 'multiple'], {
+      message: 'Please select a posting mode',
+    }),
+    moderationEnabled: z.boolean().default(false),
+    allowAnonymous: z.boolean().default(true),
+    maxPostsPerUser: z
+      .string()
+      .regex(/^\d*$/, 'Must be a valid number or empty')
+      .transform((val) => (val === '' || val === undefined ? null : val))
+      .nullable()
+      .optional()
+      .refine((val) => {
+        if (val === null || val === undefined) return true;
+        const num = parseInt(val);
+        return num > 0 && num <= 100;
+      }, 'Maximum posts per user must be between 1 and 100'),
+    boardVisibility: z.enum(['public', 'private']).default('public'),
+    expirationDate: z.iso
+      .datetime()
+      .transform((val) => new Date(val))
+      .optional()
+      .nullable()
+      .refine((date) => {
+        if (!date) return true;
+        return date > new Date();
+      }, 'Expiration date must be in the future'),
 
-  // Type-specific configuration (Step 2) - stored as JSON
-  typeConfig: z.record(z.string(), z.unknown()).optional(),
-});
+    // Type-specific configuration (Step 2) - stored as JSON
+    typeConfig: z.record(z.string(), z.unknown()).optional(),
+  })
+  .refine(
+    (data) => {
+      // Cross-field validation: single posting mode should not have maxPostsPerUser > 1
+      if (data.postingMode === 'single' && data.maxPostsPerUser) {
+        const maxPosts = parseInt(data.maxPostsPerUser);
+        return maxPosts <= 1;
+      }
+      return true;
+    },
+    {
+      message: 'Single posting mode cannot allow more than 1 post per user',
+      path: ['maxPostsPerUser'],
+    }
+  );
 
 // Step-specific validation schemas
 export const basicInfoStepSchema = z.object({
