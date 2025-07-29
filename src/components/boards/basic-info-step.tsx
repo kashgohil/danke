@@ -1,15 +1,14 @@
 'use client';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { cn } from '@/lib/utils';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { basicInfoStepSchema } from '@/lib/validations/board';
 import { BasicInfoData } from '@/types/multi-step-form';
 import { useCallback, useEffect, useState } from 'react';
@@ -267,35 +266,34 @@ export function BasicInfoStep({
     <div className="space-y-6">
       {/* Board Type Selection */}
       <div className="space-y-3">
-        <Label className="text-base font-semibold">
+        <Label htmlFor="boardType" className="text-base font-semibold">
           What type of board are you creating?
         </Label>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {boardTypeOptions.map((option) => (
-            <Card
-              key={option.value}
-              className={cn(
-                'cursor-pointer transition-all hover:shadow-md',
-                localData.boardType === option.value
-                  ? 'ring-2 ring-primary border-primary'
-                  : 'hover:border-primary/50'
-              )}
-              onClick={() => handleBoardTypeSelect(option.value)}
-            >
-              <CardHeader className="pb-3">
+        <Select
+          value={localData.boardType}
+          onValueChange={(value) =>
+            handleBoardTypeSelect(value as BasicInfoData['boardType'])
+          }
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a board type" />
+          </SelectTrigger>
+          <SelectContent>
+            {boardTypeOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
                 <div className="flex items-center space-x-3">
-                  <span className="text-2xl">{option.icon}</span>
-                  <div>
-                    <CardTitle className="text-lg">{option.label}</CardTitle>
-                    <CardDescription className="text-sm">
+                  <span className="text-lg">{option.icon}</span>
+                  <div className="flex flex-col">
+                    <span className="font-medium">{option.label}</span>
+                    <span className="text-xs text-muted-foreground">
                       {option.description}
-                    </CardDescription>
+                    </span>
                   </div>
                 </div>
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         {localErrors.boardType && (
           <p className="text-sm text-destructive">{localErrors.boardType}</p>
         )}
@@ -325,46 +323,31 @@ export function BasicInfoStep({
       {/* Name Type Selection */}
       {localData.recipientName && (
         <div className="space-y-3">
-          <Label className="text-base font-semibold">
+          <Label htmlFor="nameType" className="text-base font-semibold">
             How should we display their name?
           </Label>
-          <div className="space-y-2">
-            {nameTypeOptions.map((option) => (
-              <Card
-                key={option.value}
-                className={cn(
-                  'cursor-pointer transition-all hover:shadow-sm',
-                  localData.nameType === option.value
-                    ? 'ring-2 ring-primary border-primary'
-                    : 'hover:border-primary/50'
-                )}
-                onClick={() => handleNameTypeSelect(option.value)}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-center space-x-3">
-                    <div
-                      className={cn(
-                        'w-4 h-4 rounded-full border-2 flex items-center justify-center',
-                        localData.nameType === option.value
-                          ? 'border-primary bg-primary'
-                          : 'border-gray-300'
-                      )}
-                    >
-                      {localData.nameType === option.value && (
-                        <div className="w-2 h-2 rounded-full bg-white" />
-                      )}
-                    </div>
-                    <div>
-                      <p className="font-medium">{option.label}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {option.description}
-                      </p>
-                    </div>
+          <Select
+            value={localData.nameType}
+            onValueChange={(value) =>
+              handleNameTypeSelect(value as BasicInfoData['nameType'])
+            }
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select name display type" />
+            </SelectTrigger>
+            <SelectContent>
+              {nameTypeOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  <div className="flex flex-col">
+                    <span className="font-medium">{option.label}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {option.description}
+                    </span>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           {localErrors.nameType && (
             <p className="text-sm text-destructive">{localErrors.nameType}</p>
           )}
