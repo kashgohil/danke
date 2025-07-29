@@ -35,7 +35,7 @@ const StepIndicator = React.forwardRef<HTMLDivElement, StepIndicatorProps>(
                   index < totalSteps - 1 && 'flex-1'
                 )}
               >
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center relative">
                   <div
                     className={cn(
                       'flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-medium transition-colors',
@@ -62,7 +62,9 @@ const StepIndicator = React.forwardRef<HTMLDivElement, StepIndicatorProps>(
 
                   <span
                     className={cn(
-                      'mt-2 text-xs font-medium text-center max-w-[80px] leading-tight',
+                      'absolute -bottom-6 left-1/2 text-center -translate-x-1/2 mt-2 text-xs font-medium leading-tight',
+                      'hidden sm:block sm:whitespace-nowrap sm:max-w-[80px]',
+                      'md:max-w-none md:whitespace-normal',
                       {
                         'text-primary': isCurrent || isCompleted,
                         'text-muted-foreground': isUpcoming,
@@ -75,11 +77,14 @@ const StepIndicator = React.forwardRef<HTMLDivElement, StepIndicatorProps>(
 
                 {index < totalSteps - 1 && (
                   <div
-                    className={cn('flex-1 h-0.5 mx-4 transition-colors', {
-                      'bg-primary':
-                        stepNumber <= Math.max(...completedSteps, 0),
-                      'bg-muted': stepNumber > Math.max(...completedSteps, 0),
-                    })}
+                    className={cn(
+                      'flex-1 h-0.5 mx-2 sm:mx-4 transition-colors',
+                      {
+                        'bg-primary':
+                          stepNumber <= Math.max(...completedSteps, 0),
+                        'bg-muted': stepNumber > Math.max(...completedSteps, 0),
+                      }
+                    )}
                     aria-hidden="true"
                   />
                 )}
