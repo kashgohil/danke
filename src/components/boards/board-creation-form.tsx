@@ -28,12 +28,10 @@ function MultiStepBoardCreationFormContent({
     submitError,
     completedSteps,
     currentStepErrors,
-    goToStep,
     nextStep,
     prevStep,
     canGoNext,
     canGoBack,
-    isLastStep,
     updateBasicInfo,
     updateTypeConfig,
     updateBoardConfig,
@@ -41,7 +39,6 @@ function MultiStepBoardCreationFormContent({
     validateAllSteps,
     setSubmitting,
     setSubmitError,
-    resetForm,
   } = useMultiStepForm();
 
   // Validate current step whenever step data changes
@@ -178,8 +175,10 @@ function MultiStepBoardCreationFormContent({
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">Create Your Board</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-3xl font-bold text-danke-900 dark:text-danke-900">
+          Create Your Board
+        </h1>
+        <p className="text-danke-900 dark:text-danke-900">
           Follow these steps to create a personalized board for your occasion
         </p>
       </div>
