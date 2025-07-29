@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button';
 import { LoadingButton } from '@/components/ui/loading-states';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 
 export interface NavigationControlsProps {
   currentStep: number;
@@ -46,23 +45,22 @@ export function NavigationControls({
   };
 
   return (
-    <div className="flex items-center justify-between pt-6 border-t border-border">
-      <div className="flex-1">
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 sm:gap-0">
+      <div className="flex-1 order-2 sm:order-1">
         {canGoBack && (
           <Button
             type="button"
             variant="outline"
             onClick={handleBack}
             disabled={isSubmitting}
-            className="flex items-center gap-2"
+            className="w-full sm:w-auto"
           >
-            <ArrowLeft className="w-4 h-4" />
             Back
           </Button>
         )}
       </div>
 
-      <div className="flex-1 flex justify-end">
+      <div className="flex-1 flex justify-end order-1 sm:order-2">
         {isLastStep ? (
           <LoadingButton
             type="button"
@@ -70,22 +68,19 @@ export function NavigationControls({
             loading={isSubmitting}
             loadingText="Creating Board..."
             disabled={!canGoNext}
-            className="flex items-center gap-2"
-            size="lg"
+            className="w-full sm:w-auto"
           >
-            <Check className="w-4 h-4" />
-            Create Board
+            <span className="hidden sm:inline">Create Board</span>
+            <span className="sm:hidden">Create</span>
           </LoadingButton>
         ) : (
           <Button
             type="button"
             onClick={handleNext}
             disabled={!canGoNext || isSubmitting}
-            className="flex items-center gap-2"
-            size="lg"
+            className="w-full sm:w-auto"
           >
             Next
-            <ArrowRight className="w-4 h-4" />
           </Button>
         )}
       </div>

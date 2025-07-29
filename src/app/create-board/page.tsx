@@ -1,18 +1,37 @@
 import { AuthHeader } from '@/components/auth/auth-header';
-import { MultiStepBoardCreationForm } from '@/components/boards/board-creation-form';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { auth } from '@clerk/nextjs/server';
-import { ArrowLeft, Heart, MessageCircle, Sparkles, Users } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import logo from 'public/danke.png';
+import { Suspense } from 'react';
+import { CreateBoardClient } from './create-board-client';
+
+// Loading component for the form
+function FormSkeleton() {
+  return (
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
+      <div className="text-center space-y-2">
+        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded animate-pulse w-64 mx-auto" />
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse w-96 mx-auto" />
+      </div>
+      <div className="p-12 bg-card border border-border rounded-lg">
+        <div className="space-y-6">
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse w-32" />
+          <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse w-32" />
+          <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+          <div className="flex gap-4 pt-4">
+            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded animate-pulse flex-1" />
+            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded animate-pulse w-24" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default async function CreateBoardPage() {
   const { userId } = await auth();
@@ -21,119 +40,45 @@ export default async function CreateBoardPage() {
     redirect('/sign-in?redirect_url=/create-board');
   }
 
+  const enableMultiStepForm =
+    process.env.NEXT_PUBLIC_ENABLE_MULTI_STEP_FORM === 'true';
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-danke-50 via-white to-danke-100 dark:from-danke-700 dark:via-danke-300 dark:to-danke-600">
-      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 xl:top-4 xl:rounded-xl z-40 xl:mx-auto w-full xl:max-w-1/2">
+      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 xl:top-4 xl:rounded-xl z-40 xl:mx-auto w-full xl:max-w-full xl:max-w-7xl">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <Link
               href="/"
-              className="text-2xl font-bold bg-gradient-to-r from-danke-600 to-danke-gold bg-clip-text text-transparent hover:from-danke-700 hover:to-danke-500 transition-all flex items-center gap-2"
+              className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-danke-600 to-danke-gold bg-clip-text text-transparent hover:from-danke-700 hover:to-danke-500 transition-all flex items-center gap-2"
             >
               <Image src={logo} alt="Danke" width={32} height={32} />
-              Danke
+              <span className="hidden sm:inline">Danke</span>
             </Link>
             <AuthHeader />
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-12">
-        <div className="flex flex-col-reverse lg:flex-row gap-12 items-start lg:items-center">
-          <div className="lg:w-1/2 space-y-8 ">
-            <div>
-              <Link href="/">
-                <Button
-                  variant="ghost"
-                  className="flex items-center gap-2 text-danke-700 dark:text-danke-900"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Back to Home
-                </Button>
-              </Link>
-            </div>
-
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 bg-danke-300 dark:bg-danke-gold/40 text-danke-900 dark:text-danke-900 px-4 py-2 rounded-full text-sm font-medium">
-                <Sparkles className="w-4 h-4" />
-                Create Something Special
-              </div>
-
-              <h1 className="text-4xl lg:text-5xl font-bold text-danke-900 dark:text-danke-900 leading-tight">
-                Create Your
-                <br />
-                Danke Board
-              </h1>
-
-              <p className="text-lg text-danke-900 dark:text-danke-900 leading-relaxed">
-                Start collecting heartfelt messages, memories, and celebrations
-                from your community. Share the love and create lasting
-                connections with those who matter most.
-              </p>
-            </div>
-
-            <div className="grid gap-4">
-              <Card className="border-0 shadow-lg bg-background/50 backdrop-blur-sm">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center">
-                      <MessageCircle className="w-5 h-5 text-danke-900 dark:text-danke-900" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">Rich Messages</CardTitle>
-                      <CardDescription>
-                        Beautiful formatting and styling for heartfelt messages
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
-
-              <Card className="border-0 shadow-lg bg-background/50 backdrop-blur-sm">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center">
-                      <Users className="w-5 h-5 text-danke-900 dark:text-danke-900" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">Easy Sharing</CardTitle>
-                      <CardDescription>
-                        Unique links for viewing and contributing to your board
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
-
-              <Card className="border-0 shadow-lg bg-background/50 backdrop-blur-sm">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center">
-                      <Heart className="w-5 h-5 text-danke-900 dark:text-danke-900" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">Privacy Control</CardTitle>
-                      <CardDescription>
-                        Full control over who can view and contribute to your
-                        board
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
-            </div>
-
-            <div className="pt-4">
-              <p className="text-sm text-danke-700 dark:text-danke-900">
-                Your board will be created instantly with unique sharing links.
-                You can customize settings and manage contributions from your
-                dashboard.
-              </p>
-            </div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col py-6 sm:py-12 gap-6 sm:gap-12 items-start max-w-full">
+          <div className="w-full">
+            <Link href="/">
+              <Button
+                variant="ghost"
+                className="flex items-center gap-2 text-danke-700 dark:text-danke-900 mb-4 sm:mb-0"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span className="hidden sm:inline">Back to Home</span>
+                <span className="sm:hidden">Back</span>
+              </Button>
+            </Link>
           </div>
 
-          <div className="lg:w-1/2 lg:sticky lg:top-24">
-            <MultiStepBoardCreationForm />
+          <div className="w-full">
+            <Suspense fallback={<FormSkeleton />}>
+              <CreateBoardClient enableMultiStepForm={enableMultiStepForm} />
+            </Suspense>
           </div>
         </div>
       </div>

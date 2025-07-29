@@ -263,9 +263,8 @@ export function BasicInfoStep({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Board Type Selection */}
-      <div className="space-y-3">
+    <div className="flex flex-col space-y-6">
+      <div className="flex flex-col gap-2">
         <Label htmlFor="boardType" className="text-base font-semibold">
           What type of board are you creating?
         </Label>
@@ -299,7 +298,6 @@ export function BasicInfoStep({
         )}
       </div>
 
-      {/* Recipient Name Input */}
       <div className="space-y-2">
         <Label htmlFor="recipientName" className="text-base font-semibold">
           Who is this board for?
@@ -320,7 +318,6 @@ export function BasicInfoStep({
         )}
       </div>
 
-      {/* Name Type Selection */}
       {localData.recipientName && (
         <div className="space-y-3">
           <Label htmlFor="nameType" className="text-base font-semibold">
@@ -354,7 +351,6 @@ export function BasicInfoStep({
         </div>
       )}
 
-      {/* Auto-generated Title (editable) */}
       {localData.boardType && localData.recipientName && localData.nameType && (
         <div className="space-y-2">
           <Label htmlFor="title" className="text-base font-semibold">
