@@ -1,7 +1,6 @@
 'use client';
 
 import { ErrorBoundary } from '@/components/ui/error-boundary';
-import { StepIndicator } from '@/components/ui/step-indicator';
 import { useMultiStepForm } from '@/hooks/use-multi-step-form';
 import { Board } from '@/lib/db';
 import { useCallback, useEffect } from 'react';
@@ -16,8 +15,6 @@ interface MultiStepBoardCreationFormProps {
   onStart?: () => void;
 }
 
-const STEP_LABELS = ['Basic Info', 'Board Settings', 'Configuration'];
-
 function MultiStepBoardCreationFormContent({
   onSuccess,
   onCancel,
@@ -28,8 +25,8 @@ function MultiStepBoardCreationFormContent({
     stepData,
     isSubmitting,
     submitError,
-    completedSteps,
     currentStepErrors,
+    touchedFields,
     nextStep,
     prevStep,
     canGoNext,
@@ -39,16 +36,15 @@ function MultiStepBoardCreationFormContent({
     updateBoardConfig,
     validateCurrentStep,
     validateAllSteps,
+    markFieldTouched,
     setSubmitting,
     setSubmitError,
   } = useMultiStepForm();
 
-  // Validate current step whenever step data changes
   useEffect(() => {
     validateCurrentStep();
   }, [validateCurrentStep]);
 
-  // Handle step navigation
   const handleNext = useCallback(() => {
     const validation = validateCurrentStep();
     if (validation.isValid) {
@@ -156,6 +152,8 @@ function MultiStepBoardCreationFormContent({
             onChange={updateBasicInfo}
             onValidationChange={handleBasicInfoValidationChange}
             errors={currentStepErrors}
+            onFieldTouch={(field) => markFieldTouched(0, field)}
+            touchedFields={touchedFields[0]}
           />
         );
       case 1:
@@ -166,6 +164,8 @@ function MultiStepBoardCreationFormContent({
             onChange={updateTypeConfig}
             onValidationChange={handleTypeConfigValidationChange}
             errors={currentStepErrors}
+            onFieldTouch={(field) => markFieldTouched(1, field)}
+            touchedFields={touchedFields[1]}
           />
         );
       case 2:
@@ -175,6 +175,8 @@ function MultiStepBoardCreationFormContent({
             onChange={updateBoardConfig}
             onValidationChange={handleBoardConfigValidationChange}
             errors={currentStepErrors}
+            onFieldTouch={(field) => markFieldTouched(2, field)}
+            touchedFields={touchedFields[2]}
           />
         );
       default:
@@ -193,17 +195,7 @@ function MultiStepBoardCreationFormContent({
         </p>
       </div>
 
-      <div className="p-6 sm:p-8 lg:p-12 flex flex-col bg-card border border-border rounded-lg gap-6 sm:gap-8">
-        {/* Step Indicator */}
-        <div className="pb-4 sm:pb-6">
-          <StepIndicator
-            currentStep={currentStep + 1}
-            totalSteps={3}
-            stepLabels={STEP_LABELS}
-            completedSteps={Array.from(completedSteps).map((step) => step + 1)}
-          />
-        </div>
-
+      <div className="p-6 sm:p-8 lg:p-12 flex flex-col bg-card/90 border border-border rounded-lg gap-6 sm:gap-8">
         {submitError && (
           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
             <div className="flex items-start space-x-3">

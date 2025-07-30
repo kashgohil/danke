@@ -63,6 +63,9 @@ export interface FormState {
   stepErrors: {
     [stepIndex: number]: Record<string, string>;
   };
+  touchedFields: {
+    [stepIndex: number]: Set<string>;
+  };
   isSubmitting: boolean;
   submitError: string | null;
   completedSteps: Set<number>;
@@ -84,7 +87,8 @@ export type FormAction =
   | { type: 'SET_SUBMITTING'; payload: boolean }
   | { type: 'SET_SUBMIT_ERROR'; payload: string | null }
   | { type: 'RESET_FORM' }
-  | { type: 'MARK_STEP_COMPLETED'; payload: number };
+  | { type: 'MARK_STEP_COMPLETED'; payload: number }
+  | { type: 'MARK_FIELD_TOUCHED'; payload: { step: number; field: string } };
 
 export interface StepValidationResult {
   isValid: boolean;

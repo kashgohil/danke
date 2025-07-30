@@ -7,11 +7,20 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { typeConfigStepSchema } from '@/lib/validations/board';
 import { BasicInfoData, TypeConfigData } from '@/types/multi-step-form';
+import {
+  Box,
+  BriefcaseBusiness,
+  Hand,
+  PartyPopper,
+  Rocket,
+  Smile,
+  TreePalm,
+} from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { z } from 'zod';
 
@@ -21,6 +30,8 @@ interface TypeConfigStepProps {
   onChange: (data: Partial<TypeConfigData>) => void;
   onValidationChange: (isValid: boolean) => void;
   errors: Record<string, string>;
+  onFieldTouch?: (field: string) => void;
+  touchedFields?: Set<string>;
 }
 
 // Appreciation theme options
@@ -29,19 +40,19 @@ const appreciationThemeOptions = [
     value: 'professional' as const,
     label: 'Professional',
     description: 'Formal and business-appropriate tone',
-    icon: '💼',
+    icon: <BriefcaseBusiness className="h-8 w-8" />,
   },
   {
     value: 'casual' as const,
     label: 'Casual',
     description: 'Relaxed and friendly atmosphere',
-    icon: '😊',
+    icon: <Smile className="h-8 w-8" />,
   },
   {
     value: 'celebration' as const,
     label: 'Celebration',
     description: 'Festive and joyful mood',
-    icon: '🎉',
+    icon: <PartyPopper className="h-8 w-8" />,
   },
 ];
 
@@ -70,29 +81,28 @@ const farewellTypeOptions = [
     value: 'retirement' as const,
     label: 'Retirement',
     description: 'Celebrating the end of a career',
-    icon: '🌅',
+    icon: <TreePalm />,
   },
   {
     value: 'job-change' as const,
     label: 'New Job',
     description: 'Moving to a new opportunity',
-    icon: '🚀',
+    icon: <Rocket />,
   },
   {
     value: 'relocation' as const,
     label: 'Relocation',
     description: 'Moving to a new location',
-    icon: '📦',
+    icon: <Box />,
   },
   {
     value: 'other' as const,
     label: 'Other',
     description: 'Other reason for farewell',
-    icon: '👋',
+    icon: <Hand />,
   },
 ];
 
-// Predefined background colors
 const backgroundColorOptions = [
   { value: '#3B82F6', label: 'Blue', color: 'bg-blue-500' },
   { value: '#10B981', label: 'Green', color: 'bg-green-500' },
@@ -110,6 +120,8 @@ export function TypeConfigStep({
   onChange,
   onValidationChange,
   errors,
+  onFieldTouch,
+  touchedFields,
 }: TypeConfigStepProps) {
   const [localData, setLocalData] = useState<TypeConfigData>(data);
   const [localErrors, setLocalErrors] =
@@ -156,6 +168,7 @@ export function TypeConfigStep({
     const updatedData = { ...localData, [field]: value };
     setLocalData(updatedData);
     onChange(updatedData);
+    onFieldTouch?.(field);
   };
 
   const handleToggle = (field: keyof TypeConfigData) => {
@@ -163,27 +176,25 @@ export function TypeConfigStep({
     handleFieldChange(field, !currentValue);
   };
 
-  // Format date for input (YYYY-MM-DD)
-  const formatDateForInput = (dateString?: string) => {
-    if (!dateString) return '';
-    // If it's already in YYYY-MM-DD format, return as is
-    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
-      return dateString;
-    }
-    // If it's an ISO string, convert to YYYY-MM-DD
+  // Convert date string to Date object for picker
+  const parseDate = (dateString?: string): Date | undefined => {
+    if (!dateString) return undefined;
     try {
-      const date = new Date(dateString);
-      return date.toISOString().split('T')[0];
+      return new Date(dateString);
     } catch {
-      return '';
+      return undefined;
     }
   };
 
-  // Handle date input change
-  const handleDateChange = (field: keyof TypeConfigData, value: string) => {
-    if (value) {
+  // Handle date picker change
+  const handleDatePickerChange = (
+    field: keyof TypeConfigData,
+    date: Date | undefined
+  ) => {
+    if (date) {
       // Store date in YYYY-MM-DD format to match validation schema
-      handleFieldChange(field, value);
+      const dateString = date.toISOString().split('T')[0];
+      handleFieldChange(field, dateString);
     } else {
       handleFieldChange(field, undefined);
     }
@@ -192,8 +203,8 @@ export function TypeConfigStep({
   // Render appreciation-specific configuration
   const renderAppreciationConfig = () => (
     <div className="space-y-6">
-      <div className="space-y-3">
-        <Label className="text-base font-semibold">
+      <div className="flex flex-col gap-4">
+        <Label className="text-sm text-primary">
           Choose the theme for your appreciation board
         </Label>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -219,29 +230,28 @@ export function TypeConfigStep({
               role="button"
               aria-pressed={localData.appreciationTheme === option.value}
             >
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-3">
-                  <span className="text-2xl">{option.icon}</span>
-                  <div>
-                    <CardTitle className="text-lg">{option.label}</CardTitle>
-                    <CardDescription className="text-sm">
-                      {option.description}
-                    </CardDescription>
-                  </div>
+              <CardHeader>
+                <div className="flex flex-col items-center gap-1">
+                  <span className="p-1 mb-2 text-primary">{option.icon}</span>
+                  <CardTitle className="text-lg">{option.label}</CardTitle>
+                  <CardDescription className="text-sm text-center">
+                    {option.description}
+                  </CardDescription>
                 </div>
               </CardHeader>
             </Card>
           ))}
         </div>
-        {localErrors.appreciationTheme && (
-          <p className="text-sm text-destructive">
-            {localErrors.appreciationTheme}
-          </p>
-        )}
+        {localErrors.appreciationTheme &&
+          touchedFields?.has('appreciationTheme') && (
+            <p className="text-sm text-destructive">
+              {localErrors.appreciationTheme}
+            </p>
+          )}
       </div>
 
-      <div className="space-y-3">
-        <Label className="text-base font-semibold">Display Options</Label>
+      <div className="flex flex-col gap-4">
+        <Label className="text-sm text-primary">Display Options</Label>
         <Card
           className={cn(
             'cursor-pointer transition-all hover:shadow-sm',
@@ -260,11 +270,11 @@ export function TypeConfigStep({
           role="button"
           aria-pressed={localData.showContributorNames}
         >
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-3">
+          <CardContent className="p-6">
+            <div className="flex items-start gap-4">
               <div
                 className={cn(
-                  'w-4 h-4 rounded border-2 flex items-center justify-center',
+                  'w-4 h-4 rounded border-2 flex items-center justify-center mt-1',
                   localData.showContributorNames
                     ? 'border-primary bg-primary'
                     : 'border-gray-300'
@@ -284,7 +294,7 @@ export function TypeConfigStep({
                   </svg>
                 )}
               </div>
-              <div>
+              <div className="flex-1 flex flex-col gap-1">
                 <p className="font-medium">Show contributor names</p>
                 <p className="text-sm text-muted-foreground">
                   Display the names of people who contributed to the board
@@ -304,18 +314,17 @@ export function TypeConfigStep({
         <Label htmlFor="birthdayDate" className="text-base font-semibold">
           Birthday Date (Optional)
         </Label>
-        <Input
-          id="birthdayDate"
-          type="date"
-          value={formatDateForInput(localData.birthdayDate)}
-          onChange={(e) => handleDateChange('birthdayDate', e.target.value)}
+        <DatePicker
+          date={parseDate(localData.birthdayDate)}
+          onDateChange={(date) => handleDatePickerChange('birthdayDate', date)}
+          placeholder="Select birthday date"
           error={!!localErrors.birthdayDate}
           className="text-base"
         />
         <p className="text-sm text-muted-foreground">
           Setting the birthday date helps personalize the board
         </p>
-        {localErrors.birthdayDate && (
+        {localErrors.birthdayDate && touchedFields?.has('birthdayDate') && (
           <p className="text-sm text-destructive">{localErrors.birthdayDate}</p>
         )}
       </div>
@@ -370,7 +379,7 @@ export function TypeConfigStep({
             </Card>
           ))}
         </div>
-        {localErrors.ageDisplay && (
+        {localErrors.ageDisplay && touchedFields?.has('ageDisplay') && (
           <p className="text-sm text-destructive">{localErrors.ageDisplay}</p>
         )}
       </div>
@@ -419,7 +428,7 @@ export function TypeConfigStep({
             </Card>
           ))}
         </div>
-        {localErrors.farewellType && (
+        {localErrors.farewellType && touchedFields?.has('farewellType') && (
           <p className="text-sm text-destructive">{localErrors.farewellType}</p>
         )}
       </div>
@@ -428,18 +437,19 @@ export function TypeConfigStep({
         <Label htmlFor="lastWorkingDay" className="text-base font-semibold">
           Last Working Day (Optional)
         </Label>
-        <Input
-          id="lastWorkingDay"
-          type="date"
-          value={formatDateForInput(localData.lastWorkingDay)}
-          onChange={(e) => handleDateChange('lastWorkingDay', e.target.value)}
+        <DatePicker
+          date={parseDate(localData.lastWorkingDay)}
+          onDateChange={(date) =>
+            handleDatePickerChange('lastWorkingDay', date)
+          }
+          placeholder="Select last working day"
           error={!!localErrors.lastWorkingDay}
           className="text-base"
         />
         <p className="text-sm text-muted-foreground">
           This helps contributors know the timeline for their messages
         </p>
-        {localErrors.lastWorkingDay && (
+        {localErrors.lastWorkingDay && touchedFields?.has('lastWorkingDay') && (
           <p className="text-sm text-destructive">
             {localErrors.lastWorkingDay}
           </p>
@@ -451,8 +461,8 @@ export function TypeConfigStep({
   // Render general configuration options (available for all board types)
   const renderGeneralConfig = () => (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="customMessage" className="text-base font-semibold">
+      <div className="flex flex-col gap-4">
+        <Label htmlFor="customMessage" className="text-sm text-primary">
           Custom Message (Optional)
         </Label>
         <textarea
@@ -461,7 +471,7 @@ export function TypeConfigStep({
           value={localData.customMessage || ''}
           onChange={(e) => handleFieldChange('customMessage', e.target.value)}
           className={cn(
-            'w-full min-h-[100px] px-3 py-2 border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none rounded-md',
+            'w-full min-h-[100px] p-4 border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none rounded-md',
             localErrors.customMessage && 'border-destructive'
           )}
           maxLength={500}
@@ -474,15 +484,15 @@ export function TypeConfigStep({
             {(localData.customMessage || '').length}/500
           </p>
         </div>
-        {localErrors.customMessage && (
+        {localErrors.customMessage && touchedFields?.has('customMessage') && (
           <p className="text-sm text-destructive">
             {localErrors.customMessage}
           </p>
         )}
       </div>
 
-      <div className="space-y-3">
-        <Label className="text-base font-semibold">
+      <div className="flex flex-col gap-4">
+        <Label className="text-sm text-primary">
           Background Color (Optional)
         </Label>
         <div className="grid grid-cols-4 md:grid-cols-8 gap-3">
@@ -490,10 +500,8 @@ export function TypeConfigStep({
             <div
               key={option.value}
               className={cn(
-                'cursor-pointer rounded-lg p-3 border-2 transition-all hover:scale-105',
-                localData.backgroundColor === option.value
-                  ? 'border-primary ring-2 ring-primary ring-offset-2'
-                  : 'border-gray-200 hover:border-gray-300'
+                'cursor-pointer rounded-lg p-3 transition-all hover:scale-105',
+                localData.backgroundColor === option.value ? '' : ''
               )}
               onClick={() => handleFieldChange('backgroundColor', option.value)}
               onKeyDown={(e) => {
@@ -508,49 +516,20 @@ export function TypeConfigStep({
               aria-label={`Select ${option.label} background color`}
             >
               <div className={cn('w-full h-8 rounded-md mb-2', option.color)} />
-              <p className="text-xs text-center font-medium">{option.label}</p>
             </div>
           ))}
         </div>
 
-        {/* Custom color input */}
-        <div className="space-y-2">
-          <Label htmlFor="customColor" className="text-sm font-medium">
-            Or choose a custom color:
-          </Label>
-          <div className="flex items-center space-x-2">
-            <input
-              id="customColor"
-              type="color"
-              value={localData.backgroundColor || '#3B82F6'}
-              onChange={(e) =>
-                handleFieldChange('backgroundColor', e.target.value)
-              }
-              className="w-12 h-10 border border-input rounded cursor-pointer"
-            />
-            <Input
-              type="text"
-              placeholder="#3B82F6"
-              value={localData.backgroundColor || ''}
-              onChange={(e) =>
-                handleFieldChange('backgroundColor', e.target.value)
-              }
-              error={!!localErrors.backgroundColor}
-              className="flex-1"
-            />
-          </div>
-        </div>
-
-        {localErrors.backgroundColor && (
-          <p className="text-sm text-destructive">
-            {localErrors.backgroundColor}
-          </p>
-        )}
+        {localErrors.backgroundColor &&
+          touchedFields?.has('backgroundColor') && (
+            <p className="text-sm text-destructive">
+              {localErrors.backgroundColor}
+            </p>
+          )}
       </div>
     </div>
   );
 
-  // Get the appropriate configuration content based on board type
   const getConfigContent = () => {
     switch (boardType) {
       case 'appreciation':
@@ -607,14 +586,5 @@ export function TypeConfigStep({
     }
   };
 
-  return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold">{getStepTitle()}</h2>
-        <p className="text-muted-foreground">{getStepDescription()}</p>
-      </div>
-
-      {getConfigContent()}
-    </div>
-  );
+  return <div className="space-y-6">{getConfigContent()}</div>;
 }

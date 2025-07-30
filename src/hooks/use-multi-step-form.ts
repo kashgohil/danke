@@ -32,6 +32,7 @@ const initialState: FormState = {
   stepData: initialFormData,
   stepValidation: {},
   stepErrors: {},
+  touchedFields: {},
   isSubmitting: false,
   submitError: null,
   completedSteps: new Set(),
@@ -109,6 +110,20 @@ function formReducer(state: FormState, action: FormAction): FormState {
         completedSteps: new Set([...state.completedSteps, action.payload]),
       };
 
+    case 'MARK_FIELD_TOUCHED':
+      const currentTouchedFields =
+        state.touchedFields[action.payload.step] || new Set();
+      return {
+        ...state,
+        touchedFields: {
+          ...state.touchedFields,
+          [action.payload.step]: new Set([
+            ...currentTouchedFields,
+            action.payload.field,
+          ]),
+        },
+      };
+
     case 'RESET_FORM':
       return initialState;
 
@@ -119,22 +134,29 @@ function formReducer(state: FormState, action: FormAction): FormState {
 
 // Validation utilities
 export const validateBasicInfo = (
-  data: BasicInfoData
+  data: BasicInfoData,
+  touchedFields?: Set<string>
 ): StepValidationResult => {
   const errors: Record<string, string> = {};
 
-  if (!data.recipientName.trim()) {
-    errors.recipientName = 'Recipient name is required';
-  } else if (data.recipientName.length > 255) {
-    errors.recipientName = 'Recipient name must be less than 255 characters';
+  if (touchedFields?.has('recipientName') || !touchedFields) {
+    if (!data.recipientName.trim()) {
+      errors.recipientName = 'Recipient name is required';
+    } else if (data.recipientName.length > 255) {
+      errors.recipientName = 'Recipient name must be less than 255 characters';
+    }
   }
 
-  if (!data.boardType) {
-    errors.boardType = 'Board type is required';
+  if (touchedFields?.has('boardType') || !touchedFields) {
+    if (!data.boardType) {
+      errors.boardType = 'Board type is required';
+    }
   }
 
-  if (!data.nameType) {
-    errors.nameType = 'Name type is required';
+  if (touchedFields?.has('nameType') || !touchedFields) {
+    if (!data.nameType) {
+      errors.nameType = 'Name type is required';
+    }
   }
 
   return {
@@ -145,26 +167,39 @@ export const validateBasicInfo = (
 
 export const validateTypeConfig = (
   data: TypeConfigData,
-  boardType: BasicInfoData['boardType']
+  boardType: BasicInfoData['boardType'],
+  touchedFields?: Set<string>
 ): StepValidationResult => {
   const errors: Record<string, string> = {};
 
   // Birthday-specific validation
   if (boardType === 'birthday') {
-    if (data.birthdayDate && isNaN(Date.parse(data.birthdayDate))) {
+    if (
+      (touchedFields?.has('birthdayDate') || !touchedFields) &&
+      data.birthdayDate &&
+      isNaN(Date.parse(data.birthdayDate))
+    ) {
       errors.birthdayDate = 'Please enter a valid date';
     }
   }
 
   // Farewell-specific validation
   if (boardType === 'farewell') {
-    if (data.lastWorkingDay && isNaN(Date.parse(data.lastWorkingDay))) {
+    if (
+      (touchedFields?.has('lastWorkingDay') || !touchedFields) &&
+      data.lastWorkingDay &&
+      isNaN(Date.parse(data.lastWorkingDay))
+    ) {
       errors.lastWorkingDay = 'Please enter a valid date';
     }
   }
 
   // General validation
-  if (data.customMessage && data.customMessage.length > 500) {
+  if (
+    (touchedFields?.has('customMessage') || !touchedFields) &&
+    data.customMessage &&
+    data.customMessage.length > 500
+  ) {
     errors.customMessage = 'Custom message must be less than 500 characters';
   }
 
@@ -175,29 +210,46 @@ export const validateTypeConfig = (
 };
 
 export const validateBoardConfig = (
-  data: BoardConfigData
+  data: BoardConfigData,
+  touchedFields?: Set<string>
 ): StepValidationResult => {
   const errors: Record<string, string> = {};
 
-  if (!data.postingMode) {
-    errors.postingMode = 'Posting mode is required';
+  if (touchedFields?.has('postingMode') || !touchedFields) {
+    if (!data.postingMode) {
+      errors.postingMode = 'Posting mode is required';
+    }
   }
 
-  if (data.postingMode === 'multiple' && data.maxPostsPerUser) {
+  if (
+    (touchedFields?.has('maxPostsPerUser') || !touchedFields) &&
+    data.postingMode === 'multiple' &&
+    data.maxPostsPerUser
+  ) {
     if (data.maxPostsPerUser < 1 || data.maxPostsPerUser > 50) {
       errors.maxPostsPerUser = 'Max posts per user must be between 1 and 50';
     }
   }
 
-  if (!data.boardVisibility) {
-    errors.boardVisibility = 'Board visibility is required';
+  if (touchedFields?.has('boardVisibility') || !touchedFields) {
+    if (!data.boardVisibility) {
+      errors.boardVisibility = 'Board visibility is required';
+    }
   }
 
-  if (data.expirationDate && isNaN(Date.parse(data.expirationDate))) {
+  if (
+    (touchedFields?.has('expirationDate') || !touchedFields) &&
+    data.expirationDate &&
+    isNaN(Date.parse(data.expirationDate))
+  ) {
     errors.expirationDate = 'Please enter a valid expiration date';
   }
 
-  if (data.expirationDate && new Date(data.expirationDate) <= new Date()) {
+  if (
+    (touchedFields?.has('expirationDate') || !touchedFields) &&
+    data.expirationDate &&
+    new Date(data.expirationDate) <= new Date()
+  ) {
     errors.expirationDate = 'Expiration date must be in the future';
   }
 
@@ -304,19 +356,21 @@ export function useMultiStepForm() {
   // Validation functions
   const validateCurrentStep = useCallback(() => {
     let result: StepValidationResult;
+    const touchedFields = state.touchedFields[state.currentStep];
 
     switch (state.currentStep) {
       case 0:
-        result = validateBasicInfo(state.stepData.basicInfo);
+        result = validateBasicInfo(state.stepData.basicInfo, touchedFields);
         break;
       case 1:
         result = validateTypeConfig(
           state.stepData.typeConfig,
-          state.stepData.basicInfo.boardType
+          state.stepData.basicInfo.boardType,
+          touchedFields
         );
         break;
       case 2:
-        result = validateBoardConfig(state.stepData.boardConfig);
+        result = validateBoardConfig(state.stepData.boardConfig, touchedFields);
         break;
       default:
         result = { isValid: false, errors: {} };
@@ -332,9 +386,10 @@ export function useMultiStepForm() {
     });
 
     return result;
-  }, [state.currentStep, state.stepData]);
+  }, [state.currentStep, state.stepData, state.touchedFields]);
 
   const validateAllSteps = useCallback(() => {
+    // For final validation, validate all fields regardless of touched state
     const basicInfoResult = validateBasicInfo(state.stepData.basicInfo);
     const typeConfigResult = validateTypeConfig(
       state.stepData.typeConfig,
@@ -389,6 +444,10 @@ export function useMultiStepForm() {
     dispatch({ type: 'RESET_FORM' });
   }, []);
 
+  const markFieldTouched = useCallback((step: number, field: string) => {
+    dispatch({ type: 'MARK_FIELD_TOUCHED', payload: { step, field } });
+  }, []);
+
   // Computed values
   const canGoNext = useMemo(() => {
     return (
@@ -416,6 +475,7 @@ export function useMultiStepForm() {
     submitError: state.submitError,
     completedSteps: state.completedSteps,
     currentStepErrors,
+    touchedFields: state.touchedFields,
 
     // Navigation
     goToStep,
@@ -433,6 +493,7 @@ export function useMultiStepForm() {
     // Validation
     validateCurrentStep,
     validateAllSteps,
+    markFieldTouched,
 
     // Submission
     setSubmitting,
