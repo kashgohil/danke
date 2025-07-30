@@ -45,7 +45,7 @@ export default async function CreateBoardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-danke-50 via-white to-danke-100 dark:from-danke-700 dark:via-danke-300 dark:to-danke-600">
-      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 xl:top-4 xl:rounded-xl z-40 xl:mx-auto w-full xl:max-w-full xl:max-w-7xl">
+      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 xl:top-4 xl:rounded-xl z-40 xl:mx-auto w-full xl:w-1/2">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <Link
@@ -60,7 +60,7 @@ export default async function CreateBoardPage() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container lg:w-1/2 mx-auto px-4 sm:px-6 lg:px-0">
         <div className="flex flex-col py-6 sm:py-12 gap-6 sm:gap-12 items-start max-w-full">
           <div className="w-full">
             <Link href="/">
@@ -77,7 +77,7 @@ export default async function CreateBoardPage() {
 
           <div className="w-full">
             <Suspense fallback={<FormSkeleton />}>
-              <CreateBoardClient enableMultiStepForm={enableMultiStepForm} />
+              <CreateBoardClient />
             </Suspense>
           </div>
         </div>
