@@ -17,7 +17,6 @@ export interface BasicInfoData {
     | 'wedding'
     | 'general';
   recipientName: string;
-  nameType: 'first-name' | 'full-name' | 'nickname';
   title?: string; // Auto-generated based on type and name, but editable
 }
 
@@ -27,12 +26,12 @@ export interface TypeConfigData {
   showContributorNames?: boolean;
 
   // Birthday-specific
-  birthdayDate?: string;
+  birthdayDate?: Date;
   ageDisplay?: 'show' | 'hide' | 'milestone-only';
 
   // Farewell-specific
   farewellType?: 'retirement' | 'job-change' | 'relocation' | 'other';
-  lastWorkingDay?: string;
+  lastWorkingDay?: Date;
 
   // General options
   customMessage?: string;
@@ -45,7 +44,7 @@ export interface BoardConfigData {
   allowAnonymous: boolean;
   maxPostsPerUser?: number; // Only for multiple mode
   boardVisibility: 'public' | 'private';
-  expirationDate?: string;
+  expirationDate?: Date;
 }
 
 export interface MultiStepFormData {
