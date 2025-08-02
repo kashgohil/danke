@@ -1,10 +1,6 @@
 import { withAuth } from '@/lib/api-auth';
 import { BoardModel } from '@/lib/models/board';
 import { trackApiCall } from '@/lib/performance';
-import {
-  createBoardSchema,
-  createMultiStepBoardSchema,
-} from '@/lib/validations/board';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -13,7 +9,6 @@ export const POST = withAuth(async (req: NextRequest, user) => {
     try {
       const body = await req.json();
 
-      // Validate request body exists
       if (!body || typeof body !== 'object') {
         return NextResponse.json(
           {
@@ -24,27 +19,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
         );
       }
 
-      // Detect if this is a multi-step form submission
-      const isMultiStep =
-        body.boardType !== undefined ||
-        body.nameType !== undefined ||
-        body.postingMode !== undefined ||
-        body.moderationEnabled !== undefined ||
-        body.allowAnonymous !== undefined ||
-        body.boardVisibility !== undefined ||
-        body.typeConfig !== undefined;
-
-      let board;
-
-      if (isMultiStep) {
-        // Validate multi-step board data
-        const validatedData = createMultiStepBoardSchema.parse(body);
-        board = await BoardModel.createMultiStep(validatedData, user.id);
-      } else {
-        // Validate legacy board data for backward compatibility
-        const validatedData = createBoardSchema.parse(body);
-        board = await BoardModel.create(validatedData, user.id);
-      }
+      const board = await BoardModel.create(body, user.id);
 
       return NextResponse.json(
         {
