@@ -21,10 +21,10 @@ export interface UseFormValidationReturn<T> {
   isValidating: boolean;
   setValue: (field: keyof T, value: any) => void;
   setValues: (values: Partial<T>) => void;
-  validateField: (field: keyof T) => Promise<boolean>;
-  validateAll: () => Promise<boolean>;
+  validateField: (field: keyof T, value: any) => boolean;
+  validateAll: () => boolean;
+  touchedFields: Set<keyof T>;
   clearError: (field: keyof T) => void;
-  clearAllErrors: () => void;
   reset: (values?: Partial<T>) => void;
   getFieldProps: (field: keyof T) => {
     value: any;
@@ -35,29 +35,33 @@ export interface UseFormValidationReturn<T> {
   };
 }
 
-export function useFormValidation<T extends Record<string, any>>({
+export function useForm<T extends Record<string, any>>({
   schema,
   mode = 'onSubmit',
   reValidateMode = 'onChange',
 }: UseFormValidationOptions<T>): UseFormValidationReturn<T> {
-  const [values, setValuesState] = useState<Partial<T>>({});
+  // states
+  const [values, setValuesState] = useState<Partial<T>>(schema.parse({}));
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touchedFields, setTouchedFields] = useState<Set<keyof T>>(new Set());
   const [isValidating, setIsValidating] = useState(false);
 
+  // utils
+  const clearError = useCallback((field: keyof T) => {
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[field as string];
+      return newErrors;
+    });
+  }, []);
+
   const validateField = useCallback(
-    async (field: keyof T): Promise<boolean> => {
+    (field: keyof T, value: any): boolean => {
       setIsValidating(true);
 
       try {
-        await schema.parseAsync(values);
-
-        setErrors((prev) => {
-          const newErrors = { ...prev };
-          delete newErrors[field as string];
-          return newErrors;
-        });
-
+        schema.parse({ ...values, [field]: value });
+        clearError(field);
         return true;
       } catch (error) {
         if (error instanceof z.ZodError) {
@@ -76,66 +80,59 @@ export function useFormValidation<T extends Record<string, any>>({
         setIsValidating(false);
       }
     },
-    [schema, values]
+    [schema, values, clearError]
   );
 
-  const validateAll = useCallback(async (): Promise<boolean> => {
-    setIsValidating(true);
+  const validateAll = useCallback(
+    (validationValues: Partial<T> = values): boolean => {
+      setIsValidating(true);
 
-    try {
-      await schema.parseAsync(values);
-      setErrors({});
-      return true;
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const newErrors: Record<string, string> = {};
-        error.issues.forEach((err: any) => {
-          if (err.path.length > 0) {
-            newErrors[err.path[0] as string] = err.message;
-          }
-        });
-        setErrors(newErrors);
+      console.log(validationValues);
+
+      try {
+        schema.parse(validationValues);
+        setErrors({});
+        return true;
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          const newErrors: Record<string, string> = {};
+          error.issues.forEach((err: any) => {
+            if (err.path.length > 0) {
+              newErrors[err.path[0]] = err.message;
+            }
+          });
+          setErrors(newErrors);
+        }
+        return false;
+      } finally {
+        setIsValidating(false);
       }
-      return false;
-    } finally {
-      setIsValidating(false);
-    }
-  }, [schema, values]);
+    },
+    [schema, values, touchedFields]
+  );
 
   const setValue = useCallback(
     (field: keyof T, value: any) => {
       setValuesState((prev) => ({ ...prev, [field]: value }));
 
       if (touchedFields.has(field) && reValidateMode === 'onChange') {
-        setErrors((prev) => {
-          const newErrors = { ...prev };
-          delete newErrors[field as string];
-          return newErrors;
-        });
-
-        setTimeout(() => {
-          validateField(field);
-        }, 300);
+        validateField(field, value);
       }
     },
-    [touchedFields, reValidateMode, validateField]
+    [touchedFields, reValidateMode, validateField, clearError]
   );
 
-  const setValues = useCallback((newValues: Partial<T>) => {
-    setValuesState((prev) => ({ ...prev, ...newValues }));
-  }, []);
-
-  const clearError = useCallback((field: keyof T) => {
-    setErrors((prev) => {
-      const newErrors = { ...prev };
-      delete newErrors[field as string];
-      return newErrors;
-    });
-  }, []);
-
-  const clearAllErrors = useCallback(() => {
-    setErrors({});
-  }, []);
+  const setValues = useCallback(
+    (newValues: Partial<T>) => {
+      let currentValue = newValues;
+      setValuesState((prev) => {
+        currentValue = { ...prev, ...newValues };
+        return currentValue;
+      });
+      validateAll(currentValue);
+    },
+    [validateAll]
+  );
 
   const reset = useCallback((initialValues?: Partial<T>) => {
     setValuesState(initialValues || {});
@@ -148,17 +145,11 @@ export function useFormValidation<T extends Record<string, any>>({
       value: values[field] || '',
       onChange: (value: any) => {
         setValue(field, value);
-
-        if (mode === 'onChange') {
-          setTimeout(() => validateField(field), 300);
-        }
+        validateField(field, value);
       },
       onBlur: () => {
         setTouchedFields((prev) => new Set(prev).add(field));
-
-        if (mode === 'onBlur' || mode === 'onChange') {
-          validateField(field);
-        }
+        validateField(field, values[field]);
       },
       error: !!errors[field as string],
       helperText: errors[field as string],
@@ -176,10 +167,10 @@ export function useFormValidation<T extends Record<string, any>>({
     isValidating,
     setValue,
     setValues,
+    touchedFields,
     validateField,
     validateAll,
     clearError,
-    clearAllErrors,
     reset,
     getFieldProps,
   };
