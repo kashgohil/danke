@@ -40,9 +40,6 @@ export const boards = pgTable(
     boardType: varchar('board_type', { length: 50 })
       .default('general')
       .notNull(),
-    nameType: varchar('name_type', { length: 50 })
-      .default('full-name')
-      .notNull(),
     postingMode: varchar('posting_mode', { length: 50 })
       .default('multiple')
       .notNull(),
