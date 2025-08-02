@@ -134,11 +134,6 @@ export function useMultiStepForm() {
   );
 
   const validateAllSteps = useCallback(() => {
-    console.log({
-      basicInfoValidation: basicInfoValidation.validateAll(),
-      typeConfigValidation: typeConfigValidation.validateAll(),
-      boardConfigValidation: boardConfigValidation.validateAll(),
-    });
     return (
       basicInfoValidation.validateAll() &&
       typeConfigValidation.validateAll() &&

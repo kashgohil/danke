@@ -87,8 +87,6 @@ export function useForm<T extends Record<string, any>>({
     (validationValues: Partial<T> = values): boolean => {
       setIsValidating(true);
 
-      console.log(validationValues);
-
       try {
         schema.parse(validationValues);
         setErrors({});

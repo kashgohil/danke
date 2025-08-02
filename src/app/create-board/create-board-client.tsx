@@ -41,8 +41,6 @@ export function CreateBoardClient() {
     router.push(`/boards/${board.id}/manage`);
   }, []);
 
-  console.log(errors);
-
   const handleSubmit = useCallback(async () => {
     try {
       setSubmitting(true);
@@ -50,11 +48,8 @@ export function CreateBoardClient() {
       setIsCreating(true);
 
       const isValid = validateAllSteps();
-      console.log({ isValid });
       if (!isValid) {
-        console.log(errors);
         setSubmitError('Please fix all validation errors before submitting.');
-        setIsCreating(false);
         return;
       }
 
@@ -95,7 +90,7 @@ export function CreateBoardClient() {
       }
 
       const result = await response.json();
-      const board = result.board;
+      const board = result.data;
 
       if (!board) {
         throw new Error('No board data received from server');
@@ -103,7 +98,6 @@ export function CreateBoardClient() {
 
       onSuccess(board);
     } catch (error) {
-      console.error('Error creating board:', error);
       const errorMessage =
         error instanceof Error
           ? error.message
