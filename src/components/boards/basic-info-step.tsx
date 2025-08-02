@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { basicInfoStepSchema } from '@/lib/validations/board';
 import { BasicInfoData } from '@/types/multi-step-form';
 import {
   Baby,
@@ -26,16 +25,13 @@ import {
   Rainbow,
   TreePalm,
 } from 'lucide-react';
-import { useCallback, useState } from 'react';
-import { z } from 'zod';
+import { useCallback } from 'react';
 
 interface BasicInfoStepProps {
   data: BasicInfoData;
   onChange: (data: Partial<BasicInfoData>) => void;
-  onValidationChange: (isValid: boolean) => void;
   errors: Record<string, string>;
-  onFieldTouch?: (field: string) => void;
-  touchedFields?: Set<string>;
+  touchedFields: Set<string>;
 }
 
 const boardTypeOptions = [
@@ -125,35 +121,13 @@ const boardTypeOptions = [
   },
 ];
 
-const nameTypeOptions = [
-  {
-    value: 'first-name' as const,
-    label: 'First Name Only',
-    description: 'Use just the first name (e.g., "John")',
-  },
-  {
-    value: 'full-name' as const,
-    label: 'Full Name',
-    description: 'Use the complete name (e.g., "John Smith")',
-  },
-  {
-    value: 'nickname' as const,
-    label: 'Nickname',
-    description: 'Use a nickname or preferred name (e.g., "Johnny")',
-  },
-];
-
 function generateTitle(
   boardType: BasicInfoData['boardType'],
-  recipientName: string,
-  nameType: BasicInfoData['nameType']
+  recipientName: string
 ): string {
   if (!recipientName.trim()) return '';
 
-  let formattedName = recipientName.trim();
-  if (nameType === 'first-name') {
-    formattedName = recipientName.split(' ')[0];
-  }
+  const formattedName = recipientName.trim();
 
   switch (boardType) {
     case 'appreciation':
@@ -192,58 +166,27 @@ function generateTitle(
 export function BasicInfoStep({
   data,
   onChange,
-  onValidationChange,
   errors,
-  onFieldTouch,
   touchedFields,
 }: BasicInfoStepProps) {
-  const [localData, setLocalData] = useState<BasicInfoData>(data);
-  const [localErrors, setLocalErrors] =
-    useState<Record<string, string>>(errors);
-
-  const validateData = useCallback(
-    (dataToValidate: BasicInfoData) => {
-      try {
-        basicInfoStepSchema.parse(dataToValidate);
-        setLocalErrors({});
-        onValidationChange(true);
-        return {};
-      } catch (error) {
-        if (error instanceof z.ZodError) {
-          const newErrors: Record<string, string> = {};
-          error.issues.forEach((err) => {
-            if (err.path.length > 0) {
-              newErrors[err.path[0] as string] = err.message;
-            }
-          });
-          setLocalErrors(newErrors);
-          onValidationChange(false);
-          return newErrors;
-        }
-        onValidationChange(false);
-        return {};
-      }
-    },
-    [onValidationChange]
-  );
-
   const handleFieldChange = useCallback(
     (field: keyof BasicInfoData, value: string) => {
-      const updatedData = { ...localData, [field]: value };
-      setLocalData(updatedData);
-      validateData(updatedData);
+      let updatedData = { ...data, [field]: value };
+
+      if (field === 'recipientName') {
+        updatedData.title = generateTitle(
+          updatedData.boardType,
+          updatedData.recipientName
+        );
+      }
+
       onChange(updatedData);
-      onFieldTouch?.(field);
     },
-    [onChange, validateData, localData, onFieldTouch]
+    [onChange, data]
   );
 
   const handleBoardTypeSelect = (boardType: BasicInfoData['boardType']) => {
     handleFieldChange('boardType', boardType);
-  };
-
-  const handleNameTypeSelect = (nameType: BasicInfoData['nameType']) => {
-    handleFieldChange('nameType', nameType);
   };
 
   return (
@@ -253,7 +196,7 @@ export function BasicInfoStep({
           What type of board are you creating?
         </Label>
         <Select
-          value={localData.boardType}
+          value={data.boardType}
           onValueChange={(value) =>
             handleBoardTypeSelect(value as BasicInfoData['boardType'])
           }
@@ -283,8 +226,8 @@ export function BasicInfoStep({
             ))}
           </SelectContent>
         </Select>
-        {localErrors.boardType && touchedFields?.has('boardType') && (
-          <p className="text-sm text-destructive">{localErrors.boardType}</p>
+        {errors.boardType && touchedFields.has('boardType') && (
+          <p className="text-sm text-destructive">{errors.boardType}</p>
         )}
       </div>
 
@@ -296,56 +239,17 @@ export function BasicInfoStep({
           id="recipientName"
           type="text"
           placeholder="Enter the recipient's name"
-          value={localData.recipientName}
+          value={data.recipientName}
           onChange={(e) => handleFieldChange('recipientName', e.target.value)}
-          error={!!localErrors.recipientName}
+          error={touchedFields.has('recipientName') && !!errors.recipientName}
           className="text-sm"
         />
-        {localErrors.recipientName && touchedFields?.has('recipientName') && (
-          <p className="text-sm text-destructive">
-            {localErrors.recipientName}
-          </p>
+        {errors.recipientName && touchedFields.has('recipientName') && (
+          <p className="text-sm text-destructive">{errors.recipientName}</p>
         )}
       </div>
 
-      {localData.recipientName && (
-        <div className="flex flex-col gap-4">
-          <Label htmlFor="nameType" className="text-sm text-primary">
-            How should we display their name?
-          </Label>
-          <Select
-            value={localData.nameType}
-            onValueChange={(value) =>
-              handleNameTypeSelect(value as BasicInfoData['nameType'])
-            }
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select name display type" />
-            </SelectTrigger>
-            <SelectContent>
-              {nameTypeOptions.map((option) => (
-                <SelectItem
-                  key={option.value}
-                  value={option.value}
-                  className="group"
-                >
-                  <div className="flex flex-col items-start gap-1 p-1">
-                    <span className="font-medium">{option.label}</span>
-                    <span className="text-xs text-muted-foreground group-focus:text-danke-900">
-                      {option.description}
-                    </span>
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {localErrors.nameType && touchedFields?.has('nameType') && (
-            <p className="text-sm text-destructive">{localErrors.nameType}</p>
-          )}
-        </div>
-      )}
-
-      {localData.boardType && localData.recipientName && localData.nameType && (
+      {data.boardType && data.recipientName && (
         <div className="flex flex-col gap-4">
           <Label htmlFor="title" className="text-sm text-primary">
             Board Title
@@ -354,17 +258,17 @@ export function BasicInfoStep({
             id="title"
             type="text"
             placeholder="Board title will be generated automatically"
-            value={localData.title || ''}
+            value={data.title || ''}
             onChange={(e) => handleFieldChange('title', e.target.value)}
-            error={!!localErrors.title}
+            error={touchedFields.has('title') && !!errors.title}
             className="text-sm"
           />
           <p className="text-sm text-muted-foreground">
             The title is automatically generated based on your selections, but
             you can customize it.
           </p>
-          {localErrors.title && touchedFields?.has('title') && (
-            <p className="text-sm text-destructive">{localErrors.title}</p>
+          {errors.title && touchedFields.has('title') && (
+            <p className="text-sm text-destructive">{errors.title}</p>
           )}
         </div>
       )}

@@ -9,6 +9,7 @@ export interface NavigationControlsProps {
   canGoNext: boolean;
   canGoBack: boolean;
   isSubmitting: boolean;
+  isValid: boolean;
   onNext: () => void;
   onBack: () => void;
   onSubmit: () => void;
@@ -18,6 +19,7 @@ export function NavigationControls({
   currentStep,
   totalSteps,
   canGoNext,
+  isValid,
   canGoBack,
   isSubmitting,
   onNext,
@@ -67,7 +69,7 @@ export function NavigationControls({
             onClick={handleSubmit}
             loading={isSubmitting}
             loadingText="Creating Board..."
-            disabled={!canGoNext}
+            disabled={!isValid || isSubmitting}
             className="w-full sm:w-auto"
           >
             <span className="hidden sm:inline">Create Board</span>
@@ -77,7 +79,7 @@ export function NavigationControls({
           <Button
             type="button"
             onClick={handleNext}
-            disabled={!canGoNext || isSubmitting}
+            disabled={!isValid || !canGoNext}
             className="w-full sm:w-auto"
           >
             Next
