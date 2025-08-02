@@ -3,68 +3,16 @@ import { nanoid } from 'nanoid';
 import { boards, db, type Board, type NewBoard } from '../db';
 import { trackDbQuery } from '../performance';
 import {
-  createBoardSchema,
   createMultiStepBoardSchema,
-  type CreateBoardSchema,
   type CreateMultiStepBoardSchema,
 } from '../validations/board';
 
 export class BoardModel {
   static async create(
-    data: CreateBoardSchema,
-    creatorId: string
-  ): Promise<Board> {
-    return trackDbQuery('board-create', async () => {
-      const validatedData = createBoardSchema.parse(data);
-
-      const viewToken = nanoid(32);
-      const postToken = nanoid(32);
-
-      // Create board with default multi-step values for backward compatibility
-      const newBoard: NewBoard = {
-        title: validatedData.title,
-        recipientName: validatedData.recipientName,
-        creatorId,
-        viewToken,
-        postToken,
-        // Default values for new multi-step fields
-        boardType: 'general',
-        nameType: 'full-name',
-        postingMode: 'multiple',
-        moderationEnabled: false,
-        allowAnonymous: true,
-        maxPostsPerUser: null,
-        boardVisibility: 'public',
-        expirationDate: null,
-        typeConfig: null,
-      };
-
-      try {
-        const [board] = await db.insert(boards).values(newBoard).returning();
-
-        if (!board) {
-          throw new Error('Failed to create board - no data returned');
-        }
-
-        return board;
-      } catch (dbError) {
-        console.error('Database error creating board:', dbError);
-        if (dbError instanceof Error && dbError.message.includes('duplicate')) {
-          throw new Error(
-            'duplicate: A board with this configuration already exists'
-          );
-        }
-        throw new Error('Failed to create board due to database error');
-      }
-    });
-  }
-
-  static async createMultiStep(
     data: CreateMultiStepBoardSchema,
     creatorId: string
   ): Promise<Board> {
     return trackDbQuery('board-create-multi-step', async () => {
-      // Validate the data again at the model level for extra safety
       const validatedData = createMultiStepBoardSchema.parse(data);
 
       // Generate unique tokens
@@ -75,6 +23,7 @@ export class BoardModel {
       if (
         validatedData.postingMode === 'single' &&
         validatedData.maxPostsPerUser &&
+        typeof validatedData.maxPostsPerUser === 'string' &&
         parseInt(validatedData.maxPostsPerUser) > 1
       ) {
         throw new Error(
@@ -89,7 +38,6 @@ export class BoardModel {
         throw new Error('validation: Expiration date must be in the future');
       }
 
-      // Validate type-specific configuration
       if (validatedData.typeConfig) {
         const typeConfigValidation = this.validateTypeConfig(
           validatedData.boardType,
@@ -109,7 +57,6 @@ export class BoardModel {
         viewToken,
         postToken,
         boardType: validatedData.boardType,
-        nameType: validatedData.nameType,
         postingMode: validatedData.postingMode,
         moderationEnabled: validatedData.moderationEnabled ?? false,
         allowAnonymous: validatedData.allowAnonymous ?? true,
@@ -120,6 +67,10 @@ export class BoardModel {
       };
 
       try {
+        console.log(
+          'Attempting to insert board with data:',
+          JSON.stringify(newBoard, null, 2)
+        );
         const [board] = await db.insert(boards).values(newBoard).returning();
 
         if (!board) {
@@ -131,13 +82,41 @@ export class BoardModel {
         return board;
       } catch (dbError) {
         console.error('Database error creating multi-step board:', dbError);
-        if (dbError instanceof Error && dbError.message.includes('duplicate')) {
-          throw new Error(
-            'duplicate: A board with this configuration already exists'
-          );
+        console.error(
+          'Board data that failed to insert:',
+          JSON.stringify(newBoard, null, 2)
+        );
+
+        // Handle specific database constraint errors
+        if (dbError instanceof Error) {
+          if (
+            dbError.message.includes('duplicate') ||
+            dbError.message.includes('unique')
+          ) {
+            throw new Error(
+              'duplicate: A board with this configuration already exists'
+            );
+          }
+          if (
+            dbError.message.includes('foreign key') ||
+            dbError.message.includes('violates')
+          ) {
+            throw new Error(
+              'validation: Invalid user ID or database constraint violation'
+            );
+          }
+          if (
+            dbError.message.includes('null value') ||
+            dbError.message.includes('not-null')
+          ) {
+            throw new Error('validation: Missing required field in board data');
+          }
         }
+
         throw new Error(
-          'Failed to create multi-step board due to database error'
+          `Failed to create multi-step board due to database error: ${
+            dbError instanceof Error ? dbError.message : 'Unknown error'
+          }`
         );
       }
     });
@@ -161,12 +140,9 @@ export class BoardModel {
           }
           break;
         case 'farewell':
-          if (
-            typeConfig.lastWorkingDay &&
-            typeof typeConfig.lastWorkingDay === 'string'
-          ) {
-            const date = new Date(typeConfig.lastWorkingDay);
-            if (isNaN(date.getTime())) {
+          if (typeConfig.lastWorkingDay) {
+            const date = typeConfig.lastWorkingDay as Date;
+            if (!(date instanceof Date) || isNaN(date.getTime())) {
               return {
                 isValid: false,
                 error: 'Invalid last working day date format',
@@ -224,21 +200,6 @@ export class BoardModel {
         .select()
         .from(boards)
         .where(eq(boards.creatorId, creatorId));
-    });
-  }
-
-  static async update(
-    id: string,
-    data: Partial<CreateBoardSchema>
-  ): Promise<Board | null> {
-    return trackDbQuery('board-update', async () => {
-      const [board] = await db
-        .update(boards)
-        .set({ ...data, updatedAt: new Date() })
-        .where(eq(boards.id, id))
-        .returning();
-
-      return board || null;
     });
   }
 
