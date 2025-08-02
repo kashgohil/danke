@@ -69,13 +69,13 @@ export default function HomePage() {
                     Create Board
                   </Button>
                 </Link>
-                <Link href="/profile">
+                <Link href="/dashboard">
                   <Button
                     variant="outline"
                     size="lg"
                     className="min-w-[160px] h-12 text-lg"
                   >
-                    View Profile
+                    My Dashboard
                   </Button>
                 </Link>
               </SignedIn>
