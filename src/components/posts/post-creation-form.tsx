@@ -11,7 +11,7 @@ import { perf } from '@/lib/performance';
 import { createPostSchema, type RichTextContent } from '@/lib/validations/post';
 import { useAuth } from '@clerk/nextjs';
 import { Heart, Image, MessageCircle, Send } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface PostCreationFormProps {
   boardId: string;
@@ -148,14 +148,14 @@ function PostCreationFormContent({
       <Card className={`border-0 shadow-lg ${className}`}>
         <CardContent className="p-8">
           <div className="text-center space-y-4">
-            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto">
-              <Heart className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+            <div className="w-16 h-16 bg-danke-100 dark:bg-danke-900/20 rounded-full flex items-center justify-center mx-auto">
+              <Heart className="h-8 w-8 text-danke-600 dark:text-danke-400" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2">
+              <h3 className="text-lg font-semibold mb-2 text-danke-900 dark:text-danke-100">
                 Share Your Appreciation
               </h3>
-              <p className="text-muted-foreground">
+              <p className="text-danke-600 dark:text-danke-400">
                 Please sign in to add your heartfelt message to this board.
               </p>
             </div>
@@ -167,16 +167,14 @@ function PostCreationFormContent({
 
   return (
     <Card className={`border-0 shadow-lg overflow-hidden ${className}`}>
-      <div className="bg-gradient-to-r from-green-600 to-blue-600 p-6 text-white">
+      <div className="bg-gradient-to-r from-danke-600 to-danke-gold p-6 text-danke-900">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
             <MessageCircle className="w-5 h-5" />
           </div>
           <div>
-            <CardTitle className="text-xl text-white">
-              Add Your Appreciation
-            </CardTitle>
-            <p className="text-green-100 text-sm">
+            <CardTitle className="text-xl ">Add Your Appreciation</CardTitle>
+            <p className="text-sm">
               Share a heartfelt message with the community
             </p>
           </div>
@@ -187,8 +185,8 @@ function PostCreationFormContent({
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="flex items-center gap-2 text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300">
-                <MessageCircle className="w-4 h-4 text-green-600" />
+              <label className="flex items-center gap-2 text-sm font-semibold mb-3 text-danke-700 dark:text-danke-300">
+                <MessageCircle className="w-4 h-4 text-danke-600" />
                 Your Message
                 <span className="text-red-500">*</span>
               </label>
@@ -196,7 +194,7 @@ function PostCreationFormContent({
                 className={`border-2 rounded-lg overflow-hidden transition-all duration-200 ${
                   validationErrors.content
                     ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20'
-                    : 'border-gray-200 dark:border-gray-700 focus-within:border-green-500 focus-within:ring-2 focus-within:ring-green-500/20'
+                    : 'border-danke-200 dark:border-danke-700 focus-within:border-danke-500 focus-within:ring-2 focus-within:ring-danke-500/20'
                 }`}
               >
                 <RichTextEditor
@@ -215,16 +213,15 @@ function PostCreationFormContent({
             </div>
 
             <div className="space-y-3">
-              <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
-                {/* eslint-disable-next-line jsx-a11y/alt-text */}
-                <Image className="w-4 h-4 text-purple-600" />
+              <label className="flex items-center gap-2 text-sm font-semibold text-danke-700 dark:text-danke-300">
+                <Image className="w-4 h-4 text-danke-gold" />
                 Add Media (Optional)
               </label>
               <div
                 className={`border-2 rounded-lg p-4 transition-all duration-200 ${
                   validationErrors.media
                     ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20'
-                    : 'border-gray-200 dark:border-gray-700 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-500/20'
+                    : 'border-danke-200 dark:border-danke-700 focus-within:border-danke-gold focus-within:ring-2 focus-within:ring-danke-gold/20'
                 }`}
               >
                 <MediaUpload
@@ -275,7 +272,7 @@ function PostCreationFormContent({
               loading={isSubmitting}
               loadingText="Posting..."
               disabled={!content}
-              className="h-12 px-8 text-lg font-semibold bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="px-6 font-semibold"
             >
               <div className="flex items-center gap-2">
                 <Send className="w-5 h-5" />
