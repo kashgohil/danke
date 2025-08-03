@@ -136,24 +136,21 @@ function EmptyState({ recipientName }: { recipientName: string }) {
       </div>
 
       <div className="relative">
-        <div className="mx-auto w-32 h-32 bg-gradient-to-br from-danke-200 via-danke-300 to-danke-gold dark:from-danke-600/30 dark:via-danke-500/20 dark:to-danke-gold/30 rounded-full flex items-center justify-center mb-8 shadow-xl border-4 border-white/50 dark:border-danke-800/50">
-          <Heart className="w-16 h-16 text-danke-700 dark:text-danke-400 animate-pulse" />
+        <div className="mx-auto w-32 h-32 rounded-full flex items-center justify-center mb-8 shadow-xl border-4 border-white/50 dark:border-danke-800/50">
+          <Heart className="w-16 h-16 dark:text-danke-900 animate-pulse" />
         </div>
 
-        <h3 className="text-3xl font-bold text-danke-900 dark:text-danke-100 mb-6 tracking-tight">
+        <h3 className="text-3xl font-bold text-danke-900 mb-6 tracking-tight">
           No messages yet
         </h3>
 
-        <p className="text-danke-700 dark:text-danke-300 max-w-md mx-auto text-lg leading-relaxed mb-8">
+        <p className="text-danke-900 max-w-md mx-auto text-lg leading-relaxed mb-8">
           Be the first to share an appreciation message for{' '}
-          <span className="font-bold text-danke-600 dark:text-danke-400 bg-gradient-to-r from-danke-500 to-danke-700 dark:from-danke-400 dark:to-danke-200 bg-clip-text text-transparent">
-            {recipientName}
-          </span>
-          !
+          <span className="font-bold text-danke-800">{recipientName}</span>!
         </p>
 
         <div className="flex justify-center">
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-danke-300 via-danke-gold to-danke-300 dark:from-danke-600 dark:via-danke-gold dark:to-danke-600 text-danke-900 dark:text-danke-900 px-6 py-3 rounded-full text-sm font-medium shadow-lg border border-danke-400/30 dark:border-danke-500/30">
+          <div className="inline-flex items-center gap-3 bg-gradient-to-r bg-danke-gold text-danke-900  px-6 py-3 rounded-full text-sm font-medium shadow-lg">
             <MessageCircle className="w-5 h-5" />
             <span>Your message will make their day special</span>
           </div>
