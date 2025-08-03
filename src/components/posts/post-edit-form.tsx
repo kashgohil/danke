@@ -182,6 +182,112 @@ function PostEditFormContent({
     return null;
   }
 
+  const isInDialog =
+    className?.includes('border-0') && className?.includes('shadow-none');
+
+  if (isInDialog) {
+    return (
+      <div className={className}>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <div
+              className={`rounded-lg overflow-hidden transition-all duration-200 ${
+                validationErrors.content
+                  ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20'
+                  : ''
+              }`}
+            >
+              <RichTextEditor
+                content={content}
+                onChange={handleContentChange}
+                placeholder="Share your appreciation message..."
+                className="min-h-[150px]"
+              />
+            </div>
+            {validationErrors.content && (
+              <div className="flex items-center gap-2 text-sm text-red-600 mt-2">
+                <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                {validationErrors.content}
+              </div>
+            )}
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+              Media Files (Optional)
+            </h4>
+            <div
+              className={`rounded-lg transition-all duration-200 ${
+                validationErrors.media
+                  ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20'
+                  : ''
+              }`}
+            >
+              <MediaUpload
+                onFilesChange={handleMediaFilesChange}
+                maxFiles={5}
+                className="mb-4"
+                existingFiles={mediaFiles}
+              />
+
+              {mediaFiles.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                  {mediaFiles.map(
+                    (file) =>
+                      file.url && (
+                        <MediaPreview
+                          key={file.id}
+                          url={file.url}
+                          type={file.type}
+                          filename={file.file.name}
+                          onRemove={() => removeMediaFile(file.id)}
+                        />
+                      )
+                  )}
+                </div>
+              )}
+            </div>
+            {validationErrors.media && (
+              <div className="flex items-center gap-2 text-sm text-red-600 mt-2">
+                <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                {validationErrors.media}
+              </div>
+            )}
+          </div>
+
+          {error && (
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+              <p className="text-red-600 dark:text-red-400 text-sm flex items-center gap-2">
+                <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                {error}
+              </p>
+            </div>
+          )}
+
+          <div className="flex justify-end space-x-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onCancel}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+            <LoadingButton
+              type="submit"
+              loading={isSubmitting}
+              loadingText="Updating..."
+              disabled={!content}
+              className="min-w-[100px]"
+            >
+              Update Message
+            </LoadingButton>
+          </div>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <Card className={className}>
       <CardHeader>
