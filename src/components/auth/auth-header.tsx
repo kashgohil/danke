@@ -11,7 +11,7 @@ import {
   UserButton,
   useUser,
 } from '@clerk/nextjs';
-import { LayoutDashboard } from 'lucide-react';
+import { LayoutDashboard, User } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from './auth-context';
 
@@ -64,6 +64,12 @@ export function AuthHeader() {
           <Button variant="ghost" size="sm" className="flex items-center gap-2">
             <LayoutDashboard className="w-4 h-4" />
             <span className="hidden sm:inline">Dashboard</span>
+          </Button>
+        </Link>
+        <Link href="/profile">
+          <Button variant="ghost" size="sm" className="flex items-center gap-2">
+            <User className="w-4 h-4" />
+            <span className="hidden sm:inline">Profile</span>
           </Button>
         </Link>
         <UserButton
