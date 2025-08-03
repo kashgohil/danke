@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { z } from 'zod';
 
 export interface ApiError {
@@ -160,7 +161,7 @@ function handleUnauthorized() {
 }
 
 export function useApiErrorHandler() {
-  const handleError = (error: any): string => {
+  const handleError = useCallback((error: any): string => {
     if (
       error &&
       typeof error === 'object' &&
@@ -187,7 +188,7 @@ export function useApiErrorHandler() {
     }
 
     return 'An unexpected error occurred. Please try again.';
-  };
+  }, []);
 
   return { handleError };
 }
