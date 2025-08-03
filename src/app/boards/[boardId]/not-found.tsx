@@ -1,37 +1,44 @@
+import { Button } from '@/components/ui/button';
+import { Heart, Search } from 'lucide-react';
 import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center">
-        <div className="mx-auto w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6">
-          <svg
-            className="w-12 h-12 text-red-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-            />
-          </svg>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-danke-50 via-white to-danke-100 relative">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-danke-gold/10 rounded-full blur-xl"></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-pink-400/10 rounded-full blur-xl"></div>
+        <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-purple-400/10 rounded-full blur-xl"></div>
+      </div>
+
+      <div className="text-center max-w-md mx-auto px-4 relative">
+        <div className="mx-auto w-24 h-24 bg-gradient-to-br from-danke-200 to-danke-300 rounded-full flex items-center justify-center mb-6 shadow-lg">
+          <Search className="w-12 h-12 text-danke-700" />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        <h1 className="text-4xl font-bold text-danke-900 mb-4 bg-gradient-to-r from-danke-600 to-danke-gold bg-clip-text text-transparent">
           Board Not Found
         </h1>
-        <p className="text-gray-600 mb-6 max-w-md mx-auto">
+        <p className="text-danke-600 mb-8 text-lg leading-relaxed">
           The board you&apos;re looking for doesn&apos;t exist or the link may
           be invalid. Please check the URL and try again.
         </p>
-        <Link
-          href="/"
-          className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
-        >
-          Go Home
-        </Link>
+        <div className="space-y-4">
+          <Link href="/">
+            <Button className="bg-danke-500 hover:bg-danke-600 text-white px-6 py-3 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto">
+              <Heart className="w-5 h-5 mr-2" />
+              Go Home
+            </Button>
+          </Link>
+          <div className="text-sm text-danke-500">
+            or{' '}
+            <Link
+              href="/create-board"
+              className="text-danke-600 hover:text-danke-700 font-medium underline"
+            >
+              create a new board
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
