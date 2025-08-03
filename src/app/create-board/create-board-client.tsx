@@ -6,12 +6,14 @@ import { NavigationControls } from '@/components/boards/navigation-controls';
 import { TypeConfigStep } from '@/components/boards/type-config-step';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { useMultiStepForm } from '@/hooks/use-multi-step-form';
+import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
 import { Board } from '@/lib/db';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
 export function CreateBoardClient() {
   const router = useRouter();
+  const { handleError } = useApiErrorHandler();
 
   const [isCreating, setIsCreating] = useState(false);
 
@@ -74,22 +76,11 @@ export function CreateBoardClient() {
         typeConfig: stepData.typeConfig as Record<string, unknown>,
       };
 
-      const response = await fetch('/api/boards', {
+      const result = await apiRequest('/api/boards', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(submissionData),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(
-          errorData.error || `HTTP ${response.status}: ${response.statusText}`
-        );
-      }
-
-      const result = await response.json();
       const board = result.data;
 
       if (!board) {
@@ -98,10 +89,7 @@ export function CreateBoardClient() {
 
       onSuccess(board);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'An unexpected error occurred while creating the board.';
+      const errorMessage = handleError(error);
       setSubmitError(errorMessage);
     } finally {
       setSubmitting(false);

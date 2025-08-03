@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { useApiErrorHandler } from '@/lib/api-error-handler';
 import { FileText, Image, Music, Upload, Video, X } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -62,6 +63,7 @@ export function MediaUpload({
 }: MediaUploadProps) {
   const [files, setFiles] = useState<MediaFile[]>(existingFiles);
   const [isDragOver, setIsDragOver] = useState(false);
+  const { handleError } = useApiErrorHandler();
 
   useEffect(() => {
     setFiles(existingFiles);
@@ -186,9 +188,11 @@ export function MediaUpload({
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        const errorMessage =
-          errorData.error || `Upload failed (${response.status})`;
-        throw new Error(errorMessage);
+        const error = {
+          message: errorData.error || `Upload failed (${response.status})`,
+          status: response.status,
+        };
+        throw error;
       }
 
       const result = await response.json();
@@ -206,13 +210,7 @@ export function MediaUpload({
     } catch (error) {
       console.error('Upload error:', error);
 
-      let errorMessage = 'Upload failed';
-
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      } else if (typeof error === 'string') {
-        errorMessage = error;
-      }
+      let errorMessage = handleError(error);
 
       if (errorMessage.includes('fetch') || errorMessage.includes('network')) {
         errorMessage =

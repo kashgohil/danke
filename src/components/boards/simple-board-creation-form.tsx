@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
 import { Board } from '@/lib/db';
 import { useState } from 'react';
 
@@ -26,6 +27,7 @@ function SimpleBoardCreationFormContent({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const { handleError } = useApiErrorHandler();
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -71,22 +73,11 @@ function SimpleBoardCreationFormContent({
         typeConfig: {},
       };
 
-      const response = await fetch('/api/boards', {
+      const result = await apiRequest('/api/boards', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(submissionData),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(
-          errorData.error || `HTTP ${response.status}: ${response.statusText}`
-        );
-      }
-
-      const result = await response.json();
       const board = result.board;
 
       if (!board) {
@@ -96,10 +87,10 @@ function SimpleBoardCreationFormContent({
       onSuccess?.(board);
     } catch (error) {
       console.error('Error creating board:', error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'An unexpected error occurred while creating the board.';
+      const errorMessage = handleError(error);
+      error instanceof Error
+        ? error.message
+        : 'An unexpected error occurred while creating the board.';
       setSubmitError(errorMessage);
     } finally {
       setIsSubmitting(false);

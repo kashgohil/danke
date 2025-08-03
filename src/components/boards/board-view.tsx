@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { MasonryLayout } from '@/components/ui/masonry-layout';
 import { MediaPreview } from '@/components/ui/media-preview';
 import { UserAvatar } from '@/components/ui/user-avatar';
+import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
 import { perf } from '@/lib/performance';
 import { useAuth } from '@clerk/nextjs';
 import { Edit2, Heart, MessageCircle, Trash2, Users } from 'lucide-react';
@@ -163,6 +164,7 @@ function PostCard({
   onPostDeleted?: (postId: string) => void;
 }) {
   const { userId } = useAuth();
+  const { handleError } = useApiErrorHandler();
   const [isEditing, setIsEditing] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
@@ -223,19 +225,14 @@ function PostCard({
 
     setIsDeleting(true);
     try {
-      const response = await fetch(`/api/posts/${post.id}`, {
+      await apiRequest(`/api/posts/${post.id}`, {
         method: 'DELETE',
       });
 
-      if (response.ok) {
-        onPostDeleted?.(post.id);
-      } else {
-        const error = await response.json();
-        alert(error.error || 'Failed to delete post');
-      }
+      onPostDeleted?.(post.id);
     } catch (error) {
       console.error('Error deleting post:', error);
-      alert('Failed to delete post');
+      alert(handleError(error));
     } finally {
       setIsDeleting(false);
     }
@@ -350,7 +347,6 @@ export function BoardView({
   onPostUpdated,
   onPostDeleted,
 }: BoardViewProps) {
-  
   useEffect(() => {
     if (process.env.NODE_ENV !== 'test') {
       const stopTimer = perf.startTimer('component-render-board-view');
