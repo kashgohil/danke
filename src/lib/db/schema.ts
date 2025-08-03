@@ -73,7 +73,7 @@ export const posts = pgTable(
     creatorId: varchar('creator_id', { length: 255 })
       .notNull()
       .references(() => users.id),
-    content: json('content').notNull(), // Rich text content as JSON
+    content: text('content').notNull(), // Rich text content as HTML markup
     mediaUrls: text('media_urls').array(), // Array of media file URLs
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),

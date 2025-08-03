@@ -4,12 +4,12 @@ import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { cn } from '@/lib/utils';
 
 interface PostContentProps {
-  content: any;
+  content: string;
   className?: string;
 }
 
 export function PostContent({ content, className }: PostContentProps) {
-  if (!content || (content.content && content.content.length === 0)) {
+  if (!content || content.trim() === '') {
     return (
       <div className={cn('text-gray-500 italic text-sm', className)}>
         No content

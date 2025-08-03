@@ -1,9 +1,7 @@
 import { z } from 'zod';
 
-const richTextContentSchema = z.object({
-  type: z.literal('doc'),
-  content: z.array(z.any()).optional(),
-});
+// Change to store HTML markup instead of TipTap JSON blocks
+const richTextContentSchema = z.string().min(1, 'Content cannot be empty');
 
 export const createPostSchema = z.object({
   content: richTextContentSchema,

@@ -14,7 +14,7 @@ interface Board {
 
 interface Post {
   id: string;
-  content: any;
+  content: string;
   mediaUrls?: string[];
   createdAt: string;
   creator: {

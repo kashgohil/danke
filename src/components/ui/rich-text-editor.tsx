@@ -20,8 +20,8 @@ import { Button } from './button';
 import { Card, CardContent } from './card';
 
 interface RichTextEditorProps {
-  content?: any;
-  onChange?: (content: any) => void;
+  content?: string;
+  onChange?: (content: string) => void;
   placeholder?: string;
   className?: string;
   editable?: boolean;
@@ -30,7 +30,6 @@ interface RichTextEditorProps {
 export function RichTextEditor({
   content,
   onChange,
-  placeholder = 'Write your appreciation message...',
   className,
   editable = true,
 }: RichTextEditorProps) {
@@ -44,10 +43,10 @@ export function RichTextEditor({
         types: ['textStyle'],
       }),
     ],
-    content,
+    content: content || '',
     editable,
     onUpdate: ({ editor }) => {
-      onChange?.(editor.getJSON());
+      onChange?.(editor.getHTML());
     },
     editorProps: {
       attributes: {
@@ -60,14 +59,9 @@ export function RichTextEditor({
     },
   });
 
-  // Update editor content when content prop changes
   useEffect(() => {
-    if (
-      editor &&
-      content &&
-      JSON.stringify(editor.getJSON()) !== JSON.stringify(content)
-    ) {
-      editor.commands.setContent(content);
+    if (editor && content !== undefined && editor.getHTML() !== content) {
+      editor.commands.setContent(content || '');
     }
   }, [editor, content]);
 
@@ -104,7 +98,7 @@ export function RichTextEditor({
   );
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden border-transparent">
       {editable && (
         <div className="border-b bg-muted/30 p-3">
           <div className="flex flex-wrap items-center gap-1">

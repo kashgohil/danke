@@ -8,13 +8,13 @@ import { MediaPreview } from '@/components/ui/media-preview';
 import { MediaUpload, type MediaFile } from '@/components/ui/media-upload';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
-import { updatePostSchema, type RichTextContent } from '@/lib/validations/post';
+import { updatePostSchema } from '@/lib/validations/post';
 import { useAuth } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 
 interface Post {
   id: string;
-  content: RichTextContent;
+  content: string;
   mediaUrls?: string[];
   createdAt: string;
   creator: {
@@ -39,7 +39,7 @@ function PostEditFormContent({
 }: PostEditFormProps) {
   const { isSignedIn, userId } = useAuth();
   const { handleError } = useApiErrorHandler();
-  const [content, setContent] = useState<RichTextContent | null>(post.content);
+  const [content, setContent] = useState<string>(post.content || '');
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -90,7 +90,7 @@ function PostEditFormContent({
       return false;
     }
 
-    if (!content) {
+    if (!content || content.trim() === '') {
       errors.content = 'Please write a message';
     }
 
@@ -156,9 +156,9 @@ function PostEditFormContent({
     }
   };
 
-  const handleContentChange = (newContent: RichTextContent | null) => {
+  const handleContentChange = (newContent: string) => {
     setContent(newContent);
-    if (validationErrors.content && newContent) {
+    if (validationErrors.content && newContent.trim()) {
       setValidationErrors((prev) => {
         const newErrors = { ...prev };
         delete newErrors.content;
@@ -277,7 +277,7 @@ function PostEditFormContent({
               type="submit"
               loading={isSubmitting}
               loadingText="Updating..."
-              disabled={!content}
+              disabled={!content || content.trim() === ''}
               className="min-w-[100px]"
             >
               Update Message
@@ -383,7 +383,7 @@ function PostEditFormContent({
               type="submit"
               loading={isSubmitting}
               loadingText="Updating..."
-              disabled={!content}
+              disabled={!content || content.trim() === ''}
               className="min-w-[100px]"
             >
               Update Message

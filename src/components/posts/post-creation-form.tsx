@@ -8,7 +8,7 @@ import { MediaUpload, type MediaFile } from '@/components/ui/media-upload';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
 import { perf } from '@/lib/performance';
-import { createPostSchema, type RichTextContent } from '@/lib/validations/post';
+import { createPostSchema } from '@/lib/validations/post';
 import { useAuth } from '@clerk/nextjs';
 import { Heart, Image, MessageCircle, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -26,7 +26,7 @@ function PostCreationFormContent({
 }: PostCreationFormProps) {
   const { isSignedIn, userId } = useAuth();
   const { handleError } = useApiErrorHandler();
-  const [content, setContent] = useState<RichTextContent | null>(null);
+  const [content, setContent] = useState<string>('');
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -49,7 +49,7 @@ function PostCreationFormContent({
       return false;
     }
 
-    if (!content) {
+    if (!content || content.trim() === '') {
       errors.content = 'Please write a message';
     }
 
@@ -97,7 +97,7 @@ function PostCreationFormContent({
           ...validatedData,
         }),
       });
-      setContent(null);
+      setContent('');
       setMediaFiles([]);
       setValidationErrors({});
 
@@ -121,9 +121,9 @@ function PostCreationFormContent({
     }
   };
 
-  const handleContentChange = (newContent: RichTextContent | null) => {
+  const handleContentChange = (newContent: string) => {
     setContent(newContent);
-    if (validationErrors.content && newContent) {
+    if (validationErrors.content && newContent.trim()) {
       setValidationErrors((prev) => {
         const newErrors = { ...prev };
         delete newErrors.content;
@@ -271,7 +271,7 @@ function PostCreationFormContent({
               type="submit"
               loading={isSubmitting}
               loadingText="Posting..."
-              disabled={!content}
+              disabled={!content || content.trim() === ''}
               className="px-6 font-semibold"
             >
               <div className="flex items-center gap-2">

@@ -25,7 +25,7 @@ export interface Board {
 
 export interface Post {
   id: string;
-  content: any;
+  content: string;
   mediaUrls?: string[];
   createdAt: string;
   creator: {
