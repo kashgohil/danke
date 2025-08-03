@@ -83,7 +83,7 @@ export default function HomePage() {
                 <SignUpButton>
                   <Button
                     size="lg"
-                    className="min-w-[160px] h-12 text-lg font-semibold bg-gradient-to-r from-danke-600 to-danke-gold hover:from-danke-700 hover:to-danke-500 text-white shadow-lg"
+                    className="min-w-[160px] h-12 text-lg font-semibold shadow-lg"
                   >
                     Get Started Free
                   </Button>
