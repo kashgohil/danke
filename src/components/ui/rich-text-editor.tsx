@@ -15,6 +15,7 @@ import {
   Strikethrough,
   Underline as UnderlineIcon,
 } from 'lucide-react';
+import { useEffect } from 'react';
 import { Button } from './button';
 import { Card, CardContent } from './card';
 
@@ -58,6 +59,17 @@ export function RichTextEditor({
       },
     },
   });
+
+  // Update editor content when content prop changes
+  useEffect(() => {
+    if (
+      editor &&
+      content &&
+      JSON.stringify(editor.getJSON()) !== JSON.stringify(content)
+    ) {
+      editor.commands.setContent(content);
+    }
+  }, [editor, content]);
 
   if (!editor) {
     return null;
