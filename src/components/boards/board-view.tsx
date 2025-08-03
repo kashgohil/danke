@@ -12,6 +12,7 @@ import { perf } from '@/lib/performance';
 import { useAuth } from '@clerk/nextjs';
 import { Edit2, Heart, MessageCircle, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 
 export interface Board {
   id: string;
@@ -175,7 +176,7 @@ function PostCard({
 }) {
   const { userId } = useAuth();
   const { handleError } = useApiErrorHandler();
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -219,12 +220,12 @@ function PostCard({
   }, [userId, post.creator?.id, post.createdAt, board.creatorId]);
 
   const handlePostUpdated = (updatedPost: any) => {
-    setIsEditing(false);
+    setIsEditDialogOpen(false);
     onPostUpdated?.(updatedPost);
   };
 
   const handleCancelEdit = () => {
-    setIsEditing(false);
+    setIsEditDialogOpen(false);
   };
 
   const handleDelete = async () => {
@@ -247,113 +248,112 @@ function PostCard({
     }
   };
 
-  if (isEditing) {
-    return (
-      <PostEditForm
-        post={post}
-        onPostUpdated={handlePostUpdated}
-        onCancel={handleCancelEdit}
-        className="w-full h-fit"
-      />
-    );
-  }
-
   return (
-    <Card
-      className="w-full h-fit overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-danke-200/50 dark:border-danke-600/30 shadow-lg bg-gradient-to-br from-danke-50/95 via-white/95 to-danke-100/95 dark:from-danke-900/95 dark:via-danke-800/95 dark:to-danke-700/95 backdrop-blur-sm focus-within:ring-2 focus-within:ring-danke-500 focus-within:ring-opacity-50 hover:border-danke-300/70 dark:hover:border-danke-500/50 relative group"
-      role="article"
-      aria-label={`Post by ${post.creator.name}`}
-    >
-      <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-danke-gold/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-      <div className="p-6 space-y-4 relative">
-        <div className="text-sm text-danke-900 dark:text-danke-100 leading-relaxed">
-          <PostContent
-            content={post.content}
-            className="border-0 p-0 min-h-0 prose-p:text-danke-800 dark:prose-p:text-danke-200 prose-strong:text-danke-900 dark:prose-strong:text-danke-100"
+    <>
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Your Message</DialogTitle>
+          </DialogHeader>
+          <PostEditForm
+            post={post}
+            onPostUpdated={handlePostUpdated}
+            onCancel={handleCancelEdit}
+            className="border-0 shadow-none p-0"
           />
-        </div>
-
-        {post.mediaUrls && post.mediaUrls.length > 0 && (
-          <div
-            className="space-y-3 -mx-2"
-            role="group"
-            aria-label="Media attachments"
-          >
-            {post.mediaUrls.map((url, index) => (
-              <div
-                key={index}
-                className="rounded-lg overflow-hidden border border-danke-200/50 dark:border-danke-600/30"
-              >
-                <MediaPreview
-                  url={url}
-                  type={getMediaType(url)}
-                  className="w-full"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className="flex items-center justify-between pt-4 border-t border-gradient-to-r from-danke-200/50 via-danke-300/30 to-danke-200/50 dark:from-danke-600/30 dark:via-danke-500/20 dark:to-danke-600/30 relative">
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-danke-gold/30 to-transparent" />
-
-          <div className="flex items-center space-x-3">
-            <UserAvatar
-              user={post.creator}
-              size="md"
-              className="flex-shrink-0 ring-2 ring-danke-300/50 dark:ring-danke-500/30 shadow-sm hover:ring-danke-400/70 dark:hover:ring-danke-400/50 transition-all duration-200"
+        </DialogContent>
+      </Dialog>
+      <Card
+        className="w-full h-fit overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 shadow-lg backdrop-blur-sm focus-within:ring-2 focus-within:ring-danke-500 focus-within:ring-opacity-50 hover:border-danke-300/70 dark:hover:border-danke-500/50 relative group"
+        role="article"
+        aria-label={`Post by ${post.creator.name}`}
+      >
+        <div className="p-6 space-y-4 relative">
+          <div className="text-sm text-danke-900 dark:text-danke-100 leading-relaxed">
+            <PostContent
+              content={post.content}
+              className="border-0 p-0 min-h-0 prose-p:text-danke-800 dark:prose-p:text-danke-200 prose-strong:text-danke-900 dark:prose-strong:text-danke-100"
             />
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-semibold text-danke-900 dark:text-danke-100 truncate mb-0.5">
-                {post.creator.name}
-              </div>
-              <div className="text-xs text-danke-600 dark:text-danke-400 font-medium">
-                <time dateTime={post.createdAt}>
-                  {new Date(post.createdAt).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                    hour: 'numeric',
-                    minute: '2-digit',
-                  })}
-                </time>
+          </div>
+
+          {post.mediaUrls && post.mediaUrls.length > 0 && (
+            <div
+              className="space-y-3 -mx-2"
+              role="group"
+              aria-label="Media attachments"
+            >
+              {post.mediaUrls.map((url, index) => (
+                <div key={index} className="rounded-lg overflow-hidden">
+                  <MediaPreview
+                    url={url}
+                    type={getMediaType(url)}
+                    className="w-full"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="flex items-center justify-between pt-4 border-t border-gradient-to-r from-danke-200/50 via-danke-300/30 to-danke-200/50 dark:from-danke-600/30 dark:via-danke-500/20 dark:to-danke-600/30 relative">
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-danke-gold/30 to-transparent" />
+
+            <div className="flex items-center space-x-3">
+              <UserAvatar
+                user={post.creator}
+                size="md"
+                className="flex-shrink-0 ring-2 ring-danke-300/50 dark:ring-danke-500/30 shadow-sm hover:ring-danke-400/70 dark:hover:ring-danke-400/50 transition-all duration-200"
+              />
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold text-danke-900 dark:text-danke-100 truncate mb-0.5">
+                  {post.creator.name}
+                </div>
+                <div className="text-xs text-danke-600 dark:text-danke-400 font-medium">
+                  <time dateTime={post.createdAt}>
+                    {new Date(post.createdAt).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                      hour: 'numeric',
+                      minute: '2-digit',
+                    })}
+                  </time>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div
-            className="flex items-center space-x-1 opacity-70 group-hover:opacity-100 transition-opacity duration-200"
-            role="group"
-            aria-label="Post actions"
-          >
-            {canEdit && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsEditing(true)}
-                className="h-8 w-8 p-0 text-danke-500 hover:text-danke-700 dark:text-danke-400 dark:hover:text-danke-200 hover:bg-danke-100/50 dark:hover:bg-danke-700/30 rounded-full transition-all duration-200"
-                aria-label="Edit post"
-              >
-                <Edit2 className="h-4 w-4" />
-              </Button>
-            )}
-            {canDelete && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleDelete}
-                disabled={isDeleting}
-                className="h-8 w-8 p-0 text-danke-500 hover:text-red-600 dark:text-danke-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-all duration-200"
-                aria-label={isDeleting ? 'Deleting post...' : 'Delete post'}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            )}
+            <div
+              className="flex items-center space-x-1 opacity-70 group-hover:opacity-100 transition-opacity duration-200"
+              role="group"
+              aria-label="Post actions"
+            >
+              {canEdit && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsEditDialogOpen(true)}
+                  className="h-8 w-8 p-0 text-danke-500 hover:text-danke-700 dark:text-danke-400 dark:hover:text-danke-200 hover:bg-danke-100/50 dark:hover:bg-danke-700/30 rounded-full transition-all duration-200"
+                  aria-label="Edit post"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </Button>
+              )}
+              {canDelete && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="h-8 w-8 p-0 text-danke-500 hover:text-red-600 dark:text-danke-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-all duration-200"
+                  aria-label={isDeleting ? 'Deleting post...' : 'Delete post'}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </Card>
+      </Card>
+    </>
   );
 }
 
