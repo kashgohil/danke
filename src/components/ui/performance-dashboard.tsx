@@ -45,7 +45,7 @@ export function PerformanceDashboard() {
   );
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-4 right-4 z-50 hidden md:block">
       <Card className="w-96 max-h-96 overflow-hidden shadow-lg">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
