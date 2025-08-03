@@ -16,6 +16,7 @@ import {
   Underline as UnderlineIcon,
 } from 'lucide-react';
 import { Button } from './button';
+import { Card, CardContent } from './card';
 
 interface RichTextEditorProps {
   content?: any;
@@ -79,91 +80,108 @@ export function RichTextEditor({
       size="sm"
       onClick={onClick}
       title={title}
-      className="h-8 w-8 p-0"
+      className={cn(
+        'h-8 w-8 p-0 transition-all',
+        isActive
+          ? 'bg-primary text-primary-foreground shadow-sm'
+          : 'hover:bg-accent hover:text-accent-foreground'
+      )}
     >
       {children}
     </Button>
   );
 
   return (
-    <div className="border rounded-lg overflow-hidden">
+    <Card className="overflow-hidden">
       {editable && (
-        <div className="border-b bg-gray-50 p-2 flex flex-wrap gap-1">
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            isActive={editor.isActive('bold')}
-            title="Bold"
-          >
-            <Bold className="h-4 w-4" />
-          </ToolbarButton>
+        <div className="border-b bg-muted/30 p-3">
+          <div className="flex flex-wrap items-center gap-1">
+            <div className="flex items-center gap-1">
+              <ToolbarButton
+                onClick={() => editor.chain().focus().toggleBold().run()}
+                isActive={editor.isActive('bold')}
+                title="Bold"
+              >
+                <Bold className="h-4 w-4" />
+              </ToolbarButton>
 
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            isActive={editor.isActive('italic')}
-            title="Italic"
-          >
-            <Italic className="h-4 w-4" />
-          </ToolbarButton>
+              <ToolbarButton
+                onClick={() => editor.chain().focus().toggleItalic().run()}
+                isActive={editor.isActive('italic')}
+                title="Italic"
+              >
+                <Italic className="h-4 w-4" />
+              </ToolbarButton>
 
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleUnderline().run()}
-            isActive={editor.isActive('underline')}
-            title="Underline"
-          >
-            <UnderlineIcon className="h-4 w-4" />
-          </ToolbarButton>
+              <ToolbarButton
+                onClick={() => editor.chain().focus().toggleUnderline().run()}
+                isActive={editor.isActive('underline')}
+                title="Underline"
+              >
+                <UnderlineIcon className="h-4 w-4" />
+              </ToolbarButton>
 
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            isActive={editor.isActive('strike')}
-            title="Strikethrough"
-          >
-            <Strikethrough className="h-4 w-4" />
-          </ToolbarButton>
+              <ToolbarButton
+                onClick={() => editor.chain().focus().toggleStrike().run()}
+                isActive={editor.isActive('strike')}
+                title="Strikethrough"
+              >
+                <Strikethrough className="h-4 w-4" />
+              </ToolbarButton>
+            </div>
 
-          <div className="w-px h-6 bg-gray-300 mx-1" />
+            <div className="w-px h-6 bg-border mx-2" />
 
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            isActive={editor.isActive('bulletList')}
-            title="Bullet List"
-          >
-            <List className="h-4 w-4" />
-          </ToolbarButton>
+            <div className="flex items-center gap-1">
+              <ToolbarButton
+                onClick={() => editor.chain().focus().toggleBulletList().run()}
+                isActive={editor.isActive('bulletList')}
+                title="Bullet List"
+              >
+                <List className="h-4 w-4" />
+              </ToolbarButton>
 
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            isActive={editor.isActive('orderedList')}
-            title="Numbered List"
-          >
-            <ListOrdered className="h-4 w-4" />
-          </ToolbarButton>
+              <ToolbarButton
+                onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                isActive={editor.isActive('orderedList')}
+                title="Numbered List"
+              >
+                <ListOrdered className="h-4 w-4" />
+              </ToolbarButton>
+            </div>
 
-          <div className="w-px h-6 bg-gray-300 mx-1" />
+            <div className="w-px h-6 bg-border mx-2" />
 
-          <div className="flex items-center gap-1">
-            <Palette className="h-4 w-4 text-gray-500" />
-            <input
-              type="color"
-              onChange={(e) =>
-                editor.chain().focus().setColor(e.target.value).run()
-              }
-              value={editor.getAttributes('textStyle').color || '#000000'}
-              className="w-8 h-8 border rounded cursor-pointer"
-              title="Text Color"
-            />
+            <div className="flex items-center gap-2">
+              <Palette className="h-4 w-4 text-muted-foreground" />
+              <div className="relative">
+                <input
+                  type="color"
+                  onChange={(e) =>
+                    editor.chain().focus().setColor(e.target.value).run()
+                  }
+                  value={editor.getAttributes('textStyle').color || '#000000'}
+                  className="w-8 h-8 border border-input rounded cursor-pointer bg-background hover:bg-accent transition-colors"
+                  title="Text Color"
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}
 
-      <EditorContent
-        editor={editor}
-        className={cn(
-          editable ? 'min-h-[120px]' : 'min-h-0',
-          !editable && 'cursor-default'
-        )}
-        placeholder={placeholder}
-      />
-    </div>
+      <CardContent className="p-0">
+        <EditorContent
+          editor={editor}
+          className={cn(
+            'prose prose-sm max-w-none',
+            editable ? 'min-h-[120px] p-4' : 'p-4',
+            !editable && 'cursor-default',
+            'prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-em:text-foreground prose-ul:text-foreground prose-ol:text-foreground prose-li:text-foreground',
+            className
+          )}
+        />
+      </CardContent>
+    </Card>
   );
 }

@@ -2,8 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import { useApiErrorHandler } from '@/lib/api-error-handler';
+import { cn } from '@/lib/utils';
 import { FileText, Image, Music, Upload, Video, X } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
+import { Card, CardContent } from './card';
 
 export interface MediaFile {
   id: string;
@@ -231,111 +233,130 @@ export function MediaUpload({
   };
 
   return (
-    <div className={className}>
-      <div
-        className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+    <div className={cn('space-y-4', className)}>
+      <Card
+        className={cn(
+          'border-2 border-dashed transition-all duration-200 cursor-pointer hover:shadow-md',
           isDragOver
-            ? 'border-blue-500 bg-blue-50'
-            : 'border-gray-300 hover:border-gray-400'
-        }`}
+            ? 'border-primary bg-primary/5 shadow-md'
+            : 'border-muted hover:border-primary/50'
+        )}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
       >
-        <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-        <p className="text-lg font-medium text-gray-900 mb-2">
-          Drop files here or click to upload
-        </p>
-        <p className="text-sm text-gray-500 mb-4">
-          Images, videos, and audio files up to 10MB each
-        </p>
-        <input
-          type="file"
-          multiple
-          accept="image/*,video/*,audio/*"
-          onChange={handleFileInput}
-          className="hidden"
-          id="file-upload"
-        />
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => document.getElementById('file-upload')?.click()}
-          disabled={files.length >= maxFiles}
-        >
-          Choose Files
-        </Button>
-        {files.length >= maxFiles && (
-          <p className="text-sm text-orange-600 mt-2">
-            Maximum {maxFiles} files allowed
+        <CardContent className="p-8 text-center">
+          <Upload
+            className={cn(
+              'mx-auto h-12 w-12 mb-4 transition-colors',
+              isDragOver ? 'text-primary' : 'text-muted-foreground'
+            )}
+          />
+          <h3 className="text-lg font-semibold text-foreground mb-2">
+            Drop files here or click to upload
+          </h3>
+          <p className="text-sm text-muted-foreground mb-6">
+            Images, videos, and audio files up to 10MB each
           </p>
-        )}
-      </div>
+          <input
+            type="file"
+            multiple
+            accept="image/*,video/*,audio/*"
+            onChange={handleFileInput}
+            className="hidden"
+            id="file-upload"
+          />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => document.getElementById('file-upload')?.click()}
+            disabled={files.length >= maxFiles}
+            className="min-w-32"
+          >
+            Choose Files
+          </Button>
+          {files.length >= maxFiles && (
+            <p className="text-sm text-destructive mt-3">
+              Maximum {maxFiles} files allowed
+            </p>
+          )}
+        </CardContent>
+      </Card>
 
       {files.length > 0 && (
-        <div className="mt-4 space-y-2">
+        <div className="space-y-3">
           {files.map((mediaFile) => {
             const Icon = getFileIcon(mediaFile.type);
 
             return (
-              <div
+              <Card
                 key={mediaFile.id}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                className="transition-all hover:shadow-sm"
               >
-                <div className="flex items-center space-x-3">
-                  <Icon className="h-5 w-5 text-gray-500" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">
-                      {mediaFile.file.name}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {(mediaFile.file.size / 1024 / 1024).toFixed(2)} MB
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  {mediaFile.error && (
-                    <span className="text-xs text-red-600">
-                      {mediaFile.error}
-                    </span>
-                  )}
-
-                  {mediaFile.uploadProgress !== undefined && (
-                    <div className="w-20 bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-blue-600 h-2 rounded-full transition-all"
-                        style={{ width: `${mediaFile.uploadProgress}%` }}
-                      />
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3 min-w-0 flex-1">
+                      <div className="flex-shrink-0">
+                        <Icon className="h-5 w-5 text-muted-foreground" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-foreground truncate">
+                          {mediaFile.file.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {(mediaFile.file.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </div>
                     </div>
-                  )}
 
-                  {!mediaFile.url &&
-                    !mediaFile.error &&
-                    mediaFile.uploadProgress === undefined && (
+                    <div className="flex items-center space-x-3 flex-shrink-0">
+                      {mediaFile.error && (
+                        <span className="text-xs text-destructive max-w-32 truncate">
+                          {mediaFile.error}
+                        </span>
+                      )}
+
+                      {mediaFile.uploadProgress !== undefined && (
+                        <div className="w-20 bg-muted rounded-full h-2">
+                          <div
+                            className="bg-primary h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${mediaFile.uploadProgress}%` }}
+                          />
+                        </div>
+                      )}
+
+                      {!mediaFile.url &&
+                        !mediaFile.error &&
+                        mediaFile.uploadProgress === undefined && (
+                          <Button
+                            type="button"
+                            size="sm"
+                            onClick={() => uploadFile(mediaFile)}
+                            className="min-w-16"
+                          >
+                            Upload
+                          </Button>
+                        )}
+
+                      {mediaFile.url && (
+                        <span className="text-xs text-primary font-medium">
+                          Uploaded
+                        </span>
+                      )}
+
                       <Button
                         type="button"
+                        variant="ghost"
                         size="sm"
-                        onClick={() => uploadFile(mediaFile)}
+                        onClick={() => removeFile(mediaFile.id)}
+                        className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive"
                       >
-                        Upload
+                        <X className="h-4 w-4" />
                       </Button>
-                    )}
-
-                  {mediaFile.url && (
-                    <span className="text-xs text-green-600">Uploaded</span>
-                  )}
-
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeFile(mediaFile.id)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             );
           })}
         </div>

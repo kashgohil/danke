@@ -191,7 +191,7 @@ function PostCreationFormContent({
                 <span className="text-red-500">*</span>
               </label>
               <div
-                className={`border-2 rounded-lg overflow-hidden transition-all duration-200 ${
+                className={`border rounded-lg overflow-hidden transition-all duration-200 ${
                   validationErrors.content
                     ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20'
                     : 'border-danke-200 dark:border-danke-700 focus-within:border-danke-500 focus-within:ring-2 focus-within:ring-danke-500/20'
@@ -218,7 +218,7 @@ function PostCreationFormContent({
                 Add Media (Optional)
               </label>
               <div
-                className={`border-2 rounded-lg p-4 transition-all duration-200 ${
+                className={`transition-all duration-200 ${
                   validationErrors.media
                     ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20'
                     : 'border-danke-200 dark:border-danke-700 focus-within:border-danke-gold focus-within:ring-2 focus-within:ring-danke-gold/20'
