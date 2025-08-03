@@ -129,13 +129,13 @@ export class BoardModel {
     try {
       switch (boardType) {
         case 'birthday':
-          if (
-            typeConfig.birthdayDate &&
-            typeof typeConfig.birthdayDate === 'string'
-          ) {
-            const date = new Date(typeConfig.birthdayDate);
-            if (isNaN(date.getTime())) {
-              return { isValid: false, error: 'Invalid birthday date format' };
+          if (typeConfig.birthdayDate) {
+            const date = typeConfig.birthdayDate as Date;
+            if (!(date instanceof Date) || isNaN(date.getTime())) {
+              return {
+                isValid: false,
+                error: 'Invalid birthday date format',
+              };
             }
           }
           break;
