@@ -177,9 +177,11 @@ function PostCard({
   const { userId } = useAuth();
   const { handleError } = useApiErrorHandler();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const getMediaType = (url: string): 'image' | 'video' | 'audio' => {
     const extension = url.split('.').pop()?.toLowerCase();
@@ -228,24 +230,33 @@ function PostCard({
     setIsEditDialogOpen(false);
   };
 
-  const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this post?')) {
-      return;
-    }
+  const handleDeleteClick = () => {
+    setDeleteError(null);
+    setIsDeleteDialogOpen(true);
+  };
 
+  const handleDeleteConfirm = async () => {
     setIsDeleting(true);
+    setDeleteError(null);
+
     try {
       await apiRequest(`/api/posts/${post.id}`, {
         method: 'DELETE',
       });
 
+      setIsDeleteDialogOpen(false);
       onPostDeleted?.(post.id);
     } catch (error) {
       console.error('Error deleting post:', error);
-      alert(handleError(error));
+      setDeleteError(handleError(error));
     } finally {
       setIsDeleting(false);
     }
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteDialogOpen(false);
+    setDeleteError(null);
   };
 
   return (
@@ -261,6 +272,49 @@ function PostCard({
             onCancel={handleCancelEdit}
             className="border-0 shadow-none p-0"
           />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Delete Message</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Are you sure you want to delete this message? This action cannot
+              be undone.
+            </p>
+
+            {deleteError && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                <p className="text-red-600 dark:text-red-400 text-sm flex items-center gap-2">
+                  <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                  {deleteError}
+                </p>
+              </div>
+            )}
+
+            <div className="flex justify-end space-x-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleDeleteCancel}
+                disabled={isDeleting}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={handleDeleteConfirm}
+                disabled={isDeleting}
+                className="min-w-[80px]"
+              >
+                {isDeleting ? 'Deleting...' : 'Delete'}
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
       <Card
@@ -341,7 +395,7 @@ function PostCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={handleDelete}
+                  onClick={handleDeleteClick}
                   disabled={isDeleting}
                   className="h-8 w-8 p-0 text-danke-500 hover:text-red-600 dark:text-danke-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-all duration-200"
                   aria-label={isDeleting ? 'Deleting post...' : 'Delete post'}
