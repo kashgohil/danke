@@ -1,6 +1,8 @@
+import { db, users } from '@/lib/db';
 import { PostModel } from '@/lib/models/post';
 import { updatePostSchema } from '@/lib/validations/post';
 import { auth } from '@clerk/nextjs/server';
+import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -39,7 +41,30 @@ export async function PUT(
       );
     }
 
-    return NextResponse.json(post);
+    // Fetch creator information to include in response
+    const [creator] = await db
+      .select({
+        id: users.id,
+        name: users.name,
+        avatarUrl: users.avatarUrl,
+      })
+      .from(users)
+      .where(eq(users.id, post.creatorId));
+
+    // Format the response to match the expected frontend structure
+    const postWithCreator = {
+      id: post.id,
+      content: post.content,
+      mediaUrls: post.mediaUrls || [],
+      createdAt: post.createdAt.toISOString(),
+      creator: creator || {
+        id: post.creatorId,
+        name: 'Unknown User',
+        avatarUrl: null,
+      },
+    };
+
+    return NextResponse.json(postWithCreator);
   } catch (error) {
     console.error('Error updating post:', error);
 
