@@ -1,7 +1,9 @@
 'use client';
 
+import { apiRequest } from '@/lib/api-error-handler';
 import { User } from '@/lib/db';
-import { useUser } from '@clerk/nextjs';
+import { useClerk, useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 import {
   createContext,
   useCallback,
@@ -23,6 +25,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { user: clerkUser, isLoaded, isSignedIn } = useUser();
+  const { signOut } = useClerk();
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -41,22 +45,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     try {
       setError(null);
-      const response = await fetch('/api/auth/me', {
+      const data = await apiRequest('/api/auth/me', {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
       });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(
-          errorData.error ||
-            `HTTP ${response.status}: Failed to fetch user data`
-        );
-      }
-
-      const data = await response.json();
 
       if (!data.user) {
         throw new Error('User data not found in response');
@@ -70,13 +61,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       setError(errorMessage);
       setUser(null);
-
-      // Auto-retry after a delay for network errors
-      if (errorMessage.includes('fetch') || errorMessage.includes('network')) {
-        setTimeout(() => {
-          fetchUser();
-        }, 3000);
-      }
     } finally {
       setIsLoading(false);
     }
@@ -87,6 +71,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       fetchUser();
     }
   }, [clerkUser, fetchUser, isLoaded, isSignedIn]);
+
+  // Listen for unauthorized events and handle logout
+  useEffect(() => {
+    const handleUnauthorized = async () => {
+      console.log('Unauthorized event received - starting logout process');
+      try {
+        await signOut();
+        console.log('Clerk signOut successful, redirecting to home');
+        router.push('/');
+      } catch (error) {
+        console.error('Error during logout:', error);
+        // Force redirect even if signOut fails
+        console.log('Fallback redirect due to signOut error');
+        window.location.href = '/';
+      }
+    };
+
+    console.log('Setting up auth:unauthorized event listener');
+    window.addEventListener('auth:unauthorized', handleUnauthorized);
+
+    return () => {
+      console.log('Cleaning up auth:unauthorized event listener');
+      window.removeEventListener('auth:unauthorized', handleUnauthorized);
+    };
+  }, [signOut, router]);
 
   const refreshUser = async () => {
     setIsLoading(true);

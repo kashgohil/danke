@@ -108,6 +108,21 @@ export async function apiRequest<T = any>(
 
     return await ApiErrorHandler.handleResponse(response);
   } catch (error) {
+    console.log('apiRequest caught error:', error);
+
+    if (
+      error &&
+      typeof error === 'object' &&
+      'status' in error &&
+      error.status === 401
+    ) {
+      console.log(
+        '401 error detected in apiRequest, calling handleUnauthorized'
+      );
+      handleUnauthorized();
+      throw error;
+    }
+
     if (ApiErrorHandler.isNetworkError(error)) {
       throw ApiErrorHandler.handleNetworkError();
     }
@@ -129,8 +144,36 @@ export async function apiRequest<T = any>(
   }
 }
 
+function handleUnauthorized() {
+  if (typeof window !== 'undefined') {
+    console.log('401 detected - triggering logout and redirect');
+
+    // Dispatch a custom event that components can listen to
+    window.dispatchEvent(new CustomEvent('auth:unauthorized'));
+
+    // Also immediately redirect as fallback
+    setTimeout(() => {
+      console.log('Fallback redirect triggered');
+      window.location.href = '/';
+    }, 1000); // Increased timeout to give event handler time to work
+  }
+}
+
 export function useApiErrorHandler() {
   const handleError = (error: any): string => {
+    if (
+      error &&
+      typeof error === 'object' &&
+      'status' in error &&
+      error.status === 401
+    ) {
+      console.log(
+        '401 error detected in useApiErrorHandler, calling handleUnauthorized'
+      );
+      handleUnauthorized();
+      return error.message || 'You need to sign in to perform this action.';
+    }
+
     if (error && typeof error === 'object' && 'message' in error) {
       return error.message;
     }
