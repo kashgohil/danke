@@ -158,7 +158,7 @@ export function DashboardClient() {
         <div className="space-y-6">
           <h2 className="text-2xl font-semibold flex items-center gap-2 text-danke-900">
             <User className="w-6 h-6" />
-            Boards You Created
+            Boards I Created
           </h2>
 
           {boards.length === 0 ? (

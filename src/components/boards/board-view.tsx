@@ -10,7 +10,7 @@ import { UserAvatar } from '@/components/ui/user-avatar';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
 import { perf } from '@/lib/performance';
 import { useAuth } from '@clerk/nextjs';
-import { Edit2, Heart, MessageCircle, Trash2, Users } from 'lucide-react';
+import { Edit2, Heart, MessageCircle, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export interface Board {
@@ -53,29 +53,29 @@ function DoodleBackground() {
         <path
           d="M100 150 C100 120, 130 100, 150 120 C170 100, 200 120, 200 150 C200 180, 150 200, 150 180 C150 200, 100 180, 100 150 Z"
           fill="currentColor"
-          className="text-pink-400"
+          className="text-danke-400"
         />
         <path
           d="M300 250 C300 220, 330 200, 350 220 C370 200, 400 220, 400 250 C400 280, 350 300, 350 280 C350 300, 300 280, 300 250 Z"
           fill="currentColor"
-          className="text-red-400"
+          className="text-danke-500"
         />
         <path
           d="M500 100 C500 70, 530 50, 550 70 C570 50, 600 70, 600 100 C600 130, 550 150, 550 130 C550 150, 500 130, 500 100 Z"
           fill="currentColor"
-          className="text-purple-400"
+          className="text-danke-600"
         />
 
         {/* Stars */}
         <path
           d="M200 400 L220 420 L240 400 L220 380 Z M220 420 L240 440 L260 420 L240 400 Z M240 400 L260 420 L240 440 L220 420 Z M240 440 L220 420 L200 440 L220 460 Z M220 420 L200 400 L180 420 L200 440 Z"
           fill="currentColor"
-          className="text-yellow-400"
+          className="text-danke-gold"
         />
         <path
           d="M700 300 L720 320 L740 300 L720 280 Z M720 320 L740 340 L760 320 L740 300 Z M740 300 L760 320 L740 340 L720 320 Z M740 340 L720 320 L700 340 L720 360 Z M720 320 L700 300 L680 320 L700 340 Z"
           fill="currentColor"
-          className="text-blue-400"
+          className="text-danke-brown"
         />
 
         <circle
@@ -83,21 +83,21 @@ function DoodleBackground() {
           cy="500"
           r="20"
           fill="currentColor"
-          className="text-green-400"
+          className="text-danke-300"
         />
         <circle
           cx="400"
           cy="600"
           r="15"
           fill="currentColor"
-          className="text-orange-400"
+          className="text-danke-400"
         />
         <circle
           cx="600"
           cy="450"
           r="25"
           fill="currentColor"
-          className="text-indigo-400"
+          className="text-danke-500"
         />
 
         <path
@@ -105,21 +105,21 @@ function DoodleBackground() {
           stroke="currentColor"
           strokeWidth="3"
           fill="none"
-          className="text-pink-300"
+          className="text-danke-300"
         />
         <path
           d="M50 650 Q100 600, 150 650 T250 650"
           stroke="currentColor"
           strokeWidth="3"
           fill="none"
-          className="text-blue-300"
+          className="text-danke-gold"
         />
         <path
           d="M900 500 Q950 450, 1000 500 T1100 500"
           stroke="currentColor"
           strokeWidth="3"
           fill="none"
-          className="text-purple-300"
+          className="text-danke-brown"
         />
       </svg>
     </div>
@@ -128,24 +128,34 @@ function DoodleBackground() {
 
 function EmptyState({ recipientName }: { recipientName: string }) {
   return (
-    <div className="text-center py-20">
-      <div className="mx-auto w-32 h-32 bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900/20 dark:to-purple-900/20 rounded-full flex items-center justify-center mb-8 shadow-lg">
-        <Heart className="w-16 h-16 text-pink-500 dark:text-pink-400" />
+    <div className="text-center py-20 relative">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-5 dark:opacity-10">
+        <div className="w-96 h-96 rounded-full bg-gradient-to-br from-danke-200 via-danke-300 to-danke-gold animate-pulse" />
       </div>
-      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-        No messages yet
-      </h3>
-      <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto text-lg leading-relaxed">
-        Be the first to share an appreciation message for{' '}
-        <span className="font-semibold text-pink-600 dark:text-pink-400">
-          {recipientName}
-        </span>
-        !
-      </p>
-      <div className="mt-8 flex justify-center">
-        <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm">
-          <MessageCircle className="w-4 h-4" />
-          <span>Your message will make their day special</span>
+
+      <div className="relative">
+        <div className="mx-auto w-32 h-32 bg-gradient-to-br from-danke-200 via-danke-300 to-danke-gold dark:from-danke-600/30 dark:via-danke-500/20 dark:to-danke-gold/30 rounded-full flex items-center justify-center mb-8 shadow-xl border-4 border-white/50 dark:border-danke-800/50">
+          <Heart className="w-16 h-16 text-danke-700 dark:text-danke-400 animate-pulse" />
+        </div>
+
+        <h3 className="text-3xl font-bold text-danke-900 dark:text-danke-100 mb-6 tracking-tight">
+          No messages yet
+        </h3>
+
+        <p className="text-danke-700 dark:text-danke-300 max-w-md mx-auto text-lg leading-relaxed mb-8">
+          Be the first to share an appreciation message for{' '}
+          <span className="font-bold text-danke-600 dark:text-danke-400 bg-gradient-to-r from-danke-500 to-danke-700 dark:from-danke-400 dark:to-danke-200 bg-clip-text text-transparent">
+            {recipientName}
+          </span>
+          !
+        </p>
+
+        <div className="flex justify-center">
+          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-danke-300 via-danke-gold to-danke-300 dark:from-danke-600 dark:via-danke-gold dark:to-danke-600 text-danke-900 dark:text-danke-900 px-6 py-3 rounded-full text-sm font-medium shadow-lg border border-danke-400/30 dark:border-danke-500/30">
+            <MessageCircle className="w-5 h-5" />
+            <span>Your message will make their day special</span>
+          </div>
         </div>
       </div>
     </div>
@@ -169,7 +179,6 @@ function PostCard({
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   const getMediaType = (url: string): 'image' | 'video' | 'audio' => {
     const extension = url.split('.').pop()?.toLowerCase();
@@ -251,48 +260,55 @@ function PostCard({
 
   return (
     <Card
-      className="w-full h-fit p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-0 shadow-lg bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm focus-within:ring-2 focus-within:ring-pink-500 focus-within:ring-opacity-50"
+      className="w-full h-fit overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-2 border-danke-200/50 dark:border-danke-600/30 shadow-lg bg-gradient-to-br from-danke-50/95 via-white/95 to-danke-100/95 dark:from-danke-900/95 dark:via-danke-800/95 dark:to-danke-700/95 backdrop-blur-sm focus-within:ring-2 focus-within:ring-danke-500 focus-within:ring-opacity-50 hover:border-danke-300/70 dark:hover:border-danke-500/50 relative group"
       role="article"
       aria-label={`Post by ${post.creator.name}`}
     >
-      <div className="space-y-4">
-        <div className="text-sm text-gray-900 dark:text-gray-100">
+      <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-danke-gold/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+      <div className="p-6 space-y-4 relative">
+        <div className="text-sm text-danke-900 dark:text-danke-100 leading-relaxed">
           <PostContent
             content={post.content}
-            className="border-0 p-0 min-h-0"
+            className="border-0 p-0 min-h-0 prose-p:text-danke-800 dark:prose-p:text-danke-200 prose-strong:text-danke-900 dark:prose-strong:text-danke-100"
           />
         </div>
 
-        {/* Media content */}
         {post.mediaUrls && post.mediaUrls.length > 0 && (
           <div
-            className="space-y-3"
+            className="space-y-3 -mx-2"
             role="group"
             aria-label="Media attachments"
           >
             {post.mediaUrls.map((url, index) => (
-              <MediaPreview
+              <div
                 key={index}
-                url={url}
-                type={getMediaType(url)}
-                className="w-full"
-              />
+                className="rounded-lg overflow-hidden border border-danke-200/50 dark:border-danke-600/30"
+              >
+                <MediaPreview
+                  url={url}
+                  type={getMediaType(url)}
+                  className="w-full"
+                />
+              </div>
             ))}
           </div>
         )}
 
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
+        <div className="flex items-center justify-between pt-4 border-t border-gradient-to-r from-danke-200/50 via-danke-300/30 to-danke-200/50 dark:from-danke-600/30 dark:via-danke-500/20 dark:to-danke-600/30 relative">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-danke-gold/30 to-transparent" />
+
           <div className="flex items-center space-x-3">
             <UserAvatar
               user={post.creator}
               size="md"
-              className="flex-shrink-0 ring-2 ring-pink-100 dark:ring-pink-900/20"
+              className="flex-shrink-0 ring-2 ring-danke-300/50 dark:ring-danke-500/30 shadow-sm hover:ring-danke-400/70 dark:hover:ring-danke-400/50 transition-all duration-200"
             />
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
+              <div className="text-sm font-semibold text-danke-900 dark:text-danke-100 truncate mb-0.5">
                 {post.creator.name}
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
+              <div className="text-xs text-danke-600 dark:text-danke-400 font-medium">
                 <time dateTime={post.createdAt}>
                   {new Date(post.createdAt).toLocaleDateString('en-US', {
                     month: 'short',
@@ -307,7 +323,7 @@ function PostCard({
           </div>
 
           <div
-            className="flex items-center space-x-1"
+            className="flex items-center space-x-1 opacity-70 group-hover:opacity-100 transition-opacity duration-200"
             role="group"
             aria-label="Post actions"
           >
@@ -316,7 +332,7 @@ function PostCard({
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsEditing(true)}
-                className="h-8 w-8 p-0 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+                className="h-8 w-8 p-0 text-danke-500 hover:text-danke-700 dark:text-danke-400 dark:hover:text-danke-200 hover:bg-danke-100/50 dark:hover:bg-danke-700/30 rounded-full transition-all duration-200"
                 aria-label="Edit post"
               >
                 <Edit2 className="h-4 w-4" />
@@ -328,7 +344,7 @@ function PostCard({
                 size="sm"
                 onClick={handleDelete}
                 disabled={isDeleting}
-                className="h-8 w-8 p-0 text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+                className="h-8 w-8 p-0 text-danke-500 hover:text-red-600 dark:text-danke-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-all duration-200"
                 aria-label={isDeleting ? 'Deleting post...' : 'Delete post'}
               >
                 <Trash2 className="h-4 w-4" />
@@ -355,46 +371,22 @@ export function BoardView({
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative">
+    <div className="relative">
       <DoodleBackground />
 
-      <header className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm border-b border-gray-200/50 dark:border-gray-700/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-100 to-purple-100 dark:from-pink-900/20 dark:to-purple-900/20 text-pink-700 dark:text-pink-300 px-4 py-2 rounded-full text-sm font-medium mb-4">
-              <Heart className="w-4 h-4" aria-hidden="true" />
-              <span>Danke Board</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-              {board.title}
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Heartfelt messages and memories for{' '}
-              <span className="font-semibold text-pink-600 dark:text-pink-400">
-                {board.recipientName}
-              </span>
-            </p>
-            <div
-              className="flex justify-center items-center gap-6 mt-6 text-sm text-gray-500 dark:text-gray-400"
-              role="group"
-              aria-label="Board statistics"
-            >
-              <div className="flex items-center gap-2">
-                <Users className="w-4 h-4" aria-hidden="true" />
-                <span aria-label={`${posts.length} messages on this board`}>
-                  {posts.length} messages
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MessageCircle className="w-4 h-4" aria-hidden="true" />
-                <span>Share your love</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <header className="relative my-8 text-center">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-danke-900">
+          {board.title}
+        </h1>
+        <p className="text-xl text-danke-700 dark:text-danke-900 max-w-2xl mx-auto">
+          Heartfelt messages and memories for{' '}
+          <span className="font-semibold text-danke-600 dark:text-danke-700">
+            {board.recipientName}
+          </span>
+        </p>
       </header>
 
-      <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="relative">
         {posts.length === 0 ? (
           <EmptyState recipientName={board.recipientName} />
         ) : (

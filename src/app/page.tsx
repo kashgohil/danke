@@ -1,4 +1,3 @@
-import { AuthHeader } from '@/components/auth/auth-header';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -15,28 +14,11 @@ import {
   Users,
   Video,
 } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
-import logo from 'public/danke.png';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-danke-50 via-white to-danke-100 dark:from-danke-700 dark:via-danke-300 dark:to-danke-600">
-      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 xl:top-4 xl:rounded-xl z-40 xl:mx-auto w-full xl:max-w-2/3">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <Link
-              href="/"
-              className="text-2xl font-bold bg-gradient-to-r from-danke-600 to-danke-gold bg-clip-text text-transparent hover:from-danke-700 hover:to-danke-500 transition-all flex items-center gap-2"
-            >
-              <Image src={logo} alt="Danke" width={32} height={32} />
-              Danke
-            </Link>
-            <AuthHeader />
-          </div>
-        </div>
-      </header>
-
+    <>
       <section className="relative overflow-hidden py-20 px-4 backdrop-blur-lg">
         <div className="container mx-auto text-center">
           <div className="max-w-4xl mx-auto">
@@ -101,7 +83,7 @@ export default function HomePage() {
             <div className="flex justify-center items-center gap-8 text-sm text-danke-700 dark:text-danke-900">
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
-                <span>Join thousands of users</span>
+                <span>Thousands of users</span>
               </div>
               <div className="flex items-center gap-2">
                 <Heart className="w-4 h-4" />
@@ -112,7 +94,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-background/50 backdrop-blur-lg lg:mx-30 sm:mx-8 rounded-lg">
+      <section className="py-20 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-danke-900">
@@ -243,6 +225,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }
