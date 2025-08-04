@@ -1,5 +1,9 @@
 import { BoardPageClient } from '@/components/boards/board-page-client';
 import { Button } from '@/components/ui/button';
+import { db, users } from '@/lib/db';
+import { BoardModel } from '@/lib/models/board';
+import { PostModel } from '@/lib/models/post';
+import { eq } from 'drizzle-orm';
 import { Heart } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -10,23 +14,67 @@ interface BoardPageProps {
   }>;
 }
 
-async function getBoardData(viewToken: string) {
+async function getBoardData(boardId: string) {
   try {
-    const response = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-      }/api/boards/${viewToken}`,
-      { cache: 'no-store' }
-    );
+    let board = await BoardModel.getById(boardId);
 
-    if (!response.ok) {
-      if (response.status === 404) {
-        return null;
-      }
-      throw new Error('Failed to fetch board data');
+    if (!board) {
+      board = await BoardModel.getByViewToken(boardId);
     }
 
-    return await response.json();
+    if (!board) {
+      return null;
+    }
+
+    const posts = await PostModel.getByBoardId(board.id);
+
+    const creatorIds = [...new Set(posts.map((post) => post.creatorId))];
+    const creatorMap = new Map();
+
+    for (const creatorId of creatorIds) {
+      const [creator] = await db
+        .select({
+          id: users.id,
+          name: users.name,
+          avatarUrl: users.avatarUrl,
+        })
+        .from(users)
+        .where(eq(users.id, creatorId));
+
+      if (creator) {
+        creatorMap.set(creatorId, creator);
+      }
+    }
+
+    const postsWithCreators = posts.map((post) => {
+      const creator = creatorMap.get(post.creatorId);
+      return {
+        id: post.id,
+        content: post.content,
+        mediaUrls: post.mediaUrls || [],
+        createdAt: post.createdAt.toISOString(),
+        creator: creator || {
+          id: post.creatorId,
+          name: 'Unknown User',
+          avatarUrl: null,
+        },
+      };
+    });
+
+    return {
+      board: {
+        id: board.id,
+        title: board.title,
+        recipientName: board.recipientName,
+        creatorId: board.creatorId,
+        postingMode: board.postingMode,
+        moderationEnabled: board.moderationEnabled,
+        maxPostsPerUser: board.maxPostsPerUser,
+        createdAt: board.createdAt.toISOString(),
+        updatedAt: board.updatedAt.toISOString(),
+      },
+      posts: postsWithCreators,
+    };
   } catch (error) {
     console.error('Error fetching board data:', error);
     throw error;
