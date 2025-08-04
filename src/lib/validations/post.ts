@@ -6,7 +6,7 @@ const richTextContentSchema = z.string().min(1, 'Content cannot be empty');
 export const createPostSchema = z.object({
   content: richTextContentSchema,
   mediaUrls: z
-    .array(z.string().url())
+    .array(z.string().min(1, 'Media URL cannot be empty'))
     .max(5, 'Maximum 5 media files allowed')
     .optional()
     .default([]),
@@ -14,7 +14,7 @@ export const createPostSchema = z.object({
 
 export const updatePostSchema = z.object({
   content: richTextContentSchema.optional(),
-  mediaUrls: z.array(z.string().url()).optional(),
+  mediaUrls: z.array(z.string().min(1, 'Media URL cannot be empty')).optional(),
 });
 
 export type CreatePostSchema = z.infer<typeof createPostSchema>;
