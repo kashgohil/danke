@@ -70,6 +70,7 @@ async function getBoardData(boardId: string) {
         postingMode: board.postingMode,
         moderationEnabled: board.moderationEnabled,
         maxPostsPerUser: board.maxPostsPerUser,
+        typeConfig: board.typeConfig,
         createdAt: board.createdAt.toISOString(),
         updatedAt: board.updatedAt.toISOString(),
       },

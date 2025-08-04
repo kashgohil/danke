@@ -8,6 +8,7 @@ interface Board {
   title: string;
   recipientName: string;
   creatorId: string;
+  typeConfig?: any;
   createdAt: string;
   updatedAt: string;
 }
