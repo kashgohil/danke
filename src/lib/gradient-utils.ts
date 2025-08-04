@@ -77,7 +77,6 @@ export function generateCardStyle(backgroundColor?: string): CSSProperties {
     };
   }
 
-  // Convert hex to RGB
   const hexToRgb = (hex: string) => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result
@@ -111,7 +110,7 @@ export function generateCardStyle(backgroundColor?: string): CSSProperties {
   if (luminance > 0.5) {
     // Light background - use white/light cards for contrast
     return {
-      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      backgroundColor: `rgba(${lighterRgb.r}, ${lighterRgb.g}, ${lighterRgb.b}, 0.5)`,
       borderColor: 'rgba(0, 0, 0, 0.1)',
     };
   } else {
