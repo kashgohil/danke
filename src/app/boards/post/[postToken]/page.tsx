@@ -23,7 +23,7 @@ export default async function PostPage({ params }: PostPageProps) {
   return (
     <>
       <div className="mb-6">
-        <Link href={`/boards/${board.viewToken}`}>
+        <Link href={`/boards/${board.id}/manage`}>
           <Button
             variant="ghost"
             className="flex items-center gap-2 text-danke-700 dark:text-danke-900"
