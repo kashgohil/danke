@@ -6,11 +6,12 @@ import { LoadingButton } from '@/components/ui/loading-states';
 import { MediaPreview } from '@/components/ui/media-preview';
 import { MediaUpload, type MediaFile } from '@/components/ui/media-upload';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
+import { usePostingPermissions } from '@/hooks/use-posting-permissions';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
 import { perf } from '@/lib/performance';
 import { createPostSchema } from '@/lib/validations/post';
 import { useAuth } from '@clerk/nextjs';
-import { Heart, Image, MessageCircle, Send } from 'lucide-react';
+import { AlertCircle, Heart, Image, MessageCircle, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface PostCreationFormProps {
@@ -26,6 +27,7 @@ function PostCreationFormContent({
 }: PostCreationFormProps) {
   const { isSignedIn, userId } = useAuth();
   const { handleError } = useApiErrorHandler();
+  const postingPermissions = usePostingPermissions(boardId);
   const [content, setContent] = useState<string>('');
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -102,9 +104,26 @@ function PostCreationFormContent({
       setValidationErrors({});
 
       onPostCreated?.(data);
+
+      // Refresh posting permissions to reflect the new post
+      postingPermissions.refresh();
     } catch (error) {
       const errorMessage = handleError(error);
-      setError(errorMessage);
+
+      // Handle specific moderation errors with more helpful messages
+      if (errorMessage.includes('only allows one post per user')) {
+        setError(
+          'This board is set to single-post mode. You can only submit one message.'
+        );
+      } else if (errorMessage.includes('reached the maximum')) {
+        setError(errorMessage);
+      } else if (errorMessage.includes('Content flagged')) {
+        setError(
+          "Your message contains content that doesn't meet our community guidelines. Please revise and try again."
+        );
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -157,6 +176,47 @@ function PostCreationFormContent({
               </h3>
               <p className="text-danke-600 dark:text-danke-400">
                 Please sign in to add your heartfelt message to this board.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (postingPermissions.loading) {
+    return (
+      <Card className={`border-0 shadow-lg ${className}`}>
+        <CardContent className="p-8">
+          <div className="text-center space-y-4">
+            <div className="w-16 h-16 bg-danke-100 dark:bg-danke-900/20 rounded-full flex items-center justify-center mx-auto animate-pulse">
+              <MessageCircle className="h-8 w-8 text-danke-600 dark:text-danke-400" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold mb-2 text-danke-900 dark:text-danke-100">
+                Checking Posting Permissions...
+              </h3>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!postingPermissions.canPost) {
+    return (
+      <Card className={`border-0 shadow-lg ${className}`}>
+        <CardContent className="p-8">
+          <div className="text-center space-y-4">
+            <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto">
+              <AlertCircle className="h-8 w-8 text-orange-600 dark:text-orange-400" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold mb-2 text-danke-900 dark:text-danke-100">
+                Posting Restricted
+              </h3>
+              <p className="text-danke-600 dark:text-danke-400">
+                {postingPermissions.reason}
               </p>
             </div>
           </div>
@@ -265,6 +325,39 @@ function PostCreationFormContent({
               </p>
             </div>
           )}
+
+          {postingPermissions.postingMode === 'single' && (
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                <AlertCircle className="w-4 h-4" />
+                <p className="text-sm font-medium">
+                  Single Post Mode: You can only submit one message to this
+                  board.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {postingPermissions.maxPosts &&
+            postingPermissions.postingMode === 'multiple' && (
+              <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+                <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+                  <AlertCircle className="w-4 h-4" />
+                  <p className="text-sm font-medium">
+                    Post Limit: You can submit up to{' '}
+                    {postingPermissions.maxPosts} messages to this board.
+                    {postingPermissions.postCount !== undefined && (
+                      <span className="ml-1">
+                        (
+                        {postingPermissions.maxPosts -
+                          postingPermissions.postCount}{' '}
+                        remaining)
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            )}
 
           <div className="flex justify-end pt-4">
             <LoadingButton
