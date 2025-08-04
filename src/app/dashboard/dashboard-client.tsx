@@ -98,7 +98,13 @@ export function DashboardClient() {
   }, [handleError]);
 
   const getContentPreview = (content: any): string => {
-    if (typeof content === 'string') return content;
+    if (typeof content === 'string') {
+      // If it's HTML content, strip the HTML tags
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = content;
+      const textContent = tempDiv.textContent || tempDiv.innerText || '';
+      return textContent;
+    }
     if (content?.ops) {
       return content.ops
         .map((op: any) => (typeof op.insert === 'string' ? op.insert : ''))
