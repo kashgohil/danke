@@ -66,6 +66,11 @@ export async function POST(request: NextRequest) {
       }
 
       if (error instanceof Error) {
+        if (error.message.startsWith('moderation:')) {
+          const moderationError = error.message.replace('moderation: ', '');
+          return NextResponse.json({ error: moderationError }, { status: 400 });
+        }
+
         if (
           error.message.includes('duplicate') ||
           error.message.includes('unique')
