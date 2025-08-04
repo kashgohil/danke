@@ -142,7 +142,7 @@ export default async function BoardManagePage({
                   Created on {new Date(board.createdAt).toLocaleDateString()}
                 </div>
                 <div className="flex flex-col gap-2">
-                  <Link href={`/boards/${board.viewToken}`} className="w-full">
+                  <Link href={`/boards/${board.id}`} className="w-full">
                     <Button className="w-full shadow-lg">
                       <ExternalLink className="w-4 h-4 mr-2" />
                       View Board
