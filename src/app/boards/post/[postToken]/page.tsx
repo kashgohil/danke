@@ -1,8 +1,5 @@
-import { PostCreationForm } from '@/components/posts/post-creation-form';
-import { Button } from '@/components/ui/button';
+import { PostPageClient } from '@/components/boards/post-page-client';
 import { BoardModel } from '@/lib/models/board';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 interface PostPageProps {
@@ -21,41 +18,14 @@ export default async function PostPage({ params }: PostPageProps) {
   }
 
   return (
-    <>
-      <div className="mb-6">
-        <Link href={`/boards/${board.id}/manage`}>
-          <Button
-            variant="ghost"
-            className="flex items-center gap-2 text-danke-700 dark:text-danke-900"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">Back to Board</span>
-            <span className="sm:hidden">Back</span>
-          </Button>
-        </Link>
-      </div>
-
-      <div className="text-center mb-8 sm:mb-12">
-        <h1 className="text-3xl sm:text-4xl font-bold text-danke-900 mb-4">
-          {board.title}
-        </h1>
-        <p className="text-lg sm:text-xl text-danke-900 dark:text-danke-900 max-w-2xl mx-auto">
-          Add your appreciation message for{' '}
-          <span className="font-semibold text-danke-700 dark:text-danke-700">
-            {board.recipientName}
-          </span>
-        </p>
-      </div>
-
-      <div className="max-w-4xl mx-auto">
-        <PostCreationForm
-          boardId={board.id}
-          // onPostCreated={() => {
-          //   window.location.href = `/boards/${board.viewToken}`;
-          // }}
-        />
-      </div>
-    </>
+    <PostPageClient
+      board={{
+        id: board.id,
+        title: board.title,
+        recipientName: board.recipientName,
+        typeConfig: board.typeConfig,
+      }}
+    />
   );
 }
 

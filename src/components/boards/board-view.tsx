@@ -8,6 +8,13 @@ import { MasonryLayout } from '@/components/ui/masonry-layout';
 import { MediaPreview } from '@/components/ui/media-preview';
 import { UserAvatar } from '@/components/ui/user-avatar';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
+import {
+  generateCardStyle,
+  generateGradientStyle,
+  getContrastTextStyles,
+  getGradientClasses,
+  getTextColors,
+} from '@/lib/gradient-utils';
 import { perf } from '@/lib/performance';
 import { useAuth } from '@clerk/nextjs';
 import { Edit2, Heart, MessageCircle, Trash2 } from 'lucide-react';
@@ -19,6 +26,7 @@ export interface Board {
   title: string;
   recipientName: string;
   creatorId: string;
+  typeConfig?: any;
   createdAt: string;
   updatedAt: string;
 }
@@ -127,30 +135,59 @@ function DoodleBackground() {
   );
 }
 
-function EmptyState({ recipientName }: { recipientName: string }) {
+function EmptyState({
+  recipientName,
+  textColors,
+  contrastTextStyles,
+}: {
+  recipientName: string;
+  textColors: {
+    primary: string;
+    secondary: string;
+    muted: string;
+    accent: string;
+  };
+  contrastTextStyles: {
+    primary: { color: string };
+    secondary: { color: string };
+    muted: { color: string };
+    accent: { color: string };
+  };
+}) {
   return (
     <div className="text-center py-20 relative">
       {/* Decorative background elements */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-5 dark:opacity-10">
-        <div className="w-96 h-96 rounded-full bg-gradient-to-br from-danke-200 via-danke-300 to-danke-gold animate-pulse" />
+      <div className="absolute inset-0 flex items-center justify-center opacity-5">
+        <div className="w-96 h-96 rounded-full bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 animate-pulse" />
       </div>
 
       <div className="relative">
-        <div className="mx-auto w-32 h-32 rounded-full flex items-center justify-center mb-8 shadow-xl border-4 border-white/50 dark:border-danke-800/50">
-          <Heart className="w-16 h-16 dark:text-danke-900 animate-pulse" />
+        <div className="mx-auto w-32 h-32 rounded-full flex items-center justify-center mb-8 shadow-xl border-4 border-white/50">
+          <Heart className={`w-16 h-16 ${textColors.primary} animate-pulse`} />
         </div>
 
-        <h3 className="text-3xl font-bold text-danke-900 mb-6 tracking-tight">
+        <h3
+          className="text-3xl font-bold mb-6 tracking-tight"
+          style={contrastTextStyles.primary}
+        >
           No messages yet
         </h3>
 
-        <p className="text-danke-900 max-w-md mx-auto text-lg leading-relaxed mb-8">
+        <p
+          className="max-w-md mx-auto text-lg leading-relaxed mb-8"
+          style={contrastTextStyles.secondary}
+        >
           Be the first to share an appreciation message for{' '}
-          <span className="font-bold text-danke-800">{recipientName}</span>!
+          <span className="font-bold" style={contrastTextStyles.accent}>
+            {recipientName}
+          </span>
+          !
         </p>
 
         <div className="flex justify-center">
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r bg-danke-gold text-danke-900  px-6 py-3 rounded-full text-sm font-medium shadow-lg">
+          <div
+            className={`inline-flex items-center gap-3 bg-gray-200/80 ${textColors.primary} px-6 py-3 rounded-full text-sm font-medium shadow-lg`}
+          >
             <MessageCircle className="w-5 h-5" />
             <span>Your message will make their day special</span>
           </div>
@@ -256,6 +293,12 @@ function PostCard({
     setDeleteError(null);
   };
 
+  // Get styling based on board's background color
+  const backgroundColor = (board.typeConfig as any)?.backgroundColor;
+  const cardStyle = generateCardStyle(backgroundColor);
+  const textColors = getTextColors(backgroundColor);
+  const contrastTextStyles = getContrastTextStyles(backgroundColor);
+
   return (
     <>
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
@@ -315,15 +358,19 @@ function PostCard({
         </DialogContent>
       </Dialog>
       <Card
-        className="w-full h-fit overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 shadow-lg backdrop-blur-sm focus-within:ring-2 focus-within:ring-danke-500 focus-within:ring-opacity-50 hover:border-danke-300/70 dark:hover:border-danke-500/50 relative group"
+        className="w-full h-fit overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 shadow-lg backdrop-blur-sm focus-within:ring-2 focus-within:ring-opacity-50 relative group border"
+        style={cardStyle}
         role="article"
         aria-label={`Post by ${post.creator.name}`}
       >
         <div className="p-6 space-y-4 relative">
-          <div className="text-sm text-danke-900 dark:text-danke-100 leading-relaxed">
+          <div
+            className="text-sm leading-relaxed"
+            style={contrastTextStyles.primary}
+          >
             <PostContent
               content={post.content}
-              className="border-0 p-0 min-h-0 prose-p:text-danke-800 dark:prose-p:text-danke-200 prose-strong:text-danke-900 dark:prose-strong:text-danke-100"
+              className="border-0 p-0 min-h-0"
             />
           </div>
 
@@ -345,20 +392,26 @@ function PostCard({
             </div>
           )}
 
-          <div className="flex items-center justify-between pt-4 border-t border-gradient-to-r from-danke-200/50 via-danke-300/30 to-danke-200/50 dark:from-danke-600/30 dark:via-danke-500/20 dark:to-danke-600/30 relative">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-danke-gold/30 to-transparent" />
+          <div className="flex items-center justify-between pt-4 border-t border-gray-200/30 relative">
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-300/30 to-transparent" />
 
             <div className="flex items-center space-x-3">
               <UserAvatar
                 user={post.creator}
                 size="md"
-                className="flex-shrink-0 ring-2 ring-danke-300/50 dark:ring-danke-500/30 shadow-sm hover:ring-danke-400/70 dark:hover:ring-danke-400/50 transition-all duration-200"
+                className="flex-shrink-0 ring-2 ring-gray-300/50 shadow-sm hover:ring-gray-400/70 transition-all duration-200"
               />
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-semibold text-danke-900 dark:text-danke-100 truncate mb-0.5">
+                <div
+                  className="text-sm font-semibold truncate mb-0.5"
+                  style={contrastTextStyles.primary}
+                >
                   {post.creator.name}
                 </div>
-                <div className="text-xs text-danke-600 dark:text-danke-400 font-medium">
+                <div
+                  className="text-xs font-medium"
+                  style={contrastTextStyles.muted}
+                >
                   <time dateTime={post.createdAt}>
                     {new Date(post.createdAt).toLocaleDateString('en-US', {
                       month: 'short',
@@ -382,7 +435,7 @@ function PostCard({
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsEditDialogOpen(true)}
-                  className="h-8 w-8 p-0 text-danke-500 hover:text-danke-700 dark:text-danke-400 dark:hover:text-danke-200 hover:bg-danke-100/50 dark:hover:bg-danke-700/30 rounded-full transition-all duration-200"
+                  className={`h-8 w-8 p-0 ${textColors.muted} hover:${textColors.primary} hover:bg-gray-100/50 rounded-full transition-all duration-200`}
                   aria-label="Edit post"
                 >
                   <Edit2 className="h-4 w-4" />
@@ -394,7 +447,7 @@ function PostCard({
                   size="sm"
                   onClick={handleDeleteClick}
                   disabled={isDeleting}
-                  className="h-8 w-8 p-0 text-danke-500 hover:text-red-600 dark:text-danke-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-all duration-200"
+                  className={`h-8 w-8 p-0 ${textColors.muted} hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-200`}
                   aria-label={isDeleting ? 'Deleting post...' : 'Delete post'}
                 >
                   <Trash2 className="h-4 w-4" />
@@ -421,41 +474,80 @@ export function BoardView({
     }
   }, []);
 
+  const backgroundColor = (board.typeConfig as any)?.backgroundColor;
+  const gradientStyle = generateGradientStyle(backgroundColor);
+  const defaultClasses = getGradientClasses(
+    backgroundColor,
+    'fixed inset-0 w-full h-full'
+  );
+  const textColors = getTextColors(backgroundColor);
+  const contrastTextStyles = getContrastTextStyles(backgroundColor);
+
+  useEffect(() => {
+    if (backgroundColor) {
+      const style = generateGradientStyle(backgroundColor);
+      if (style.background) {
+        document.body.style.background = style.background as string;
+      }
+    } else {
+      document.body.style.background =
+        'linear-gradient(135deg, #fef7ed 0%, #ffffff 50%, #fef7ed 100%)';
+    }
+
+    return () => {
+      document.body.style.background = '';
+    };
+  }, [backgroundColor]);
+
   return (
-    <div className="relative">
-      <DoodleBackground />
+    <>
+      <div className={defaultClasses} style={gradientStyle} />
 
-      <header className="relative my-8 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-danke-900">
-          {board.title}
-        </h1>
-        <p className="text-xl text-danke-700 dark:text-danke-900 max-w-2xl mx-auto">
-          Heartfelt messages and memories for{' '}
-          <span className="font-semibold text-danke-600 dark:text-danke-700">
-            {board.recipientName}
-          </span>
-        </p>
-      </header>
+      <div className="relative min-h-screen">
+        <DoodleBackground />
 
-      <main className="relative">
-        {posts.length === 0 ? (
-          <EmptyState recipientName={board.recipientName} />
-        ) : (
-          <section aria-label="Appreciation messages">
-            <MasonryLayout className="w-full" minColumnWidth={320} gap={24}>
-              {posts.map((post) => (
-                <PostCard
-                  key={post.id}
-                  post={post}
-                  board={board}
-                  onPostUpdated={onPostUpdated}
-                  onPostDeleted={onPostDeleted}
-                />
-              ))}
-            </MasonryLayout>
-          </section>
-        )}
-      </main>
-    </div>
+        <header className="relative py-8 text-center">
+          <h1
+            className="text-4xl md:text-5xl font-bold mb-4"
+            style={contrastTextStyles.primary}
+          >
+            {board.title}
+          </h1>
+          <p
+            className="text-xl max-w-2xl mx-auto"
+            style={contrastTextStyles.secondary}
+          >
+            Heartfelt messages and memories for{' '}
+            <span className="font-semibold" style={contrastTextStyles.accent}>
+              {board.recipientName}
+            </span>
+          </p>
+        </header>
+
+        <main className="relative px-4 pb-8">
+          {posts.length === 0 ? (
+            <EmptyState
+              recipientName={board.recipientName}
+              textColors={textColors}
+              contrastTextStyles={contrastTextStyles}
+            />
+          ) : (
+            <section aria-label="Appreciation messages">
+              <MasonryLayout className="w-full" minColumnWidth={320} gap={24}>
+                {posts.map((post) => (
+                  <PostCard
+                    key={post.id}
+                    post={post}
+                    board={board}
+                    onPostUpdated={onPostUpdated}
+                    onPostDeleted={onPostDeleted}
+                  />
+                ))}
+              </MasonryLayout>
+            </section>
+          )}
+        </main>
+      </div>
+    </>
   );
 }
