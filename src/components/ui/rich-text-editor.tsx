@@ -17,7 +17,6 @@ import {
 } from 'lucide-react';
 import { useEffect } from 'react';
 import { Button } from './button';
-import { Card, CardContent } from './card';
 
 interface RichTextEditorProps {
   content?: string;
@@ -98,7 +97,7 @@ export function RichTextEditor({
   );
 
   return (
-    <Card className="overflow-hidden border-transparent">
+    <div className="overflow-hidden border-transparent">
       {editable && (
         <div className="border-b bg-muted/30 p-3">
           <div className="flex flex-wrap items-center gap-1">
@@ -176,18 +175,16 @@ export function RichTextEditor({
         </div>
       )}
 
-      <CardContent className="p-0">
-        <EditorContent
-          editor={editor}
-          className={cn(
-            'prose prose-sm max-w-none',
-            editable ? 'min-h-[120px] p-4' : 'p-4',
-            !editable && 'cursor-default',
-            'prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-em:text-foreground prose-ul:text-foreground prose-ol:text-foreground prose-li:text-foreground',
-            className
-          )}
-        />
-      </CardContent>
-    </Card>
+      <EditorContent
+        editor={editor}
+        className={cn(
+          'prose prose-sm max-w-none',
+          editable ? 'min-h-[120px] p-4' : 'p-4',
+          !editable && 'cursor-default',
+          'prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-em:text-foreground prose-ul:text-foreground prose-ol:text-foreground prose-li:text-foreground',
+          className
+        )}
+      />
+    </div>
   );
 }
