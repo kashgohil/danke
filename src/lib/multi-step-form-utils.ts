@@ -43,7 +43,6 @@ export const transformFormDataForAPI = (formData: MultiStepFormData) => {
 
     // Extended fields
     boardType: basicInfo.boardType,
-    nameType: basicInfo.nameType,
     postingMode: boardConfig.postingMode,
     moderationEnabled: boardConfig.moderationEnabled,
     allowAnonymous: boardConfig.allowAnonymous,
@@ -59,9 +58,7 @@ export const transformFormDataForAPI = (formData: MultiStepFormData) => {
 // Step completion validation
 export const getStepCompletionStatus = (formData: MultiStepFormData) => {
   const basicInfoComplete = !!(
-    formData.basicInfo.recipientName.trim() &&
-    formData.basicInfo.boardType &&
-    formData.basicInfo.nameType
+    formData.basicInfo.recipientName.trim() && formData.basicInfo.boardType
   );
 
   // Type config is always considered complete since most fields are optional
