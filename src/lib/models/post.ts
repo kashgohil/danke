@@ -1,5 +1,6 @@
 import { and, desc, eq } from 'drizzle-orm';
 import { boards, db, posts, type NewPost, type Post } from '../db';
+import { ModerationService } from '../moderation';
 import { trackDbQuery } from '../performance';
 import {
   createPostSchema,
@@ -16,6 +17,16 @@ export class PostModel {
   ): Promise<Post> {
     return trackDbQuery('post-create', async () => {
       const validatedData = createPostSchema.parse(data);
+
+      const moderationResult = await ModerationService.moderatePost(
+        validatedData.content,
+        boardId,
+        creatorId
+      );
+
+      if (!moderationResult.isAllowed) {
+        throw new Error(`moderation: ${moderationResult.reason}`);
+      }
 
       const newPost: NewPost = {
         ...validatedData,
