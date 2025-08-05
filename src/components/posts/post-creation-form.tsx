@@ -246,7 +246,7 @@ function PostCreationFormContent({
           <div className="space-y-4">
             <div>
               <label className="flex items-center gap-2 text-sm font-semibold mb-3 text-danke-700 dark:text-danke-300">
-                <MessageCircle className="w-4 h-4 text-danke-600" />
+                <MessageCircle className="w-4 h-4 text-danke-gold" />
                 Your Message
                 <span className="text-red-500">*</span>
               </label>
@@ -327,8 +327,8 @@ function PostCreationFormContent({
           )}
 
           {postingPermissions.postingMode === 'single' && (
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+            <div className="bg-danke-gold/10 border border-border dark:border-border rounded-lg p-4">
+              <div className="flex items-center gap-2 text-primary">
                 <AlertCircle className="w-4 h-4" />
                 <p className="text-sm font-medium">
                   Single Post Mode: You can only submit one message to this

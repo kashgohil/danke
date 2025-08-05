@@ -156,7 +156,6 @@ function EmptyState({
 }) {
   return (
     <div className="text-center py-20 relative">
-      {/* Decorative background elements */}
       <div className="absolute inset-0 flex items-center justify-center opacity-5">
         <div className="w-96 h-96 rounded-full bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 animate-pulse" />
       </div>
