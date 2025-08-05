@@ -137,6 +137,9 @@ export function MediaCarousel({
 }: MediaCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
 
   if (!mediaUrls || mediaUrls.length === 0) {
     return null;
@@ -146,21 +149,23 @@ export function MediaCarousel({
     return (
       <div
         className={cn(
-          'rounded-lg overflow-hidden aspect-[4/3] min-h-[200px]',
+          'rounded-xl overflow-hidden aspect-[4/3] min-h-[200px] shadow-xl',
           className
         )}
       >
-        <CarouselMediaItem
-          url={mediaUrls[0]}
-          type={getMediaType(mediaUrls[0])}
-          className="w-full h-full"
-        />
+        <div className="w-full h-full transform transition-transform duration-300 hover:scale-[1.02]">
+          <CarouselMediaItem
+            url={mediaUrls[0]}
+            type={getMediaType(mediaUrls[0])}
+            className="w-full h-full"
+          />
+        </div>
       </div>
     );
   }
 
   const goToPrevious = () => {
-    if (isTransitioning) return;
+    if (isTransitioning || isDragging) return;
     setIsTransitioning(true);
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? mediaUrls.length - 1 : prevIndex - 1
@@ -168,7 +173,7 @@ export function MediaCarousel({
   };
 
   const goToNext = () => {
-    if (isTransitioning) return;
+    if (isTransitioning || isDragging) return;
     setIsTransitioning(true);
     setCurrentIndex((prevIndex) =>
       prevIndex === mediaUrls.length - 1 ? 0 : prevIndex + 1
@@ -176,87 +181,245 @@ export function MediaCarousel({
   };
 
   const goToSlide = (index: number) => {
-    if (isTransitioning || index === currentIndex) return;
+    if (isTransitioning || index === currentIndex || isDragging) return;
     setIsTransitioning(true);
     setCurrentIndex(index);
+  };
+
+  const handleDragStart = (clientX: number) => {
+    if (isTransitioning) return;
+    setIsDragging(true);
+    setStartX(clientX);
+    setDragOffset(0);
+  };
+
+  const handleDragMove = (clientX: number) => {
+    if (!isDragging) return;
+    const diff = clientX - startX;
+    setDragOffset(diff);
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+
+    const threshold = 50; // Minimum drag distance to trigger slide change
+
+    if (Math.abs(dragOffset) > threshold) {
+      if (dragOffset > 0) {
+        goToPrevious();
+      } else {
+        goToNext();
+      }
+    }
+
+    setDragOffset(0);
+  };
+
+  // Mouse events
+  const handleMouseDown = (e: React.MouseEvent) => {
+    // Don't start drag if clicking on a button or interactive element
+    if ((e.target as HTMLElement).closest('button')) {
+      return;
+    }
+    e.preventDefault();
+    handleDragStart(e.clientX);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    handleDragMove(e.clientX);
+  };
+
+  const handleMouseUp = () => {
+    handleDragEnd();
+  };
+
+  // Touch events
+  const handleTouchStart = (e: React.TouchEvent) => {
+    handleDragStart(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    handleDragMove(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    handleDragEnd();
   };
 
   useEffect(() => {
     if (isTransitioning) {
       const timer = setTimeout(() => {
         setIsTransitioning(false);
-      }, 300);
+      }, 400); // Increased duration for smoother Apple-like animation
       return () => clearTimeout(timer);
     }
   }, [isTransitioning]);
 
+  useEffect(() => {
+    if (isDragging) {
+      const handleGlobalMouseMove = (e: MouseEvent) => {
+        handleDragMove(e.clientX);
+      };
+
+      const handleGlobalMouseUp = () => {
+        handleDragEnd();
+      };
+
+      document.addEventListener('mousemove', handleGlobalMouseMove);
+      document.addEventListener('mouseup', handleGlobalMouseUp);
+
+      return () => {
+        document.removeEventListener('mousemove', handleGlobalMouseMove);
+        document.removeEventListener('mouseup', handleGlobalMouseUp);
+      };
+    }
+  }, [isDragging, startX, dragOffset]);
+
+  const getTransform = () => {
+    const baseTransform = -currentIndex * 100;
+    const dragTransform = isDragging
+      ? (dragOffset / window.innerWidth) * 100
+      : 0;
+    return baseTransform + dragTransform;
+  };
+
   return (
     <div
       className={cn(
-        'relative rounded-lg overflow-hidden group aspect-[4/3] min-h-[200px]',
+        'relative rounded-xl overflow-hidden group aspect-[4/3] min-h-[200px] shadow-xl bg-black/5 dark:bg-white/5',
+        'transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]',
         className
       )}
     >
-      <div className="relative overflow-hidden h-full">
+      <div
+        className="relative overflow-hidden h-full cursor-grab active:cursor-grabbing select-none"
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <div
-          className="flex h-full transition-transform duration-300 ease-out"
+          className={cn(
+            'flex h-full',
+            isDragging
+              ? 'transition-none'
+              : 'transition-transform duration-[400ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)]'
+          )}
           style={{
-            transform: `translateX(-${currentIndex * 100}%)`,
+            transform: `translateX(${getTransform()}%)`,
           }}
         >
-          {mediaUrls.map((url, index) => (
-            <div key={index} className="w-full h-full flex-shrink-0">
-              <CarouselMediaItem
-                url={url}
-                type={getMediaType(url)}
-                className="w-full h-full"
-              />
-            </div>
-          ))}
+          {mediaUrls.map((url, index) => {
+            const isActive = index === currentIndex;
+            const distance = Math.abs(index - currentIndex);
+
+            return (
+              <div
+                key={index}
+                className={cn(
+                  'w-full h-full flex-shrink-0 transform transition-all duration-400',
+                  isActive ? 'scale-100 opacity-100' : 'scale-95 opacity-70'
+                )}
+                style={{
+                  filter:
+                    distance > 0
+                      ? `blur(${Math.min(distance * 2, 4)}px)`
+                      : 'none',
+                }}
+              >
+                <CarouselMediaItem
+                  url={url}
+                  type={getMediaType(url)}
+                  className="w-full h-full"
+                />
+              </div>
+            );
+          })}
         </div>
 
         <Button
           variant="secondary"
           size="sm"
-          className="absolute left-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-full bg-white/90 hover:bg-white opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg z-10 backdrop-blur-sm"
-          onClick={goToPrevious}
-          disabled={isTransitioning}
+          className={cn(
+            'absolute left-4 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-full',
+            'bg-white/95 hover:bg-white border-0 shadow-lg backdrop-blur-md',
+            'opacity-0 group-hover:opacity-100 transition-all duration-300',
+            'transform hover:scale-110 active:scale-95',
+            'z-20'
+          )}
+          onClick={(e) => {
+            e.stopPropagation();
+            goToPrevious();
+          }}
+          disabled={isTransitioning || isDragging}
           aria-label="Previous media"
         >
-          <ChevronLeft className="h-4 w-4 text-gray-700" />
+          <ChevronLeft className="h-5 w-5 text-gray-700" />
         </Button>
 
         <Button
           variant="secondary"
           size="sm"
-          className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-full bg-white/90 hover:bg-white opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg z-10 backdrop-blur-sm"
-          onClick={goToNext}
-          disabled={isTransitioning}
+          className={cn(
+            'absolute right-4 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-full',
+            'bg-white/95 hover:bg-white border-0 shadow-lg backdrop-blur-md',
+            'opacity-0 group-hover:opacity-100 transition-all duration-300',
+            'transform hover:scale-110 active:scale-95',
+            'z-20'
+          )}
+          onClick={(e) => {
+            e.stopPropagation();
+            goToNext();
+          }}
+          disabled={isTransitioning || isDragging}
           aria-label="Next media"
         >
-          <ChevronRight className="h-4 w-4 text-gray-700" />
+          <ChevronRight className="h-5 w-5 text-gray-700" />
         </Button>
 
-        <div className="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-sm">
+        <div
+          className={cn(
+            'absolute top-4 right-4 bg-black/70 text-white text-xs px-3 py-1.5 rounded-full',
+            'opacity-0 group-hover:opacity-100 transition-all duration-300',
+            'backdrop-blur-md font-medium',
+            'transform translate-y-0 group-hover:-translate-y-0.5'
+          )}
+        >
           {currentIndex + 1} / {mediaUrls.length}
         </div>
       </div>
 
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      <div
+        className={cn(
+          'absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2',
+          'opacity-0 group-hover:opacity-100 transition-all duration-300',
+          'transform translate-y-2 group-hover:translate-y-0'
+        )}
+      >
         {mediaUrls.map((_, index) => (
           <button
             key={index}
             className={cn(
-              'w-2 h-2 rounded-full transition-all duration-200 transform hover:scale-125',
+              'rounded-full transition-all duration-300 transform',
+              'hover:scale-125 active:scale-110',
               index === currentIndex
-                ? 'bg-white shadow-lg scale-110'
-                : 'bg-white/60 hover:bg-white/80'
+                ? 'w-6 h-2 bg-white shadow-lg'
+                : 'w-2 h-2 bg-white/60 hover:bg-white/80'
             )}
-            onClick={() => goToSlide(index)}
-            disabled={isTransitioning}
+            onClick={(e) => {
+              e.stopPropagation();
+              goToSlide(index);
+            }}
+            disabled={isTransitioning || isDragging}
             aria-label={`Go to media ${index + 1}`}
           />
         ))}
+      </div>
+
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
     </div>
   );
