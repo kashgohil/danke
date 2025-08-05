@@ -187,14 +187,14 @@ function PostEditFormContent({
 
   if (isInDialog) {
     return (
-      <div className={className}>
+      <div className={`${className} overflow-x-hidden`}>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <div
               className={`rounded-lg overflow-hidden transition-all duration-200 ${
                 validationErrors.content
                   ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20'
-                  : ''
+                  : 'border'
               }`}
             >
               <RichTextEditor
@@ -241,6 +241,7 @@ function PostEditFormContent({
                           type={file.type}
                           filename={file.file.name}
                           onRemove={() => removeMediaFile(file.id)}
+                          className="max-w-full"
                         />
                       )
                   )}
