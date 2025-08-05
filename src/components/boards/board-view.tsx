@@ -365,13 +365,7 @@ function PostCard({
         {post.mediaUrls && post.mediaUrls.length > 0 && (
           <div className="-mx-2" role="group" aria-label="Media attachments">
             <MediaCarousel
-              mediaUrls={[
-                ...post.mediaUrls,
-                ...post.mediaUrls,
-                ...post.mediaUrls,
-                ...post.mediaUrls,
-                ...post.mediaUrls,
-              ]}
+              mediaUrls={post.mediaUrls}
               getMediaType={getMediaType}
               className="w-full"
             />

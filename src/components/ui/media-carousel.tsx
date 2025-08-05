@@ -1,5 +1,6 @@
 'use client';
 
+import { useRefCallback } from '@/hooks/use-ref-callback';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, Volume2, VolumeX } from 'lucide-react';
 import Image from 'next/image';
@@ -172,13 +173,13 @@ export function MediaCarousel({
     );
   };
 
-  const goToNext = () => {
+  const goToNext = useRefCallback(() => {
     if (isTransitioning || isDragging) return;
     setIsTransitioning(true);
     setCurrentIndex((prevIndex) =>
       prevIndex === mediaUrls.length - 1 ? 0 : prevIndex + 1
     );
-  };
+  });
 
   const goToSlide = (index: number) => {
     if (isTransitioning || index === currentIndex || isDragging) return;
@@ -226,14 +227,6 @@ export function MediaCarousel({
     handleDragStart(e.clientX);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    handleDragMove(e.clientX);
-  };
-
-  const handleMouseUp = () => {
-    handleDragEnd();
-  };
-
   // Touch events
   const handleTouchStart = (e: React.TouchEvent) => {
     handleDragStart(e.touches[0].clientX);
@@ -246,6 +239,11 @@ export function MediaCarousel({
   const handleTouchEnd = () => {
     handleDragEnd();
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => goToNext(), 5000);
+    return () => clearInterval(intervalId);
+  }, [goToNext]);
 
   useEffect(() => {
     if (isTransitioning) {
