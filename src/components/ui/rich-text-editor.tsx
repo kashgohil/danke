@@ -11,7 +11,6 @@ import {
   Italic,
   List,
   ListOrdered,
-  Palette,
   Strikethrough,
   Underline as UnderlineIcon,
 } from 'lucide-react';
@@ -153,23 +152,6 @@ export function RichTextEditor({
               >
                 <ListOrdered className="h-4 w-4" />
               </ToolbarButton>
-            </div>
-
-            <div className="w-px h-6 bg-border mx-2" />
-
-            <div className="flex items-center gap-2">
-              <Palette className="h-4 w-4 text-muted-foreground" />
-              <div className="relative">
-                <input
-                  type="color"
-                  onChange={(e) =>
-                    editor.chain().focus().setColor(e.target.value).run()
-                  }
-                  value={editor.getAttributes('textStyle').color || '#000000'}
-                  className="w-8 h-8 border border-input rounded cursor-pointer bg-background hover:bg-accent transition-colors"
-                  title="Text Color"
-                />
-              </div>
             </div>
           </div>
         </div>
