@@ -5,7 +5,6 @@ import { PostEditForm } from '@/components/posts/post-edit-form';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { MasonryLayout } from '@/components/ui/masonry-layout';
-import { MediaPreview } from '@/components/ui/media-preview';
 import { UserAvatar } from '@/components/ui/user-avatar';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
 import {
@@ -20,6 +19,7 @@ import { useAuth } from '@clerk/nextjs';
 import { Edit2, Heart, MessageCircle, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { MediaCarousel } from '../ui/media-carousel';
 
 export interface Board {
   id: string;
@@ -301,7 +301,7 @@ function PostCard({
   return (
     <>
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden">
           <DialogHeader>
             <DialogTitle>Edit Your Message</DialogTitle>
           </DialogHeader>
@@ -357,11 +357,26 @@ function PostCard({
         </DialogContent>
       </Dialog>
       <Card
-        className="w-full h-fit overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 shadow-lg backdrop-blur-sm focus-within:ring-2 focus-within:ring-opacity-50 relative group border"
+        className="w-full h-fit overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 shadow-lg backdrop-blur-sm relative group border"
         style={cardStyle}
         role="article"
         aria-label={`Post by ${post.creator.name}`}
       >
+        {post.mediaUrls && post.mediaUrls.length > 0 && (
+          <div className="-mx-2" role="group" aria-label="Media attachments">
+            <MediaCarousel
+              mediaUrls={[
+                ...post.mediaUrls,
+                ...post.mediaUrls,
+                ...post.mediaUrls,
+                ...post.mediaUrls,
+                ...post.mediaUrls,
+              ]}
+              getMediaType={getMediaType}
+              className="w-full"
+            />
+          </div>
+        )}
         <div className="p-6 space-y-4 relative">
           <div
             className="text-sm leading-relaxed"
@@ -372,24 +387,6 @@ function PostCard({
               className="border-0 p-0 min-h-0"
             />
           </div>
-
-          {post.mediaUrls && post.mediaUrls.length > 0 && (
-            <div
-              className="space-y-3 -mx-2"
-              role="group"
-              aria-label="Media attachments"
-            >
-              {post.mediaUrls.map((url, index) => (
-                <div key={index} className="rounded-lg overflow-hidden">
-                  <MediaPreview
-                    url={url}
-                    type={getMediaType(url)}
-                    className="w-full"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
 
           <div className="flex items-center justify-between pt-4 border-t border-gray-200/30 relative">
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-300/30 to-transparent" />
