@@ -2,6 +2,8 @@ import { cache, cacheKeys, cacheTTL } from '@/lib/cache';
 import { db, users } from '@/lib/db';
 import { BoardModel } from '@/lib/models/board';
 import { PostModel } from '@/lib/models/post';
+import { createMultiStepBoardSchema } from '@/lib/validations/board';
+import { auth } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -114,6 +116,93 @@ export async function GET(
     console.error('Error fetching board:', error);
     return NextResponse.json(
       { error: 'Failed to fetch board' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ boardId: string }> }
+) {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { boardId } = await params;
+    if (!boardId) {
+      return NextResponse.json(
+        { error: 'Board ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const body = await request.json();
+
+    const validationResult = createMultiStepBoardSchema
+      .partial()
+      .safeParse(body);
+    if (!validationResult.success) {
+      return NextResponse.json(
+        {
+          error: 'Invalid board data',
+          details: validationResult.error.issues,
+        },
+        { status: 400 }
+      );
+    }
+
+    const updatedBoard = await BoardModel.update(
+      boardId,
+      validationResult.data,
+      userId
+    );
+
+    cache.delete(cacheKeys.board(updatedBoard.viewToken));
+    cache.delete(cacheKeys.boardPosts(updatedBoard.id));
+
+    return NextResponse.json({
+      message: 'Board updated successfully',
+      board: {
+        id: updatedBoard.id,
+        title: updatedBoard.title,
+        recipientName: updatedBoard.recipientName,
+        boardType: updatedBoard.boardType,
+        postingMode: updatedBoard.postingMode,
+        moderationEnabled: updatedBoard.moderationEnabled,
+        allowAnonymous: updatedBoard.allowAnonymous,
+        maxPostsPerUser: updatedBoard.maxPostsPerUser,
+        boardVisibility: updatedBoard.boardVisibility,
+        expirationDate: updatedBoard.expirationDate,
+        typeConfig: updatedBoard.typeConfig,
+        updatedAt: updatedBoard.updatedAt.toISOString(),
+      },
+    });
+  } catch (error) {
+    console.error('Error updating board:', error);
+
+    if (error instanceof Error) {
+      if (error.message.includes('validation:')) {
+        return NextResponse.json(
+          { error: error.message.replace('validation: ', '') },
+          { status: 400 }
+        );
+      }
+      if (error.message.includes('Unauthorized')) {
+        return NextResponse.json(
+          { error: 'You can only update your own boards' },
+          { status: 403 }
+        );
+      }
+      if (error.message === 'Board not found') {
+        return NextResponse.json({ error: 'Board not found' }, { status: 404 });
+      }
+    }
+
+    return NextResponse.json(
+      { error: 'Failed to update board' },
       { status: 500 }
     );
   }

@@ -23,7 +23,7 @@ export class BoardModel {
       if (
         validatedData.postingMode === 'single' &&
         validatedData.maxPostsPerUser &&
-        typeof validatedData.maxPostsPerUser === 'string' &&
+        validatedData.maxPostsPerUser !== null &&
         parseInt(validatedData.maxPostsPerUser) > 1
       ) {
         throw new Error(
@@ -200,6 +200,118 @@ export class BoardModel {
         .select()
         .from(boards)
         .where(eq(boards.creatorId, creatorId));
+    });
+  }
+
+  static async update(
+    id: string,
+    data: Partial<CreateMultiStepBoardSchema>,
+    creatorId: string
+  ): Promise<Board> {
+    return trackDbQuery('board-update', async () => {
+      // First verify the board exists and user owns it
+      const existingBoard = await this.getById(id);
+      if (!existingBoard) {
+        throw new Error('Board not found');
+      }
+      if (existingBoard.creatorId !== creatorId) {
+        throw new Error('Unauthorized: You can only update your own boards');
+      }
+
+      const validatedData = createMultiStepBoardSchema.partial().parse(data);
+
+      if (
+        validatedData.postingMode === 'single' &&
+        validatedData.maxPostsPerUser &&
+        validatedData.maxPostsPerUser !== null &&
+        parseInt(validatedData.maxPostsPerUser) > 1
+      ) {
+        throw new Error(
+          'validation: Single posting mode cannot have max posts per user greater than 1'
+        );
+      }
+
+      if (
+        validatedData.expirationDate &&
+        validatedData.expirationDate <= new Date()
+      ) {
+        throw new Error('validation: Expiration date must be in the future');
+      }
+
+      if (validatedData.typeConfig && validatedData.boardType) {
+        const typeConfigValidation = this.validateTypeConfig(
+          validatedData.boardType,
+          validatedData.typeConfig
+        );
+        if (!typeConfigValidation.isValid) {
+          throw new Error(
+            `validation: Invalid type configuration - ${typeConfigValidation.error}`
+          );
+        }
+      }
+
+      // Prepare update data
+      const updateData: Partial<NewBoard> = {};
+
+      if (validatedData.title !== undefined)
+        updateData.title = validatedData.title;
+      if (validatedData.recipientName !== undefined)
+        updateData.recipientName = validatedData.recipientName;
+      if (validatedData.boardType !== undefined)
+        updateData.boardType = validatedData.boardType;
+      if (validatedData.postingMode !== undefined)
+        updateData.postingMode = validatedData.postingMode;
+      if (validatedData.moderationEnabled !== undefined)
+        updateData.moderationEnabled = validatedData.moderationEnabled;
+      if (validatedData.allowAnonymous !== undefined)
+        updateData.allowAnonymous = validatedData.allowAnonymous;
+      if (validatedData.maxPostsPerUser !== undefined)
+        updateData.maxPostsPerUser = validatedData.maxPostsPerUser || null;
+      if (validatedData.boardVisibility !== undefined)
+        updateData.boardVisibility = validatedData.boardVisibility;
+      if (validatedData.expirationDate !== undefined)
+        updateData.expirationDate = validatedData.expirationDate || null;
+      if (validatedData.typeConfig !== undefined)
+        updateData.typeConfig = validatedData.typeConfig || null;
+
+      try {
+        const [updatedBoard] = await db
+          .update(boards)
+          .set({ ...updateData, updatedAt: new Date() })
+          .where(eq(boards.id, id))
+          .returning();
+
+        if (!updatedBoard) {
+          throw new Error('Failed to update board - no data returned');
+        }
+
+        return updatedBoard;
+      } catch (dbError) {
+        console.error('Database error updating board:', dbError);
+
+        if (dbError instanceof Error) {
+          if (
+            dbError.message.includes('foreign key') ||
+            dbError.message.includes('violates')
+          ) {
+            throw new Error(
+              'validation: Invalid data or database constraint violation'
+            );
+          }
+          if (
+            dbError.message.includes('null value') ||
+            dbError.message.includes('not-null')
+          ) {
+            throw new Error('validation: Missing required field in board data');
+          }
+        }
+
+        throw new Error(
+          `Failed to update board due to database error: ${
+            dbError instanceof Error ? dbError.message : 'Unknown error'
+          }`
+        );
+      }
     });
   }
 

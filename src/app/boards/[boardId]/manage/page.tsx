@@ -157,6 +157,15 @@ export default async function BoardManagePage({
                       Add Message
                     </Button>
                   </Link>
+                  <Link
+                    href={`/boards/${board.id}/manage/edit`}
+                    className="w-full"
+                  >
+                    <Button variant="outline" className="w-full">
+                      <Settings className="w-4 h-4 mr-2" />
+                      Edit Configuration
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -211,7 +220,6 @@ export default async function BoardManagePage({
             </Card>
           </div>
 
-          {/* Quick Actions */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
             <Link href="/dashboard">
               <Button variant="outline" className="px-6">
