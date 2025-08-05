@@ -58,7 +58,7 @@ A modern Next.js web application for creating and sharing beautiful appreciation
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/kashgohil/danke.git
    cd danke
    ```
 
