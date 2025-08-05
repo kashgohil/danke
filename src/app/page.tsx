@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Footer } from '@/components/ui/footer';
 import { SignedIn, SignedOut, SignUpButton } from '@clerk/nextjs';
 import {
   Heart,
@@ -18,7 +19,7 @@ import Link from 'next/link';
 
 export default function HomePage() {
   return (
-    <>
+    <div className="relative">
       <section className="relative overflow-hidden py-20 px-4 backdrop-blur-lg">
         <div className="container mx-auto text-center">
           <div className="max-w-4xl mx-auto">
@@ -97,7 +98,7 @@ export default function HomePage() {
       <section className="py-20 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-danke-900">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-danke-gold">
               Everything you need to celebrate together
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -225,6 +226,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </>
+
+      <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] -mb-12">
+        <Footer />
+      </div>
+    </div>
   );
 }
