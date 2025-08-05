@@ -294,7 +294,7 @@ export function MediaUpload({
                 className="transition-all hover:shadow-sm"
               >
                 <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center space-x-3 min-w-0 flex-1">
                       <div className="flex-shrink-0">
                         <Icon className="h-5 w-5 text-muted-foreground" />
