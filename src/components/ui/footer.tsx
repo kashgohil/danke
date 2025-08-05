@@ -119,14 +119,6 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/api"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  API Docs
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/status"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
