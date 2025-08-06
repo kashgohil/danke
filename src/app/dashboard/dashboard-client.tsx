@@ -3,7 +3,14 @@
 import { Button } from '@/components/ui/button';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
 import { formatDistanceToNow } from 'date-fns';
-import { Calendar, Eye, MessageSquare, Plus, User } from 'lucide-react';
+import {
+  Calendar,
+  Eye,
+  MessageSquare,
+  Paperclip,
+  Plus,
+  User,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -293,8 +300,9 @@ export function DashboardClient() {
                         {getContentPreview(post.content)}
                       </p>
                       {post.mediaUrls && post.mediaUrls.length > 0 && (
-                        <p className="text-xs text-muted-foreground mt-2">
-                          📎 {post.mediaUrls.length} attachment
+                        <p className="text-xs text-muted-foreground mt-2 flex items-center gap-2">
+                          <Paperclip size={12} /> {post.mediaUrls.length}{' '}
+                          attachment
                           {post.mediaUrls.length > 1 ? 's' : ''}
                         </p>
                       )}
