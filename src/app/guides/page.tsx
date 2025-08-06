@@ -94,7 +94,6 @@ export default function GuidesPage() {
         </div>
       </section>
 
-      {/* Detailed Guides */}
       <section>
         <h2 className="text-3xl font-bold text-center mb-12 text-danke-900">
           Detailed Guides
@@ -206,8 +205,7 @@ export default function GuidesPage() {
         </div>
       </section>
 
-      {/* Use Case Guides */}
-      <section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
+      <section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg md:rounded-lg">
         <h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">
           Guides by Occasion
         </h2>
@@ -391,8 +389,7 @@ export default function GuidesPage() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
+      <section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg md:rounded-lg">
         <h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">
           Frequently Asked Questions
         </h2>
@@ -454,7 +451,6 @@ export default function GuidesPage() {
         </div>
       </section>
 
-      {/* Call to Action */}
       <section className="text-center py-16 -mx-4 px-4 bg-gradient-to-r rounded-lg text-danke-900">
         <h2 className="text-3xl font-bold mb-6">Ready to Create Your Board?</h2>
         <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">

@@ -32,7 +32,6 @@ export default function PricingPage() {
         </p>
       </section>
 
-      {/* Pricing Cards */}
       <section className="py-16 -mx-4 px-4">
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Free Plan */}
@@ -83,7 +82,6 @@ export default function PricingPage() {
             </div>
           </Card>
 
-          {/* Pro Plan */}
           <Card className="border-2 border-danke-gold shadow-xl hover:shadow-2xl transition-all duration-300 relative scale-105">
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
               <div className="bg-danke-gold text-danke-900 px-4 py-2 rounded-full text-sm font-semibold">
@@ -144,7 +142,6 @@ export default function PricingPage() {
             </div>
           </Card>
 
-          {/* Enterprise Plan */}
           <Card className="border-2 border-border shadow-lg hover:shadow-xl transition-all duration-300 relative">
             <CardHeader className="text-center p-8">
               <div className="w-16 h-16 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
@@ -199,8 +196,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Feature Comparison */}
-      <section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
+      <section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg md:rounded-lg">
         <h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">
           Compare Plans
         </h2>
@@ -286,8 +282,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
+      <section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg md:rounded-lg">
         <h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">
           Frequently Asked Questions
         </h2>
@@ -347,7 +342,6 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Trust Indicators */}
       <section>
         <h2 className="text-3xl font-bold text-center mb-12 text-danke-900">
           Trusted by Communities Worldwide
@@ -389,7 +383,6 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Call to Action */}
       <section className="text-center py-16 -mx-4 px-4 bg-gradient-to-r rounded-lg text-danke-900">
         <h2 className="text-3xl font-bold mb-6">
           Ready to Start Building Appreciation?
