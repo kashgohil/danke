@@ -34,7 +34,7 @@ export default function HomePage() {
             <h1 className="text-5xl md:text-7xl font-bold mb-6 text-danke-900 leading-tight">
               Create Beautiful
               <br />
-              Danke Boards
+              <span className="text-danke-gold">Danke</span> Boards
             </h1>
 
             <p className="text-xl md:text-2xl text-danke-900 mb-8 max-w-3xl mx-auto leading-relaxed">
