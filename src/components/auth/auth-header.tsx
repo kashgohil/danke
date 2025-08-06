@@ -48,7 +48,7 @@ export function AuthHeader() {
   }
 
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center gap-4">
       <SignedOut>
         <SignInButton mode="modal">
           <Button variant="outline" size="sm">
@@ -75,7 +75,7 @@ export function AuthHeader() {
         <UserButton
           appearance={{
             elements: {
-              avatarBox: 'w-8 h-8',
+              avatarBox: 'w-8 h-8 mr-4',
               userButtonPopoverCard: 'shadow-lg border',
               userButtonPopoverActionButton: 'hover:bg-gray-50',
             },
