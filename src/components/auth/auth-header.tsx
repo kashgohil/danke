@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
 import {
   SignedIn,
   SignedOut,
@@ -42,7 +41,6 @@ export function AuthHeader() {
             </Button>
           </SignInButton>
         </SignedOut>
-        <ThemeToggle />
       </div>
     );
   }
