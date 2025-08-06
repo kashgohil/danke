@@ -36,6 +36,13 @@
       "when": 1754252681303,
       "tag": "0004_smooth_hardball",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1754483373473,
+      "tag": "0005_loud_juggernaut",
+      "breakpoints": true
     }
   ]
 }
