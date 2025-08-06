@@ -34,7 +34,7 @@ export function ScrambledPictureLibrary({
             'border-4 border-danke-gold',
             index === 0 && 'top-2 left-2 rotate-[-8deg] z-10',
             index === 1 && 'top-4 left-4 rotate-[3deg] z-20',
-            index === 2 && 'top-6 left-6 rotate-[-2deg] z-30',
+            index === 2 && 'top-6 left-0 rotate-[-2deg] z-30',
             'group-hover:shadow-2xl group-hover:scale-105',
 
             index === 2 &&
@@ -50,6 +50,8 @@ export function ScrambledPictureLibrary({
               src={picture.src}
               alt={picture.alt}
               fill
+              unoptimized
+              quality={100}
               className="object-cover transition-transform duration-300"
               sizes="(max-width: 768px) 100vw, 300px"
             />
