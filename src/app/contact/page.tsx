@@ -94,8 +94,8 @@ export default function ContactPage() {
           <div className="space-y-6">
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader className="flex flex-row items-center gap-4">
-                <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center">
-                  <Mail className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+                <div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center">
+                  <Mail className="w-6 h-6 text-danke-900" />
                 </div>
                 <div>
                   <CardTitle className="text-lg">Email</CardTitle>
@@ -113,8 +113,8 @@ export default function ContactPage() {
 
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader className="flex flex-row items-center gap-4">
-                <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center">
-                  <MessageCircle className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+                <div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center">
+                  <MessageCircle className="w-6 h-6 text-danke-900" />
                 </div>
                 <div>
                   <CardTitle className="text-lg">Support</CardTitle>
@@ -132,8 +132,8 @@ export default function ContactPage() {
 
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader className="flex flex-row items-center gap-4">
-                <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center">
-                  <Twitter className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+                <div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center">
+                  <Twitter className="w-6 h-6 text-danke-900" />
                 </div>
                 <div>
                   <CardTitle className="text-lg">Twitter / X</CardTitle>
@@ -150,8 +150,8 @@ export default function ContactPage() {
             </Card>
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader className="flex flex-row items-center gap-4">
-                <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+                <div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center">
+                  <Clock className="w-6 h-6 text-danke-900" />
                 </div>
                 <div>
                   <CardTitle className="text-lg">Response Time</CardTitle>

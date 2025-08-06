@@ -140,10 +140,10 @@ export function CreateBoardClient() {
       <div className="w-full">
         <div className="max-w-4xl mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8">
           <div className="text-center space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-danke-900 dark:text-danke-900">
+            <h1 className="text-2xl sm:text-3xl font-bold text-danke-900">
               Create Your Board
             </h1>
-            <p className="text-sm sm:text-base text-danke-900 dark:text-danke-900">
+            <p className="text-sm sm:text-base text-danke-900">
               Follow these steps to create a personalized board for your
               occasion
             </p>

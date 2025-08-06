@@ -41,7 +41,7 @@ export default async function BoardManagePage({
 
     if (!board) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-danke-50 via-white to-danke-100 dark:from-danke-700 dark:via-danke-300 dark:to-danke-600">
+        <div className="min-h-screen bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="max-w-md mx-auto text-center">
               <div className="mx-auto w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-6">
@@ -64,7 +64,7 @@ export default async function BoardManagePage({
 
     if (board.creatorId !== userId) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-danke-50 via-white to-danke-100 dark:from-danke-700 dark:via-danke-300 dark:to-danke-600">
+        <div className="min-h-screen bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="max-w-md mx-auto text-center">
               <div className="mx-auto w-20 h-20 bg-destructive/10 rounded-full flex items-center justify-center mb-6">
@@ -98,7 +98,7 @@ export default async function BoardManagePage({
           <Link href="/dashboard">
             <Button
               variant="ghost"
-              className="flex items-center gap-2 text-danke-700 dark:text-danke-900"
+              className="flex items-center gap-2 text-danke-900"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Dashboard
@@ -108,16 +108,16 @@ export default async function BoardManagePage({
 
         <div className="space-y-8">
           <div className="text-center space-y-4">
-            <div className="inline-flex items-center gap-2 bg-danke-300 dark:bg-danke-gold/40 text-danke-900 dark:text-danke-900 px-4 py-2 rounded-full text-sm font-medium">
+            <div className="inline-flex items-center gap-2 bg-danke-gold/40 text-danke-900 px-4 py-2 rounded-full text-sm font-medium">
               <Settings className="w-4 h-4" />
               <span>Board Management</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-danke-900 dark:text-danke-900">
+            <h1 className="text-3xl sm:text-4xl font-bold text-danke-900">
               Manage Your Board
             </h1>
-            <p className="text-lg text-danke-700 dark:text-danke-900 max-w-2xl mx-auto">
+            <p className="text-lg text-danke-900 max-w-2xl mx-auto">
               Your appreciation board for{' '}
-              <span className="font-semibold text-danke-900 dark:text-danke-900">
+              <span className="font-semibold text-danke-900">
                 {board.recipientName}
               </span>{' '}
               is ready to collect heartfelt messages
@@ -127,8 +127,8 @@ export default async function BoardManagePage({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:w-2/3 mx-auto">
             <Card className="bg-background/80 backdrop-blur-sm border border-border/40 shadow-lg">
               <CardHeader className="text-center pb-4">
-                <div className="mx-auto w-16 h-16 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mb-4">
-                  <Heart className="w-8 h-8 text-danke-600 dark:text-danke-900" />
+                <div className="mx-auto w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mb-4">
+                  <Heart className="w-8 h-8 text-danke-900" />
                 </div>
                 <CardTitle className="text-xl text-foreground">
                   {board.title}
@@ -172,8 +172,8 @@ export default async function BoardManagePage({
 
             <Card className="bg-background/80 backdrop-blur-sm border border-border/40 shadow-lg">
               <CardHeader className="text-center pb-4">
-                <div className="mx-auto w-16 h-16 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mb-4">
-                  <Share2 className="w-8 h-8 text-danke-600 dark:text-danke-900" />
+                <div className="mx-auto w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mb-4">
+                  <Share2 className="w-8 h-8 text-danke-900" />
                 </div>
                 <CardTitle className="text-xl text-foreground">
                   Share Your Board

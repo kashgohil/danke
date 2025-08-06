@@ -25,19 +25,19 @@ export default function HomePage() {
         <div className="container mx-auto text-center">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
-              <div className="inline-flex items-center gap-2 bg-danke-300 dark:bg-danke-gold/40 text-danke-900 dark:text-danke-900 px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <div className="inline-flex items-center gap-2 bg-danke-gold/40 text-danke-900 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <Sparkles className="w-4 h-4" />
                 Share love, spread joy
               </div>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-danke-900 dark:text-danke-900 leading-tight">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-danke-900 leading-tight">
               Create Beautiful
               <br />
               Danke Boards
             </h1>
 
-            <p className="text-xl md:text-2xl text-danke-900 dark:text-danke-900 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-danke-900 mb-8 max-w-3xl mx-auto leading-relaxed">
               Collect heartfelt messages, memories, and celebrations from your
               community. Share the love and create lasting connections.
             </p>
@@ -86,7 +86,7 @@ export default function HomePage() {
               </SignedOut>
             </div>
 
-            <div className="flex justify-center items-center gap-8 text-sm text-danke-700 dark:text-danke-900">
+            <div className="flex justify-center items-center gap-8 text-sm text-danke-900">
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
                 <span>Thousands of users</span>
@@ -115,8 +115,8 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                  <MessageCircle className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+                <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                  <MessageCircle className="w-6 h-6 text-danke-900" />
                 </div>
                 <CardTitle>Rich Text Messages</CardTitle>
                 <CardDescription>
@@ -128,8 +128,8 @@ export default function HomePage() {
 
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                  <ImageIcon className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+                <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                  <ImageIcon className="w-6 h-6 text-danke-900" />
                 </div>
                 <CardTitle>Media Uploads</CardTitle>
                 <CardDescription>
@@ -141,8 +141,8 @@ export default function HomePage() {
 
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                  <Users className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+                <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                  <Users className="w-6 h-6 text-danke-900" />
                 </div>
                 <CardTitle>Easy Sharing</CardTitle>
                 <CardDescription>
@@ -154,8 +154,8 @@ export default function HomePage() {
 
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                  <Sparkles className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+                <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                  <Sparkles className="w-6 h-6 text-danke-900" />
                 </div>
                 <CardTitle>Beautiful Layouts</CardTitle>
                 <CardDescription>
@@ -167,8 +167,8 @@ export default function HomePage() {
 
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                  <Heart className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+                <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                  <Heart className="w-6 h-6 text-danke-900" />
                 </div>
                 <CardTitle>Real-time Updates</CardTitle>
                 <CardDescription>
@@ -180,8 +180,8 @@ export default function HomePage() {
 
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                  <Video className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+                <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                  <Video className="w-6 h-6 text-danke-900" />
                 </div>
                 <CardTitle>Privacy & Control</CardTitle>
                 <CardDescription>
@@ -197,10 +197,10 @@ export default function HomePage() {
       <section className="py-20 px-4 backdrop-blur-lg text-white">
         <div className="container mx-auto text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-danke-900 dark:text-danke-900">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-danke-900">
               Ready to spread some love?
             </h2>
-            <p className="text-xl mb-8 text-danke-900 dark:text-danke-900">
+            <p className="text-xl mb-8 text-danke-900">
               Join thousands of people who are already creating beautiful
               appreciation boards.
             </p>

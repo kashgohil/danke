@@ -31,7 +31,7 @@ function CarouselMediaItem({ url, type, className }: CarouselMediaItemProps) {
     return (
       <div
         className={cn(
-          'relative w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800',
+          'relative w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800',
           className
         )}
       >
@@ -101,18 +101,16 @@ function CarouselMediaItem({ url, type, className }: CarouselMediaItemProps) {
     return (
       <div
         className={cn(
-          'relative w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-100 via-purple-50 to-purple-100 dark:from-purple-900 dark:via-purple-800 dark:to-purple-900 p-8',
+          'relative w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 p-8',
           className
         )}
       >
         <div className="text-center space-y-4">
           <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto">
-            <Volume2 className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+            <Volume2 className="h-8 w-8 text-purple-400" />
           </div>
           <div className="space-y-2">
-            <p className="text-sm font-medium text-purple-900 dark:text-purple-100">
-              Audio File
-            </p>
+            <p className="text-sm font-medium text-purple-100">Audio File</p>
             <audio
               src={url}
               className="w-full max-w-sm"
@@ -285,7 +283,7 @@ export function MediaCarousel({
   return (
     <div
       className={cn(
-        'relative rounded-xl overflow-hidden group aspect-[4/3] min-h-[200px] shadow-xl bg-black/5 dark:bg-white/5',
+        'relative rounded-xl overflow-hidden group aspect-[4/3] min-h-[200px] shadow-xl bg-white/5',
         'transform transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]',
         className
       )}

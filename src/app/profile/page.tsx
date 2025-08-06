@@ -11,7 +11,7 @@ export default function ProfilePage() {
         <Link href="/">
           <Button
             variant="ghost"
-            className="flex items-center gap-2 text-danke-700 dark:text-danke-900"
+            className="flex items-center gap-2 text-danke-900"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Home
@@ -20,14 +20,14 @@ export default function ProfilePage() {
       </div>
 
       <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 bg-danke-300 dark:bg-danke-gold/40 text-danke-900 dark:text-danke-900 px-4 py-2 rounded-full text-sm font-medium mb-6">
+        <div className="inline-flex items-center gap-2 bg-danke-gold/40 text-danke-900 px-4 py-2 rounded-full text-sm font-medium mb-6">
           <User className="w-4 h-4" />
           Your Profile
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-danke-900 dark:text-danke-900">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-danke-900">
           Manage Your Account
         </h2>
-        <p className="text-lg text-danke-700 dark:text-danke-900 max-w-2xl mx-auto">
+        <p className="text-lg text-danke-900 max-w-2xl mx-auto">
           Manage your account settings, view your activity, and customize your
           experience.
         </p>
@@ -40,8 +40,8 @@ export default function ProfilePage() {
         <SignedOut>
           <div className="text-center max-w-md mx-auto">
             <div className="bg-background/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-border/40">
-              <div className="w-16 h-16 bg-danke-300 dark:bg-danke-gold/40 rounded-full flex items-center justify-center mx-auto mb-6">
-                <User className="h-8 w-8 text-danke-600 dark:text-danke-900" />
+              <div className="w-16 h-16 bg-danke-gold/40 rounded-full flex items-center justify-center mx-auto mb-6">
+                <User className="h-8 w-8 text-danke-900" />
               </div>
               <h3 className="text-2xl font-bold mb-4">
                 Sign in to view your profile

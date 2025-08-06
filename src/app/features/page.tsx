@@ -54,8 +54,8 @@ export default function FeaturesPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <MessageCircle className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <MessageCircle className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Rich Text Messages</CardTitle>
               <CardDescription>
@@ -68,8 +68,8 @@ export default function FeaturesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <ImageIcon className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <ImageIcon className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Media Uploads</CardTitle>
               <CardDescription>
@@ -81,8 +81,8 @@ export default function FeaturesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <Sparkles className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <Sparkles className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Beautiful Layouts</CardTitle>
               <CardDescription>
@@ -94,8 +94,8 @@ export default function FeaturesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <Share2 className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <Share2 className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Easy Sharing</CardTitle>
               <CardDescription>
@@ -107,8 +107,8 @@ export default function FeaturesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <Heart className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <Heart className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Real-time Updates</CardTitle>
               <CardDescription>
@@ -120,8 +120,8 @@ export default function FeaturesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <Palette className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <Palette className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Custom Themes</CardTitle>
               <CardDescription>
@@ -140,8 +140,8 @@ export default function FeaturesPage() {
         <div className="grid md:grid-cols-2 gap-16 max-w-6xl mx-auto">
           <div className="space-y-12">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
-                <Shield className="w-5 h-5 text-danke-900 dark:text-danke-900" />
+              <div className="w-10 h-10 bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
+                <Shield className="w-5 h-5 text-danke-900" />
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-danke-900">
@@ -156,8 +156,8 @@ export default function FeaturesPage() {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
-                <Users className="w-5 h-5 text-danke-900 dark:text-danke-900" />
+              <div className="w-10 h-10 bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
+                <Users className="w-5 h-5 text-danke-900" />
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-danke-900">
@@ -171,8 +171,8 @@ export default function FeaturesPage() {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
-                <Bell className="w-5 h-5 text-danke-900 dark:text-danke-900" />
+              <div className="w-10 h-10 bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
+                <Bell className="w-5 h-5 text-danke-900" />
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-danke-900">
@@ -188,8 +188,8 @@ export default function FeaturesPage() {
 
           <div className="space-y-12">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
-                <Globe className="w-5 h-5 text-danke-900 dark:text-danke-900" />
+              <div className="w-10 h-10 bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
+                <Globe className="w-5 h-5 text-danke-900" />
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-danke-900">
@@ -203,8 +203,8 @@ export default function FeaturesPage() {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
-                <Video className="w-5 h-5 text-danke-900 dark:text-danke-900" />
+              <div className="w-10 h-10 bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
+                <Video className="w-5 h-5 text-danke-900" />
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-danke-900">
@@ -218,8 +218,8 @@ export default function FeaturesPage() {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
-                <Zap className="w-5 h-5 text-danke-900 dark:text-danke-900" />
+              <div className="w-10 h-10 bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
+                <Zap className="w-5 h-5 text-danke-900" />
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-danke-900">

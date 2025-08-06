@@ -33,8 +33,8 @@ export function UserProfile() {
           <CardContent className="pt-8">
             <div className="text-center space-y-6">
               <div className="flex justify-center">
-                <div className="w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center">
-                  <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
+                <div className="w-16 h-16 bg-red-900/20 rounded-full flex items-center justify-center">
+                  <AlertCircle className="h-8 w-8 text-red-400" />
                 </div>
               </div>
               <div>
@@ -74,8 +74,8 @@ export function UserProfile() {
           <CardContent className="pt-8">
             <div className="text-center space-y-6">
               <div className="flex justify-center">
-                <div className="w-16 h-16 bg-danke-300 dark:bg-danke-gold/40 rounded-full flex items-center justify-center">
-                  <User className="h-8 w-8 text-danke-600 dark:text-danke-900" />
+                <div className="w-16 h-16 bg-danke-gold/40 rounded-full flex items-center justify-center">
+                  <User className="h-8 w-8 text-danke-900" />
                 </div>
               </div>
               <div>
@@ -137,7 +137,7 @@ export function UserProfile() {
               <div className="flex items-center gap-3 mb-4">
                 <Badge
                   variant="secondary"
-                  className="bg-danke-300 dark:bg-danke-gold text-danke-900 dark:text-danke-900"
+                  className="bg-danke-gold text-danke-900"
                 >
                   <User className="h-3 w-3 mr-1" />
                   Member
@@ -161,14 +161,12 @@ export function UserProfile() {
               </h3>
               <div className="space-y-3">
                 <div className="flex items-center p-3 rounded-lg bg-muted/50 border">
-                  <Mail className="h-4 w-4 text-danke-800 dark:text-danke-200 flex-shrink-0 mr-3" />
-                  <p className="text-sm text-danke-600 dark:text-danke-300">
-                    {user.email}
-                  </p>
+                  <Mail className="h-4 w-4 text-danke-200 flex-shrink-0 mr-3" />
+                  <p className="text-sm text-danke-300">{user.email}</p>
                 </div>
                 <div className="flex items-center p-3 rounded-lg bg-muted/50 border">
-                  <Calendar className="h-4 w-4 text-danke-800 dark:text-danke-200 flex-shrink-0 mr-3" />
-                  <p className="text-sm text-danke-600 dark:text-danke-300">
+                  <Calendar className="h-4 w-4 text-danke-200 flex-shrink-0 mr-3" />
+                  <p className="text-sm text-danke-300">
                     Joined on {formatJoinDate(user.createdAt)}
                   </p>
                 </div>
@@ -184,12 +182,8 @@ export function UserProfile() {
                 <div className="p-3 rounded-lg  bg-muted/50 border">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <p className="text-sm text-danke-800 dark:text-danke-200">
-                        Status:{' '}
-                      </p>
-                      <p className="text-sm text-danke-600 dark:text-danke-300">
-                        Active
-                      </p>
+                      <p className="text-sm text-danke-200">Status: </p>
+                      <p className="text-sm text-danke-300">Active</p>
                     </div>
                     <div className="w-3 h-3 bg-danke-500 rounded-full"></div>
                   </div>
@@ -197,10 +191,8 @@ export function UserProfile() {
                 <div className="p-3 rounded-lg  bg-muted/50 border">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <p className="text-sm text-danke-800 dark:text-danke-200">
-                        Last Updated at{' '}
-                      </p>
-                      <p className="text-sm text-danke-600 dark:text-danke-300">
+                      <p className="text-sm text-danke-200">Last Updated at </p>
+                      <p className="text-sm text-danke-300">
                         {formatJoinDate(user.updatedAt || user.createdAt)}
                       </p>
                     </div>

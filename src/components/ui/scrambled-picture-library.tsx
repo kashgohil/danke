@@ -67,7 +67,7 @@ export function ScrambledPictureLibrary({
         </div>
       ))}
 
-      <div className="absolute inset-0 bg-danke-300/20 dark:bg-danke-gold/20 rounded-xl blur-xl scale-110 opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-danke-gold/20 rounded-xl blur-xl scale-110 opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
     </div>
   );
 }

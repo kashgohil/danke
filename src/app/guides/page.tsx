@@ -52,7 +52,7 @@ export default function GuidesPage() {
           <div className="flex flex-col md:flex-row items-center gap-12">
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-danke-900">1</span>
                 </div>
                 <CardTitle>Create Your Board</CardTitle>
@@ -66,7 +66,7 @@ export default function GuidesPage() {
             <MoveDown size={48} className="md:hidden text-danke-900" />
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-danke-900">2</span>
                 </div>
                 <CardTitle>Share the Link</CardTitle>
@@ -80,7 +80,7 @@ export default function GuidesPage() {
             <MoveDown size={48} className="md:hidden text-danke-900" />
             <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-danke-900">3</span>
                 </div>
                 <CardTitle>Watch It Grow</CardTitle>
@@ -101,8 +101,8 @@ export default function GuidesPage() {
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <BookOpen className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <BookOpen className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Board Creation Basics</CardTitle>
               <CardDescription className="space-y-3">
@@ -127,8 +127,8 @@ export default function GuidesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <Palette className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <Palette className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Customization & Themes</CardTitle>
               <CardDescription className="space-y-3">
@@ -153,8 +153,8 @@ export default function GuidesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <Share2 className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <Share2 className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Sharing Strategies</CardTitle>
               <CardDescription className="space-y-3">
@@ -179,8 +179,8 @@ export default function GuidesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <Settings className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <Settings className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Advanced Features</CardTitle>
               <CardDescription className="space-y-3">
@@ -212,8 +212,8 @@ export default function GuidesPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <Heart className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <Heart className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Farewell Boards</CardTitle>
               <CardDescription>
@@ -226,8 +226,8 @@ export default function GuidesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <Sparkles className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <Sparkles className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Birthday Celebrations</CardTitle>
               <CardDescription>
@@ -240,8 +240,8 @@ export default function GuidesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <Users className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <Users className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Team Recognition</CardTitle>
               <CardDescription>
@@ -253,8 +253,8 @@ export default function GuidesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <Zap className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <Zap className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Event Memories</CardTitle>
               <CardDescription>
@@ -267,8 +267,8 @@ export default function GuidesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <MessageSquare className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <MessageSquare className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Customer Testimonials</CardTitle>
               <CardDescription>
@@ -281,8 +281,8 @@ export default function GuidesPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center mb-4">
-                <BookOpen className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+                <BookOpen className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Memorial Tributes</CardTitle>
               <CardDescription>

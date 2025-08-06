@@ -25,7 +25,7 @@ export default async function BoardEditPage({ params }: BoardEditPageProps) {
 
     if (!board) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-danke-50 via-white to-danke-100 dark:from-danke-700 dark:via-danke-300 dark:to-danke-600">
+        <div className="min-h-screen bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="max-w-md mx-auto text-center">
               <div className="mx-auto w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-6">
@@ -48,7 +48,7 @@ export default async function BoardEditPage({ params }: BoardEditPageProps) {
 
     if (board.creatorId !== userId) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-danke-50 via-white to-danke-100 dark:from-danke-700 dark:via-danke-300 dark:to-danke-600">
+        <div className="min-h-screen bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="max-w-md mx-auto text-center">
               <div className="mx-auto w-20 h-20 bg-destructive/10 rounded-full flex items-center justify-center mb-6">
@@ -75,7 +75,7 @@ export default async function BoardEditPage({ params }: BoardEditPageProps) {
           <Link href={`/boards/${boardId}/manage`}>
             <Button
               variant="ghost"
-              className="flex items-center gap-2 text-danke-700 dark:text-danke-900"
+              className="flex items-center gap-2 text-danke-900"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Board Management
@@ -90,7 +90,7 @@ export default async function BoardEditPage({ params }: BoardEditPageProps) {
   } catch (error) {
     console.error('Error loading board for editing:', error);
     return (
-      <div className="min-h-screen bg-gradient-to-br from-danke-50 via-white to-danke-100 dark:from-danke-700 dark:via-danke-300 dark:to-danke-600">
+      <div className="min-h-screen bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="max-w-md mx-auto text-center">
             <div className="mx-auto w-20 h-20 bg-destructive/10 rounded-full flex items-center justify-center mb-6">

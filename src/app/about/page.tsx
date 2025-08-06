@@ -59,8 +59,8 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center">
             <CardHeader className="flex flex-col gap-2">
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mb-4 mx-auto">
-                <Heart className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center mb-4 mx-auto">
+                <Heart className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Gratitude First</CardTitle>
               <CardDescription>
@@ -72,8 +72,8 @@ export default function AboutPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center">
             <CardHeader className="flex flex-col gap-2">
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mb-4 mx-auto">
-                <Users className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center mb-4 mx-auto">
+                <Users className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Community Focused</CardTitle>
               <CardDescription>
@@ -85,8 +85,8 @@ export default function AboutPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center">
             <CardHeader className="flex flex-col gap-2">
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mb-4 mx-auto">
-                <Zap className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center mb-4 mx-auto">
+                <Zap className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Simple & Powerful</CardTitle>
               <CardDescription>
@@ -98,8 +98,8 @@ export default function AboutPage() {
 
           <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center">
             <CardHeader className="flex flex-col gap-2">
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mb-4 mx-auto">
-                <Shield className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center mb-4 mx-auto">
+                <Shield className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle>Privacy & Trust</CardTitle>
               <CardDescription>

@@ -213,7 +213,7 @@ function PostEditFormContent({
           </div>
 
           <div>
-            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+            <h4 className="text-sm font-medium text-gray-100 mb-3">
               Media Files (Optional)
             </h4>
             <div
@@ -257,8 +257,8 @@ function PostEditFormContent({
           </div>
 
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-              <p className="text-red-600 dark:text-red-400 text-sm flex items-center gap-2">
+            <div className="bg-red-900/20 border border-red-800 rounded-lg p-4">
+              <p className="text-red-400 text-sm flex items-center gap-2">
                 <span className="w-2 h-2 bg-red-500 rounded-full"></span>
                 {error}
               </p>
@@ -301,7 +301,7 @@ function PostEditFormContent({
               className={`border-2 rounded-lg overflow-hidden transition-all duration-200 ${
                 validationErrors.content
                   ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20'
-                  : 'border-gray-200 dark:border-gray-700 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20'
+                  : 'border-gray-700 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20'
               }`}
             >
               <RichTextEditor
@@ -320,14 +320,14 @@ function PostEditFormContent({
           </div>
 
           <div>
-            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+            <h4 className="text-sm font-medium text-gray-100 mb-3">
               Media Files (Optional)
             </h4>
             <div
               className={`border-2 rounded-lg p-4 transition-all duration-200 ${
                 validationErrors.media
                   ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20'
-                  : 'border-gray-200 dark:border-gray-700 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-500/20'
+                  : 'border-gray-700 focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-500/20'
               }`}
             >
               <MediaUpload
@@ -363,8 +363,8 @@ function PostEditFormContent({
           </div>
 
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-              <p className="text-red-600 dark:text-red-400 text-sm flex items-center gap-2">
+            <div className="bg-red-900/20 border border-red-800 rounded-lg p-4">
+              <p className="text-red-400 text-sm flex items-center gap-2">
                 <span className="w-2 h-2 bg-red-500 rounded-full"></span>
                 {error}
               </p>

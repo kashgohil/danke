@@ -167,14 +167,14 @@ function PostCreationFormContent({
       <Card className={`border-0 shadow-lg ${className}`}>
         <CardContent className="p-8">
           <div className="text-center space-y-4">
-            <div className="w-16 h-16 bg-danke-100 dark:bg-danke-900/20 rounded-full flex items-center justify-center mx-auto">
-              <Heart className="h-8 w-8 text-danke-600 dark:text-danke-400" />
+            <div className="w-16 h-16 bg-danke-900/20 rounded-full flex items-center justify-center mx-auto">
+              <Heart className="h-8 w-8 text-danke-400" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2 text-danke-900 dark:text-danke-100">
+              <h3 className="text-lg font-semibold mb-2 text-danke-100">
                 Share Your Appreciation
               </h3>
-              <p className="text-danke-600 dark:text-danke-400">
+              <p className="text-danke-400">
                 Please sign in to add your heartfelt message to this board.
               </p>
             </div>
@@ -189,11 +189,11 @@ function PostCreationFormContent({
       <Card className={`border-0 shadow-lg ${className}`}>
         <CardContent className="p-8">
           <div className="text-center space-y-4">
-            <div className="w-16 h-16 bg-danke-100 dark:bg-danke-900/20 rounded-full flex items-center justify-center mx-auto animate-pulse">
-              <MessageCircle className="h-8 w-8 text-danke-600 dark:text-danke-400" />
+            <div className="w-16 h-16 bg-danke-900/20 rounded-full flex items-center justify-center mx-auto animate-pulse">
+              <MessageCircle className="h-8 w-8 text-danke-400" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2 text-danke-900 dark:text-danke-100">
+              <h3 className="text-lg font-semibold mb-2 text-danke-100">
                 Checking Posting Permissions...
               </h3>
             </div>
@@ -208,16 +208,14 @@ function PostCreationFormContent({
       <Card className={`border-0 shadow-lg ${className}`}>
         <CardContent className="p-8">
           <div className="text-center space-y-4">
-            <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto">
-              <AlertCircle className="h-8 w-8 text-orange-600 dark:text-orange-400" />
+            <div className="w-16 h-16 bg-orange-900/20 rounded-full flex items-center justify-center mx-auto">
+              <AlertCircle className="h-8 w-8 text-orange-400" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2 text-danke-900 dark:text-danke-100">
+              <h3 className="text-lg font-semibold mb-2 text-danke-100">
                 Posting Restricted
               </h3>
-              <p className="text-danke-600 dark:text-danke-400">
-                {postingPermissions.reason}
-              </p>
+              <p className="text-danke-400">{postingPermissions.reason}</p>
             </div>
           </div>
         </CardContent>
@@ -245,7 +243,7 @@ function PostCreationFormContent({
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="flex items-center gap-2 text-sm font-semibold mb-3 text-danke-700 dark:text-danke-300">
+              <label className="flex items-center gap-2 text-sm font-semibold mb-3 text-danke-300">
                 <MessageCircle className="w-4 h-4 text-danke-gold" />
                 Your Message
                 <span className="text-red-500">*</span>
@@ -254,7 +252,7 @@ function PostCreationFormContent({
                 className={`border rounded-lg overflow-hidden transition-all duration-200 ${
                   validationErrors.content
                     ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20'
-                    : 'border-danke-200 dark:border-danke-700 focus-within:border-danke-500 focus-within:ring-2 focus-within:ring-danke-500/20'
+                    : 'border-danke-700 focus-within:border-danke-500 focus-within:ring-2 focus-within:ring-danke-500/20'
                 }`}
               >
                 <RichTextEditor
@@ -273,7 +271,7 @@ function PostCreationFormContent({
             </div>
 
             <div className="space-y-3">
-              <label className="flex items-center gap-2 text-sm font-semibold text-danke-700 dark:text-danke-300">
+              <label className="flex items-center gap-2 text-sm font-semibold text-danke-300">
                 <Image className="w-4 h-4 text-danke-gold" />
                 Add Media (Optional)
               </label>
@@ -281,7 +279,7 @@ function PostCreationFormContent({
                 className={`transition-all duration-200 ${
                   validationErrors.media
                     ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20'
-                    : 'border-danke-200 dark:border-danke-700 focus-within:border-danke-gold focus-within:ring-2 focus-within:ring-danke-gold/20'
+                    : 'border-danke-700 focus-within:border-danke-gold focus-within:ring-2 focus-within:ring-danke-gold/20'
                 }`}
               >
                 <MediaUpload
@@ -318,8 +316,8 @@ function PostCreationFormContent({
           </div>
 
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-              <p className="text-red-600 dark:text-red-400 text-sm flex items-center gap-2">
+            <div className="bg-red-900/20 border border-red-800 rounded-lg p-4">
+              <p className="text-red-400 text-sm flex items-center gap-2">
                 <span className="w-2 h-2 bg-red-500 rounded-full"></span>
                 {error}
               </p>
@@ -327,7 +325,7 @@ function PostCreationFormContent({
           )}
 
           {postingPermissions.postingMode === 'single' && (
-            <div className="bg-danke-gold/10 border border-border dark:border-border rounded-lg p-4">
+            <div className="bg-danke-gold/border-border rounded-lg p-4">
               <div className="flex items-center gap-2 text-primary">
                 <AlertCircle className="w-4 h-4" />
                 <p className="text-sm font-medium">
@@ -340,8 +338,8 @@ function PostCreationFormContent({
 
           {postingPermissions.maxPosts &&
             postingPermissions.postingMode === 'multiple' && (
-              <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
-                <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+              <div className="bg-amber-900/20 border border-amber-800 rounded-lg p-4">
+                <div className="flex items-center gap-2 text-amber-300">
                   <AlertCircle className="w-4 h-4" />
                   <p className="text-sm font-medium">
                     Post Limit: You can submit up to{' '}

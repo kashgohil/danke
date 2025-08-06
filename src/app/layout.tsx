@@ -60,7 +60,7 @@ export default function RootLayout({
               <ErrorBoundary>
                 <ThemeProvider>
                   <AuthProvider>
-                    <div className="min-h-screen bg-gradient-to-br from-danke-50 via-white to-danke-100 dark:from-danke-700 dark:via-danke-300 dark:to-danke-600">
+                    <div className="min-h-screen bg-gradient-to-br  from-danke-700 via-danke-300 to-danke-600">
                       <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 xl:top-4 xl:rounded-xl z-40 xl:mx-auto w-full md:container">
                         <div className="container mx-auto px-4 py-4">
                           <div className="flex justify-between items-center">

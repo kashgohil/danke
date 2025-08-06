@@ -83,7 +83,6 @@ export function AuthHeader() {
           showName={false}
         />
       </SignedIn>
-      <ThemeToggle />
     </div>
   );
 }

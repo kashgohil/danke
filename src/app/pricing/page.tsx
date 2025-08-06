@@ -37,8 +37,8 @@ export default function PricingPage() {
           {/* Free Plan */}
           <Card className="border-2 border-border shadow-lg hover:shadow-xl transition-all duration-300 relative">
             <CardHeader className="text-center p-8">
-              <div className="w-16 h-16 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
-                <Heart className="w-8 h-8 text-danke-900 dark:text-danke-900" />
+              <div className="w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                <Heart className="w-8 h-8 text-danke-900" />
               </div>
               <CardTitle className="text-2xl mb-2">Free</CardTitle>
               <div className="text-4xl font-bold text-danke-gold mb-2">
@@ -144,8 +144,8 @@ export default function PricingPage() {
 
           <Card className="border-2 border-border shadow-lg hover:shadow-xl transition-all duration-300 relative">
             <CardHeader className="text-center p-8">
-              <div className="w-16 h-16 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
-                <Crown className="w-8 h-8 text-danke-900 dark:text-danke-900" />
+              <div className="w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                <Crown className="w-8 h-8 text-danke-900" />
               </div>
               <CardTitle className="text-2xl mb-2">Enterprise</CardTitle>
               <div className="text-4xl font-bold text-danke-gold mb-2">
@@ -349,8 +349,8 @@ export default function PricingPage() {
         <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           <Card className="border-0 shadow-lg text-center">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
-                <Zap className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                <Zap className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle className="text-2xl text-danke-gold">
                 10,000+
@@ -361,8 +361,8 @@ export default function PricingPage() {
 
           <Card className="border-0 shadow-lg text-center">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
-                <Heart className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                <Heart className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle className="text-2xl text-danke-gold">
                 500,000+
@@ -373,8 +373,8 @@ export default function PricingPage() {
 
           <Card className="border-0 shadow-lg text-center">
             <CardHeader>
-              <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="w-6 h-6 text-danke-900 dark:text-danke-900" />
+              <div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                <Star className="w-6 h-6 text-danke-900" />
               </div>
               <CardTitle className="text-2xl text-danke-gold">99.9%</CardTitle>
               <CardDescription>Uptime guarantee</CardDescription>

@@ -54,7 +54,7 @@ function DoodleBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       <svg
-        className="absolute w-full h-full opacity-5 dark:opacity-10"
+        className="absolute w-full hopacity-10"
         viewBox="0 0 1200 800"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -320,14 +320,14 @@ function PostCard({
             <DialogTitle>Delete Message</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-gray-400">
               Are you sure you want to delete this message? This action cannot
               be undone.
             </p>
 
             {deleteError && (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
-                <p className="text-red-600 dark:text-red-400 text-sm flex items-center gap-2">
+              <div className="bg-red-900/20 border border-red-800 rounded-lg p-3">
+                <p className="text-red-400 text-sm flex items-center gap-2">
                   <span className="w-2 h-2 bg-red-500 rounded-full"></span>
                   {deleteError}
                 </p>

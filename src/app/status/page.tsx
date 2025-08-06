@@ -232,7 +232,7 @@ export default function StatusPage() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-danke-300 dark:bg-danke-gold rounded-lg flex items-center justify-center">
+                      <div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center">
                         <StatusIcon className="w-6 h-6 text-danke-900" />
                       </div>
                       <div>

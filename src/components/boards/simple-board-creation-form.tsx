@@ -108,10 +108,8 @@ function SimpleBoardCreationFormContent({
   return (
     <div className="max-w-2xl mx-auto p-6">
       <div className="text-center space-y-2 mb-8">
-        <h1 className="text-3xl font-bold text-danke-900 dark:text-danke-900">
-          Create Your Board
-        </h1>
-        <p className="text-danke-900 dark:text-danke-900">
+        <h1 className="text-3xl font-bold text-danke-900">Create Your Board</h1>
+        <p className="text-danke-900">
           Create a simple board quickly with basic settings
         </p>
       </div>
