@@ -2,7 +2,6 @@ import { AuthProvider } from '@/components/auth/auth-context';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { PerformanceDashboard } from '@/components/ui/performance-dashboard';
 import { PerformanceProvider } from '@/components/ui/performance-provider';
-import { ThemeProvider } from '@/components/ui/theme-context';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -45,7 +44,7 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className="dark">
         <head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
@@ -58,34 +57,32 @@ export default function RootLayout({
           <PerformanceProvider>
             <div className="min-h-screen bg-background">
               <ErrorBoundary>
-                <ThemeProvider>
-                  <AuthProvider>
-                    <div className="min-h-screen bg-gradient-to-br  from-danke-700 via-danke-300 to-danke-600">
-                      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 xl:top-4 xl:rounded-xl z-40 xl:mx-auto w-full md:container">
-                        <div className="container mx-auto px-4 py-4">
-                          <div className="flex justify-between items-center">
-                            <Link
-                              href="/"
-                              className="text-2xl font-bold bg-gradient-to-r from-danke-600 to-danke-gold bg-clip-text text-transparent hover:from-danke-700 hover:to-danke-500 transition-all flex items-center gap-2"
-                            >
-                              <Image
-                                src={logo}
-                                alt="Danke"
-                                width={32}
-                                height={32}
-                              />
-                              Danke
-                            </Link>
-                            <AuthHeader />
-                          </div>
+                <AuthProvider>
+                  <div className="min-h-screen bg-gradient-to-br  from-danke-700 via-danke-300 to-danke-600">
+                    <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 xl:top-4 xl:rounded-xl z-40 xl:mx-auto w-full md:container">
+                      <div className="container mx-auto px-4 py-4">
+                        <div className="flex justify-between items-center">
+                          <Link
+                            href="/"
+                            className="text-2xl font-bold bg-gradient-to-r from-danke-600 to-danke-gold bg-clip-text text-transparent hover:from-danke-700 hover:to-danke-500 transition-all flex items-center gap-2"
+                          >
+                            <Image
+                              src={logo}
+                              alt="Danke"
+                              width={32}
+                              height={32}
+                            />
+                            Danke
+                          </Link>
+                          <AuthHeader />
                         </div>
-                      </header>
-                      <main className="container mx-auto px-4 py-12">
-                        {children}
-                      </main>
-                    </div>
-                  </AuthProvider>
-                </ThemeProvider>
+                      </div>
+                    </header>
+                    <main className="container mx-auto px-4 py-12">
+                      {children}
+                    </main>
+                  </div>
+                </AuthProvider>
               </ErrorBoundary>
             </div>
             <PerformanceDashboard />
