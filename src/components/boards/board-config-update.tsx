@@ -515,10 +515,11 @@ export function BoardConfigUpdate({
           </CardContent>
         </Card>
 
-        {/* Theme Settings */}
         <Card>
           <CardHeader>
-            <CardTitle>Theme Settings</CardTitle>
+            <CardTitle className="text-xl mb-0 text-primary">
+              Theme Settings
+            </CardTitle>
             <CardDescription>
               Customize the visual appearance of your board
             </CardDescription>
