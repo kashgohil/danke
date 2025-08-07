@@ -22,6 +22,8 @@ export async function GET() {
         boardTitle: boards.title,
         recipientName: boards.recipientName,
         viewToken: boards.viewToken,
+        isAnonymous: posts.isAnonymous,
+        anonymousName: posts.anonymousName,
       })
       .from(posts)
       .innerJoin(boards, eq(posts.boardId, boards.id))

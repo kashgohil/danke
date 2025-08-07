@@ -13,7 +13,8 @@ export class PostModel {
   static async create(
     data: CreatePostSchema,
     creatorId: string,
-    boardId: string
+    boardId: string,
+    isAnonymous: boolean = false
   ): Promise<Post> {
     return trackDbQuery('post-create', async () => {
       const validatedData = createPostSchema.parse(data);
@@ -32,6 +33,7 @@ export class PostModel {
         ...validatedData,
         creatorId,
         boardId,
+        isAnonymous,
       };
 
       const [post] = await db.insert(posts).values(newPost).returning();

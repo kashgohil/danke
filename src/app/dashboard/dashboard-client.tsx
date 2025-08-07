@@ -33,6 +33,8 @@ interface UserPost {
   boardTitle: string;
   recipientName: string;
   viewToken: string;
+  isAnonymous?: boolean;
+  anonymousName?: string;
 }
 
 function DashboardSkeleton() {
@@ -304,6 +306,12 @@ export function DashboardClient() {
                           <Paperclip size={12} /> {post.mediaUrls.length}{' '}
                           attachment
                           {post.mediaUrls.length > 1 ? 's' : ''}
+                        </p>
+                      )}
+                      {post.isAnonymous && (
+                        <p className="text-xs text-amber-600 mt-2 flex items-center gap-2">
+                          <User size={12} /> Posted anonymously
+                          {post.anonymousName && ` as "${post.anonymousName}"`}
                         </p>
                       )}
                     </div>

@@ -53,6 +53,8 @@ async function getBoardData(boardId: string) {
         content: post.content,
         mediaUrls: post.mediaUrls || [],
         createdAt: post.createdAt.toISOString(),
+        isAnonymous: post.isAnonymous,
+        anonymousName: post.anonymousName || undefined,
         creator: creator || {
           id: post.creatorId,
           name: 'Unknown User',

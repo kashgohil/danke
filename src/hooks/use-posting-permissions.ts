@@ -8,6 +8,7 @@ interface PostingPermissionsState {
   postCount?: number;
   maxPosts?: number;
   postingMode?: 'single' | 'multiple';
+  allowAnonymous?: boolean;
   loading: boolean;
   error?: string;
 }
@@ -27,7 +28,10 @@ export function usePostingPermissions(boardId: string): PostingPermissions {
     if (!isSignedIn || !userId || !boardId) {
       setPermissions({
         canPost: false,
-        reason: 'You must be signed in to post',
+        reason:
+          !isSignedIn || !userId
+            ? 'You must be signed in to post'
+            : 'Board ID is required',
         loading: false,
       });
       return;
@@ -49,6 +53,7 @@ export function usePostingPermissions(boardId: string): PostingPermissions {
         postCount: response.postCount,
         maxPosts: response.maxPosts,
         postingMode: response.postingMode,
+        allowAnonymous: response.allowAnonymous,
         loading: false,
       });
     } catch (error) {

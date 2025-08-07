@@ -90,6 +90,7 @@ export class ModerationService {
           postingMode: boards.postingMode,
           maxPostsPerUser: boards.maxPostsPerUser,
           moderationEnabled: boards.moderationEnabled,
+          allowAnonymous: boards.allowAnonymous,
         })
         .from(boards)
         .where(eq(boards.id, boardId));

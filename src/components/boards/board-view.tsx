@@ -36,6 +36,8 @@ export interface Post {
   content: string;
   mediaUrls?: string[];
   createdAt: string;
+  isAnonymous?: boolean;
+  anonymousName?: string;
   creator: {
     id: string;
     name: string;
@@ -292,14 +294,13 @@ function PostCard({
     setDeleteError(null);
   };
 
-  // Get styling based on board's background color
   const backgroundColor = (board.typeConfig as any)?.backgroundColor;
   const cardStyle = generateCardStyle(backgroundColor);
   const textColors = getTextColors(backgroundColor);
   const contrastTextStyles = getContrastTextStyles(backgroundColor);
 
-  return (
-    <>
+  function editDialog() {
+    return (
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden">
           <DialogHeader>
@@ -313,7 +314,11 @@ function PostCard({
           />
         </DialogContent>
       </Dialog>
+    );
+  }
 
+  function deleteDialog() {
+    return (
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -356,21 +361,114 @@ function PostCard({
           </div>
         </DialogContent>
       </Dialog>
+    );
+  }
+
+  function media() {
+    if (!post.mediaUrls || !post.mediaUrls.length) return null;
+    return (
+      <div className="-mx-2" role="group" aria-label="Media attachments">
+        <MediaCarousel
+          mediaUrls={post.mediaUrls}
+          getMediaType={getMediaType}
+          className="w-full"
+        />
+      </div>
+    );
+  }
+
+  function postFooter() {
+    return (
+      <div className="flex items-center justify-between pt-4 border-t border-gray-200/30 relative">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-300/30 to-transparent" />
+
+        <div className="flex items-center space-x-3">
+          {post.isAnonymous ? (
+            <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center flex-shrink-0 ring-2 ring-gray-300/50 shadow-sm">
+              <MessageCircle className="w-5 h-5 text-white" />
+            </div>
+          ) : (
+            <UserAvatar
+              user={post.creator}
+              size="md"
+              className="flex-shrink-0 ring-2 ring-gray-300/50 shadow-sm hover:ring-gray-400/70 transition-all duration-200"
+            />
+          )}
+          <div className="flex-1 min-w-0">
+            <div
+              className="text-sm font-semibold truncate mb-0.5"
+              style={contrastTextStyles.primary}
+            >
+              {post.isAnonymous
+                ? post.anonymousName || 'Anonymous'
+                : post.creator.name || 'Unknown'}
+            </div>
+            <div
+              className="text-xs font-medium"
+              style={contrastTextStyles.muted}
+            >
+              <time dateTime={post.createdAt}>
+                {new Date(post.createdAt).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                  hour: 'numeric',
+                  minute: '2-digit',
+                })}
+              </time>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="flex items-center space-x-1 opacity-70 group-hover:opacity-100 transition-opacity duration-200"
+          role="group"
+          aria-label="Post actions"
+        >
+          {canEdit && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsEditDialogOpen(true)}
+              className={`h-8 w-8 p-0 ${textColors.muted} hover:${textColors.primary} hover:bg-gray-100/50 rounded-full transition-all duration-200`}
+              aria-label="Edit post"
+            >
+              <Edit2 className="h-4 w-4" />
+            </Button>
+          )}
+          {canDelete && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleDeleteClick}
+              disabled={isDeleting}
+              className={`h-8 w-8 p-0 ${textColors.muted} hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-200`}
+              aria-label={isDeleting ? 'Deleting post...' : 'Delete post'}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {editDialog()}
+      {deleteDialog()}
+
       <Card
         className="w-full h-fit overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 shadow-lg backdrop-blur-sm relative group border"
         style={cardStyle}
         role="article"
-        aria-label={`Post by ${post.creator.name}`}
+        aria-label={`Post by ${
+          post.isAnonymous
+            ? post.anonymousName || 'Anonymous'
+            : post.creator.name || 'Unknown'
+        }`}
       >
-        {post.mediaUrls && post.mediaUrls.length > 0 && (
-          <div className="-mx-2" role="group" aria-label="Media attachments">
-            <MediaCarousel
-              mediaUrls={post.mediaUrls}
-              getMediaType={getMediaType}
-              className="w-full"
-            />
-          </div>
-        )}
+        {media()}
         <div className="p-6 space-y-4 relative">
           <div
             className="text-sm leading-relaxed"
@@ -382,69 +480,7 @@ function PostCard({
             />
           </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200/30 relative">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-300/30 to-transparent" />
-
-            <div className="flex items-center space-x-3">
-              <UserAvatar
-                user={post.creator}
-                size="md"
-                className="flex-shrink-0 ring-2 ring-gray-300/50 shadow-sm hover:ring-gray-400/70 transition-all duration-200"
-              />
-              <div className="flex-1 min-w-0">
-                <div
-                  className="text-sm font-semibold truncate mb-0.5"
-                  style={contrastTextStyles.primary}
-                >
-                  {post.creator.name}
-                </div>
-                <div
-                  className="text-xs font-medium"
-                  style={contrastTextStyles.muted}
-                >
-                  <time dateTime={post.createdAt}>
-                    {new Date(post.createdAt).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                      hour: 'numeric',
-                      minute: '2-digit',
-                    })}
-                  </time>
-                </div>
-              </div>
-            </div>
-
-            <div
-              className="flex items-center space-x-1 opacity-70 group-hover:opacity-100 transition-opacity duration-200"
-              role="group"
-              aria-label="Post actions"
-            >
-              {canEdit && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsEditDialogOpen(true)}
-                  className={`h-8 w-8 p-0 ${textColors.muted} hover:${textColors.primary} hover:bg-gray-100/50 rounded-full transition-all duration-200`}
-                  aria-label="Edit post"
-                >
-                  <Edit2 className="h-4 w-4" />
-                </Button>
-              )}
-              {canDelete && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleDeleteClick}
-                  disabled={isDeleting}
-                  className={`h-8 w-8 p-0 ${textColors.muted} hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-200`}
-                  aria-label={isDeleting ? 'Deleting post...' : 'Delete post'}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
-          </div>
+          {postFooter()}
         </div>
       </Card>
     </>
@@ -489,9 +525,40 @@ export function BoardView({
     };
   }, [backgroundColor]);
 
+  function layover() {
+    return <div className={defaultClasses} style={gradientStyle} />;
+  }
+
+  function content() {
+    if (!posts.length) {
+      return (
+        <EmptyState
+          recipientName={board.recipientName}
+          textColors={textColors}
+          contrastTextStyles={contrastTextStyles}
+        />
+      );
+    }
+    return (
+      <section aria-label="Appreciation messages">
+        <MasonryLayout className="w-full" minColumnWidth={320} gap={24}>
+          {posts.map((post) => (
+            <PostCard
+              key={post.id}
+              post={post}
+              board={board}
+              onPostUpdated={onPostUpdated}
+              onPostDeleted={onPostDeleted}
+            />
+          ))}
+        </MasonryLayout>
+      </section>
+    );
+  }
+
   return (
     <>
-      <div className={defaultClasses} style={gradientStyle} />
+      {layover()}
 
       <div className="relative min-h-screen">
         <header className="relative py-8 text-center">
@@ -512,29 +579,7 @@ export function BoardView({
           </p>
         </header>
 
-        <main className="relative px-4 pb-8">
-          {posts.length === 0 ? (
-            <EmptyState
-              recipientName={board.recipientName}
-              textColors={textColors}
-              contrastTextStyles={contrastTextStyles}
-            />
-          ) : (
-            <section aria-label="Appreciation messages">
-              <MasonryLayout className="w-full" minColumnWidth={320} gap={24}>
-                {posts.map((post) => (
-                  <PostCard
-                    key={post.id}
-                    post={post}
-                    board={board}
-                    onPostUpdated={onPostUpdated}
-                    onPostDeleted={onPostDeleted}
-                  />
-                ))}
-              </MasonryLayout>
-            </section>
-          )}
-        </main>
+        <main className="relative px-4 pb-8">{content()}</main>
       </div>
     </>
   );

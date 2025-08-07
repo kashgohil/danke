@@ -10,6 +10,10 @@ export const createPostSchema = z.object({
     .max(5, 'Maximum 5 media files allowed')
     .optional()
     .default([]),
+  anonymousName: z
+    .string()
+    .max(100, 'Anonymous name cannot exceed 100 characters')
+    .optional(),
 });
 
 export const updatePostSchema = z.object({

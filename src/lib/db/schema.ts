@@ -72,9 +72,11 @@ export const posts = pgTable(
       .references(() => boards.id),
     creatorId: varchar('creator_id', { length: 255 })
       .notNull()
-      .references(() => users.id),
+      .references(() => users.id), // Keep required for tracking, just hide on board when anonymous
     content: text('content').notNull(), // Rich text content as HTML markup
     mediaUrls: text('media_urls').array(), // Array of media file URLs
+    isAnonymous: boolean('is_anonymous').default(false).notNull(), // Track anonymous posts
+    anonymousName: varchar('anonymous_name', { length: 100 }), // Custom name for anonymous posts
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
     isDeleted: boolean('is_deleted').default(false).notNull(),

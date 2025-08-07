@@ -48,6 +48,7 @@ export async function GET(
           ? parseInt(board.maxPostsPerUser)
           : null,
         postCount: moderationResult.postCount || 0,
+        allowAnonymous: board.allowAnonymous,
       });
     } catch (error) {
       console.error('Error checking posting permissions:', error);

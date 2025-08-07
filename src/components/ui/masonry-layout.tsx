@@ -1,13 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
 interface MasonryLayoutProps {
   children: React.ReactNode;
@@ -94,7 +88,7 @@ export function MasonryLayout({
   }, [calculateLayout, childrenArray.length]);
 
   // Resize observer for container
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!containerRef.current) return;
 
     const resizeObserver = new ResizeObserver(debouncedCalculateLayout);
@@ -109,7 +103,7 @@ export function MasonryLayout({
   }, [debouncedCalculateLayout]);
 
   // Intersection observer to recalculate when items change size
-  useEffect(() => {
+  useLayoutEffect(() => {
     const observers: IntersectionObserver[] = [];
 
     itemRefs.current.forEach((itemRef) => {

@@ -25,9 +25,12 @@ export async function POST(request: NextRequest) {
         boardId: z.string().min(1, 'Board ID is required'),
         content: createPostSchema.shape.content,
         mediaUrls: createPostSchema.shape.mediaUrls,
+        isAnonymous: z.boolean().optional().default(false),
+        anonymousName: createPostSchema.shape.anonymousName,
       });
 
-      const { boardId, content, mediaUrls } = requestSchema.parse(body);
+      const { boardId, content, mediaUrls, isAnonymous, anonymousName } =
+        requestSchema.parse(body);
 
       const board = await BoardModel.getById(boardId);
       if (!board) {
@@ -40,10 +43,18 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      if (isAnonymous && !board.allowAnonymous) {
+        return NextResponse.json(
+          { error: 'Anonymous posting is not allowed on this board' },
+          { status: 403 }
+        );
+      }
+
       const post = await PostModel.create(
-        { content, mediaUrls },
+        { content, mediaUrls, anonymousName },
         userId,
-        boardId
+        boardId,
+        isAnonymous
       );
 
       cache.delete(cacheKeys.boardPosts(boardId));

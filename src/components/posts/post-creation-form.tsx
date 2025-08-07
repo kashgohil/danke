@@ -9,10 +9,13 @@ import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { usePostingPermissions } from '@/hooks/use-posting-permissions';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
 import { perf } from '@/lib/performance';
+import { cn } from '@/lib/utils';
 import { createPostSchema } from '@/lib/validations/post';
 import { useAuth } from '@clerk/nextjs';
+import { Label } from '@radix-ui/react-label';
 import { AlertCircle, Heart, Image, MessageCircle, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Input } from '../ui/input';
 
 interface PostCreationFormProps {
   boardId: string;
@@ -31,6 +34,8 @@ function PostCreationFormContent({
   const [content, setContent] = useState<string>('');
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useState(false);
+  const [anonymousName, setAnonymousName] = useState('');
 
   useEffect(() => {
     if (process.env.NODE_ENV !== 'test') {
@@ -46,6 +51,7 @@ function PostCreationFormContent({
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
+    // Always require authentication, even for anonymous posts
     if (!isSignedIn || !userId) {
       setError('You must be signed in to post');
       return false;
@@ -97,11 +103,15 @@ function PostCreationFormContent({
         body: JSON.stringify({
           boardId,
           ...validatedData,
+          isAnonymous,
+          anonymousName: isAnonymous ? anonymousName : undefined,
         }),
       });
       setContent('');
       setMediaFiles([]);
       setValidationErrors({});
+      setIsAnonymous(false);
+      setAnonymousName('');
 
       onPostCreated?.(data);
 
@@ -313,6 +323,81 @@ function PostCreationFormContent({
                 </div>
               )}
             </div>
+
+            {postingPermissions.allowAnonymous && (
+              <div className="space-y-3">
+                <div
+                  className="flex items-start gap-3 cursor-pointer"
+                  onClick={() => setIsAnonymous(!isAnonymous)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setIsAnonymous(!isAnonymous);
+                    }
+                  }}
+                  tabIndex={0}
+                  role="button"
+                  aria-pressed={isAnonymous}
+                >
+                  <div
+                    className={cn(
+                      'w-4 h-4 rounded border-2 flex items-center justify-center mt-0.5 flex-shrink-0',
+                      isAnonymous
+                        ? 'border-danke-gold bg-danke-gold'
+                        : 'border-danke-600'
+                    )}
+                  >
+                    {isAnonymous && (
+                      <svg
+                        className="w-3 h-3 text-danke-900"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-danke-300">
+                      Post anonymously
+                    </p>
+                    <p className="text-xs text-danke-400 mt-1">
+                      Your identity will be hidden on the board
+                    </p>
+                  </div>
+                </div>
+                {isAnonymous && (
+                  <div className="ml-7 space-y-3">
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="anonymousName"
+                        className="text-xs text-danke-300"
+                      >
+                        Display name (optional)
+                      </Label>
+                      <Input
+                        id="anonymousName"
+                        type="text"
+                        value={anonymousName}
+                        onChange={(e) => setAnonymousName(e.target.value)}
+                        placeholder="e.g., A friend, Your colleague, etc."
+                        maxLength={100}
+                        className="text-sm max-w-xs"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      {anonymousName.trim()
+                        ? `Your message will appear as "${anonymousName.trim()}"`
+                        : 'Your message will appear as "Anonymous"'}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {error && (
@@ -338,7 +423,7 @@ function PostCreationFormContent({
 
           {postingPermissions.maxPosts &&
             postingPermissions.postingMode === 'multiple' && (
-              <div className="bg-amber-900/20 border border-amber-800 rounded-lg p-4">
+              <div className="bg-danke-gold/20 border border-border rounded-lg p-4">
                 <div className="flex items-center gap-2 text-amber-300">
                   <AlertCircle className="w-4 h-4" />
                   <p className="text-sm font-medium">

@@ -18,6 +18,8 @@ interface Post {
   content: string;
   mediaUrls?: string[];
   createdAt: string;
+  isAnonymous?: boolean;
+  anonymousName?: string;
   creator: {
     id: string;
     name: string;
