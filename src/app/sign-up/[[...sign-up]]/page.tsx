@@ -2,17 +2,15 @@ import { SignUp } from '@clerk/nextjs';
 
 export default function SignUpPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Join Appreciation Board
-          </h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-bold text-danke-900 mb-2">Join Danke</h1>
+          <p className="text-danke-800">
             Create your account to start building appreciation boards
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="rounded-lg p-6">
           <SignUp
             appearance={{
               elements: {
