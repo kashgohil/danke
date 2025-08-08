@@ -74,24 +74,40 @@ A modern Next.js web application for creating and sharing beautiful appreciation
    - Create a new application
    - Copy your publishable key and secret key
 
-4. **Configure environment variables**
+4. **Set up Vercel Blob Storage**
 
-   Create `.env.local` with your database URL and Clerk keys:
+   - Go to your Vercel dashboard
+   - Navigate to Storage > Blob
+   - Create a new Blob store or use an existing one
+   - Copy the read/write token
+
+5. **Configure environment variables**
+
+   Create `.env.local` with your database URL, Clerk keys, and Blob token:
 
    ```bash
    DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_your-key-here"
    CLERK_SECRET_KEY="sk_test_your-key-here"
+   BLOB_READ_WRITE_TOKEN="vercel_blob_rw_your-token-here"
    ```
 
-5. **Set up the database**
+6. **Set up the database**
 
    ```bash
    bun run db:generate
    bun run db:migrate
    ```
 
-6. **Start the development server**
+7. **Start the development server**
+
+   ```bash
+   bun run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+8. **Start the development server**
 
    ```bash
    bun run dev
@@ -171,10 +187,11 @@ The application supports 14 different board types, each with:
 
 ### Media System
 
-- File upload with drag-and-drop support
-- Image, video, and audio preview
-- Media carousel for multiple files
-- Optimized storage and delivery
+- **Vercel Blob Storage**: Secure, scalable cloud storage for all media files
+- **File Size Limits**: Images (2MB max), videos (10MB max), audio (5MB max)
+- **Drag-and-Drop Upload**: Intuitive file upload with progress indicators
+- **Media Preview**: Image, video, and audio preview with carousel display
+- **Supported Formats**: JPEG, PNG, WebP, GIF, MP4, WebM, MP3, WAV, OGG
 
 ### Performance Optimizations
 

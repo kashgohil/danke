@@ -90,9 +90,26 @@ export function MediaUpload({
       return 'File type not supported. Allowed: images (JPEG, PNG, WebP, GIF), videos (MP4, WebM), audio (MP3, WAV, OGG)';
     }
 
-    if (file.size > 10 * 1024 * 1024) {
-      // 10MB
-      return 'File size too large. Maximum size is 10MB';
+    // Check file size based on type
+    if (
+      ALLOWED_IMAGE_TYPES.includes(file.type) &&
+      file.size > 2 * 1024 * 1024
+    ) {
+      return 'Image files cannot be larger than 2MB';
+    }
+
+    if (
+      ALLOWED_VIDEO_TYPES.includes(file.type) &&
+      file.size > 10 * 1024 * 1024
+    ) {
+      return 'Video files cannot be larger than 10MB';
+    }
+
+    if (
+      ALLOWED_AUDIO_TYPES.includes(file.type) &&
+      file.size > 5 * 1024 * 1024
+    ) {
+      return 'Audio files cannot be larger than 5MB';
     }
 
     return null;
@@ -256,7 +273,7 @@ export function MediaUpload({
             Drop files here or click to upload
           </h3>
           <p className="text-sm text-muted-foreground mb-6">
-            Images, videos, and audio files up to 10MB each
+            Images (max 2MB), videos (max 10MB), and audio files (max 5MB)
           </p>
           <input
             type="file"

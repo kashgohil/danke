@@ -1,12 +1,14 @@
 import { trackApiCall } from '@/lib/performance';
 import { auth } from '@clerk/nextjs/server';
-import { mkdir, writeFile } from 'fs/promises';
+import { put } from '@vercel/blob';
 import { nanoid } from 'nanoid';
 import { NextRequest, NextResponse } from 'next/server';
-import { join } from 'path';
 
-const UPLOAD_DIR = join(process.cwd(), 'public', 'uploads');
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+// File size limits in bytes
+const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB
+const MAX_VIDEO_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_AUDIO_SIZE = 5 * 1024 * 1024; // 5MB
+
 const ALLOWED_IMAGE_TYPES = [
   'image/jpeg',
   'image/png',
@@ -26,6 +28,30 @@ const ALLOWED_TYPES = [
   ...ALLOWED_VIDEO_TYPES,
   ...ALLOWED_AUDIO_TYPES,
 ];
+
+function getMaxSizeForType(fileType: string): number {
+  if (ALLOWED_IMAGE_TYPES.includes(fileType)) {
+    return MAX_IMAGE_SIZE;
+  }
+  if (ALLOWED_VIDEO_TYPES.includes(fileType)) {
+    return MAX_VIDEO_SIZE;
+  }
+  if (ALLOWED_AUDIO_TYPES.includes(fileType)) {
+    return MAX_AUDIO_SIZE;
+  }
+  return 0;
+}
+
+function getFileTypeCategory(fileType: string): string {
+  if (ALLOWED_IMAGE_TYPES.includes(fileType)) return 'image';
+  if (ALLOWED_VIDEO_TYPES.includes(fileType)) return 'video';
+  if (ALLOWED_AUDIO_TYPES.includes(fileType)) return 'audio';
+  return 'unknown';
+}
+
+function formatFileSize(bytes: number): string {
+  return `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
+}
 
 export async function POST(request: NextRequest) {
   return trackApiCall('upload-file', async () => {
@@ -59,10 +85,14 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      if (file.size > MAX_FILE_SIZE) {
+      const maxSize = getMaxSizeForType(file.type);
+      const fileCategory = getFileTypeCategory(file.type);
+
+      if (file.size > maxSize) {
+        const maxSizeFormatted = formatFileSize(maxSize);
         return NextResponse.json(
           {
-            error: 'File is too large. Please choose a file smaller than 10MB.',
+            error: `${fileCategory} files cannot be larger than ${maxSizeFormatted}. Please choose a smaller file.`,
           },
           { status: 413 }
         );
@@ -76,39 +106,27 @@ export async function POST(request: NextRequest) {
       }
 
       try {
-        await mkdir(UPLOAD_DIR, { recursive: true });
-      } catch (dirError) {
-        console.error('Error creating upload directory:', dirError);
+        const fileExtension = file.name.split('.').pop()?.toLowerCase() || '';
+        const uniqueFilename = `${nanoid()}.${fileExtension}`;
+
+        // Upload to Vercel Blob
+        const blobResult = await put(uniqueFilename, file, {
+          access: 'public',
+        });
+
+        return NextResponse.json({
+          url: blobResult.url,
+          filename: file.name,
+          size: file.size,
+          type: file.type,
+        });
+      } catch (uploadError) {
+        console.error('Error uploading to Vercel Blob:', uploadError);
         return NextResponse.json(
-          { error: 'Server configuration error. Please try again later.' },
+          { error: 'Failed to upload file. Please try again.' },
           { status: 500 }
         );
       }
-
-      const fileExtension = file.name.split('.').pop()?.toLowerCase() || '';
-      const uniqueFilename = `${nanoid()}.${fileExtension}`;
-      const filePath = join(UPLOAD_DIR, uniqueFilename);
-
-      try {
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        await writeFile(filePath, buffer);
-      } catch (writeError) {
-        console.error('Error writing file:', writeError);
-        return NextResponse.json(
-          { error: 'Failed to save file. Please try again.' },
-          { status: 500 }
-        );
-      }
-
-      const fileUrl = `/uploads/${uniqueFilename}`;
-
-      return NextResponse.json({
-        url: fileUrl,
-        filename: file.name,
-        size: file.size,
-        type: file.type,
-      });
     } catch (error) {
       console.error('Error uploading file:', error);
 
