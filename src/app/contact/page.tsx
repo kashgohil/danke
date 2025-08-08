@@ -26,8 +26,8 @@ export default function ContactPage() {
           Contact Us
         </h1>
         <p className="text-xl max-w-3xl mx-auto leading-relaxed text-danke-900">
-          We'd love to hear from you. Send us a message and we'll respond as
-          soon as possible.
+          We&apos;d love to hear from you. Send us a message and we&apos;ll
+          respond as soon as possible.
         </p>
       </section>
 
@@ -38,7 +38,8 @@ export default function ContactPage() {
               Send us a message
             </h2>
             <p className="text-muted-foreground mb-6">
-              Fill out the form below and we'll get back to you within 24 hours.
+              Fill out the form below and we&apos;ll get back to you within 24
+              hours.
             </p>
           </div>
 
@@ -176,9 +177,9 @@ export default function ContactPage() {
               How do I create my first board?
             </h3>
             <p className="text-muted-foreground">
-              Creating a board is simple! Just click "Create Board" from your
-              dashboard, choose your board type, add some basic information, and
-              you're ready to start collecting messages.
+              Creating a board is simple! Just click &quot;Create Board&quot;
+              from your dashboard, choose your board type, add some basic
+              information, and you&apos;re ready to start collecting messages.
             </p>
           </div>
 
@@ -188,7 +189,7 @@ export default function ContactPage() {
             </h3>
             <p className="text-muted-foreground">
               Yes! You can customize colors, layouts, and add your own branding
-              to make each board unique and match your community's style.
+              to make each board unique and match your community&apos;s style.
             </p>
           </div>
 
@@ -210,7 +211,8 @@ export default function ContactPage() {
             <p className="text-muted-foreground">
               Each board gets a unique shareable link that you can send via
               email, social media, or any other communication method.
-              Contributors don't need to create an account to leave messages.
+              Contributors don&apos;t need to create an account to leave
+              messages.
             </p>
           </div>
         </div>

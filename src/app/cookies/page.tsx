@@ -159,7 +159,7 @@ export default function CookiesPage() {
 
             <h3 className="text-xl font-medium mb-3">Cookie Consent</h3>
             <p className="leading-relaxed mb-4">
-              When you first visit our website, you'll see a cookie consent
+              When you first visit our website, you&apos;ll see a cookie consent
               banner that allows you to:
             </p>
             <ul className="list-disc pl-6 space-y-2">
@@ -184,12 +184,12 @@ export default function CookiesPage() {
                 you from logging in and using core features
               </li>
               <li>
-                <strong>Performance cookies:</strong> We won't be able to
+                <strong>Performance cookies:</strong> We won&apos;t be able to
                 improve the website based on usage data
               </li>
               <li>
-                <strong>Functional cookies:</strong> Your preferences won't be
-                remembered between visits
+                <strong>Functional cookies:</strong> Your preferences won&apos;t
+                be remembered between visits
               </li>
             </ul>
           </section>
@@ -229,8 +229,8 @@ export default function CookiesPage() {
               We may update this Cookie Policy from time to time to reflect
               changes in our practices or for other operational, legal, or
               regulatory reasons. We will notify you of any material changes by
-              posting the updated policy on our website and updating the "Last
-              updated" date.
+              posting the updated policy on our website and updating the
+              &quot;Last updated&quot; date.
             </p>
           </section>
 

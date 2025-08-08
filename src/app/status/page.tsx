@@ -291,8 +291,8 @@ export default function StatusPage() {
                 No Scheduled Maintenance
               </h3>
               <p className="text-muted-foreground">
-                There are currently no planned maintenance windows. We'll notify
-                users in advance of any scheduled downtime.
+                There are currently no planned maintenance windows. We&apos;ll
+                notify users in advance of any scheduled downtime.
               </p>
             </CardContent>
           </Card>

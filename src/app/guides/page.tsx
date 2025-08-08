@@ -58,7 +58,7 @@ export default function GuidesPage() {
                 <CardTitle>Create Your Board</CardTitle>
                 <CardDescription>
                   Choose a template, add a title and description, then customize
-                  your board's appearance to match the occasion.
+                  your board&apos;s appearance to match the occasion.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -399,8 +399,8 @@ export default function GuidesPage() {
               How many people can contribute to a board?
             </h3>
             <p className="text-muted-foreground">
-              There's no limit to the number of contributors! Our boards are
-              designed to handle everything from intimate gatherings to
+              There&apos;s no limit to the number of contributors! Our boards
+              are designed to handle everything from intimate gatherings to
               company-wide celebrations with hundreds of participants.
             </p>
           </div>

@@ -20,10 +20,10 @@ export default function TermsPage() {
           <section className="mb-12">
             <h2 className="text-2xl font-semibold mb-4">Agreement to Terms</h2>
             <p className=" leading-relaxed">
-              By accessing and using Danke ("the Service"), you accept and agree
-              to be bound by the terms and provision of this agreement. If you
-              do not agree to abide by the above, please do not use this
-              service.
+              By accessing and using Danke (&quot;the Service&quot;), you accept
+              and agree to be bound by the terms and provision of this
+              agreement. If you do not agree to abide by the above, please do
+              not use this service.
             </p>
           </section>
 
@@ -78,7 +78,7 @@ export default function TermsPage() {
               </li>
               <li>
                 Attempt to gain unauthorized access to the Service or other
-                users' accounts
+                users&apos; accounts
               </li>
               <li>
                 Use the Service to spam, phish, or engage in other malicious
@@ -100,11 +100,11 @@ export default function TermsPage() {
             <h3 className="text-xl font-medium mb-3">Your Content</h3>
             <p className=" leading-relaxed mb-4">
               You retain ownership of any content you submit, post, or display
-              on the Service ("Your Content"). By submitting Your Content, you
-              grant us a worldwide, non-exclusive, royalty-free license to use,
-              copy, reproduce, process, adapt, modify, publish, transmit,
-              display, and distribute Your Content in connection with the
-              Service.
+              on the Service (&quot;Your Content&quot;). By submitting Your
+              Content, you grant us a worldwide, non-exclusive, royalty-free
+              license to use, copy, reproduce, process, adapt, modify, publish,
+              transmit, display, and distribute Your Content in connection with
+              the Service.
             </p>
 
             <h3 className="text-xl font-medium mb-3">Our Content</h3>
@@ -145,10 +145,11 @@ export default function TermsPage() {
           <section className="mb-12">
             <h2 className="text-2xl font-semibold mb-4">Disclaimers</h2>
             <p className=" leading-relaxed mb-4">
-              The Service is provided on an "AS IS" and "AS AVAILABLE" basis. We
-              make no representations or warranties of any kind, express or
-              implied, as to the operation of the Service or the information,
-              content, materials, or products included on the Service.
+              The Service is provided on an &quot;AS IS&quot; and &quot;AS
+              AVAILABLE&quot; basis. We make no representations or warranties of
+              any kind, express or implied, as to the operation of the Service
+              or the information, content, materials, or products included on
+              the Service.
             </p>
             <p className=" leading-relaxed">
               We do not warrant that the Service will be uninterrupted or
@@ -177,7 +178,7 @@ export default function TermsPage() {
               licensee and licensors, and their employees, contractors, agents,
               officers and directors, from and against any and all claims,
               damages, obligations, losses, liabilities, costs or debt, and
-              expenses (including but not limited to attorney's fees).
+              expenses (including but not limited to attorney&apos;s fees).
             </p>
           </section>
 

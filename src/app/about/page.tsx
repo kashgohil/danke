@@ -43,10 +43,10 @@ export default function AboutPage() {
               gratitude, and strengthen their bonds.
             </p>
             <p>
-              Whether it's recognizing a colleague's hard work, celebrating a
-              friend's milestone, or simply sharing appreciation for everyday
-              kindness, Danke makes it easy to create lasting memories that
-              bring people closer together.
+              Whether it&apos;s recognizing a colleague&apos;s hard work,
+              celebrating a friend&apos;s milestone, or simply sharing
+              appreciation for everyday kindness, Danke makes it easy to create
+              lasting memories that bring people closer together.
             </p>
           </div>
         </div>
@@ -129,11 +129,11 @@ export default function AboutPage() {
               Today, Danke serves thousands of users across the globe, from
               small teams celebrating project completions to large organizations
               recognizing employee achievements. Every board created on our
-              platform represents a moment of human connection, and that's what
-              drives us forward every day.
+              platform represents a moment of human connection, and that&apos;s
+              what drives us forward every day.
             </p>
             <p>
-              We're just getting started. Our vision is to become the go-to
+              We&apos;re just getting started. Our vision is to become the go-to
               platform for community appreciation, helping people around the
               world build stronger, more grateful communities one board at a
               time.
@@ -147,8 +147,8 @@ export default function AboutPage() {
           Get in Touch
         </h2>
         <p className="text-xl mb-8 max-w-2xl mx-auto text-muted-foreground">
-          Have questions, feedback, or just want to say hello? We'd love to hear
-          from you.
+          Have questions, feedback, or just want to say hello? We&apos;d love to
+          hear from you.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a

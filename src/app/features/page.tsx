@@ -126,7 +126,7 @@ export default function FeaturesPage() {
               <CardTitle>Custom Themes</CardTitle>
               <CardDescription>
                 Personalize your boards with custom colors, themes, and branding
-                to match your community's style and personality.
+                to match your community&apos;s style and personality.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -180,7 +180,7 @@ export default function FeaturesPage() {
                 </h3>
                 <p className="text-danke-800">
                   Get notified when new messages are added, milestones are
-                  reached, or when it's time to celebrate achievements.
+                  reached, or when it&apos;s time to celebrate achievements.
                 </p>
               </div>
             </div>

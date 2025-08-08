@@ -293,7 +293,7 @@ export default function PricingPage() {
             </h3>
             <p className="text-muted-foreground">
               Yes! You can upgrade or downgrade your plan at any time. Changes
-              take effect immediately, and we'll prorate any billing
+              take effect immediately, and we&apos;ll prorate any billing
               adjustments.
             </p>
           </div>
@@ -304,7 +304,7 @@ export default function PricingPage() {
             </h3>
             <p className="text-muted-foreground">
               Your existing boards and messages remain safe. If you exceed the
-              limits of your new plan, you'll have read-only access to the
+              limits of your new plan, you&apos;ll have read-only access to the
               excess content until you upgrade again or remove some boards.
             </p>
           </div>

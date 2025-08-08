@@ -69,7 +69,7 @@ export function useMultiStepForm() {
       default:
         return true;
     }
-  }, [basicInfoValidation, typeConfigValidation, boardConfigValidation]);
+  }, [step, basicInfoValidation, typeConfigValidation, boardConfigValidation]);
 
   const { errors, stepData, touchedFields } = useMemo(
     () => ({

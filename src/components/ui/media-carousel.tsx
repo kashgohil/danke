@@ -140,29 +140,6 @@ export function MediaCarousel({
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
 
-  if (!mediaUrls || mediaUrls.length === 0) {
-    return null;
-  }
-
-  if (mediaUrls.length === 1) {
-    return (
-      <div
-        className={cn(
-          'rounded-xl overflow-hidden aspect-[4/3] min-h-[200px] shadow-xl',
-          className
-        )}
-      >
-        <div className="w-full h-full transform transition-transform duration-300 hover:scale-[1.02]">
-          <CarouselMediaItem
-            url={mediaUrls[0]}
-            type={getMediaType(mediaUrls[0])}
-            className="w-full h-full"
-          />
-        </div>
-      </div>
-    );
-  }
-
   const goToPrevious = () => {
     if (isTransitioning || isDragging) return;
     setIsTransitioning(true);
@@ -192,13 +169,13 @@ export function MediaCarousel({
     setDragOffset(0);
   };
 
-  const handleDragMove = (clientX: number) => {
+  const handleDragMove = useRefCallback((clientX: number) => {
     if (!isDragging) return;
     const diff = clientX - startX;
     setDragOffset(diff);
-  };
+  });
 
-  const handleDragEnd = () => {
+  const handleDragEnd = useRefCallback(() => {
     if (!isDragging) return;
     setIsDragging(false);
 
@@ -213,7 +190,7 @@ export function MediaCarousel({
     }
 
     setDragOffset(0);
-  };
+  });
 
   // Mouse events
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -239,9 +216,11 @@ export function MediaCarousel({
   };
 
   useEffect(() => {
-    const intervalId = setInterval(() => goToNext(), 5000);
-    return () => clearInterval(intervalId);
-  }, [goToNext]);
+    if (mediaUrls && mediaUrls.length > 1) {
+      const intervalId = setInterval(() => goToNext(), 5000);
+      return () => clearInterval(intervalId);
+    }
+  }, [goToNext, mediaUrls]);
 
   useEffect(() => {
     if (isTransitioning) {
@@ -270,7 +249,30 @@ export function MediaCarousel({
         document.removeEventListener('mouseup', handleGlobalMouseUp);
       };
     }
-  }, [isDragging, startX, dragOffset]);
+  }, [isDragging, handleDragMove, handleDragEnd]);
+
+  if (!mediaUrls || mediaUrls.length === 0) {
+    return null;
+  }
+
+  if (mediaUrls.length === 1) {
+    return (
+      <div
+        className={cn(
+          'rounded-xl overflow-hidden aspect-[4/3] min-h-[200px] shadow-xl',
+          className
+        )}
+      >
+        <div className="w-full h-full transform transition-transform duration-300 hover:scale-[1.02]">
+          <CarouselMediaItem
+            url={mediaUrls[0]}
+            type={getMediaType(mediaUrls[0])}
+            className="w-full h-full"
+          />
+        </div>
+      </div>
+    );
+  }
 
   const getTransform = () => {
     const baseTransform = -currentIndex * 100;
