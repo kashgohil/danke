@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -14,12 +12,11 @@ import { Label } from '@/components/ui/label';
 import { Board } from '@/lib/db';
 import { cn } from '@/lib/utils';
 import { Globe, LayoutDashboard, Lock, Save, StickyNote } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface BoardConfigUpdateProps {
   board: Board;
-  onUpdate: (updatedBoard: Board) => void;
-  onCancel: () => void;
 }
 
 const postingModeOptions = [
@@ -52,23 +49,6 @@ const visibilityOptions = [
   },
 ];
 
-const boardTypeOptions = [
-  { value: 'appreciation', label: 'Appreciation' },
-  { value: 'birthday', label: 'Birthday' },
-  { value: 'farewell', label: 'Farewell' },
-  { value: 'welcome', label: 'Welcome' },
-  { value: 'congratulations', label: 'Congratulations' },
-  { value: 'get-well', label: 'Get Well' },
-  { value: 'sympathy', label: 'Sympathy' },
-  { value: 'holiday', label: 'Holiday' },
-  { value: 'anniversary', label: 'Anniversary' },
-  { value: 'retirement', label: 'Retirement' },
-  { value: 'graduation', label: 'Graduation' },
-  { value: 'baby-shower', label: 'Baby Shower' },
-  { value: 'wedding', label: 'Wedding' },
-  { value: 'general', label: 'General' },
-];
-
 const backgroundColorOptions = [
   { value: '#3B82F6', label: 'Blue', color: 'bg-blue-500' },
   { value: '#10B981', label: 'Green', color: 'bg-green-500' },
@@ -80,19 +60,16 @@ const backgroundColorOptions = [
   { value: '#84CC16', label: 'Lime', color: 'bg-lime-500' },
 ];
 
-export function BoardConfigUpdate({
-  board,
-  onUpdate,
-  onCancel,
-}: BoardConfigUpdateProps) {
+export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
+  const router = useRouter();
+
+  const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSuccess, setIsSuccess] = useState(false);
 
   // Form state
   const [title, setTitle] = useState(board.title);
   const [recipientName, setRecipientName] = useState(board.recipientName);
-  const [boardType, setBoardType] = useState(board.boardType as string);
   const [postingMode, setPostingMode] = useState(
     board.postingMode as 'single' | 'multiple'
   );
@@ -128,7 +105,7 @@ export function BoardConfigUpdate({
       const updateData = {
         title,
         recipientName,
-        boardType,
+        boardType: board.boardType,
         postingMode,
         moderationEnabled,
         allowAnonymous,
@@ -169,7 +146,7 @@ export function BoardConfigUpdate({
       const result = await response.json();
       setIsSuccess(true);
       setTimeout(() => {
-        onUpdate(result.board);
+        router.push(`/boards/${result.board.id}/manage?updated=true`);
       }, 1500);
     } catch (error) {
       console.error('Error updating board:', error);
@@ -596,8 +573,8 @@ export function BoardConfigUpdate({
           <Button
             type="button"
             variant="outline"
-            onClick={onCancel}
             disabled={isLoading || isSuccess}
+            onClick={() => router.push(`/boards/${board.id}/manage`)}
           >
             Cancel
           </Button>
