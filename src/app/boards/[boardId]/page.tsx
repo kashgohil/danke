@@ -128,33 +128,34 @@ export default async function BoardPage({ params }: BoardPageProps) {
 
   if (data.accessDenied) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-danke-50 via-white to-danke-100">
-        <div className="text-center max-w-md mx-auto px-4">
-          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-orange-200 to-orange-300 rounded-full flex items-center justify-center mb-6 shadow-lg">
-            <Lock className="w-10 h-10 text-orange-700" />
-          </div>
-          <h1 className="text-3xl font-bold text-danke-900 mb-4">
-            Access Restricted
-          </h1>
-          <p className="text-danke-600 mb-8 text-lg">
-            {data.accessReason ||
-              'You do not have permission to view this board.'}
-          </p>
-          <div className="space-y-4">
-            <Link href="/sign-in">
-              <Button className="bg-danke-500 hover:bg-danke-600 text-white px-6 py-3 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 w-full">
-                Sign In
-              </Button>
-            </Link>
-            <Link href="/">
-              <Button
-                variant="outline"
-                className="px-6 py-3 text-lg font-medium w-full"
-              >
-                Go Home
-              </Button>
-            </Link>
-          </div>
+      <div className="text-center max-w-md mx-auto px-4 mt-20">
+        <div className="mx-auto w-20 h-20 bg-gradient-to-br from-orange-200 to-orange-300 rounded-full flex items-center justify-center mb-6 shadow-lg">
+          <Lock className="w-10 h-10 text-danke-900" />
+        </div>
+        <h1 className="text-3xl font-bold text-danke-900 mb-4">
+          Access Restricted
+        </h1>
+        <p className="text-danke-800 mb-8 text-lg">
+          {data.accessReason ||
+            'You do not have permission to view this board.'}
+        </p>
+        <div className="flex justify-center gap-2">
+          <Link href="/sign-in">
+            <Button
+              variant="default"
+              className="px-6 py-3 text-base font-medium w-full"
+            >
+              Sign In
+            </Button>
+          </Link>
+          <Link href="/">
+            <Button
+              variant="outline"
+              className="px-6 py-3 text-base font-medium w-full"
+            >
+              Go Home
+            </Button>
+          </Link>
         </div>
       </div>
     );
