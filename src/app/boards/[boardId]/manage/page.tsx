@@ -101,7 +101,7 @@ export default async function BoardManagePage({
 
   const viewUrl = `${
     process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-  }/boards/${board.viewToken}`;
+  }/boards/${board.id}`;
   const postUrl = `${
     process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
   }/boards/post/${board.postToken}`;

@@ -14,20 +14,21 @@ import { createPostSchema } from '@/lib/validations/post';
 import { useAuth } from '@clerk/nextjs';
 import { Label } from '@radix-ui/react-label';
 import { AlertCircle, Heart, Image, MessageCircle, Send } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Input } from '../ui/input';
 
 interface PostCreationFormProps {
   boardId: string;
-  onPostCreated?: (post: any) => void;
   className?: string;
 }
 
 function PostCreationFormContent({
   boardId,
-  onPostCreated,
   className,
 }: PostCreationFormProps) {
+  const router = useRouter();
+
   const { isSignedIn, userId } = useAuth();
   const { handleError } = useApiErrorHandler();
   const postingPermissions = usePostingPermissions(boardId);
@@ -113,10 +114,7 @@ function PostCreationFormContent({
       setIsAnonymous(false);
       setAnonymousName('');
 
-      onPostCreated?.(data);
-
-      // Refresh posting permissions to reflect the new post
-      postingPermissions.refresh();
+      router.push(`/boards/${boardId}`);
     } catch (error) {
       const errorMessage = handleError(error);
 
