@@ -68,7 +68,6 @@ export function BoardConfigStep({
     handleFieldChange(field, !currentValue);
   };
 
-  // Handle datetime picker change
   const handleDateTimePickerChange = (date: Date | undefined) => {
     if (date) {
       console.log(date);
@@ -85,8 +84,8 @@ export function BoardConfigStep({
     }
   };
 
-  return (
-    <div className="space-y-6">
+  function postingMode() {
+    return (
       <div className="flex flex-col gap-4">
         <Label className="text-sm text-primary">
           How should posting work on this board?
@@ -128,32 +127,39 @@ export function BoardConfigStep({
           <p className="text-sm text-destructive">{errors.postingMode}</p>
         )}
       </div>
+    );
+  }
 
-      {data.postingMode === 'multiple' && (
-        <div className="flex flex-col gap-4">
-          <Label htmlFor="maxPostsPerUser" className="text-sm text-primary">
-            Maximum Posts Per User (Optional)
-          </Label>
-          <Input
-            id="maxPostsPerUser"
-            type="number"
-            min="1"
-            max="50"
-            placeholder="No limit"
-            value={data.maxPostsPerUser?.toString() || ''}
-            onChange={(e) => handleMaxPostsChange(e.target.value)}
-            error={!!errors.maxPostsPerUser}
-            className="text-base max-w-xs"
-          />
-          <p className="text-sm text-muted-foreground">
-            Leave empty for no limit. Maximum allowed is 50 posts per user.
-          </p>
-          {errors.maxPostsPerUser && touchedFields?.has('maxPostsPerUser') && (
-            <p className="text-sm text-destructive">{errors.maxPostsPerUser}</p>
-          )}
-        </div>
-      )}
+  function maxPostsPerUser() {
+    if (data.postingMode !== 'multiple') return null;
+    return (
+      <div className="flex flex-col gap-4">
+        <Label htmlFor="maxPostsPerUser" className="text-sm text-primary">
+          Maximum Posts Per User (Optional)
+        </Label>
+        <Input
+          id="maxPostsPerUser"
+          type="number"
+          min="1"
+          max="50"
+          placeholder="No limit"
+          value={data.maxPostsPerUser?.toString() || ''}
+          onChange={(e) => handleMaxPostsChange(e.target.value)}
+          error={!!errors.maxPostsPerUser}
+          className="text-base max-w-xs"
+        />
+        <p className="text-sm text-muted-foreground">
+          Leave empty for no limit. Maximum allowed is 50 posts per user.
+        </p>
+        {errors.maxPostsPerUser && touchedFields?.has('maxPostsPerUser') && (
+          <p className="text-sm text-destructive">{errors.maxPostsPerUser}</p>
+        )}
+      </div>
+    );
+  }
 
+  function boardSettings() {
+    return (
       <div className="flex flex-col gap-4">
         <Label className="text-sm text-primary">Board Settings</Label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -266,7 +272,11 @@ export function BoardConfigStep({
           </Card>
         </div>
       </div>
+    );
+  }
 
+  function visibility() {
+    return (
       <div className="flex flex-col gap-4">
         <Label className="text-sm text-primary">Who can view this board?</Label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -306,7 +316,11 @@ export function BoardConfigStep({
           <p className="text-sm text-destructive">{errors.boardVisibility}</p>
         )}
       </div>
+    );
+  }
 
+  function expiration() {
+    return (
       <div className="flex flex-col gap-4">
         <Label htmlFor="expirationDate" className="text-sm text-primary">
           Board Expiration (Optional)
@@ -327,6 +341,16 @@ export function BoardConfigStep({
           <p className="text-sm text-destructive">{errors.expirationDate}</p>
         )}
       </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {postingMode()}
+      {maxPostsPerUser()}
+      {boardSettings()}
+      {visibility()}
+      {expiration()}
     </div>
   );
 }
