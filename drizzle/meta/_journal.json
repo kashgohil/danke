@@ -43,6 +43,13 @@
       "when": 1754483373473,
       "tag": "0005_loud_juggernaut",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1754483400000,
+      "tag": "0006_add_visibility_restrictions",
+      "breakpoints": true
     }
   ]
 }
