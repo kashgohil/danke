@@ -49,6 +49,11 @@ export const boards = pgTable(
     boardVisibility: varchar('board_visibility', { length: 50 })
       .default('public')
       .notNull(),
+    // Visibility restriction fields
+    allowedDomains: text('allowed_domains').array(), // Array of allowed email domains
+    blockedDomains: text('blocked_domains').array(), // Array of blocked email domains
+    allowedEmails: text('allowed_emails').array(), // Array of specific allowed emails
+    blockedEmails: text('blocked_emails').array(), // Array of specific blocked emails
     expirationDate: timestamp('expiration_date'),
     typeConfig: json('type_config'), // Store type-specific configuration as JSON
     createdAt: timestamp('created_at').defaultNow().notNull(),

@@ -1,10 +1,11 @@
 import { BoardPageClient } from '@/components/boards/board-page-client';
 import { Button } from '@/components/ui/button';
+import { checkBoardAccess } from '@/lib/board-access';
 import { db, users } from '@/lib/db';
 import { BoardModel } from '@/lib/models/board';
 import { PostModel } from '@/lib/models/post';
 import { eq } from 'drizzle-orm';
-import { Heart } from 'lucide-react';
+import { Heart, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -19,11 +20,17 @@ async function getBoardData(boardId: string) {
     let board = await BoardModel.getById(boardId);
 
     if (!board) {
-      board = await BoardModel.getByViewToken(boardId);
+      return null;
     }
 
-    if (!board) {
-      return null;
+    const accessCheck = await checkBoardAccess(board);
+    if (!accessCheck.hasAccess) {
+      return {
+        board: null,
+        posts: [],
+        accessDenied: true,
+        accessReason: accessCheck.reason,
+      };
     }
 
     const posts = await PostModel.getByBoardId(board.id);
@@ -77,6 +84,7 @@ async function getBoardData(boardId: string) {
         updatedAt: board.updatedAt.toISOString(),
       },
       posts: postsWithCreators,
+      accessDenied: false,
     };
   } catch (error) {
     console.error('Error fetching board data:', error);
@@ -118,8 +126,42 @@ export default async function BoardPage({ params }: BoardPageProps) {
     notFound();
   }
 
+  if (data.accessDenied) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-danke-50 via-white to-danke-100">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-orange-200 to-orange-300 rounded-full flex items-center justify-center mb-6 shadow-lg">
+            <Lock className="w-10 h-10 text-orange-700" />
+          </div>
+          <h1 className="text-3xl font-bold text-danke-900 mb-4">
+            Access Restricted
+          </h1>
+          <p className="text-danke-600 mb-8 text-lg">
+            {data.accessReason ||
+              'You do not have permission to view this board.'}
+          </p>
+          <div className="space-y-4">
+            <Link href="/sign-in">
+              <Button className="bg-danke-500 hover:bg-danke-600 text-white px-6 py-3 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 w-full">
+                Sign In
+              </Button>
+            </Link>
+            <Link href="/">
+              <Button
+                variant="outline"
+                className="px-6 py-3 text-lg font-medium w-full"
+              >
+                Go Home
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <BoardPageClient initialBoard={data.board} initialPosts={data.posts} />
+    <BoardPageClient initialBoard={data.board!} initialPosts={data.posts} />
   );
 }
 
@@ -136,8 +178,8 @@ export async function generateMetadata({ params }: BoardPageProps) {
     }
 
     return {
-      title: `${data.board.title} - Appreciation Board`,
-      description: `Appreciation messages for ${data.board.recipientName}`,
+      title: `${data.board?.title} - Danke`,
+      description: `Appreciation messages for ${data.board?.recipientName}`,
     };
   } catch (error) {
     return {

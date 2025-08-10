@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
-import { boards, db, type Board, type NewBoard } from '../db';
+import { boards, db, User, type Board, type NewBoard } from '../db';
 import { trackDbQuery } from '../performance';
 import {
   createMultiStepBoardSchema,
@@ -62,6 +62,10 @@ export class BoardModel {
         allowAnonymous: validatedData.allowAnonymous ?? true,
         maxPostsPerUser: validatedData.maxPostsPerUser || null,
         boardVisibility: validatedData.boardVisibility ?? 'public',
+        allowedDomains: validatedData.allowedDomains || null,
+        blockedDomains: validatedData.blockedDomains || null,
+        allowedEmails: validatedData.allowedEmails || null,
+        blockedEmails: validatedData.blockedEmails || null,
         expirationDate: validatedData.expirationDate || null,
         typeConfig: validatedData.typeConfig || null,
       };
@@ -269,6 +273,14 @@ export class BoardModel {
         updateData.maxPostsPerUser = validatedData.maxPostsPerUser || null;
       if (validatedData.boardVisibility !== undefined)
         updateData.boardVisibility = validatedData.boardVisibility;
+      if (validatedData.allowedDomains !== undefined)
+        updateData.allowedDomains = validatedData.allowedDomains || null;
+      if (validatedData.blockedDomains !== undefined)
+        updateData.blockedDomains = validatedData.blockedDomains || null;
+      if (validatedData.allowedEmails !== undefined)
+        updateData.allowedEmails = validatedData.allowedEmails || null;
+      if (validatedData.blockedEmails !== undefined)
+        updateData.blockedEmails = validatedData.blockedEmails || null;
       if (validatedData.expirationDate !== undefined)
         updateData.expirationDate = validatedData.expirationDate || null;
       if (validatedData.typeConfig !== undefined)
@@ -320,5 +332,78 @@ export class BoardModel {
       const result = await db.delete(boards).where(eq(boards.id, id));
       return result.count > 0;
     });
+  }
+
+  static checkBoardAccess(
+    board: Board,
+    user?: User
+  ): { hasAccess: boolean; reason?: string } {
+    if (board.boardVisibility === 'public') {
+      return { hasAccess: true };
+    }
+
+    if (board.boardVisibility === 'private') {
+      if (!user) {
+        return {
+          hasAccess: false,
+          reason: 'Authentication required for private board',
+        };
+      }
+
+      if (user.id === board.creatorId) {
+        return {
+          hasAccess: true,
+        };
+      }
+
+      const emailDomain = user.email.split('@')[1]?.toLowerCase();
+
+      if (
+        board.blockedEmails &&
+        board.blockedEmails.includes(user.email.toLowerCase())
+      ) {
+        return {
+          hasAccess: false,
+          reason: 'Your email is blocked from accessing this board',
+        };
+      }
+
+      if (
+        board.blockedDomains &&
+        emailDomain &&
+        board.blockedDomains.includes(emailDomain)
+      ) {
+        return {
+          hasAccess: false,
+          reason: 'Your email domain is blocked from accessing this board',
+        };
+      }
+
+      if (board.allowedEmails && board.allowedEmails.length > 0) {
+        if (board.allowedEmails.includes(user.email.toLowerCase())) {
+          return { hasAccess: true };
+        }
+        return {
+          hasAccess: false,
+          reason: 'Your email is not on the allowed list for this board',
+        };
+      }
+
+      // Check allowed domains (if specified and no allowed emails)
+      if (board.allowedDomains && board.allowedDomains.length > 0) {
+        if (emailDomain && board.allowedDomains.includes(emailDomain)) {
+          return { hasAccess: true };
+        }
+        return {
+          hasAccess: false,
+          reason: 'Your email domain is not allowed to access this board',
+        };
+      }
+
+      // If no restrictions are set for private board, allow access
+      return { hasAccess: true };
+    }
+
+    return { hasAccess: false, reason: 'Invalid board visibility setting' };
   }
 }

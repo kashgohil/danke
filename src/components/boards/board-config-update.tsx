@@ -13,7 +13,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Board } from '@/lib/db';
 import { cn } from '@/lib/utils';
-import { Globe, LayoutDashboard, Lock, Save, StickyNote } from 'lucide-react';
+import {
+  Globe,
+  LayoutDashboard,
+  Lock,
+  Save,
+  StickyNote,
+  X,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -62,6 +69,72 @@ const backgroundColorOptions = [
   { value: '#84CC16', label: 'Lime', color: 'bg-lime-500' },
 ];
 
+// Email/Domain input component
+function EmailDomainInput({
+  value,
+  onChange,
+  placeholder,
+  type,
+}: {
+  value: string[];
+  onChange: (value: string[]) => void;
+  placeholder: string;
+  type: 'email' | 'domain';
+}) {
+  const [inputValue, setInputValue] = useState('');
+
+  const addItem = () => {
+    const trimmed = inputValue.trim();
+    if (trimmed && !value.includes(trimmed)) {
+      onChange([...value, trimmed]);
+      setInputValue('');
+    }
+  };
+
+  const removeItem = (item: string) => {
+    onChange(value.filter((i) => i !== item));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      addItem();
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-2">
+      <Input
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onBlur={addItem}
+        placeholder={placeholder}
+        className="text-sm"
+      />
+      {value.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {value.map((item) => (
+            <div
+              key={item}
+              className="flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-md text-sm border border-border"
+            >
+              <span>{item}</span>
+              <button
+                type="button"
+                onClick={() => removeItem(item)}
+                className="hover:bg-primary/20 rounded p-0.5"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
   const router = useRouter();
 
@@ -91,6 +164,18 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
   const [backgroundColor, setBackgroundColor] = useState<string | undefined>(
     (board.typeConfig as any)?.backgroundColor || undefined
   );
+  const [allowedDomains, setAllowedDomains] = useState<string[]>(
+    board.allowedDomains || []
+  );
+  const [blockedDomains, setBlockedDomains] = useState<string[]>(
+    board.blockedDomains || []
+  );
+  const [allowedEmails, setAllowedEmails] = useState<string[]>(
+    board.allowedEmails || []
+  );
+  const [blockedEmails, setBlockedEmails] = useState<string[]>(
+    board.blockedEmails || []
+  );
 
   const handleMaxPostsChange = (value: string) => {
     if (value === '' || /^\d+$/.test(value)) {
@@ -113,6 +198,10 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
         allowAnonymous,
         maxPostsPerUser: maxPostsPerUser,
         boardVisibility,
+        allowedDomains: allowedDomains.length > 0 ? allowedDomains : undefined,
+        blockedDomains: blockedDomains.length > 0 ? blockedDomains : undefined,
+        allowedEmails: allowedEmails.length > 0 ? allowedEmails : undefined,
+        blockedEmails: blockedEmails.length > 0 ? blockedEmails : undefined,
         expirationDate,
         typeConfig: {
           ...((board.typeConfig as any) || {}),
@@ -422,7 +511,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
             </CardTitle>
             <CardDescription>Control who can view your board</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
             <div className="flex flex-col gap-2">
               <Label className="text-sm text-primary">Board Visibility</Label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -454,6 +543,85 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                 ))}
               </div>
             </div>
+
+            {boardVisibility === 'private' && (
+              <div className="flex flex-col gap-6 p-4 border rounded-lg bg-muted/30">
+                <div className="flex flex-col gap-2">
+                  <Label className="text-sm font-medium text-primary">
+                    Access Restrictions
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Control who can access this private board by email or domain
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Allowed Domains */}
+                  <div className="flex flex-col gap-3">
+                    <Label className="text-sm text-primary">
+                      Allowed Domains
+                    </Label>
+                    <EmailDomainInput
+                      value={allowedDomains}
+                      onChange={setAllowedDomains}
+                      placeholder="company.com"
+                      type="domain"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Only users with these email domains can access the board
+                    </p>
+                  </div>
+
+                  {/* Blocked Domains */}
+                  <div className="flex flex-col gap-3">
+                    <Label className="text-sm text-primary">
+                      Blocked Domains
+                    </Label>
+                    <EmailDomainInput
+                      value={blockedDomains}
+                      onChange={setBlockedDomains}
+                      placeholder="competitor.com"
+                      type="domain"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Users with these email domains cannot access the board
+                    </p>
+                  </div>
+
+                  {/* Allowed Emails */}
+                  <div className="flex flex-col gap-3">
+                    <Label className="text-sm text-primary">
+                      Allowed Emails
+                    </Label>
+                    <EmailDomainInput
+                      value={allowedEmails}
+                      onChange={setAllowedEmails}
+                      placeholder="user@example.com"
+                      type="email"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Only these specific email addresses can access the board
+                    </p>
+                  </div>
+
+                  {/* Blocked Emails */}
+                  <div className="flex flex-col gap-3">
+                    <Label className="text-sm text-primary">
+                      Blocked Emails
+                    </Label>
+                    <EmailDomainInput
+                      value={blockedEmails}
+                      onChange={setBlockedEmails}
+                      placeholder="blocked@example.com"
+                      type="email"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      These specific email addresses cannot access the board
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 

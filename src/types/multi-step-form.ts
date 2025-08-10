@@ -44,6 +44,10 @@ export interface BoardConfigData {
   allowAnonymous: boolean;
   maxPostsPerUser?: number; // Only for multiple mode
   boardVisibility: 'public' | 'private';
+  allowedDomains?: string[];
+  blockedDomains?: string[];
+  allowedEmails?: string[];
+  blockedEmails?: string[];
   expirationDate?: Date;
 }
 

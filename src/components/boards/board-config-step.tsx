@@ -12,7 +12,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { BoardConfigData } from '@/types/multi-step-form';
-import { Globe, LayoutDashboard, Lock, StickyNote } from 'lucide-react';
+import { Globe, LayoutDashboard, Lock, StickyNote, X } from 'lucide-react';
+import { useState } from 'react';
 
 interface BoardConfigStepProps {
   data: BoardConfigData;
@@ -51,6 +52,71 @@ const visibilityOptions = [
     icon: <Lock className="h-8 w-8" />,
   },
 ];
+
+function EmailDomainInput({
+  value,
+  onChange,
+  placeholder,
+  type,
+}: {
+  value: string[];
+  onChange: (value: string[]) => void;
+  placeholder: string;
+  type: 'email' | 'domain';
+}) {
+  const [inputValue, setInputValue] = useState('');
+
+  const addItem = () => {
+    const trimmed = inputValue.trim();
+    if (trimmed && !value.includes(trimmed)) {
+      onChange([...value, trimmed]);
+      setInputValue('');
+    }
+  };
+
+  const removeItem = (item: string) => {
+    onChange(value.filter((i) => i !== item));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      addItem();
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-4">
+      <Input
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onBlur={addItem}
+        placeholder={placeholder}
+        className="text-sm"
+      />
+      {value.length > 0 && (
+        <div className="flex flex-wrap">
+          {value.map((item) => (
+            <div
+              key={item}
+              className="flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-lg text-sm border"
+            >
+              <span>{item}</span>
+              <button
+                type="button"
+                onClick={() => removeItem(item)}
+                className="hover:bg-primary/20 rounded p-0.5"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function BoardConfigStep({
   data,
@@ -319,6 +385,79 @@ export function BoardConfigStep({
     );
   }
 
+  function visibilityRestrictions() {
+    if (data.boardVisibility !== 'private') return null;
+
+    return (
+      <div className="flex flex-col gap-6 p-4 border rounded-lg bg-muted/30">
+        <div className="flex flex-col gap-2">
+          <Label className="text-sm font-medium">Access Restrictions</Label>
+          <p className="text-sm text-muted-foreground">
+            Control who can access this private board by email or domain
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex flex-col gap-3">
+            <Label className="text-sm text-primary">Allowed Domains</Label>
+            <EmailDomainInput
+              value={data.allowedDomains || []}
+              onChange={(domains) =>
+                handleFieldChange('allowedDomains', domains)
+              }
+              placeholder="company.com"
+              type="domain"
+            />
+            <p className="text-xs text-muted-foreground">
+              Only users with these email domains can access the board
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <Label className="text-sm text-primary">Blocked Domains</Label>
+            <EmailDomainInput
+              value={data.blockedDomains || []}
+              onChange={(domains) =>
+                handleFieldChange('blockedDomains', domains)
+              }
+              placeholder="competitor.com"
+              type="domain"
+            />
+            <p className="text-xs text-muted-foreground">
+              Users with these email domains cannot access the board
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <Label className="text-sm text-primary">Allowed Emails</Label>
+            <EmailDomainInput
+              value={data.allowedEmails || []}
+              onChange={(emails) => handleFieldChange('allowedEmails', emails)}
+              placeholder="user@example.com"
+              type="email"
+            />
+            <p className="text-xs text-muted-foreground">
+              Only these specific email addresses can access the board
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <Label className="text-sm text-primary">Blocked Emails</Label>
+            <EmailDomainInput
+              value={data.blockedEmails || []}
+              onChange={(emails) => handleFieldChange('blockedEmails', emails)}
+              placeholder="blocked@example.com"
+              type="email"
+            />
+            <p className="text-xs text-muted-foreground">
+              These specific email addresses cannot access the board
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   function expiration() {
     return (
       <div className="flex flex-col gap-4">
@@ -350,6 +489,7 @@ export function BoardConfigStep({
       {maxPostsPerUser()}
       {boardSettings()}
       {visibility()}
+      {visibilityRestrictions()}
       {expiration()}
     </div>
   );

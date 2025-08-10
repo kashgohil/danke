@@ -53,6 +53,22 @@ export const createMultiStepBoardSchema = z
         return num > 0 && num <= 100;
       }, 'Maximum posts per user must be between 1 and 100'),
     boardVisibility: z.enum(['public', 'private']).default('public'),
+    allowedDomains: z
+      .array(z.string().min(1, 'Domain cannot be empty'))
+      .optional()
+      .transform((domains) => domains?.filter((d) => d.trim().length > 0)),
+    blockedDomains: z
+      .array(z.string().min(1, 'Domain cannot be empty'))
+      .optional()
+      .transform((domains) => domains?.filter((d) => d.trim().length > 0)),
+    allowedEmails: z
+      .array(z.string().email('Invalid email format'))
+      .optional()
+      .transform((emails) => emails?.filter((e) => e.trim().length > 0)),
+    blockedEmails: z
+      .array(z.string().email('Invalid email format'))
+      .optional()
+      .transform((emails) => emails?.filter((e) => e.trim().length > 0)),
     expirationDate: z
       .union([z.date(), z.iso.datetime()])
       .transform((val) => (typeof val === 'string' ? new Date(val) : val))
@@ -153,6 +169,22 @@ export const boardConfigStepSchema = z.object({
   allowAnonymous: z.boolean().default(true),
   maxPostsPerUser: z.number().nullable().optional(),
   boardVisibility: z.enum(['public', 'private']).default('public'),
+  allowedDomains: z
+    .array(z.string().min(1, 'Domain cannot be empty'))
+    .optional()
+    .transform((domains) => domains?.filter((d) => d.trim().length > 0)),
+  blockedDomains: z
+    .array(z.string().min(1, 'Domain cannot be empty'))
+    .optional()
+    .transform((domains) => domains?.filter((d) => d.trim().length > 0)),
+  allowedEmails: z
+    .array(z.string().email('Invalid email format'))
+    .optional()
+    .transform((emails) => emails?.filter((e) => e.trim().length > 0)),
+  blockedEmails: z
+    .array(z.string().email('Invalid email format'))
+    .optional()
+    .transform((emails) => emails?.filter((e) => e.trim().length > 0)),
 
   expirationDate: z
     .union([z.date(), z.iso.datetime()])

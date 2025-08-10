@@ -1,3 +1,5 @@
+import { getCurrentUser } from '@/lib/auth';
+import { User } from '@/lib/db';
 import { BoardModel } from '@/lib/models/board';
 import { ModerationService } from '@/lib/moderation';
 import { trackApiCall } from '@/lib/performance';
@@ -32,6 +34,24 @@ export async function GET(
             reason: 'Board not found',
           },
           { status: 404 }
+        );
+      }
+
+      let user: User | undefined;
+      try {
+        user = (await getCurrentUser()) ?? undefined;
+      } catch (error) {
+        console.warn('Failed to get user email for board access check:', error);
+      }
+
+      const accessCheck = BoardModel.checkBoardAccess(board, user);
+      if (!accessCheck.hasAccess) {
+        return NextResponse.json(
+          {
+            canPost: false,
+            reason: accessCheck.reason || 'Access denied',
+          },
+          { status: 403 }
         );
       }
 

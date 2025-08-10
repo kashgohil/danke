@@ -1,5 +1,6 @@
+import { getCurrentUser } from '@/lib/auth';
 import { cache, cacheKeys, cacheTTL } from '@/lib/cache';
-import { db, users } from '@/lib/db';
+import { db, User, users } from '@/lib/db';
 import { BoardModel } from '@/lib/models/board';
 import { PostModel } from '@/lib/models/post';
 import { createMultiStepBoardSchema } from '@/lib/validations/board';
@@ -29,6 +30,24 @@ export async function GET(
 
     if (!board) {
       return NextResponse.json({ error: 'Board not found' }, { status: 404 });
+    }
+
+    let user: User | undefined;
+    try {
+      const { userId } = await auth();
+      if (userId) {
+        user = (await getCurrentUser()) ?? undefined;
+      }
+    } catch (error) {
+      console.warn('Failed to get user info for board access check:', error);
+    }
+
+    const accessCheck = BoardModel.checkBoardAccess(board, user);
+    if (!accessCheck.hasAccess) {
+      return NextResponse.json(
+        { error: accessCheck.reason || 'Access denied' },
+        { status: 403 }
+      );
     }
 
     const cacheKey = cacheKeys.board(board.viewToken);
@@ -175,6 +194,10 @@ export async function PUT(
         allowAnonymous: updatedBoard.allowAnonymous,
         maxPostsPerUser: updatedBoard.maxPostsPerUser,
         boardVisibility: updatedBoard.boardVisibility,
+        allowedDomains: updatedBoard.allowedDomains,
+        blockedDomains: updatedBoard.blockedDomains,
+        allowedEmails: updatedBoard.allowedEmails,
+        blockedEmails: updatedBoard.blockedEmails,
         expirationDate: updatedBoard.expirationDate,
         typeConfig: updatedBoard.typeConfig,
         updatedAt: updatedBoard.updatedAt.toISOString(),
