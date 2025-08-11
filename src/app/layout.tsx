@@ -10,6 +10,7 @@ import Link from 'next/link';
 import './globals.css';
 
 import { AuthHeader } from '@/components/auth/auth-header';
+import { Toaster } from '@/components/ui/sonner';
 import logo from 'public/danke.png';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -87,6 +88,7 @@ export default function RootLayout({
             </div>
             <PerformanceDashboard />
           </PerformanceProvider>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>
