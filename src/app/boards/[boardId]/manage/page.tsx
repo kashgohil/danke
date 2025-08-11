@@ -1,4 +1,6 @@
 import { CopyButton } from '@/components/boards/board-manage-client';
+import { BoardManageModerators } from '@/components/boards/board-manage-moderators';
+import { ModerationDashboard } from '@/components/boards/moderation-dashboard';
 import { BackButton } from '@/components/common/back-button';
 import { Button } from '@/components/ui/button';
 import {
@@ -127,7 +129,7 @@ export default async function BoardManagePage({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:w-2/3 mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
           <Card className="bg-background/80 backdrop-blur-sm border border-border/40 shadow-lg">
             <CardHeader className="text-center pb-4">
               <div className="mx-auto w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mb-4">
@@ -145,17 +147,11 @@ export default async function BoardManagePage({
                 Created on {new Date(board.createdAt).toLocaleDateString()}
               </div>
               <div className="flex flex-col gap-2">
-                <Link href={`/boards/${board.id}`} className="w-full">
-                  <Button className="w-full shadow-lg">
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    View Board
-                  </Button>
-                </Link>
                 <Link
                   href={`/boards/post/${board.postToken}`}
                   className="w-full"
                 >
-                  <Button variant="outline" className="w-full ">
+                  <Button className="w-full ">
                     <Heart className="w-4 h-4 mr-2" />
                     Add Message
                   </Button>
@@ -221,6 +217,8 @@ export default async function BoardManagePage({
               </div>
             </CardContent>
           </Card>
+          <BoardManageModerators boardId={board.id} />
+          <ModerationDashboard boardId={board.id} />
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
