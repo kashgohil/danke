@@ -274,7 +274,7 @@ export function BoardConfigStep({
                 <div className="flex-1 flex flex-col gap-1">
                   <p className="font-medium">Enable Moderation</p>
                   <p className="text-sm text-muted-foreground">
-                    Review before they appear on board
+                    Review the posts added on board
                   </p>
                   <p className="text-xs">
                     sensitive occasions or public boards
