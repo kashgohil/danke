@@ -137,7 +137,7 @@ export function DashboardClient() {
           Manage your boards and view your contributions
         </p>
         <Link href="/create-board">
-          <Button variant="secondary">
+          <Button>
             <Plus className="w-4 h-4 mr-2" />
             Create New Board
           </Button>
@@ -148,7 +148,7 @@ export function DashboardClient() {
         <div className="bg-card border border-border rounded-lg p-1 inline-flex">
           <button
             onClick={() => setActiveTab('boards')}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
               activeTab === 'boards'
                 ? 'bg-primary text-primary-foreground'
                 : 'text-muted-foreground hover:text-foreground'
@@ -158,7 +158,7 @@ export function DashboardClient() {
           </button>
           <button
             onClick={() => setActiveTab('posts')}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
               activeTab === 'posts'
                 ? 'bg-primary text-primary-foreground'
                 : 'text-muted-foreground hover:text-foreground'
@@ -186,7 +186,7 @@ export function DashboardClient() {
                 Create your first appreciation board to get started
               </p>
               <Link href="/create-board">
-                <Button>
+                <Button variant="default">
                   <Plus className="w-4 h-4 mr-2" />
                   Create Your First Board
                 </Button>
@@ -201,7 +201,7 @@ export function DashboardClient() {
                 >
                   <div className="flex flex-col justify-between gap-4 h-full">
                     <div>
-                      <h3 className="font-semibold text-lg overflow-hidden text-ellipsis">
+                      <h3 className="font-semibold text-lg overflow-hidden text-ellipsis text-primary">
                         {board.title}
                       </h3>
                       <p className="text-muted-foreground text-sm">
@@ -275,7 +275,7 @@ export function DashboardClient() {
                       <div className="flex-1">
                         <Link
                           href={`/boards/${post.viewToken}`}
-                          className="text-sm text-danke-600 hover:text-danke-700 font-medium"
+                          className="text-base text-primary hover:underline font-medium"
                         >
                           {post.boardTitle}
                         </Link>
@@ -317,7 +317,7 @@ export function DashboardClient() {
                     </div>
 
                     <Link href={`/boards/${post.boardId}`}>
-                      <Button variant="outline" size="sm">
+                      <Button variant="secondary" size="sm">
                         <Eye className="w-4 h-4 mr-2" />
                         View Board
                       </Button>

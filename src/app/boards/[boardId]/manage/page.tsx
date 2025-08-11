@@ -111,7 +111,7 @@ export default async function BoardManagePage({
       <BackButton />
       <div className="space-y-8">
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 bg-danke-gold/40 text-danke-900 px-4 py-2 rounded-full text-sm font-medium">
+          <div className="inline-flex items-center gap-2 bg-danke-gold text-danke-900 px-4 py-2 rounded-full text-sm font-medium">
             <Settings className="w-4 h-4" />
             <span>Board Management</span>
           </div>

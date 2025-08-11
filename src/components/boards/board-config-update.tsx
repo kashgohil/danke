@@ -14,10 +14,12 @@ import { Label } from '@/components/ui/label';
 import { Board } from '@/lib/db';
 import { cn } from '@/lib/utils';
 import {
+  Check,
   Globe,
   LayoutDashboard,
   Lock,
   Save,
+  Settings,
   StickyNote,
   X,
 } from 'lucide-react';
@@ -251,8 +253,12 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
   };
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="text-center space-y-2">
+    <div className="flex flex-col gap-4">
+      <div className="mx-auto inline-flex items-center gap-2 bg-danke-gold text-danke-900 px-4 py-2 rounded-full text-sm font-medium">
+        <Settings className="w-4 h-4" />
+        <span>Board Configuration</span>
+      </div>
+      <div className="text-center space-y-2 mb-4">
         <h2 className="text-2xl font-bold text-danke-900">
           Update Board Configuration
         </h2>
@@ -268,16 +274,16 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
       )}
 
       {isSuccess && (
-        <div className="bg-green-50 border border-green-200 rounded-md p-4">
-          <p className="text-green-800 text-sm font-medium">
-            ✅ Board configuration updated successfully! Redirecting...
+        <div className="bg-background/40 border border-border rounded-md p-4">
+          <p className="text-danke-gold text-sm font-medium flex items-center gap-4">
+            <Check /> Board configuration updated successfully! Redirecting...
           </p>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {isSuccess && (
-          <div className="absolute inset-0 bg-background/50 backdrop-blur-sm rounded-lg z-10 flex items-center justify-center">
+          <div className="fixed h-full w-full inset-0 bg-background/50 backdrop-blur-sm z-10 flex items-center justify-center">
             <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
               <p className="text-sm text-muted-foreground">
@@ -286,7 +292,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
             </div>
           </div>
         )}
-        <Card>
+        <Card className="bg-background/80">
           <CardHeader>
             <CardTitle className="text-xl mb-0 text-primary">
               Basic Information
@@ -332,7 +338,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-background/80">
           <CardHeader>
             <CardTitle className="text-xl mb-0 text-primary">
               Posting Configuration
@@ -404,7 +410,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-background/80">
           <CardHeader>
             <CardTitle className="text-xl mb-0 text-primary">
               Board Settings
@@ -504,7 +510,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-background/80">
           <CardHeader>
             <CardTitle className="text-xl mb-0 text-primary">
               Visibility Settings
@@ -545,7 +551,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
             </div>
 
             {boardVisibility === 'private' && (
-              <div className="flex flex-col gap-6 p-4 border rounded-lg bg-muted/30">
+              <div className="flex flex-col gap-6 py-6 px-8 border rounded-lg bg-card">
                 <div className="flex flex-col gap-2">
                   <Label className="text-sm font-medium text-primary">
                     Access Restrictions
@@ -625,7 +631,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-background/80">
           <CardHeader>
             <CardTitle className="text-xl mb-0 text-primary">
               Expiration Settings
@@ -662,7 +668,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-background/80">
           <CardHeader>
             <CardTitle className="text-xl mb-0 text-primary">
               Theme Settings
