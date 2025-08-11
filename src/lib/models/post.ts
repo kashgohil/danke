@@ -8,6 +8,7 @@ import {
   type CreatePostSchema,
   type UpdatePostSchema,
 } from '../validations/post';
+import { ModeratorModel } from './moderator';
 
 export class PostModel {
   static async create(
@@ -56,13 +57,31 @@ export class PostModel {
     });
   }
 
-  static async getByBoardId(boardId: string): Promise<Post[]> {
+  static async getByBoardId(boardId: string, userId?: string): Promise<Post[]> {
     return trackDbQuery('post-get-by-board', async () => {
-      return await db
-        .select()
-        .from(posts)
-        .where(and(eq(posts.boardId, boardId), eq(posts.isDeleted, false)))
-        .orderBy(desc(posts.createdAt));
+      const isModerator = userId
+        ? await ModeratorModel.hasModeratorPermissions(boardId, userId)
+        : false;
+
+      if (isModerator) {
+        return await db
+          .select()
+          .from(posts)
+          .where(and(eq(posts.boardId, boardId), eq(posts.isDeleted, false)))
+          .orderBy(desc(posts.createdAt));
+      } else {
+        return await db
+          .select()
+          .from(posts)
+          .where(
+            and(
+              eq(posts.boardId, boardId),
+              eq(posts.isDeleted, false),
+              eq(posts.moderationStatus, 'approved')
+            )
+          )
+          .orderBy(desc(posts.createdAt));
+      }
     });
   }
 
@@ -133,7 +152,11 @@ export class PostModel {
       .innerJoin(boards, eq(posts.boardId, boards.id))
       .where(eq(posts.id, postId));
 
-    return result.length > 0 && result[0].boardCreatorId === userId;
+    if (result.length > 0 && result[0].boardCreatorId === userId) {
+      return true;
+    }
+
+    return await ModeratorModel.hasModeratorPermissions(post.boardId, userId);
   }
 
   static async canEdit(postId: string, creatorId: string): Promise<boolean> {
