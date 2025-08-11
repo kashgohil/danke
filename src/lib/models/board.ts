@@ -7,6 +7,11 @@ import {
   type CreateMultiStepBoardSchema,
 } from '../validations/board';
 
+export enum ErrorType {
+  NOT_SIGNED_IN = 'NOT_SIGNED_IN',
+  NOT_ACCESSIBLE = 'NOT_ACCESSIBLE',
+}
+
 export class BoardModel {
   static async create(
     data: CreateMultiStepBoardSchema,
@@ -337,7 +342,7 @@ export class BoardModel {
   static checkBoardAccess(
     board: Board,
     user?: User
-  ): { hasAccess: boolean; reason?: string } {
+  ): { hasAccess: boolean; errorType?: ErrorType; reason?: string } {
     if (board.boardVisibility === 'public') {
       return { hasAccess: true };
     }
@@ -346,6 +351,7 @@ export class BoardModel {
       if (!user) {
         return {
           hasAccess: false,
+          errorType: ErrorType.NOT_SIGNED_IN,
           reason: 'Authentication required for private board',
         };
       }
@@ -364,6 +370,7 @@ export class BoardModel {
       ) {
         return {
           hasAccess: false,
+          errorType: ErrorType.NOT_ACCESSIBLE,
           reason: 'Your email is blocked from accessing this board',
         };
       }
@@ -375,6 +382,7 @@ export class BoardModel {
       ) {
         return {
           hasAccess: false,
+          errorType: ErrorType.NOT_ACCESSIBLE,
           reason: 'Your email domain is blocked from accessing this board',
         };
       }
@@ -385,22 +393,22 @@ export class BoardModel {
         }
         return {
           hasAccess: false,
+          errorType: ErrorType.NOT_ACCESSIBLE,
           reason: 'Your email is not on the allowed list for this board',
         };
       }
 
-      // Check allowed domains (if specified and no allowed emails)
       if (board.allowedDomains && board.allowedDomains.length > 0) {
         if (emailDomain && board.allowedDomains.includes(emailDomain)) {
           return { hasAccess: true };
         }
         return {
           hasAccess: false,
+          errorType: ErrorType.NOT_ACCESSIBLE,
           reason: 'Your email domain is not allowed to access this board',
         };
       }
 
-      // If no restrictions are set for private board, allow access
       return { hasAccess: true };
     }
 

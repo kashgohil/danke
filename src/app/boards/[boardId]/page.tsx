@@ -2,8 +2,9 @@ import { BoardPageClient } from '@/components/boards/board-page-client';
 import { Button } from '@/components/ui/button';
 import { checkBoardAccess } from '@/lib/board-access';
 import { db, users } from '@/lib/db';
-import { BoardModel } from '@/lib/models/board';
+import { BoardModel, ErrorType } from '@/lib/models/board';
 import { PostModel } from '@/lib/models/post';
+import { tryCatch } from '@/lib/try-catch';
 import { eq } from 'drizzle-orm';
 import { Heart, Lock } from 'lucide-react';
 import Link from 'next/link';
@@ -29,6 +30,7 @@ async function getBoardData(boardId: string) {
         board: null,
         posts: [],
         accessDenied: true,
+        errorType: accessCheck.errorType,
         accessReason: accessCheck.reason,
       };
     }
@@ -95,10 +97,9 @@ async function getBoardData(boardId: string) {
 export default async function BoardPage({ params }: BoardPageProps) {
   const { boardId } = await params; // Can be either viewToken or actual board ID
 
-  let data;
-  try {
-    data = await getBoardData(boardId);
-  } catch (error) {
+  const { result: data, error } = await tryCatch(getBoardData(boardId));
+
+  if (error) {
     console.error('BoardPage: Error occurred:', error);
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-danke-50 via-white to-danke-100">
@@ -140,14 +141,16 @@ export default async function BoardPage({ params }: BoardPageProps) {
             'You do not have permission to view this board.'}
         </p>
         <div className="flex justify-center gap-2">
-          <Link href="/sign-in">
-            <Button
-              variant="default"
-              className="px-6 py-3 text-base font-medium w-full"
-            >
-              Sign In
-            </Button>
-          </Link>
+          {data.errorType === ErrorType.NOT_SIGNED_IN && (
+            <Link href="/sign-in">
+              <Button
+                variant="default"
+                className="px-6 py-3 text-base font-medium w-full"
+              >
+                Sign In
+              </Button>
+            </Link>
+          )}
           <Link href="/">
             <Button
               variant="outline"

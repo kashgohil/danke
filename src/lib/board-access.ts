@@ -1,12 +1,13 @@
 import { auth } from '@clerk/nextjs/server';
 import { getCurrentUser } from './auth';
 import { Board } from './db';
-import { BoardModel } from './models/board';
+import { BoardModel, ErrorType } from './models/board';
 
 export interface AccessCheckResult {
   hasAccess: boolean;
   reason?: string;
   userEmail?: string;
+  errorType?: ErrorType;
 }
 
 export async function checkBoardAccess(
@@ -23,6 +24,7 @@ export async function checkBoardAccess(
       if (!userId) {
         return {
           hasAccess: false,
+          errorType: ErrorType.NOT_SIGNED_IN,
           reason: 'Authentication required for private board',
         };
       }
@@ -32,6 +34,7 @@ export async function checkBoardAccess(
       if (!user) {
         return {
           hasAccess: false,
+          errorType: ErrorType.NOT_SIGNED_IN,
           reason: 'Email address required for private board access',
         };
       }
@@ -42,11 +45,13 @@ export async function checkBoardAccess(
         hasAccess: accessCheck.hasAccess,
         reason: accessCheck.reason,
         userEmail: user.email,
+        errorType: accessCheck.errorType,
       };
     } catch (error) {
       console.error('Error checking board access:', error);
       return {
         hasAccess: false,
+        errorType: ErrorType.NOT_SIGNED_IN,
         reason: 'Unable to verify access permissions',
       };
     }
@@ -54,6 +59,7 @@ export async function checkBoardAccess(
 
   return {
     hasAccess: false,
+    errorType: ErrorType.NOT_ACCESSIBLE,
     reason: 'Invalid board visibility setting',
   };
 }
