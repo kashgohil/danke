@@ -67,6 +67,33 @@ export const boards = pgTable(
   ]
 );
 
+// Board moderators table
+export const boardModerators = pgTable(
+  'board_moderators',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    boardId: uuid('board_id')
+      .notNull()
+      .references(() => boards.id, { onDelete: 'cascade' }),
+    userId: varchar('user_id', { length: 255 })
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    addedBy: varchar('added_by', { length: 255 })
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  },
+  (table) => [
+    index('board_moderators_board_id_idx').on(table.boardId),
+    index('board_moderators_user_id_idx').on(table.userId),
+    index('board_moderators_board_id_user_id_unique').on(
+      table.boardId,
+      table.userId
+    ),
+  ]
+);
+
 // Posts table
 export const posts = pgTable(
   'posts',
@@ -82,6 +109,20 @@ export const posts = pgTable(
     mediaUrls: text('media_urls').array(), // Array of media file URLs
     isAnonymous: boolean('is_anonymous').default(false).notNull(), // Track anonymous posts
     anonymousName: varchar('anonymous_name', { length: 100 }), // Custom name for anonymous posts
+    // Moderation fields
+    moderationStatus: varchar('moderation_status', { length: 50 })
+      .default('approved')
+      .notNull(),
+    moderationReason: text('moderation_reason'),
+    moderatedBy: varchar('moderated_by', { length: 255 }).references(
+      () => users.id,
+      { onDelete: 'set null' }
+    ),
+    moderatedAt: timestamp('moderated_at'),
+    deleteScheduledDate: timestamp('delete_scheduled_date'),
+    deleteScheduledBy: varchar('delete_scheduled_by', {
+      length: 255,
+    }).references(() => users.id, { onDelete: 'set null' }),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
     isDeleted: boolean('is_deleted').default(false).notNull(),
@@ -96,12 +137,15 @@ export const posts = pgTable(
       table.isDeleted,
       table.createdAt.desc()
     ),
+    index('posts_moderation_status_idx').on(table.moderationStatus),
+    index('posts_delete_scheduled_date_idx').on(table.deleteScheduledDate),
   ]
 );
 
 export const usersRelations = relations(users, ({ many }) => ({
   boards: many(boards),
   posts: many(posts),
+  moderatedBoards: many(boardModerators),
 }));
 
 export const boardsRelations = relations(boards, ({ one, many }) => ({
@@ -110,7 +154,26 @@ export const boardsRelations = relations(boards, ({ one, many }) => ({
     references: [users.id],
   }),
   posts: many(posts),
+  moderators: many(boardModerators),
 }));
+
+export const boardModeratorsRelations = relations(
+  boardModerators,
+  ({ one }) => ({
+    board: one(boards, {
+      fields: [boardModerators.boardId],
+      references: [boards.id],
+    }),
+    user: one(users, {
+      fields: [boardModerators.userId],
+      references: [users.id],
+    }),
+    addedByUser: one(users, {
+      fields: [boardModerators.addedBy],
+      references: [users.id],
+    }),
+  })
+);
 
 export const postsRelations = relations(posts, ({ one }) => ({
   board: one(boards, {
@@ -121,6 +184,14 @@ export const postsRelations = relations(posts, ({ one }) => ({
     fields: [posts.creatorId],
     references: [users.id],
   }),
+  moderatedByUser: one(users, {
+    fields: [posts.moderatedBy],
+    references: [users.id],
+  }),
+  deleteScheduledByUser: one(users, {
+    fields: [posts.deleteScheduledBy],
+    references: [users.id],
+  }),
 }));
 
 // Export types
@@ -128,5 +199,7 @@ export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type Board = typeof boards.$inferSelect;
 export type NewBoard = typeof boards.$inferInsert;
+export type BoardModerator = typeof boardModerators.$inferSelect;
+export type NewBoardModerator = typeof boardModerators.$inferInsert;
 export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
