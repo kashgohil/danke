@@ -76,34 +76,36 @@ export class ErrorBoundary extends React.Component<
 
 function DefaultErrorFallback({ error, resetError }: ErrorFallbackProps) {
   return (
-    <Card className="max-w-md mx-auto mt-8">
-      <CardHeader>
-        <div className="flex items-center gap-2">
-          <AlertTriangle className="h-5 w-5 text-destructive" />
-          <CardTitle className="text-destructive">
-            Something went wrong
-          </CardTitle>
-        </div>
-        <CardDescription>
-          An unexpected error occurred. Please try again or contact support if
-          the problem persists.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <details className="text-sm">
-          <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
-            Error details
-          </summary>
-          <pre className="mt-2 p-2 bg-muted rounded text-xs overflow-auto">
-            {error.message}
-          </pre>
-        </details>
-        <Button onClick={resetError} className="w-full">
-          <RefreshCw className="h-4 w-4 mr-2" />
-          Try Again
-        </Button>
-      </CardContent>
-    </Card>
+    <div className="min-h-screen bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600">
+      <Card className="max-w-md mx-auto mt-8">
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-destructive" />
+            <CardTitle className="text-destructive">
+              Something went wrong
+            </CardTitle>
+          </div>
+          <CardDescription>
+            An unexpected error occurred. Please try again or contact support if
+            the problem persists.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <details className="text-sm">
+            <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
+              Error details
+            </summary>
+            <pre className="mt-2 p-2 bg-muted rounded text-xs overflow-auto">
+              {error.message}
+            </pre>
+          </details>
+          <Button onClick={resetError} className="w-full">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Try Again
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
