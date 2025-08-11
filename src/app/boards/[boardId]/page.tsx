@@ -5,6 +5,7 @@ import { db, users } from '@/lib/db';
 import { BoardModel, ErrorType } from '@/lib/models/board';
 import { PostModel } from '@/lib/models/post';
 import { tryCatch } from '@/lib/try-catch';
+import { auth } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
 import { Heart, Lock } from 'lucide-react';
 import Link from 'next/link';
@@ -32,10 +33,13 @@ async function getBoardData(boardId: string) {
         accessDenied: true,
         errorType: accessCheck.errorType,
         accessReason: accessCheck.reason,
+        isModerator: false,
+        isCreator: false,
       };
     }
 
-    const posts = await PostModel.getByBoardId(board.id);
+    const { userId } = await auth();
+    const posts = await PostModel.getByBoardId(board.id, userId || undefined);
 
     const creatorIds = [...new Set(posts.map((post) => post.creatorId))];
     const creatorMap = new Map();
@@ -87,6 +91,8 @@ async function getBoardData(boardId: string) {
       },
       posts: postsWithCreators,
       accessDenied: false,
+      isModerator: accessCheck.isModerator || false,
+      isCreator: accessCheck.isCreator || false,
     };
   } catch (error) {
     console.error('Error fetching board data:', error);
@@ -165,7 +171,12 @@ export default async function BoardPage({ params }: BoardPageProps) {
   }
 
   return (
-    <BoardPageClient initialBoard={data.board!} initialPosts={data.posts} />
+    <BoardPageClient
+      initialBoard={data.board!}
+      initialPosts={data.posts}
+      isModerator={data.isModerator}
+      isCreator={data.isCreator}
+    />
   );
 }
 

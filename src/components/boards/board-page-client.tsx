@@ -30,11 +30,15 @@ interface Post {
 interface BoardPageClientProps {
   initialBoard: Board;
   initialPosts: Post[];
+  isModerator?: boolean;
+  isCreator?: boolean;
 }
 
 export function BoardPageClient({
   initialBoard,
   initialPosts,
+  isModerator,
+  isCreator,
 }: BoardPageClientProps) {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
 
@@ -58,6 +62,8 @@ export function BoardPageClient({
       posts={posts}
       onPostUpdated={handlePostUpdated}
       onPostDeleted={handlePostDeleted}
+      isModerator={isModerator}
+      isCreator={isCreator}
     />
   );
 }

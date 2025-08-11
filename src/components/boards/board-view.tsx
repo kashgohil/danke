@@ -18,6 +18,7 @@ import { perf } from '@/lib/performance';
 import { useAuth } from '@clerk/nextjs';
 import { Edit2, Heart, MessageCircle, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { PostModerationControls } from '../posts/post-moderation-controls';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { MediaCarousel } from '../ui/media-carousel';
 
@@ -50,6 +51,8 @@ interface BoardViewProps {
   posts: Post[];
   onPostUpdated?: (updatedPost: Post) => void;
   onPostDeleted?: (postId: string) => void;
+  isModerator?: boolean;
+  isCreator?: boolean;
 }
 
 function DoodleBackground() {
@@ -203,11 +206,15 @@ function PostCard({
   board,
   onPostUpdated,
   onPostDeleted,
+  isModerator,
+  isCreator,
 }: {
   post: Post;
   board: Board;
   onPostUpdated?: (updatedPost: Post) => void;
   onPostDeleted?: (postId: string) => void;
+  isModerator?: boolean;
+  isCreator?: boolean;
 }) {
   const { userId } = useAuth();
   const { handleError } = useApiErrorHandler();
@@ -217,6 +224,7 @@ function PostCard({
   const [canDelete, setCanDelete] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [showModerationControls, setShowModerationControls] = useState(false);
 
   const getMediaType = (url: string): 'image' | 'video' | 'audio' => {
     const extension = url.split('.').pop()?.toLowerCase();
@@ -248,13 +256,24 @@ function PostCard({
       }
 
       setCanDelete(userId === post.creator?.id || userId === board.creatorId);
+
+      setShowModerationControls(
+        (!!isModerator || !!isCreator) && userId !== post.creator?.id
+      );
     };
 
     checkPermissions();
 
     const interval = setInterval(checkPermissions, 60000);
     return () => clearInterval(interval);
-  }, [userId, post.creator?.id, post.createdAt, board.creatorId]);
+  }, [
+    userId,
+    post.creator?.id,
+    post.createdAt,
+    board.creatorId,
+    isModerator,
+    isCreator,
+  ]);
 
   const handlePostUpdated = (updatedPost: any) => {
     setIsEditDialogOpen(false);
@@ -480,6 +499,15 @@ function PostCard({
             />
           </div>
 
+          {showModerationControls && (
+            <PostModerationControls
+              postId={post.id}
+              onModerationComplete={() => {
+                onPostUpdated?.(post);
+              }}
+            />
+          )}
+
           {postFooter()}
         </div>
       </Card>
@@ -492,6 +520,8 @@ export function BoardView({
   posts,
   onPostUpdated,
   onPostDeleted,
+  isModerator,
+  isCreator,
 }: BoardViewProps) {
   useEffect(() => {
     if (process.env.NODE_ENV !== 'test') {
@@ -549,6 +579,8 @@ export function BoardView({
               board={board}
               onPostUpdated={onPostUpdated}
               onPostDeleted={onPostDeleted}
+              isModerator={isModerator}
+              isCreator={isCreator}
             />
           ))}
         </MasonryLayout>
