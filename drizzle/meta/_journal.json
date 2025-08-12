@@ -50,6 +50,13 @@
       "when": 1754483400000,
       "tag": "0006_add_visibility_restrictions",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1754962135981,
+      "tag": "0007_pretty_chronomancer",
+      "breakpoints": true
     }
   ]
 }
