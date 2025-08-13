@@ -40,29 +40,17 @@ export class ModerationService {
     const flaggedContent: string[] = [];
     const lowerContent = content.toLowerCase();
 
-    // Check for flagged words
     for (const word of flaggedWords) {
       if (lowerContent.includes(word)) {
         flaggedContent.push(word);
       }
     }
 
-    // Check for excessive caps (more than 50% uppercase)
-    const uppercaseCount = (content.match(/[A-Z]/g) || []).length;
-    const letterCount = (content.match(/[a-zA-Z]/g) || []).length;
-    const capsPercentage = letterCount > 0 ? uppercaseCount / letterCount : 0;
-
-    if (capsPercentage > 0.5 && letterCount > 10) {
-      flaggedContent.push('excessive caps');
-    }
-
-    // Check for repeated characters (spam indicator)
     const repeatedPattern = /(.)\1{4,}/g;
     if (repeatedPattern.test(content)) {
       flaggedContent.push('repeated characters');
     }
 
-    // Check for URLs (potential spam)
     const urlPattern = /(https?:\/\/[^\s]+)/g;
     if (urlPattern.test(content)) {
       flaggedContent.push('contains links');
@@ -78,13 +66,11 @@ export class ModerationService {
     };
   }
 
-  // Check posting limits based on board configuration
   static async checkPostingLimits(
     boardId: string,
     userId: string
   ): Promise<ModerationResult & { postCount?: number }> {
     try {
-      // Get board configuration
       const [board] = await db
         .select({
           postingMode: boards.postingMode,
@@ -102,7 +88,6 @@ export class ModerationService {
         };
       }
 
-      // Get user's current post count for this board
       const [userPostCount] = await db
         .select({ count: count() })
         .from(posts)
@@ -116,7 +101,6 @@ export class ModerationService {
 
       const currentPostCount = userPostCount?.count || 0;
 
-      // Check single posting mode
       if (board.postingMode === 'single' && currentPostCount >= 1) {
         return {
           isAllowed: false,
@@ -125,7 +109,6 @@ export class ModerationService {
         };
       }
 
-      // Check max posts per user limit
       if (board.maxPostsPerUser) {
         const maxPosts = parseInt(board.maxPostsPerUser);
         if (!isNaN(maxPosts) && currentPostCount >= maxPosts) {
@@ -150,19 +133,16 @@ export class ModerationService {
     }
   }
 
-  // Comprehensive moderation check
   static async moderatePost(
     content: string,
     boardId: string,
     userId: string
   ): Promise<ModerationResult> {
-    // Check posting limits first
     const limitsCheck = await this.checkPostingLimits(boardId, userId);
     if (!limitsCheck.isAllowed) {
       return limitsCheck;
     }
 
-    // Get board moderation settings
     const [board] = await db
       .select({ moderationEnabled: boards.moderationEnabled })
       .from(boards)
@@ -175,12 +155,10 @@ export class ModerationService {
       };
     }
 
-    // If moderation is disabled, only check posting limits
     if (!board.moderationEnabled) {
       return { isAllowed: true };
     }
 
-    // Run content moderation
     const contentCheck = await this.moderateContent(content);
     if (!contentCheck.isAllowed) {
       return contentCheck;
