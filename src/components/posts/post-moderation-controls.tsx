@@ -9,34 +9,41 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/api-error-handler';
 import { tryCatch } from '@/lib/try-catch';
-import {
-  AlertTriangle,
-  Calendar,
-  MessageSquare,
-  Shield,
-  Trash2,
-} from 'lucide-react';
+import { AlertTriangle, Calendar, MessageSquare, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { DateTimePicker } from '../ui/datetime-picker';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
 
 interface PostModerationControlsProps {
   postId: string;
+  textColors: {
+    muted: string;
+    accent: string;
+    primary: string;
+    secondary: string;
+  };
   onModerationComplete: () => void;
 }
 
 export function PostModerationControls({
   postId,
+  textColors,
   onModerationComplete,
 }: PostModerationControlsProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [activeDialog, setActiveDialog] = useState<string | null>(null);
   const [reason, setReason] = useState('');
-  const [deleteDate, setDeleteDate] = useState('');
+  const [deleteDate, setDeleteDate] = useState<Date>();
   const { toast } = useToast();
 
   const handleModeration = async (
@@ -92,9 +99,7 @@ export function PostModerationControls({
         message = 'Content change request sent to the post author.';
         break;
       case 'schedule_deletion':
-        message = `Post scheduled for deletion on ${new Date(
-          deleteDate
-        ).toLocaleDateString()}.`;
+        message = `Post scheduled for deletion on ${deleteDate?.toLocaleDateString()}.`;
         break;
       case 'delete':
         message = 'Post has been deleted.';
@@ -103,7 +108,7 @@ export function PostModerationControls({
 
     setActiveDialog(null);
     setReason('');
-    setDeleteDate('');
+    setDeleteDate(undefined);
     onModerationComplete();
 
     setIsLoading(false);
@@ -116,16 +121,11 @@ export function PostModerationControls({
 
   const resetForm = () => {
     setReason('');
-    setDeleteDate('');
+    setDeleteDate(undefined);
   };
 
-  return (
-    <div className="flex items-center gap-2 p-2 bg-muted/50 rounded-lg border border-border/50">
-      <Shield className="w-4 h-4 text-primary" />
-      <span className="text-sm font-medium text-muted-foreground">
-        Moderator Actions:
-      </span>
-
+  function requestContentChange() {
+    return (
       <Dialog
         open={activeDialog === 'request_change'}
         onOpenChange={(open) => {
@@ -133,14 +133,25 @@ export function PostModerationControls({
           if (!open) resetForm();
         }}
       >
-        <DialogTrigger asChild>
-          <Button variant="outline" size="sm">
-            <MessageSquare className="w-4 h-4 mr-1" />
-            Request Change
-          </Button>
-        </DialogTrigger>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className={`h-8 w-8 p-0 ${textColors.muted} hover:${textColors.primary} hover:bg-gray-100/50 rounded-full transition-all duration-200`}
+                  size="sm"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                </Button>
+              </DialogTrigger>
+            </TooltipTrigger>
+            <TooltipContent>Request Change</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
         <DialogContent>
-          <DialogHeader>
+          <DialogHeader className="gap-4">
             <DialogTitle>Request Content Change</DialogTitle>
             <DialogDescription>
               Ask the post author to modify their content. They will be notified
@@ -148,16 +159,13 @@ export function PostModerationControls({
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="change-reason">Reason for change request</Label>
-              <Textarea
-                id="change-reason"
-                placeholder="Please explain what needs to be changed and why..."
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                rows={3}
-              />
-            </div>
+            <Textarea
+              id="change-reason"
+              placeholder="Please explain what needs to be changed and why..."
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              rows={3}
+            />
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setActiveDialog(null)}>
                 Cancel
@@ -172,7 +180,11 @@ export function PostModerationControls({
           </div>
         </DialogContent>
       </Dialog>
+    );
+  }
 
+  function scheduleDeletion() {
+    return (
       <Dialog
         open={activeDialog === 'schedule_deletion'}
         onOpenChange={(open) => {
@@ -180,32 +192,39 @@ export function PostModerationControls({
           if (!open) resetForm();
         }}
       >
-        <DialogTrigger asChild>
-          <Button variant="outline" size="sm">
-            <Calendar className="w-4 h-4 mr-1" />
-            Schedule Delete
-          </Button>
-        </DialogTrigger>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={`h-8 w-8 p-0 ${textColors.muted} hover:${textColors.primary} hover:bg-gray-100/50 rounded-full transition-all duration-200`}
+                >
+                  <Calendar className="w-4 h-4" />
+                </Button>
+              </DialogTrigger>
+            </TooltipTrigger>
+            <TooltipContent>Schedule Delete</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <DialogContent>
-          <DialogHeader>
+          <DialogHeader className="gap-4">
             <DialogTitle>Schedule Post Deletion</DialogTitle>
             <DialogDescription>
               Set a deadline for the author to update their post. If not updated
               by this date, the post will be automatically deleted.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="delete-date">Delete date</Label>
-              <Input
-                id="delete-date"
-                type="datetime-local"
-                value={deleteDate}
-                onChange={(e) => setDeleteDate(e.target.value)}
-                min={new Date().toISOString().slice(0, 16)}
-              />
-            </div>
-            <div>
+          <div className="flex flex-col gap-4">
+            <DateTimePicker
+              date={deleteDate}
+              onDateTimeChange={setDeleteDate}
+              placeholder="Select expiration date and time"
+              className="text-sm w-fit border border-border rounded-lg"
+              min={new Date().toISOString().slice(0, 16)}
+            />
+            <div className="flex flex-col gap-3">
               <Label htmlFor="schedule-reason">
                 Reason for scheduling deletion
               </Label>
@@ -231,7 +250,11 @@ export function PostModerationControls({
           </div>
         </DialogContent>
       </Dialog>
+    );
+  }
 
+  function deletePost() {
+    return (
       <Dialog
         open={activeDialog === 'delete'}
         onOpenChange={(open) => {
@@ -239,14 +262,24 @@ export function PostModerationControls({
           if (!open) resetForm();
         }}
       >
-        <DialogTrigger asChild>
-          <Button variant="destructive" size="sm">
-            <Trash2 className="w-4 h-4 mr-1" />
-            Delete
-          </Button>
-        </DialogTrigger>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DialogTrigger asChild>
+                <Button
+                  className={`h-8 w-8 p-0 ${textColors.muted} hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-200`}
+                  variant="ghost"
+                  size="sm"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </DialogTrigger>
+            </TooltipTrigger>
+            <TooltipContent>Delete</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <DialogContent>
-          <DialogHeader>
+          <DialogHeader className="gap-4">
             <DialogTitle>Delete Post</DialogTitle>
             <DialogDescription>
               This will permanently delete the post. This action cannot be
@@ -254,22 +287,19 @@ export function PostModerationControls({
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div className="flex items-center gap-2 p-3 bg-destructive/10 rounded-lg">
-              <AlertTriangle className="w-5 h-5 text-destructive" />
-              <span className="text-sm text-destructive font-medium">
+            <div className="flex items-center gap-2 p-3 bg-primary/80 rounded-lg text-danke-900">
+              <AlertTriangle className="w-5 h-5" />
+              <span className="text-sm font-medium">
                 This action is permanent and cannot be undone.
               </span>
             </div>
-            <div>
-              <Label htmlFor="delete-reason">Reason for deletion</Label>
-              <Textarea
-                id="delete-reason"
-                placeholder="Explain why this post is being deleted..."
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                rows={3}
-              />
-            </div>
+            <Textarea
+              id="delete-reason"
+              placeholder="Explain why this post is being deleted..."
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              rows={3}
+            />
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setActiveDialog(null)}>
                 Cancel
@@ -285,6 +315,14 @@ export function PostModerationControls({
           </div>
         </DialogContent>
       </Dialog>
+    );
+  }
+
+  return (
+    <div className="flex items-center justify-end gap-2">
+      {requestContentChange()}
+      {scheduleDeletion()}
+      {deletePost()}
     </div>
   );
 }

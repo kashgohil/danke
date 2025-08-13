@@ -21,6 +21,12 @@ import { useEffect, useState } from 'react';
 import { PostModerationControls } from '../posts/post-moderation-controls';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { MediaCarousel } from '../ui/media-carousel';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
 
 export interface Board {
   id: string;
@@ -257,6 +263,8 @@ function PostCard({
 
       setCanDelete(userId === post.creator?.id || userId === board.creatorId);
 
+      console.log(isModerator, isCreator, userId, post.creator?.id);
+
       setShowModerationControls(
         (!!isModerator || !!isCreator) && userId !== post.creator?.id
       );
@@ -440,22 +448,29 @@ function PostCard({
         </div>
 
         <div
-          className="flex items-center space-x-1 opacity-70 group-hover:opacity-100 transition-opacity duration-200"
+          className="flex items-center space-x-1"
           role="group"
           aria-label="Post actions"
         >
           {canEdit && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsEditDialogOpen(true)}
-              className={`h-8 w-8 p-0 ${textColors.muted} hover:${textColors.primary} hover:bg-gray-100/50 rounded-full transition-all duration-200`}
-              aria-label="Edit post"
-            >
-              <Edit2 className="h-4 w-4" />
-            </Button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsEditDialogOpen(true)}
+                    className={`h-8 w-8 p-0 ${textColors.muted} hover:${textColors.primary} hover:bg-gray-100/50 rounded-full transition-all duration-200`}
+                    aria-label="Edit post"
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Edit</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
-          {canDelete && (
+          {!showModerationControls && canDelete && (
             <Button
               variant="ghost"
               size="sm"
@@ -466,6 +481,15 @@ function PostCard({
             >
               <Trash2 className="h-4 w-4" />
             </Button>
+          )}
+          {showModerationControls && (
+            <PostModerationControls
+              textColors={textColors}
+              postId={post.id}
+              onModerationComplete={() => {
+                onPostUpdated?.(post);
+              }}
+            />
           )}
         </div>
       </div>
@@ -498,16 +522,6 @@ function PostCard({
               className="border-0 p-0 min-h-0"
             />
           </div>
-
-          {showModerationControls && (
-            <PostModerationControls
-              postId={post.id}
-              onModerationComplete={() => {
-                onPostUpdated?.(post);
-              }}
-            />
-          )}
-
           {postFooter()}
         </div>
       </Card>
