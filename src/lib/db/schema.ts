@@ -146,6 +146,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   boards: many(boards),
   posts: many(posts),
   moderatedBoards: many(boardModerators),
+  notifications: many(notifications),
 }));
 
 export const boardsRelations = relations(boards, ({ one, many }) => ({
@@ -194,6 +195,51 @@ export const postsRelations = relations(posts, ({ one }) => ({
   }),
 }));
 
+// Notifications table
+export const notifications = pgTable(
+  'notifications',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    userId: varchar('user_id', { length: 255 })
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    type: varchar('type', { length: 50 }).notNull(), // 'post_approved', 'post_rejected', 'post_hidden'
+    title: varchar('title', { length: 255 }).notNull(),
+    message: text('message').notNull(),
+    postId: uuid('post_id').references(() => posts.id, { onDelete: 'cascade' }),
+    boardId: uuid('board_id').references(() => boards.id, {
+      onDelete: 'cascade',
+    }),
+    isRead: boolean('is_read').default(false).notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  },
+  (table) => [
+    index('notifications_user_id_idx').on(table.userId),
+    index('notifications_user_id_is_read_idx').on(table.userId, table.isRead),
+    index('notifications_created_at_idx').on(table.createdAt.desc()),
+    index('notifications_user_id_created_at_idx').on(
+      table.userId,
+      table.createdAt.desc()
+    ),
+  ]
+);
+
+export const notificationsRelations = relations(notifications, ({ one }) => ({
+  user: one(users, {
+    fields: [notifications.userId],
+    references: [users.id],
+  }),
+  post: one(posts, {
+    fields: [notifications.postId],
+    references: [posts.id],
+  }),
+  board: one(boards, {
+    fields: [notifications.boardId],
+    references: [boards.id],
+  }),
+}));
+
 // Export types
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -203,3 +249,5 @@ export type BoardModerator = typeof boardModerators.$inferSelect;
 export type NewBoardModerator = typeof boardModerators.$inferInsert;
 export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
+export type Notification = typeof notifications.$inferSelect;
+export type NewNotification = typeof notifications.$inferInsert;
