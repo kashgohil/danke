@@ -32,6 +32,7 @@ import {
 
 interface PostModerationControlsProps {
   postId: string;
+  moderationStatus?: string;
   textColors: {
     muted: string;
     accent: string;
@@ -43,6 +44,7 @@ interface PostModerationControlsProps {
 
 export function PostModerationControls({
   postId,
+  moderationStatus,
   textColors,
   onModerationComplete,
 }: PostModerationControlsProps) {
@@ -350,7 +352,7 @@ export function PostModerationControls({
 
   return (
     <div className="flex items-center justify-end gap-2">
-      {approvePost()}
+      {moderationStatus !== 'approved' && approvePost()}
       {requestContentChange()}
       {scheduleDeletion()}
       {deletePost()}

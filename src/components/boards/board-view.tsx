@@ -41,10 +41,20 @@ export interface Board {
 export interface Post {
   id: string;
   content: string;
-  mediaUrls?: string[];
+  mediaUrls: string[] | null;
   createdAt: string;
-  isAnonymous?: boolean;
-  anonymousName?: string;
+  updatedAt: string;
+  isAnonymous: boolean;
+  anonymousName: string | null;
+  moderationStatus: string;
+  moderationReason: string | null;
+  moderatedBy: string | null;
+  moderatedAt: string | null;
+  deleteScheduledDate: string | null;
+  deleteScheduledBy: string | null;
+  isDeleted: boolean;
+  creatorId: string;
+  boardId: string;
   creator: {
     id: string;
     name: string;
@@ -459,6 +469,7 @@ function PostCard({
             <PostModerationControls
               textColors={textColors}
               postId={post.id}
+              moderationStatus={post.moderationStatus}
               onModerationComplete={() => {
                 onPostUpdated?.(post);
               }}
