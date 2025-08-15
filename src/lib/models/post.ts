@@ -1,4 +1,4 @@
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { boards, db, posts, type NewPost, type Post } from '../db';
 import { ModerationService } from '../moderation';
 import { trackDbQuery } from '../performance';
@@ -82,6 +82,54 @@ export class PostModel {
           )
           .orderBy(desc(posts.createdAt));
       }
+    });
+  }
+
+  static async getByBoardIdPaginated(
+    boardId: string,
+    page: number = 1,
+    limit: number = 50,
+    userId?: string
+  ): Promise<{ posts: Post[]; hasMore: boolean; total: number }> {
+    return trackDbQuery('post-get-by-board-paginated', async () => {
+      const offset = (page - 1) * limit;
+
+      const isModerator = userId
+        ? await ModeratorModel.hasModeratorPermissions(boardId, userId)
+        : false;
+
+      const baseCondition = and(
+        eq(posts.boardId, boardId),
+        eq(posts.isDeleted, false)
+      );
+
+      const condition = isModerator
+        ? baseCondition
+        : and(baseCondition, eq(posts.moderationStatus, 'approved'));
+
+      const [{ count }] = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(posts)
+        .where(condition);
+
+      const postsResult = await db
+        .select()
+        .from(posts)
+        .where(condition)
+        .orderBy(desc(posts.createdAt))
+        .limit(limit + 1)
+        .offset(offset);
+
+      const hasMore = postsResult.length > limit;
+      const paginatedPosts = hasMore
+        ? postsResult.slice(0, limit)
+        : postsResult;
+
+      return {
+        posts: paginatedPosts,
+        hasMore,
+        total: count,
+      };
     });
   }
 
