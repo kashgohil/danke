@@ -189,8 +189,8 @@ export function NotificationsDrawer({
               <Bell className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
               <p>No notifications yet</p>
               <p className="text-sm mt-1">
-                You'll see notifications here when moderators take action on
-                your posts.
+                You&apos;ll see notifications here when moderators take action
+                on your posts.
               </p>
             </div>
           ) : (
