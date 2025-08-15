@@ -90,31 +90,44 @@ export class PostModel {
     data: UpdatePostSchema,
     creatorId: string
   ): Promise<Post | null> {
-    const validatedData = updatePostSchema.parse(data);
+    return trackDbQuery('post-update', async () => {
+      const validatedData = updatePostSchema.parse(data);
 
-    // Check if post exists and belongs to the creator
-    const existingPost = await this.getById(id);
-    if (!existingPost || existingPost.creatorId !== creatorId) {
-      return null;
-    }
+      const existingPost = await this.getById(id);
+      if (!existingPost || existingPost.creatorId !== creatorId) {
+        return null;
+      }
 
-    // Check if post is within edit time limit (10 minutes)
-    const now = new Date();
-    const createdAt = new Date(existingPost.createdAt);
-    const timeDiff = now.getTime() - createdAt.getTime();
-    const tenMinutesInMs = 10 * 60 * 1000;
+      const canEdit = await this.canEdit(id, creatorId);
+      if (!canEdit) {
+        throw new Error(
+          'Post can only be edited within 10 minutes of creation or when requested by moderators'
+        );
+      }
 
-    if (timeDiff > tenMinutesInMs) {
-      throw new Error('Post can only be edited within 10 minutes of creation');
-    }
+      const updateData: any = {
+        ...validatedData,
+        updatedAt: new Date(),
+      };
 
-    const [post] = await db
-      .update(posts)
-      .set({ ...validatedData, updatedAt: new Date() })
-      .where(eq(posts.id, id))
-      .returning();
+      if (
+        existingPost.moderationStatus === 'change_requested' ||
+        existingPost.moderationStatus === 'rejected'
+      ) {
+        updateData.moderationStatus = 'pending';
+        updateData.moderationReason = null;
+        updateData.moderatedBy = null;
+        updateData.moderatedAt = null;
+      }
 
-    return post || null;
+      const [post] = await db
+        .update(posts)
+        .set(updateData)
+        .where(eq(posts.id, id))
+        .returning();
+
+      return post || null;
+    });
   }
 
   static async delete(id: string, userId: string): Promise<boolean> {
@@ -163,6 +176,13 @@ export class PostModel {
     const post = await this.getById(postId);
     if (!post || post.creatorId !== creatorId) {
       return false;
+    }
+
+    if (
+      post.moderationStatus === 'change_requested' ||
+      post.moderationStatus === 'rejected'
+    ) {
+      return true;
     }
 
     const now = new Date();
