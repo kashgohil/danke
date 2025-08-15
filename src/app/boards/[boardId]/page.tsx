@@ -1,12 +1,8 @@
 import { BoardPageClient } from '@/components/boards/board-page-client';
 import { Button } from '@/components/ui/button';
 import { checkBoardAccess } from '@/lib/board-access';
-import { db, users } from '@/lib/db';
 import { BoardModel, ErrorType } from '@/lib/models/board';
-import { PostModel } from '@/lib/models/post';
 import { tryCatch } from '@/lib/try-catch';
-import { auth } from '@clerk/nextjs/server';
-import { eq } from 'drizzle-orm';
 import { Heart, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -29,7 +25,6 @@ async function getBoardData(boardId: string) {
     if (!accessCheck.hasAccess) {
       return {
         board: null,
-        posts: [],
         accessDenied: true,
         errorType: accessCheck.errorType,
         accessReason: accessCheck.reason,
@@ -37,44 +32,6 @@ async function getBoardData(boardId: string) {
         isCreator: false,
       };
     }
-
-    const { userId } = await auth();
-    const posts = await PostModel.getByBoardId(board.id, userId || undefined);
-
-    const creatorIds = [...new Set(posts.map((post) => post.creatorId))];
-    const creatorMap = new Map();
-
-    for (const creatorId of creatorIds) {
-      const [creator] = await db
-        .select({
-          id: users.id,
-          name: users.name,
-          avatarUrl: users.avatarUrl,
-        })
-        .from(users)
-        .where(eq(users.id, creatorId));
-
-      if (creator) {
-        creatorMap.set(creatorId, creator);
-      }
-    }
-
-    const postsWithCreators = posts.map((post) => {
-      const creator = creatorMap.get(post.creatorId);
-      return {
-        id: post.id,
-        content: post.content,
-        mediaUrls: post.mediaUrls || [],
-        createdAt: post.createdAt.toISOString(),
-        isAnonymous: post.isAnonymous,
-        anonymousName: post.anonymousName || undefined,
-        creator: creator || {
-          id: post.creatorId,
-          name: 'Unknown User',
-          avatarUrl: null,
-        },
-      };
-    });
 
     return {
       board: {
@@ -89,7 +46,6 @@ async function getBoardData(boardId: string) {
         createdAt: board.createdAt.toISOString(),
         updatedAt: board.updatedAt.toISOString(),
       },
-      posts: postsWithCreators,
       accessDenied: false,
       isModerator: accessCheck.isModerator || false,
       isCreator: accessCheck.isCreator || false,
@@ -173,7 +129,7 @@ export default async function BoardPage({ params }: BoardPageProps) {
   return (
     <BoardPageClient
       initialBoard={data.board!}
-      initialPosts={data.posts}
+      boardId={boardId}
       isModerator={data.isModerator}
       isCreator={data.isCreator}
     />
