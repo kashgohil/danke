@@ -1,11 +1,9 @@
 import { getCurrentUser } from '@/lib/auth';
 import { cache, cacheKeys, cacheTTL } from '@/lib/cache';
-import { db, User, users } from '@/lib/db';
+import { User } from '@/lib/db';
 import { BoardModel } from '@/lib/models/board';
-import { PostModel } from '@/lib/models/post';
 import { createMultiStepBoardSchema } from '@/lib/validations/board';
 import { auth } from '@clerk/nextjs/server';
-import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
@@ -61,54 +59,6 @@ export async function GET(
       });
     }
 
-    const postsCacheKey = cacheKeys.boardPosts(board.id);
-    let postsWithCreators = cache.get(postsCacheKey);
-
-    if (!postsWithCreators) {
-      const posts = await PostModel.getByBoardId(board.id);
-
-      const creatorIds = [...new Set(posts.map((post) => post.creatorId))];
-      const creatorMap = new Map();
-
-      for (const creatorId of creatorIds) {
-        const cachedUser = cache.get(cacheKeys.user(creatorId));
-        if (cachedUser) {
-          creatorMap.set(creatorId, cachedUser);
-        } else {
-          const [creator] = await db
-            .select({
-              id: users.id,
-              name: users.name,
-              avatarUrl: users.avatarUrl,
-            })
-            .from(users)
-            .where(eq(users.id, creatorId));
-
-          if (creator) {
-            creatorMap.set(creatorId, creator);
-            cache.set(cacheKeys.user(creatorId), creator, cacheTTL.user);
-          }
-        }
-      }
-
-      postsWithCreators = posts.map((post) => {
-        const creator = creatorMap.get(post.creatorId);
-        return {
-          id: post.id,
-          content: post.content,
-          mediaUrls: post.mediaUrls || [],
-          createdAt: post.createdAt.toISOString(),
-          creator: creator || {
-            id: post.creatorId,
-            name: 'Unknown User',
-            avatarUrl: null,
-          },
-        };
-      });
-
-      cache.set(postsCacheKey, postsWithCreators, cacheTTL.posts);
-    }
-
     const response = {
       board: {
         id: board.id,
@@ -121,7 +71,6 @@ export async function GET(
         createdAt: board.createdAt.toISOString(),
         updatedAt: board.updatedAt.toISOString(),
       },
-      posts: postsWithCreators,
     };
 
     cache.set(cacheKey, response, cacheTTL.board);
@@ -181,6 +130,12 @@ export async function PUT(
 
     cache.delete(cacheKeys.board(updatedBoard.viewToken));
     cache.delete(cacheKeys.boardPosts(updatedBoard.id));
+
+    for (let page = 1; page <= 10; page++) {
+      cache.delete(
+        cacheKeys.boardPosts(`${updatedBoard.id}-page-${page}-limit-50`)
+      );
+    }
 
     return NextResponse.json({
       message: 'Board updated successfully',
