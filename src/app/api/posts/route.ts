@@ -60,6 +60,10 @@ export async function POST(request: NextRequest) {
       cache.delete(cacheKeys.boardPosts(boardId));
       cache.delete(cacheKeys.board(board.viewToken));
 
+      for (let page = 1; page <= 10; page++) {
+        cache.delete(cacheKeys.boardPosts(`${boardId}-page-${page}-limit-50`));
+      }
+
       return NextResponse.json(post, { status: 201 });
     } catch (error) {
       console.error('Error creating post:', error);
