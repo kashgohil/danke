@@ -1,3 +1,4 @@
+import { cache, cacheKeys } from '@/lib/cache';
 import { db, users } from '@/lib/db';
 import { PostModel } from '@/lib/models/post';
 import { auth } from '@clerk/nextjs/server';
@@ -126,6 +127,13 @@ export async function PUT(
       },
     };
 
+    cache.delete(cacheKeys.boardPosts(updatedPost.boardId));
+    for (let page = 1; page <= 10; page++) {
+      cache.delete(
+        cacheKeys.boardPosts(`${updatedPost.boardId}-page-${page}-limit-50`)
+      );
+    }
+
     return NextResponse.json({ post: postWithCreator });
   } catch (error) {
     console.error('Error updating post:', error);
@@ -161,6 +169,7 @@ export async function DELETE(
 
     const { postId } = await params;
 
+    const post = await PostModel.getById(postId);
     const success = await PostModel.delete(postId, userId);
 
     if (!success) {
@@ -168,6 +177,15 @@ export async function DELETE(
         { error: 'Post not found or you do not have permission to delete it' },
         { status: 404 }
       );
+    }
+
+    if (post) {
+      cache.delete(cacheKeys.boardPosts(post.boardId));
+      for (let page = 1; page <= 10; page++) {
+        cache.delete(
+          cacheKeys.boardPosts(`${post.boardId}-page-${page}-limit-50`)
+        );
+      }
     }
 
     return NextResponse.json({ success: true });
