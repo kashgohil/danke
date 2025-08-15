@@ -40,7 +40,7 @@ export class NotificationService {
 
   static async createModerationNotification(
     postId: string,
-    moderationStatus: string,
+    moderationStatus: NotificationType,
     moderationReason?: string
   ): Promise<void> {
     const postWithBoard = await db
@@ -64,19 +64,19 @@ export class NotificationService {
     let message: string;
 
     switch (moderationStatus) {
-      case 'approved':
+      case 'post_approved':
         type = 'post_approved';
         title = 'Post Approved';
         message = `Your post on "${board.title}" has been approved and is now visible.`;
         break;
-      case 'rejected':
+      case 'post_rejected':
         type = 'post_rejected';
         title = 'Post Rejected';
         message = `Your post on "${board.title}" has been rejected${
           moderationReason ? `: ${moderationReason}` : '.'
         }`;
         break;
-      case 'hidden':
+      case 'post_hidden':
         type = 'post_hidden';
         title = 'Post Hidden';
         message = `Your post on "${board.title}" has been hidden${
