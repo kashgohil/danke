@@ -1,11 +1,11 @@
 'use client';
 
 import { PostContent } from '@/components/posts/post-content';
-import { PostEditForm } from '@/components/posts/post-edit-form';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { MasonryLayout } from '@/components/ui/masonry-layout';
 import { UserAvatar } from '@/components/ui/user-avatar';
+import { usePostEdit } from '@/contexts/post-edit-context';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
 import {
   generateCardStyle,
@@ -224,7 +224,7 @@ function PostCard({
 }) {
   const { userId } = useAuth();
   const { handleError } = useApiErrorHandler();
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const { openPostEdit } = usePostEdit();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
@@ -283,15 +283,6 @@ function PostCard({
     isCreator,
   ]);
 
-  const handlePostUpdated = (updatedPost: any) => {
-    setIsEditDialogOpen(false);
-    onPostUpdated?.(updatedPost);
-  };
-
-  const handleCancelEdit = () => {
-    setIsEditDialogOpen(false);
-  };
-
   const handleDeleteClick = () => {
     setDeleteError(null);
     setIsDeleteDialogOpen(true);
@@ -325,24 +316,6 @@ function PostCard({
   const cardStyle = generateCardStyle(backgroundColor);
   const textColors = getTextColors(backgroundColor);
   const contrastTextStyles = getContrastTextStyles(backgroundColor);
-
-  function editDialog() {
-    return (
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden">
-          <DialogHeader>
-            <DialogTitle>Edit Your Message</DialogTitle>
-          </DialogHeader>
-          <PostEditForm
-            post={post}
-            onPostUpdated={handlePostUpdated}
-            onCancel={handleCancelEdit}
-            className="border-0 shadow-none p-0"
-          />
-        </DialogContent>
-      </Dialog>
-    );
-  }
 
   function deleteDialog() {
     return (
@@ -459,7 +432,7 @@ function PostCard({
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setIsEditDialogOpen(true)}
+                    onClick={() => openPostEdit(post.id)}
                     className={`h-8 w-8 p-0 ${textColors.muted} hover:${textColors.primary} hover:bg-gray-100/50 rounded-full transition-all duration-200`}
                     aria-label="Edit post"
                   >
@@ -498,7 +471,6 @@ function PostCard({
 
   return (
     <>
-      {editDialog()}
       {deleteDialog()}
 
       <Card

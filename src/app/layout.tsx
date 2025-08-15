@@ -11,6 +11,7 @@ import './globals.css';
 
 import { AuthHeader } from '@/components/auth/auth-header';
 import { Toaster } from '@/components/ui/sonner';
+import { PostEditProvider } from '@/contexts/post-edit-context';
 import logo from 'public/danke.png';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -59,30 +60,32 @@ export default function RootLayout({
             <div className="min-h-screen bg-background">
               <ErrorBoundary>
                 <AuthProvider>
-                  <div className="min-h-screen bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600">
-                    <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 xl:top-4 xl:rounded-xl z-40 xl:mx-auto w-full md:container">
-                      <div className="container mx-auto px-4 py-4">
-                        <div className="flex justify-between items-center">
-                          <Link
-                            href="/"
-                            className="text-2xl font-bold bg-gradient-to-r from-danke-600 to-danke-gold bg-clip-text text-transparent hover:from-danke-700 hover:to-danke-500 transition-all flex items-center gap-2"
-                          >
-                            <Image
-                              src={logo}
-                              alt="Danke"
-                              width={32}
-                              height={32}
-                            />
-                            Danke
-                          </Link>
-                          <AuthHeader />
+                  <PostEditProvider>
+                    <div className="min-h-screen bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600">
+                      <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 xl:top-4 xl:rounded-xl z-40 xl:mx-auto w-full md:container">
+                        <div className="container mx-auto px-4 py-4">
+                          <div className="flex justify-between items-center">
+                            <Link
+                              href="/"
+                              className="text-2xl font-bold bg-gradient-to-r from-danke-600 to-danke-gold bg-clip-text text-transparent hover:from-danke-700 hover:to-danke-500 transition-all flex items-center gap-2"
+                            >
+                              <Image
+                                src={logo}
+                                alt="Danke"
+                                width={32}
+                                height={32}
+                              />
+                              Danke
+                            </Link>
+                            <AuthHeader />
+                          </div>
                         </div>
-                      </div>
-                    </header>
-                    <main className="container mx-auto px-4 py-12 flex-1">
-                      {children}
-                    </main>
-                  </div>
+                      </header>
+                      <main className="container mx-auto px-4 py-12 flex-1">
+                        {children}
+                      </main>
+                    </div>
+                  </PostEditProvider>
                 </AuthProvider>
               </ErrorBoundary>
             </div>

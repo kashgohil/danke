@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 
 interface PostEditFormProps {
   post: Post;
-  onSuccess?: () => void;
+  onSuccess?: (updatedPost?: Post) => void;
   onCancel?: () => void;
   className?: string;
 }
@@ -120,12 +120,12 @@ function PostEditFormContent({
         mediaUrls,
       });
 
-      await apiRequest(`/api/posts/${post.id}`, {
+      const updatedPost = await apiRequest(`/api/posts/${post.id}`, {
         method: 'PUT',
         body: JSON.stringify(validatedData),
       });
 
-      onSuccess?.();
+      onSuccess?.(updatedPost);
     } catch (error) {
       const errorMessage = handleError(error);
       setError(errorMessage);

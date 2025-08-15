@@ -1,9 +1,9 @@
 'use client';
 
+import { usePostEdit } from '@/contexts/post-edit-context';
 import type { Notification } from '@/lib/db/schema';
 import { formatDistanceToNow } from 'date-fns';
 import { Bell, CheckCheck, Edit, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Badge } from './badge';
 import { Button } from './button';
@@ -33,7 +33,7 @@ export function NotificationsDrawer({
   );
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const { openPostEdit } = usePostEdit();
 
   const fetchNotifications = async () => {
     try {
@@ -97,13 +97,14 @@ export function NotificationsDrawer({
       await markAsRead(notification.id);
     }
 
+    // Open post editor dialog if it's a moderation notification with a post
     if (
       notification.postId &&
       (notification.type === 'post_rejected' ||
         notification.type === 'post_hidden')
     ) {
       onClose();
-      router.push(`/posts/${notification.postId}/edit`);
+      openPostEdit(notification.postId);
     }
   };
 
