@@ -45,7 +45,7 @@ export function generateGradientStyle(backgroundColor?: string): CSSProperties {
   const darkerColor = `rgb(${darkerRgb.r}, ${darkerRgb.g}, ${darkerRgb.b})`;
 
   return {
-    background: `linear-gradient(135deg, ${lighterColor} 0%, ${baseColor} 50%, ${darkerColor} 100%)`,
+    background: `linear-gradient(135deg, ${baseColor} 0%, ${lighterColor} 50%, ${baseColor} 100%)`,
   };
 }
 
