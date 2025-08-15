@@ -1,4 +1,6 @@
+import { cache, cacheKeys } from '@/lib/cache';
 import { ModeratorModel } from '@/lib/models/moderator';
+import { PostModel } from '@/lib/models/post';
 import { auth } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -79,6 +81,16 @@ export async function POST(
         { error: 'Failed to perform moderation action' },
         { status: 500 }
       );
+    }
+
+    const post = await PostModel.getById(postId);
+    if (post) {
+      cache.delete(cacheKeys.boardPosts(post.boardId));
+      for (let page = 1; page <= 10; page++) {
+        cache.delete(
+          cacheKeys.boardPosts(`${post.boardId}-page-${page}-limit-50`)
+        );
+      }
     }
 
     return NextResponse.json({ success: true });
