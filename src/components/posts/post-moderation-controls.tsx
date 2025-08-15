@@ -14,7 +14,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/api-error-handler';
 import { tryCatch } from '@/lib/try-catch';
-import { AlertTriangle, Calendar, MessageSquare, Trash2 } from 'lucide-react';
+import {
+  AlertTriangle,
+  Calendar,
+  CheckCircle,
+  MessageSquare,
+  Trash2,
+} from 'lucide-react';
 import { useState } from 'react';
 import { DateTimePicker } from '../ui/datetime-picker';
 import {
@@ -47,9 +53,9 @@ export function PostModerationControls({
   const { toast } = useToast();
 
   const handleModeration = async (
-    action: 'request_change' | 'schedule_deletion' | 'delete'
+    action: 'approve' | 'request_change' | 'schedule_deletion' | 'delete'
   ) => {
-    if (!reason.trim()) {
+    if (action !== 'approve' && !reason.trim()) {
       toast({
         title: 'Reason Required',
         description: 'Please provide a reason for this action.',
@@ -76,7 +82,7 @@ export function PostModerationControls({
         },
         body: JSON.stringify({
           action,
-          reason: reason.trim(),
+          reason: action === 'approve' ? undefined : reason.trim(),
           deleteDate: deleteDate || undefined,
         }),
       })
@@ -95,6 +101,9 @@ export function PostModerationControls({
 
     let message = '';
     switch (action) {
+      case 'approve':
+        message = 'Post has been approved and is now visible.';
+        break;
       case 'request_change':
         message = 'Content change request sent to the post author.';
         break;
@@ -318,8 +327,30 @@ export function PostModerationControls({
     );
   }
 
+  function approvePost() {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 p-0 ${textColors.muted} hover:text-green-600 hover:bg-green-50 rounded-full transition-all duration-200`}
+              onClick={() => handleModeration('approve')}
+              disabled={isLoading}
+            >
+              <CheckCircle className="w-4 h-4" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Approve Post</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
   return (
     <div className="flex items-center justify-end gap-2">
+      {approvePost()}
       {requestContentChange()}
       {scheduleDeletion()}
       {deletePost()}
