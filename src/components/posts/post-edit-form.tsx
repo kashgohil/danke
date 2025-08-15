@@ -8,32 +8,21 @@ import { MediaPreview } from '@/components/ui/media-preview';
 import { MediaUpload, type MediaFile } from '@/components/ui/media-upload';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
+import { Post } from '@/lib/db';
 import { updatePostSchema } from '@/lib/validations/post';
 import { useAuth } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 
-interface Post {
-  id: string;
-  content: string;
-  mediaUrls?: string[];
-  createdAt: string;
-  creator: {
-    id: string;
-    name: string;
-    avatarUrl?: string;
-  };
-}
-
 interface PostEditFormProps {
   post: Post;
-  onPostUpdated?: (post: any) => void;
+  onSuccess?: () => void;
   onCancel?: () => void;
   className?: string;
 }
 
 function PostEditFormContent({
   post,
-  onPostUpdated,
+  onSuccess,
   onCancel,
   className,
 }: PostEditFormProps) {
@@ -85,7 +74,7 @@ function PostEditFormContent({
       return false;
     }
 
-    if (userId !== post.creator.id) {
+    if (userId !== post.creatorId) {
       setError('You can only edit your own posts');
       return false;
     }
@@ -131,12 +120,12 @@ function PostEditFormContent({
         mediaUrls,
       });
 
-      const updatedPost = await apiRequest(`/api/posts/${post.id}`, {
+      await apiRequest(`/api/posts/${post.id}`, {
         method: 'PUT',
         body: JSON.stringify(validatedData),
       });
 
-      onPostUpdated?.(updatedPost);
+      onSuccess?.();
     } catch (error) {
       const errorMessage = handleError(error);
       setError(errorMessage);
@@ -178,7 +167,7 @@ function PostEditFormContent({
     }
   };
 
-  if (!isSignedIn || userId !== post.creator.id) {
+  if (!isSignedIn || userId !== post.creatorId) {
     return null;
   }
 
