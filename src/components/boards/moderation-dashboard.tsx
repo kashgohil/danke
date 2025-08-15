@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { apiRequest } from '@/lib/api-error-handler';
 import { tryCatch } from '@/lib/try-catch';
-import { AlertTriangle, Calendar, Clock, Eye } from 'lucide-react';
+import { AlertTriangle, Calendar, Clock, Eye, RefreshCw } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import {
   Dialog,
@@ -26,6 +26,7 @@ interface PostNeedingAttention {
   content: string;
   creatorName: string;
   createdAt: Date;
+  updatedAt: Date;
   moderationStatus: string;
   moderationReason: string | null;
   deleteScheduledDate: Date | null;
@@ -65,6 +66,16 @@ export function ModerationDashboard({ boardId }: ModerationDashboardProps) {
     [posts]
   );
 
+  const postsUpdatedAndPending = useMemo(
+    () =>
+      posts.filter(
+        (p) =>
+          p.moderationStatus === 'pending' &&
+          new Date(p.updatedAt) > new Date(p.createdAt)
+      ),
+    [posts]
+  );
+
   const totalPosts = posts.length;
 
   if (isLoading) {
@@ -99,11 +110,74 @@ export function ModerationDashboard({ boardId }: ModerationDashboardProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4 mb-4">
           <div className="text-center p-3 bg-background/50 rounded-lg">
             <div className="text-2xl font-bold text-primary">{totalPosts}</div>
             <div className="text-xs text-muted-foreground">Total Posts</div>
           </div>
+          <Dialog>
+            <DialogTrigger>
+              <div className="text-center p-3 bg-background/50 rounded-lg cursor-pointer">
+                <div className="text-2xl font-bold text-blue-600">
+                  {postsUpdatedAndPending.length}
+                </div>
+                <div className="text-xs text-blue-600">Updated & Pending</div>
+              </div>
+            </DialogTrigger>
+            <DialogContent className="gap-6">
+              <DialogHeader>
+                <DialogTitle className="font-medium text-primary flex items-center gap-2">
+                  <RefreshCw className="w-4 h-4" />
+                  Posts Updated & Pending Review
+                </DialogTitle>
+              </DialogHeader>
+              {postsUpdatedAndPending.length > 0 ? (
+                <div className="space-y-2">
+                  {postsUpdatedAndPending.slice(0, 3).map((post) => (
+                    <div
+                      key={post.id}
+                      className="bg-blue-50 border border-blue-200 rounded-lg overflow-clip"
+                    >
+                      <div className="p-3 flex flex-col w-full justify-between items-start gap-2 text-blue-900">
+                        <div className="flex items-center justify-between w-full">
+                          <p className="text-sm font-medium">
+                            {post.creatorName}
+                          </p>
+                          <div className="text-xs">
+                            Updated:{' '}
+                            {new Date(post.updatedAt).toLocaleDateString()}
+                          </div>
+                        </div>
+                        <p className="text-xs truncate text-ellipsis">
+                          <RichTextEditor
+                            content={post.content.substring(0, 100)}
+                            editable={false}
+                            className="border-0 p-0 min-h-0 prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-0"
+                          />
+                        </p>
+                        <div className="flex items-center gap-1 text-xs text-blue-700">
+                          <RefreshCw className="w-3 h-3" />
+                          <span>Post has been updated and needs review</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {postsUpdatedAndPending.length > 3 && (
+                    <p className="text-xs text-muted-foreground text-center">
+                      +{postsUpdatedAndPending.length - 3} more updated posts
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No posts have been updated and are pending review.
+                </p>
+              )}
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
           <Dialog>
             <DialogTrigger>
               <div className="text-center p-3 bg-background/50 rounded-lg cursor-pointer">
