@@ -4,8 +4,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const moderatePostSchema = z.object({
-  action: z.enum(['request_change', 'schedule_deletion', 'delete']),
-  reason: z.string().min(1, 'Reason is required').max(500, 'Reason too long'),
+  action: z.enum(['approve', 'request_change', 'schedule_deletion', 'delete']),
+  reason: z
+    .string()
+    .min(1, 'Reason is required')
+    .max(500, 'Reason too long')
+    .optional(),
   deleteDate: z.iso.datetime().optional(),
 });
 
@@ -26,7 +30,17 @@ export async function POST(
     let success = false;
 
     switch (action) {
+      case 'approve':
+        success = await ModeratorModel.approvePost(postId, userId);
+        break;
+
       case 'request_change':
+        if (!reason) {
+          return NextResponse.json(
+            { error: 'Reason is required for requesting changes' },
+            { status: 400 }
+          );
+        }
         success = await ModeratorModel.requestContentChange(
           postId,
           userId,
