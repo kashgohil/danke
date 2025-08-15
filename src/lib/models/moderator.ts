@@ -9,6 +9,7 @@ import {
   type BoardModerator,
   type NewBoardModerator,
 } from '../db';
+import { NotificationService } from '../notifications';
 import { trackDbQuery } from '../performance';
 
 export enum ModeratorPermission {
@@ -246,6 +247,14 @@ export class ModeratorModel {
         })
         .where(eq(posts.id, postId));
 
+      if (result.count > 0) {
+        await NotificationService.createModerationNotification(
+          postId,
+          'post_rejected',
+          reason
+        );
+      }
+
       return result.count > 0;
     });
   }
@@ -298,6 +307,53 @@ export class ModeratorModel {
     });
   }
 
+  static async approvePost(
+    postId: string,
+    moderatorId: string
+  ): Promise<boolean> {
+    return trackDbQuery('moderator-approve-post', async () => {
+      const [postWithBoard] = await db
+        .select({
+          postId: posts.id,
+          boardId: posts.boardId,
+        })
+        .from(posts)
+        .where(eq(posts.id, postId));
+
+      if (!postWithBoard) {
+        throw new Error('Post not found');
+      }
+
+      const hasPermission = await this.hasModeratorPermissions(
+        postWithBoard.boardId,
+        moderatorId
+      );
+
+      if (!hasPermission) {
+        throw new Error('You do not have moderator permissions for this board');
+      }
+
+      const result = await db
+        .update(posts)
+        .set({
+          moderationStatus: 'approved',
+          moderatedBy: moderatorId,
+          moderatedAt: new Date(),
+          updatedAt: new Date(),
+        })
+        .where(eq(posts.id, postId));
+
+      if (result.count > 0) {
+        await NotificationService.createModerationNotification(
+          postId,
+          'post_approved'
+        );
+      }
+
+      return result.count > 0;
+    });
+  }
+
   static async deletePost(
     postId: string,
     moderatorId: string,
@@ -336,6 +392,14 @@ export class ModeratorModel {
         })
         .where(eq(posts.id, postId));
 
+      if (result.count > 0) {
+        await NotificationService.createModerationNotification(
+          postId,
+          'post_hidden',
+          reason || 'Deleted by moderator'
+        );
+      }
+
       return result.count > 0;
     });
   }
@@ -346,6 +410,7 @@ export class ModeratorModel {
       content: string;
       creatorName: string;
       createdAt: Date;
+      updatedAt: Date;
       moderationStatus: string;
       moderationReason: string | null;
       deleteScheduledDate: Date | null;
@@ -358,6 +423,7 @@ export class ModeratorModel {
           content: posts.content,
           creatorName: users.name,
           createdAt: posts.createdAt,
+          updatedAt: posts.updatedAt,
           moderationStatus: posts.moderationStatus,
           moderationReason: posts.moderationReason,
           deleteScheduledDate: posts.deleteScheduledDate,
