@@ -21,7 +21,7 @@ export function NotificationBell({ onClick }: NotificationBellProps) {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger asChild>
           <Button
             variant="ghost"
             size="sm"

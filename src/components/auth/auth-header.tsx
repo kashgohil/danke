@@ -69,7 +69,7 @@ export function AuthHeader() {
         <SignedIn>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <Link href="/dashboard">
                   <Button
                     variant="ghost"
@@ -85,7 +85,7 @@ export function AuthHeader() {
           </TooltipProvider>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <Link href="/profile">
                   <Button
                     variant="ghost"
