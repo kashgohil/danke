@@ -235,7 +235,7 @@ export function NotificationsDrawer({
                           {notification.title}
                         </h3>
                         {!notification.isRead && (
-                          <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 ml-2" />
+                          <div className="w-2 h-2 bg-sky-500 rounded-full flex-shrink-0 ml-2" />
                         )}
                       </div>
                       <p className="text-sm text-muted-foreground mb-2">

@@ -118,17 +118,17 @@ export function ModerationDashboard({ boardId }: ModerationDashboardProps) {
           <Dialog>
             <DialogTrigger>
               <div className="text-center p-3 bg-background/50 rounded-lg cursor-pointer">
-                <div className="text-2xl font-bold text-blue-600">
+                <div className="text-2xl font-bold text-sky-500">
                   {postsUpdatedAndPending.length}
                 </div>
-                <div className="text-xs text-blue-600">Updated & Pending</div>
+                <div className="text-xs text-sky-500">Pending Review</div>
               </div>
             </DialogTrigger>
             <DialogContent className="gap-6">
               <DialogHeader>
                 <DialogTitle className="font-medium text-primary flex items-center gap-2">
                   <RefreshCw className="w-4 h-4" />
-                  Posts Updated & Pending Review
+                  Posts Pending Review
                 </DialogTitle>
               </DialogHeader>
               {postsUpdatedAndPending.length > 0 ? (
@@ -138,7 +138,7 @@ export function ModerationDashboard({ boardId }: ModerationDashboardProps) {
                       key={post.id}
                       className="bg-blue-50 border border-blue-200 rounded-lg overflow-clip"
                     >
-                      <div className="p-3 flex flex-col w-full justify-between items-start gap-2 text-blue-900">
+                      <div className="p-3 flex flex-col w-full justify-between items-start gap-2 text-sky-900">
                         <div className="flex items-center justify-between w-full">
                           <p className="text-sm font-medium">
                             {post.creatorName}
