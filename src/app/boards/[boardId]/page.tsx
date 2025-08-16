@@ -1,6 +1,10 @@
 import { BoardPageClient } from '@/components/boards/board-page-client';
 import { Button } from '@/components/ui/button';
 import { checkBoardAccess } from '@/lib/board-access';
+import {
+  generateGradientStyle,
+  getGradientClasses,
+} from '@/lib/gradient-utils';
 import { BoardModel, ErrorType } from '@/lib/models/board';
 import { tryCatch } from '@/lib/try-catch';
 import { Heart, Lock } from 'lucide-react';
@@ -126,13 +130,27 @@ export default async function BoardPage({ params }: BoardPageProps) {
     );
   }
 
+  const backgroundColor = (data.board?.typeConfig as any)?.backgroundColor;
+  const gradientStyle = generateGradientStyle(backgroundColor);
+  const defaultClasses = getGradientClasses(
+    backgroundColor,
+    'fixed inset-0 w-full h-full'
+  );
+
+  function layover() {
+    return <div className={defaultClasses} style={gradientStyle} />;
+  }
+
   return (
-    <BoardPageClient
-      initialBoard={data.board!}
-      boardId={boardId}
-      isModerator={data.isModerator}
-      isCreator={data.isCreator}
-    />
+    <>
+      {layover()}
+      <BoardPageClient
+        initialBoard={data.board!}
+        boardId={boardId}
+        isModerator={data.isModerator}
+        isCreator={data.isCreator}
+      />
+    </>
   );
 }
 

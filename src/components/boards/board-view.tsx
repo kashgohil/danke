@@ -552,10 +552,6 @@ export function BoardView({
     };
   }, [backgroundColor]);
 
-  function layover() {
-    return <div className={defaultClasses} style={gradientStyle} />;
-  }
-
   function content() {
     if (!posts.length) {
       return (
@@ -586,30 +582,26 @@ export function BoardView({
   }
 
   return (
-    <>
-      {layover()}
+    <div className="relative min-h-screen">
+      <header className="relative py-8 text-center">
+        <h1
+          className="text-4xl md:text-5xl font-bold mb-4"
+          style={contrastTextStyles.primary}
+        >
+          {board.title}
+        </h1>
+        <p
+          className="text-xl max-w-2xl mx-auto"
+          style={contrastTextStyles.secondary}
+        >
+          Heartfelt messages and memories for{' '}
+          <span className="font-semibold" style={contrastTextStyles.accent}>
+            {board.recipientName}
+          </span>
+        </p>
+      </header>
 
-      <div className="relative min-h-screen">
-        <header className="relative py-8 text-center">
-          <h1
-            className="text-4xl md:text-5xl font-bold mb-4"
-            style={contrastTextStyles.primary}
-          >
-            {board.title}
-          </h1>
-          <p
-            className="text-xl max-w-2xl mx-auto"
-            style={contrastTextStyles.secondary}
-          >
-            Heartfelt messages and memories for{' '}
-            <span className="font-semibold" style={contrastTextStyles.accent}>
-              {board.recipientName}
-            </span>
-          </p>
-        </header>
-
-        <main className="relative px-4 pb-8">{content()}</main>
-      </div>
-    </>
+      <main className="relative px-4 pb-8">{content()}</main>
+    </div>
   );
 }
