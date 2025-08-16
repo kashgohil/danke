@@ -9,41 +9,67 @@ A modern Next.js web application for creating and sharing beautiful appreciation
 - **14 Board Types**: Appreciation, Birthday, Farewell, Welcome, Congratulations, Get Well Soon, Sympathy, Holiday, Anniversary, Retirement, Graduation, Baby Shower, Wedding, and General boards
 - **Multi-step Board Creation**: Guided setup with basic info, type configuration, and board settings
 - **Flexible Posting Modes**: Single post per user or multiple posts allowed
-- **Privacy Controls**: Public/private boards with expiration dates
+- **Privacy Controls**: Public/private boards with expiration dates and domain/email restrictions
+- **Board Editing**: Update board settings, visibility, and configuration after creation
 - **Moderation Tools**: Optional content moderation and anonymous posting controls
+
+### Advanced Moderation System
+
+- **Moderation Dashboard**: Comprehensive overview of posts requiring attention
+- **Post Status Management**: Approve, reject, or request changes to posts
+- **Moderator Management**: Add/remove moderators with granular permissions
+- **Scheduled Deletion**: Schedule posts for automatic deletion
+- **Content Review**: Track updated posts pending review
+- **Moderation Notifications**: Real-time alerts for moderation actions
 
 ### Rich Content & Media
 
 - **Rich Text Editor**: Tiptap-powered editor with formatting, colors, and styling
-- **Media Uploads**: Support for images, videos, audio files, and GIFs
+- **Advanced Media Upload**: Support for images (2MB), videos (10MB), and audio files (5MB)
 - **Media Carousel**: Beautiful display of multiple media files per post
+- **Drag & Drop Upload**: Intuitive file upload with progress indicators
+- **Media Preview**: Image, video, and audio preview with carousel display
 - **Masonry Layout**: Responsive Pinterest-style layout for posts
 
-### User Experience
+### User Experience & Notifications
 
 - **Secure Authentication**: Clerk-powered authentication with social login support
+- **Notification System**: Alerts for post approvals, rejections, and moderation actions
+- **Post Editing**: Edit posts within 10 minutes of creation with moderation workflow
 - **Responsive Design**: Beautiful UI that works on all devices
-- **Real-time Updates**: Live updates as new posts are added
 - **User Dashboard**: Manage your boards and posts from a central location
-- **Post Management**: Edit posts within 10 minutes of creation
+- **Performance Monitoring**: Real-time performance metrics in development mode
 
 ### Sharing & Access Control
 
 - **Dual Token System**: Separate view and post links for different access levels
-- **Anonymous Posting**: Optional anonymous contributions
+- **Advanced Privacy Controls**: Domain restrictions, email allowlists/blocklists
+- **Anonymous Posting**: Optional anonymous contributions with custom names
 - **User Limits**: Configurable maximum posts per user
 - **Board Permissions**: Fine-grained control over who can view and contribute
+- **Moderator Roles**: Separate permissions for board creators and moderators
+
+### System Monitoring & Status
+
+- **Status Page**: Real-time system health monitoring and uptime tracking
+- **Service Status**: Monitor web app, API, database, storage, and CDN performance
+- **RSS Feed**: Subscribe to status updates and incident notifications
+- **Performance Dashboard**: Development-mode performance metrics tracking
+- **Error Handling**: Comprehensive error boundaries and user-friendly error messages
 
 ## Tech Stack
 
 - **Frontend**: Next.js 15 with App Router and React 19
-- **Database**: PostgreSQL with Drizzle ORM
+- **Database**: PostgreSQL with Drizzle ORM and advanced indexing
 - **Styling**: Tailwind CSS 4 + shadcn/ui components
-- **Authentication**: Clerk Authentication
-- **Rich Text**: Tiptap editor with extensions
-- **Media Handling**: File upload with preview and carousel components
+- **Authentication**: Clerk Authentication with user synchronization
+- **Rich Text**: Tiptap editor with extensions and custom styling
+- **Media Storage**: Vercel Blob Storage with multi-format support
+- **Notifications**: Real-time notification system with database persistence
+- **Moderation**: Advanced content moderation with workflow management
 - **Testing**: Vitest + Playwright for unit and E2E testing
-- **Performance**: Optimized with caching and database indexing
+- **Performance**: Optimized with caching, database indexing, and monitoring
+- **Error Handling**: Comprehensive error boundaries and API error management
 
 ## Getting Started
 
@@ -137,7 +163,7 @@ A modern Next.js web application for creating and sharing beautiful appreciation
 - `bun run test:ui` - Run tests with UI
 - `bun run test:e2e` - Run E2E tests with Playwright
 - `bun run test:e2e:ui` - Run E2E tests with UI
-- `bun run test:performance` - Run performance tests
+- `bun run test:performance` - Run performance tests and benchmarks
 
 ## Project Structure
 
@@ -145,26 +171,52 @@ A modern Next.js web application for creating and sharing beautiful appreciation
 src/
 ├── app/                    # Next.js App Router pages
 │   ├── api/               # API routes
+│   │   ├── boards/        # Board management APIs
+│   │   ├── posts/         # Post management APIs
+│   │   ├── notifications/ # Notification APIs
+│   │   ├── upload/        # Media upload APIs
+│   │   └── status/        # System status APIs
 │   ├── boards/            # Board-related pages
 │   ├── create-board/      # Board creation flow
 │   ├── dashboard/         # User dashboard
+│   ├── status/            # System status page
 │   └── ...
 ├── components/            # React components
 │   ├── auth/             # Authentication components
 │   ├── boards/           # Board-related components
+│   │   ├── moderation-dashboard.tsx
+│   │   ├── moderator-management.tsx
+│   │   └── board-config-update.tsx
 │   ├── posts/            # Post-related components
+│   │   ├── post-edit-dialog.tsx
+│   │   └── post-moderation-controls.tsx
 │   └── ui/               # Reusable UI components
+│       ├── notification-bell.tsx
+│       ├── notifications-drawer.tsx
+│       ├── media-upload.tsx
+│       ├── performance-dashboard.tsx
+│       └── masonry-layout.tsx
 ├── hooks/                # Custom React hooks
+│   ├── use-notifications.ts
+│   └── use-multi-step-form.ts
 ├── lib/                  # Utility functions and configurations
 │   ├── db/              # Database schema and connection
 │   ├── models/          # Data models and business logic
+│   │   ├── board.ts
+│   │   ├── post.ts
+│   │   ├── moderator.ts
+│   │   └── user.ts
 │   ├── validations/     # Zod validation schemas
-│   └── ...
+│   ├── notifications.ts # Notification service
+│   ├── moderation.ts    # Moderation utilities
+│   ├── board-access.ts  # Access control logic
+│   └── performance.ts   # Performance monitoring
 ├── test/                 # Test files
 │   ├── api/             # API tests
 │   ├── components/      # Component tests
 │   ├── e2e/             # End-to-end tests
-│   └── ...
+│   ├── integration/     # Integration tests
+│   └── performance.test.ts
 └── types/               # TypeScript type definitions
 ```
 
@@ -183,7 +235,16 @@ The application supports 14 different board types, each with:
 
 - **Step 1**: Basic information (name, board type, title)
 - **Step 2**: Type-specific configuration
-- **Step 3**: Board settings (privacy, moderation, limits)
+- **Step 3**: Board settings (privacy, moderation, limits, access controls)
+
+### Advanced Moderation Workflow
+
+- **Three-tier Moderation**: Approved, pending, and change-requested states
+- **Moderator Dashboard**: Visual overview of posts needing attention
+- **Bulk Actions**: Mark multiple posts for review or deletion
+- **Notification Integration**: Automatic alerts for moderation actions
+- **Scheduled Deletion**: Set posts to be automatically removed
+- **Edit Tracking**: Monitor when posts are updated after initial submission
 
 ### Media System
 
@@ -192,13 +253,31 @@ The application supports 14 different board types, each with:
 - **Drag-and-Drop Upload**: Intuitive file upload with progress indicators
 - **Media Preview**: Image, video, and audio preview with carousel display
 - **Supported Formats**: JPEG, PNG, WebP, GIF, MP4, WebM, MP3, WAV, OGG
+- **Upload Progress**: Real-time upload progress with error handling
+
+### Notification System
+
+- **Real-time Notifications**: Instant alerts for moderation actions
+- **Notification Bell**: Visual indicator with unread count
+- **Notification Drawer**: Slide-out panel with notification history
+- **Mark as Read**: Individual and bulk mark-as-read functionality
+- **Persistent Storage**: Notifications stored in database for reliability
+
+### Privacy & Access Control
+
+- **Domain Restrictions**: Allow/block specific email domains
+- **Email Lists**: Granular control with allowed/blocked email addresses
+- **Board Visibility**: Public, private, and restricted access modes
+- **Expiration Dates**: Automatic board closure after specified date
+- **Moderator Permissions**: Separate access levels for creators and moderators
 
 ### Performance Optimizations
 
-- Database indexing for fast queries
-- Caching strategies for frequently accessed data
-- Optimized component rendering
-- Performance monitoring and testing
+- **Database Indexing**: Optimized queries with composite indexes
+- **Caching Strategies**: Intelligent caching for frequently accessed data
+- **Performance Monitoring**: Real-time metrics tracking in development
+- **Error Boundaries**: Graceful error handling with user-friendly messages
+- **Lazy Loading**: Optimized component loading and code splitting
 
 ## Authentication
 
@@ -212,13 +291,17 @@ The app uses Clerk for comprehensive authentication:
 
 ## API Documentation
 
-The application provides RESTful APIs for:
+The application provides comprehensive RESTful APIs for:
 
-- **Boards**: CRUD operations, permissions management
-- **Posts**: Create, read, update, delete posts
+- **Boards**: CRUD operations, permissions management, moderation settings
+- **Posts**: Create, read, update, delete posts with moderation workflow
+- **Moderation**: Post approval, rejection, and status management
+- **Moderators**: Add/remove moderators, permission management
+- **Notifications**: Real-time notification delivery and management
 - **Users**: User data and board relationships
-- **Media**: File upload and management
+- **Media**: File upload and management with progress tracking
 - **Authentication**: User verification and session management
+- **Status**: System health monitoring and uptime tracking
 
 API documentation is available in the `docs/` directory.
 
