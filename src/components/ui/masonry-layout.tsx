@@ -83,8 +83,7 @@ export function MasonryLayout({
 
   // Initial layout calculation
   useLayoutEffect(() => {
-    const timer = setTimeout(calculateLayout, 100);
-    return () => clearTimeout(timer);
+    calculateLayout();
   }, [calculateLayout, childrenArray.length]);
 
   // Resize observer for container
@@ -144,7 +143,7 @@ export function MasonryLayout({
             ref={(el) => {
               itemRefs.current[index] = el;
             }}
-            className="absolute transition-all duration-300 ease-out"
+            className="absolute transition-[opacity] duration-300 ease-out"
             style={{
               left: position?.x || 0,
               top: position?.y || 0,
