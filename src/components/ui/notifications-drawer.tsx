@@ -161,7 +161,7 @@ export function NotificationsDrawer({
       direction="right"
     >
       <DrawerContent className="w-96 sm:max-w-96">
-        <DrawerHeader className="border-b">
+        <DrawerHeader>
           <div className="w-full flex items-center justify-between">
             <div className="flex items-center gap-2 text-primary">
               <Bell className="h-4 w-4" />

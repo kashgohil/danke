@@ -235,7 +235,7 @@ export function ModeratorManagement({
                 key={moderator.id}
                 className="flex items-center justify-between p-3 bg-background/50 rounded-lg"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center flex-1 gap-3">
                   <div className="w-8 h-8 bg-danke-gold rounded-full flex items-center justify-center">
                     <Mail className="w-4 h-4 text-danke-900" />
                   </div>
@@ -248,7 +248,7 @@ export function ModeratorManagement({
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Info className="w-4 h-4 text-muted-foreground hover:text-foreground cursor-help" />
+                            <Info className="w-3 h-3 text-muted-foreground hover:text-foreground cursor-help" />
                           </TooltipTrigger>
                           <TooltipContent side="right" className="max-w-xs">
                             <p className="text-xs text-muted-foreground">
@@ -264,11 +264,12 @@ export function ModeratorManagement({
                 <Button
                   size="sm"
                   variant="outline"
+                  className="flex items-center gap-2"
                   disabled={isLoading}
                   onClick={() => handleRemoveModerator(moderator)}
                 >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Remove
+                  <Trash2 className="w-4 h-4" />
+                  <span className="sm:inline hidden">Remove</span>
                 </Button>
               </div>
             ))}
