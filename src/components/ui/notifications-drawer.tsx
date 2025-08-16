@@ -3,7 +3,15 @@
 import { usePostEdit } from '@/contexts/post-edit-context';
 import type { Notification } from '@/lib/db/schema';
 import { formatDistanceToNow } from 'date-fns';
-import { Bell, CheckCheck, Edit, X } from 'lucide-react';
+import {
+  Bell,
+  Check,
+  CheckCheck,
+  Edit,
+  EyeOff,
+  Megaphone,
+  X,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Badge } from './badge';
 import { Button } from './button';
@@ -14,6 +22,12 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from './drawer';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from './tooltip';
 
 interface NotificationsDrawerProps {
   isOpen: boolean;
@@ -117,13 +131,13 @@ export function NotificationsDrawer({
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'post_approved':
-        return '✅';
+        return <Check />;
       case 'post_rejected':
-        return '❌';
+        return <X />;
       case 'post_hidden':
-        return '👁️‍🗨️';
+        return <EyeOff />;
       default:
-        return '📢';
+        return <Megaphone />;
     }
   };
 
@@ -148,27 +162,33 @@ export function NotificationsDrawer({
     >
       <DrawerContent className="w-96 sm:max-w-96">
         <DrawerHeader className="border-b">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Bell className="h-5 w-5" />
+          <div className="w-full flex items-center justify-between">
+            <div className="flex items-center gap-2 text-primary">
+              <Bell className="h-4 w-4" />
               <DrawerTitle>Notifications</DrawerTitle>
               {unreadCount > 0 && (
-                <Badge variant="destructive" className="ml-2">
+                <Badge className="ml-1">
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </Badge>
               )}
             </div>
             <div className="flex items-center gap-2">
               {unreadCount > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={markAllAsRead}
-                  className="text-sm"
-                >
-                  <CheckCheck className="h-4 w-4 mr-1" />
-                  Mark all read
-                </Button>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={markAllAsRead}
+                        className="text-sm"
+                      >
+                        <CheckCheck className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Mark All as Read</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               )}
               <DrawerClose asChild>
                 <Button variant="ghost" size="sm">
@@ -194,11 +214,11 @@ export function NotificationsDrawer({
               </p>
             </div>
           ) : (
-            <div className="p-2">
+            <div className="flex flex-col gap-2 p-4">
               {notifications.map((notification) => (
                 <div
                   key={notification.id}
-                  className={`p-3 mb-2 rounded-lg border cursor-pointer transition-colors ${
+                  className={`p-3 rounded-lg border cursor-pointer transition-colors ${
                     !notification.isRead
                       ? getNotificationColor(notification.type)
                       : 'bg-background border-border'
@@ -206,12 +226,12 @@ export function NotificationsDrawer({
                   onClick={() => handleNotificationClick(notification)}
                 >
                   <div className="flex items-start gap-3">
-                    <span className="text-lg flex-shrink-0 mt-0.5">
+                    <span className="text-lg flex-shrink-0 mt-0.5 text-primary">
                       {getNotificationIcon(notification.type)}
                     </span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <h3 className="text-sm font-medium text-foreground truncate">
+                        <h3 className="text-sm font-medium text-primary truncate">
                           {notification.title}
                         </h3>
                         {!notification.isRead && (
@@ -233,7 +253,7 @@ export function NotificationsDrawer({
                         {notification.postId &&
                           (notification.type === 'post_rejected' ||
                             notification.type === 'post_hidden') && (
-                            <div className="flex items-center gap-1 text-xs text-blue-600">
+                            <div className="flex items-center gap-1 text-xs text-primary">
                               <Edit className="h-3 w-3" />
                               <span>Click to edit</span>
                             </div>
