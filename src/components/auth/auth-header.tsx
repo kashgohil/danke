@@ -15,6 +15,12 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { NotificationBell } from '../ui/notification-bell';
 import { NotificationsDrawer } from '../ui/notifications-drawer';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
 import { useAuth } from './auth-context';
 
 export function AuthHeader() {
@@ -49,7 +55,7 @@ export function AuthHeader() {
 
   return (
     <>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <SignedOut>
           <SignInButton mode="modal">
             <Button variant="outline" size="sm">
@@ -61,31 +67,43 @@ export function AuthHeader() {
           </SignUpButton>
         </SignedOut>
         <SignedIn>
-          <Link href="/dashboard">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="flex items-center gap-2"
-            >
-              <LayoutDashboard className="w-4 h-4" />
-              <span className="hidden sm:inline">Dashboard</span>
-            </Button>
-          </Link>
-          <Link href="/profile">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="flex items-center gap-2"
-            >
-              <User className="w-4 h-4" />
-              <span className="hidden sm:inline">Profile</span>
-            </Button>
-          </Link>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Link href="/dashboard">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <LayoutDashboard className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Dashboard</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Link href="/profile">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <User className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Profile</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <NotificationBell onClick={() => setIsNotificationsOpen(true)} />
           <UserButton
             appearance={{
               elements: {
-                avatarBox: 'w-8 h-8 mr-4',
+                avatarBox: 'ml-2 w-8 h-8',
                 userButtonPopoverCard: 'shadow-lg border',
                 userButtonPopoverActionButton: 'hover:bg-gray-50',
               },

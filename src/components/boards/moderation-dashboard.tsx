@@ -194,7 +194,7 @@ export function ModerationDashboard({ boardId }: ModerationDashboardProps) {
                   Posts Needing Changes
                 </DialogTitle>
               </DialogHeader>
-              {postsNeedingChange.length > 0 && (
+              {postsNeedingChange.length > 0 ? (
                 <div className="space-y-2">
                   {postsNeedingChange.slice(0, 3).map((post) => (
                     <div
@@ -231,6 +231,10 @@ export function ModerationDashboard({ boardId }: ModerationDashboardProps) {
                     </p>
                   )}
                 </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No posts have been moderated and are needs change.
+                </p>
               )}
             </DialogContent>
           </Dialog>
@@ -244,16 +248,14 @@ export function ModerationDashboard({ boardId }: ModerationDashboardProps) {
               </div>
             </DialogTrigger>
             <DialogContent>
-              <DialogHeader className="font-medium text-primary flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-red-500" />
-                Scheduled for Deletion
+              <DialogHeader>
+                <DialogTitle className="font-medium text-primary flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Scheduled for Deletion
+                </DialogTitle>
               </DialogHeader>
-              {postsScheduledForDeletion.length > 0 && (
+              {postsScheduledForDeletion.length > 0 ? (
                 <div className="space-y-2">
-                  <h4 className="font-medium text-foreground flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-red-500" />
-                    Scheduled for Deletion
-                  </h4>
                   {postsScheduledForDeletion.slice(0, 3).map((post) => (
                     <div
                       key={post.id}
@@ -292,6 +294,10 @@ export function ModerationDashboard({ boardId }: ModerationDashboardProps) {
                     </p>
                   )}
                 </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No posts have been scheduled for deletion.
+                </p>
               )}
             </DialogContent>
           </Dialog>
