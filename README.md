@@ -25,6 +25,7 @@ A modern Next.js web application for creating and sharing beautiful appreciation
 ### Rich Content & Media
 
 - **Rich Text Editor**: Tiptap-powered editor with formatting, colors, and styling
+- **Emoji Support**: Built-in emoji picker with GitHub's complete emoji set for expressive messaging
 - **Advanced Media Upload**: Support for images (2MB), videos (10MB), and audio files (5MB)
 - **Media Carousel**: Beautiful display of multiple media files per post
 - **Drag & Drop Upload**: Intuitive file upload with progress indicators
