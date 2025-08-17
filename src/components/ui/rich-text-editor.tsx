@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import Color from '@tiptap/extension-color';
+import { Emoji, gitHubEmojis } from '@tiptap/extension-emoji';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -11,10 +12,11 @@ import {
   Italic,
   List,
   ListOrdered,
+  Smile,
   Strikethrough,
   Underline as UnderlineIcon,
 } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from './button';
 
 interface RichTextEditorProps {
@@ -31,6 +33,9 @@ export function RichTextEditor({
   className,
   editable = true,
 }: RichTextEditorProps) {
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
+
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -39,6 +44,10 @@ export function RichTextEditor({
       TextStyle,
       Color.configure({
         types: ['textStyle'],
+      }),
+      Emoji.configure({
+        emojis: gitHubEmojis,
+        enableEmoticons: true,
       }),
     ],
     content: content || '',
@@ -62,6 +71,25 @@ export function RichTextEditor({
       editor.commands.setContent(content || '');
     }
   }, [editor, content]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        emojiPickerRef.current &&
+        !emojiPickerRef.current.contains(event.target as Node)
+      ) {
+        setShowEmojiPicker(false);
+      }
+    };
+
+    if (showEmojiPicker) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showEmojiPicker]);
 
   if (!editor) {
     return null;
@@ -152,6 +180,54 @@ export function RichTextEditor({
               >
                 <ListOrdered className="h-4 w-4" />
               </ToolbarButton>
+            </div>
+
+            <div className="w-px h-6 bg-border mx-2" />
+
+            <div
+              className="flex items-center gap-1 relative"
+              ref={emojiPickerRef}
+            >
+              <ToolbarButton
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                isActive={showEmojiPicker}
+                title="Insert Emoji"
+              >
+                <Smile className="h-4 w-4" />
+              </ToolbarButton>
+
+              {showEmojiPicker && (
+                <div className="absolute top-10 left-0 z-50 bg-background border border-border rounded-lg shadow-lg p-3 w-64 max-h-48 overflow-y-auto">
+                  <div className="grid grid-cols-8 gap-1">
+                    {gitHubEmojis
+                      .filter(
+                        (item) =>
+                          item.emoji &&
+                          !item.name.includes('regional_indicator')
+                      )
+                      .map((emojiItem, index) => (
+                        <button
+                          key={`${emojiItem.name}-${index}`}
+                          type="button"
+                          className="p-1 hover:bg-accent hover:text-accent-foreground rounded text-lg transition-colors"
+                          onClick={() => {
+                            if (emojiItem.emoji) {
+                              editor
+                                .chain()
+                                .focus()
+                                .insertContent(emojiItem.emoji)
+                                .run();
+                              setShowEmojiPicker(false);
+                            }
+                          }}
+                          title={emojiItem.name}
+                        >
+                          {emojiItem.emoji}
+                        </button>
+                      ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
