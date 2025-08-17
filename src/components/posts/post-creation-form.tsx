@@ -7,6 +7,7 @@ import { MediaPreview } from '@/components/ui/media-preview';
 import { MediaUpload, type MediaFile } from '@/components/ui/media-upload';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
 import { usePostingPermissions } from '@/hooks/use-posting-permissions';
+import { useToast } from '@/hooks/use-toast';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
 import { perf } from '@/lib/performance';
 import { cn } from '@/lib/utils';
@@ -49,10 +50,11 @@ function PostCreationFormContent({
     Record<string, string>
   >({});
 
+  const { toast } = useToast();
+
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
-    // Always require authentication, even for anonymous posts
     if (!isSignedIn || !userId) {
       setError('You must be signed in to post');
       return false;
@@ -114,11 +116,16 @@ function PostCreationFormContent({
       setIsAnonymous(false);
       setAnonymousName('');
 
+      toast({
+        title: 'Post Created',
+        description: `Your post is live. Taking you to board...`,
+        variant: 'default',
+      });
+
       router.push(`/boards/${boardId}`);
     } catch (error) {
       const errorMessage = handleError(error);
 
-      // Handle specific moderation errors with more helpful messages
       if (errorMessage.includes('only allows one post per user')) {
         setError(
           'This board is set to single-post mode. You can only submit one message.'
