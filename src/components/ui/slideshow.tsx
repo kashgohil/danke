@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
+import { RichTextEditor } from './rich-text-editor';
 
 interface SlideshowPost {
   id: string;
@@ -411,7 +412,7 @@ function SlideContent({ post, contrastTextStyles }: SlideContentProps) {
           className="text-2xl md:text-4xl leading-relaxed mb-8 font-medium"
           style={contrastTextStyles.primary}
         >
-          {textContent}
+          <RichTextEditor editable={false} content={post.content} />
         </div>
         <div className="text-lg" style={contrastTextStyles.muted}>
           - {creatorName}
@@ -446,7 +447,7 @@ function SlideContent({ post, contrastTextStyles }: SlideContentProps) {
               className="text-xl md:text-2xl leading-relaxed mb-4 font-medium"
               style={contrastTextStyles.primary}
             >
-              {textContent}
+              <RichTextEditor editable={false} content={post.content} />
             </div>
             <div className="text-lg" style={contrastTextStyles.muted}>
               - {creatorName}
@@ -462,7 +463,7 @@ function SlideContent({ post, contrastTextStyles }: SlideContentProps) {
     return (
       <VideoSlide
         videoUrl={video}
-        textContent={hasText ? textContent : ''}
+        textContent={hasText ? post.content : ''}
         creatorName={creatorName}
         contrastTextStyles={contrastTextStyles}
       />
@@ -480,7 +481,11 @@ function SlideContent({ post, contrastTextStyles }: SlideContentProps) {
           className="text-2xl md:text-4xl leading-relaxed mb-8 font-medium"
           style={contrastTextStyles.primary}
         >
-          {hasText ? textContent : 'Audio message'}
+          {hasText ? (
+            <RichTextEditor editable={false} content={post.content} />
+          ) : (
+            'Audio message'
+          )}
         </div>
         <div className="text-lg" style={contrastTextStyles.muted}>
           - {creatorName}
@@ -495,7 +500,11 @@ function SlideContent({ post, contrastTextStyles }: SlideContentProps) {
         className="text-2xl md:text-4xl leading-relaxed mb-8 font-medium"
         style={contrastTextStyles.primary}
       >
-        {hasText ? textContent : 'No content available'}
+        {hasText ? (
+          <RichTextEditor editable={false} content={post.content} />
+        ) : (
+          'No content available'
+        )}
       </div>
       <div className="text-lg" style={contrastTextStyles.muted}>
         - {creatorName}
@@ -594,7 +603,7 @@ function VideoSlide({
               className="text-xl md:text-2xl leading-relaxed mb-4 font-medium"
               style={contrastTextStyles.primary}
             >
-              {textContent}
+              <RichTextEditor editable={false} content={textContent} />
             </div>
             <div className="text-lg" style={contrastTextStyles.muted}>
               - {creatorName}
@@ -623,7 +632,7 @@ function VideoSlide({
                 className="text-xl md:text-2xl leading-relaxed mb-4 font-medium"
                 style={contrastTextStyles.primary}
               >
-                {textContent}
+                <RichTextEditor editable={false} content={textContent} />
               </div>
               <div className="text-lg" style={contrastTextStyles.muted}>
                 - {creatorName}
