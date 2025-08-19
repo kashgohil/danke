@@ -16,11 +16,12 @@ import {
 } from '@/lib/gradient-utils';
 import { perf } from '@/lib/performance';
 import { useAuth } from '@clerk/nextjs';
-import { Edit2, Heart, MessageCircle, Trash2 } from 'lucide-react';
+import { Edit2, Heart, MessageCircle, Play, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { PostModerationControls } from '../posts/post-moderation-controls';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { MediaCarousel } from '../ui/media-carousel';
+import { Slideshow } from '../ui/slideshow';
 import {
   Tooltip,
   TooltipContent,
@@ -520,6 +521,8 @@ export function BoardView({
   isModerator,
   isCreator,
 }: BoardViewProps) {
+  const [slideshowOpen, setSlideshowOpen] = useState(false);
+
   useEffect(() => {
     if (process.env.NODE_ENV !== 'test') {
       const stopTimer = perf.startTimer('component-render-board-view');
@@ -591,7 +594,7 @@ export function BoardView({
           {board.title}
         </h1>
         <p
-          className="text-xl max-w-2xl mx-auto"
+          className="text-xl max-w-2xl mx-auto mb-6"
           style={contrastTextStyles.secondary}
         >
           Heartfelt messages and memories for{' '}
@@ -599,9 +602,32 @@ export function BoardView({
             {board.recipientName}
           </span>
         </p>
+        {posts.length > 0 && (
+          <Button onClick={() => setSlideshowOpen(true)} size="lg">
+            <Play className="w-5 h-5 mr-2" />
+            Start Slideshow
+          </Button>
+        )}
       </header>
 
       <main className="relative px-4 pb-8">{content()}</main>
+
+      <Slideshow
+        posts={posts.map((post) => ({
+          id: post.id,
+          content: post.content,
+          mediaUrls: post.mediaUrls || [],
+          creatorId: post.isAnonymous
+            ? post.anonymousName || 'Anonymous'
+            : post.creator.name,
+          isAnonymous: post.isAnonymous,
+          anonymousName: post.anonymousName || undefined,
+          createdAt: post.createdAt,
+        }))}
+        isOpen={slideshowOpen}
+        onClose={() => setSlideshowOpen(false)}
+        backgroundColor={backgroundColor}
+      />
     </div>
   );
 }
