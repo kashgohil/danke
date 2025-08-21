@@ -1,18 +1,4 @@
-import {
-	Bell,
-	Check,
-	Globe,
-	Heart,
-	ImageIcon,
-	MessageCircle,
-	Palette,
-	Share2,
-	Shield,
-	Sparkles,
-	Users,
-	Video,
-	Zap,
-} from "lucide-react";
+import { Check, Heart, ImageIcon, MessageCircle, Palette, Share2, Sparkles } from "lucide-react";
 import { Metadata } from "next";
 
 import { Button } from "@/components/ui/button";
@@ -41,8 +27,7 @@ export default function FeaturesPage() {
 				</p>
 			</section>
 
-			{/* Core Features */}
-			<section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
+			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
 				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Core Features</h2>
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
@@ -126,155 +111,6 @@ export default function FeaturesPage() {
 			</section>
 
 			<section>
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-900">Roadmap</h2>
-				<div className="grid md:grid-cols-2 gap-16 max-w-6xl mx-auto">
-					<div className="space-y-12">
-						<div className="flex items-start gap-4">
-							<div className="w-10 h-10 bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
-								<Shield className="w-5 h-5 text-danke-900" />
-							</div>
-							<div>
-								<h3 className="text-xl font-semibold mb-2 text-danke-900">Privacy & Moderation</h3>
-								<p className="text-danke-800">
-									Full control over your boards with moderation tools, content filtering, and privacy settings. Keep
-									your community safe and positive.
-								</p>
-							</div>
-						</div>
-
-						<div className="flex items-start gap-4">
-							<div className="w-10 h-10 bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
-								<Users className="w-5 h-5 text-danke-900" />
-							</div>
-							<div>
-								<h3 className="text-xl font-semibold mb-2 text-danke-900">Team Collaboration</h3>
-								<p className="text-danke-800">
-									Invite team members as co-administrators, manage permissions, and collaborate on board management
-									together.
-								</p>
-							</div>
-						</div>
-
-						<div className="flex items-start gap-4">
-							<div className="w-10 h-10 bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
-								<Bell className="w-5 h-5 text-danke-900" />
-							</div>
-							<div>
-								<h3 className="text-xl font-semibold mb-2 text-danke-900">Smart Notifications</h3>
-								<p className="text-danke-800">
-									Get notified when new messages are added, milestones are reached, or when it&apos;s time to celebrate
-									achievements.
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div className="space-y-12">
-						<div className="flex items-start gap-4">
-							<div className="w-10 h-10 bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
-								<Globe className="w-5 h-5 text-danke-900" />
-							</div>
-							<div>
-								<h3 className="text-xl font-semibold mb-2 text-danke-900">Multi-language Support</h3>
-								<p className="text-danke-800">
-									Create boards in multiple languages and reach global communities. Automatic translation options
-									available.
-								</p>
-							</div>
-						</div>
-
-						<div className="flex items-start gap-4">
-							<div className="w-10 h-10 bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
-								<Video className="w-5 h-5 text-danke-900" />
-							</div>
-							<div>
-								<h3 className="text-xl font-semibold mb-2 text-danke-900">Export & Archive</h3>
-								<p className="text-danke-800">
-									Download your boards as beautiful PDFs, create digital archives, or export data for safekeeping and
-									sharing offline.
-								</p>
-							</div>
-						</div>
-
-						<div className="flex items-start gap-4">
-							<div className="w-10 h-10 bg-danke-gold rounded-full flex items-center justify-center flex-shrink-0">
-								<Zap className="w-5 h-5 text-danke-900" />
-							</div>
-							<div>
-								<h3 className="text-xl font-semibold mb-2 text-danke-900">API Integration</h3>
-								<p className="text-danke-800">
-									Connect Danke with your existing tools and workflows through our powerful API and webhook
-									integrations.
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			{/* Use Cases */}
-			<section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Perfect For Every Occasion</h2>
-				<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
-						<CardHeader>
-							<CardTitle className="text-lg">Farewell Celebrations</CardTitle>
-							<CardDescription>Collect heartfelt goodbye messages for departing colleagues or friends</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
-						<CardHeader>
-							<CardTitle className="text-lg">Birthday Wishes</CardTitle>
-							<CardDescription>Create memorable birthday boards filled with photos and messages</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
-						<CardHeader>
-							<CardTitle className="text-lg">Team Recognition</CardTitle>
-							<CardDescription>Celebrate project completions and acknowledge outstanding work</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
-						<CardHeader>
-							<CardTitle className="text-lg">Wedding Memories</CardTitle>
-							<CardDescription>Gather well-wishes and memories from wedding guests</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
-						<CardHeader>
-							<CardTitle className="text-lg">Graduation Tributes</CardTitle>
-							<CardDescription>Honor achievements with messages from family and friends</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
-						<CardHeader>
-							<CardTitle className="text-lg">Customer Feedback</CardTitle>
-							<CardDescription>Collect testimonials and appreciation from satisfied customers</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
-						<CardHeader>
-							<CardTitle className="text-lg">Community Events</CardTitle>
-							<CardDescription>Document special moments and gather feedback from participants</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
-						<CardHeader>
-							<CardTitle className="text-lg">Memorial Boards</CardTitle>
-							<CardDescription>Create lasting tributes with shared memories and stories</CardDescription>
-						</CardHeader>
-					</Card>
-				</div>
-			</section>
-
-			<section>
 				<h2 className="text-3xl font-bold text-center mb-12 text-danke-900">Why Choose Danke?</h2>
 				<div className="max-w-4xl mx-auto text-danke-900">
 					<div className="grid md:grid-cols-2 gap-12">
@@ -349,7 +185,67 @@ export default function FeaturesPage() {
 				</div>
 			</section>
 
-			{/* Call to Action */}
+			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
+				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Perfect For Every Occasion</h2>
+				<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+						<CardHeader>
+							<CardTitle className="text-lg">Farewell Celebrations</CardTitle>
+							<CardDescription>Collect heartfelt goodbye messages for departing colleagues or friends</CardDescription>
+						</CardHeader>
+					</Card>
+
+					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+						<CardHeader>
+							<CardTitle className="text-lg">Birthday Wishes</CardTitle>
+							<CardDescription>Create memorable birthday boards filled with photos and messages</CardDescription>
+						</CardHeader>
+					</Card>
+
+					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+						<CardHeader>
+							<CardTitle className="text-lg">Team Recognition</CardTitle>
+							<CardDescription>Celebrate project completions and acknowledge outstanding work</CardDescription>
+						</CardHeader>
+					</Card>
+
+					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+						<CardHeader>
+							<CardTitle className="text-lg">Wedding Memories</CardTitle>
+							<CardDescription>Gather well-wishes and memories from wedding guests</CardDescription>
+						</CardHeader>
+					</Card>
+
+					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+						<CardHeader>
+							<CardTitle className="text-lg">Graduation Tributes</CardTitle>
+							<CardDescription>Honor achievements with messages from family and friends</CardDescription>
+						</CardHeader>
+					</Card>
+
+					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+						<CardHeader>
+							<CardTitle className="text-lg">Customer Feedback</CardTitle>
+							<CardDescription>Collect testimonials and appreciation from satisfied customers</CardDescription>
+						</CardHeader>
+					</Card>
+
+					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+						<CardHeader>
+							<CardTitle className="text-lg">Community Events</CardTitle>
+							<CardDescription>Document special moments and gather feedback from participants</CardDescription>
+						</CardHeader>
+					</Card>
+
+					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+						<CardHeader>
+							<CardTitle className="text-lg">Memorial Boards</CardTitle>
+							<CardDescription>Create lasting tributes with shared memories and stories</CardDescription>
+						</CardHeader>
+					</Card>
+				</div>
+			</section>
+
 			<section className="text-center py-16 -mx-4 px-4 bg-gradient-to-r rounded-lg text-danke-900">
 				<h2 className="text-3xl font-bold mb-6">Ready to Experience These Features?</h2>
 				<p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
@@ -359,7 +255,7 @@ export default function FeaturesPage() {
 					<Link href="/create-board">
 						<Button
 							size="lg"
-							className="font-semibold"
+							className="inline-flex items-center justify-center px-6 py-3 bg-danke-gold text-background font-medium rounded-lg hover:bg-danke-gold/90 transition-colors"
 						>
 							Create Your First Board
 						</Button>
@@ -368,7 +264,7 @@ export default function FeaturesPage() {
 						<Button
 							size="lg"
 							variant="outline"
-							className="text-white  font-semibold"
+							className="inline-flex items-center justify-center px-6 py-3 border border-border bg-background text-foreground font-medium rounded-lg hover:bg-muted transition-colors"
 						>
 							View Dashboard
 						</Button>

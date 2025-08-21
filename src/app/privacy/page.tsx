@@ -187,17 +187,17 @@ export default function PrivacyPage() {
 						<p className="leading-relaxed">
 							If you have any questions about this privacy policy or our privacy practices, please contact us at:
 						</p>
-						<div className="mt-4 p-4 bg-background/50 backdrop-blur-2xl rounded-lg">
-							<p className="text-danke-900">
+						<div className="mt-4 p-4 bg-background/80 backdrop-blur-2xl rounded-lg">
+							<p className="text-foreground">
 								Email:{" "}
 								<a
-									href="mailto:privacy@danke.app"
-									className="text-muted-foreground hover:underline"
+									href="mailto:privacy@trydanke.link"
+									className="text-danke-gold hover:underline"
 								>
-									privacy@danke.app
+									privacy@trydanke.link
 								</a>
 								<br />
-								Subject: <span className="text-muted-foreground">Privacy Policy Inquiry</span>
+								Subject: <span className="text-danke-gold">Privacy Policy Inquiry</span>
 							</p>
 						</div>
 					</section>

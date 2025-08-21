@@ -178,17 +178,17 @@ export default function TermsPage() {
 						<p className=" leading-relaxed">
 							If you have any questions about these Terms of Service, please contact us at:
 						</p>
-						<div className="mt-4 p-4 bg-background/50 backdrop-blur-2xl rounded-lg">
-							<p className="text-danke-900">
+						<div className="mt-4 p-4 bg-background/80 backdrop-blur-2xl rounded-lg">
+							<p className="text-foreground">
 								Email:{" "}
 								<a
-									href="mailto:legal@danke.app"
-									className="text-muted-foreground hover:underline"
+									href="mailto:legal@trydanke.link"
+									className="text-danke-gold hover:underline"
 								>
-									legal@danke.app
+									legal@trydanke.link
 								</a>
 								<br />
-								Subject: <span className="text-muted-foreground">Terms of Service Inquiry</span>
+								Subject: <span className="text-danke-gold">Terms of Service Inquiry</span>
 							</p>
 						</div>
 					</section>

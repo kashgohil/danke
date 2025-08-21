@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Metadata } from "next";
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Footer } from "@/components/ui/footer";
@@ -26,6 +27,34 @@ export const metadata: Metadata = {
 };
 
 export default function GuidesPage() {
+	const guidesFAQs: Array<{ question: string; answer: string }> = [
+		{
+			question: "How many people can contribute to a board?",
+			answer:
+				"There's no limit to the number of contributors! Our boards are designed to handle everything from intimate gatherings to company-wide celebrations with hundreds of participants.",
+		},
+		{
+			question: "Can I moderate messages before they appear?",
+			answer:
+				"Yes! You can enable moderation to review all messages before they go live on your board. This ensures quality control and appropriateness for your specific occasion.",
+		},
+		{
+			question: "What file types can contributors upload?",
+			answer:
+				"Contributors can upload images (JPG, PNG, GIF), videos (MP4, MOV), and audio files (MP3, WAV). We automatically optimize media for fast loading while maintaining quality.",
+		},
+		{
+			question: "How long do boards stay active?",
+			answer:
+				"Boards remain active indefinitely on our free plan. You can archive or delete them at any time, and premium plans offer additional storage and backup options.",
+		},
+		{
+			question: "Can I export my board for offline use?",
+			answer:
+				"Absolutely! You can export your board as a PDF, create a digital archive, or even order a printed version. This makes it perfect for creating lasting keepsakes.",
+		},
+	];
+
 	return (
 		<div className="space-y-16 mt-8 mx-auto">
 			<section className="text-center">
@@ -208,7 +237,7 @@ export default function GuidesPage() {
 				</div>
 			</section>
 
-			<section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg md:rounded-lg">
+			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg md:rounded-lg">
 				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Guides by Occasion</h2>
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
@@ -358,48 +387,29 @@ export default function GuidesPage() {
 				</div>
 			</section>
 
-			<section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg md:rounded-lg">
+			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg md:rounded-lg">
 				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Frequently Asked Questions</h2>
-				<div className="max-w-4xl mx-auto space-y-8">
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">How many people can contribute to a board?</h3>
-						<p className="text-muted-foreground">
-							There&apos;s no limit to the number of contributors! Our boards are designed to handle everything from
-							intimate gatherings to company-wide celebrations with hundreds of participants.
-						</p>
-					</div>
-
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">Can I moderate messages before they appear?</h3>
-						<p className="text-muted-foreground">
-							Yes! You can enable moderation to review all messages before they go live on your board. This ensures
-							quality control and appropriateness for your specific occasion.
-						</p>
-					</div>
-
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">What file types can contributors upload?</h3>
-						<p className="text-muted-foreground">
-							Contributors can upload images (JPG, PNG, GIF), videos (MP4, MOV), and audio files (MP3, WAV). We
-							automatically optimize media for fast loading while maintaining quality.
-						</p>
-					</div>
-
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">How long do boards stay active?</h3>
-						<p className="text-muted-foreground">
-							Boards remain active indefinitely on our free plan. You can archive or delete them at any time, and
-							premium plans offer additional storage and backup options.
-						</p>
-					</div>
-
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">Can I export my board for offline use?</h3>
-						<p className="text-muted-foreground">
-							Absolutely! You can export your board as a PDF, create a digital archive, or even order a printed version.
-							This makes it perfect for creating lasting keepsakes.
-						</p>
-					</div>
+				<div className="max-w-4xl mx-auto">
+					<Accordion
+						type="single"
+						collapsible
+						className="space-y-4"
+					>
+						{guidesFAQs.map((item, index) => (
+							<AccordionItem
+								key={index}
+								value={`item-${index}`}
+								className="border border-border/40 rounded-lg bg-background/60 overflow-hidden"
+							>
+								<AccordionTrigger className="px-6 py-4 text-left cursor-pointer transition-colors [&[data-state=open]>svg]:rotate-180">
+									<h3 className="text-base text-muted-foreground pr-4">{item.question}</h3>
+								</AccordionTrigger>
+								<AccordionContent className="px-6 pb-4">
+									<p className="text-muted-foreground leading-relaxed">{item.answer}</p>
+								</AccordionContent>
+							</AccordionItem>
+						))}
+					</Accordion>
 				</div>
 			</section>
 
@@ -412,7 +422,7 @@ export default function GuidesPage() {
 					<Link href="/create-board">
 						<Button
 							size="lg"
-							className="font-semibold"
+							className="inline-flex items-center justify-center px-6 py-3 bg-danke-gold text-background font-medium rounded-lg hover:bg-danke-gold/90 transition-colors"
 						>
 							Create Your First Board
 						</Button>
@@ -421,7 +431,7 @@ export default function GuidesPage() {
 						<Button
 							size="lg"
 							variant="outline"
-							className="text-white font-semibold"
+							className="inline-flex items-center justify-center px-6 py-3 border border-border bg-background text-foreground font-medium rounded-lg hover:bg-muted transition-colors"
 						>
 							Need More Help?
 						</Button>

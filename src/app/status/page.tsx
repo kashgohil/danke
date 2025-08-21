@@ -116,13 +116,15 @@ export default function StatusPage() {
 	return (
 		<div className="space-y-16 mt-8 mx-auto">
 			<section className="text-center">
-				<h1 className="text-4xl md:text-6xl mt-12 font-bold mb-6 text-danke-900">System Status</h1>
+				<h1 className="text-4xl md:text-6xl mt-12 font-bold mb-6 text-danke-900">
+					System <span className="text-danke-gold">Status</span>
+				</h1>
 				<p className="text-xl max-w-3xl mx-auto leading-relaxed text-danke-800">
 					Real-time monitoring of all Danke services and infrastructure components.
 				</p>
 			</section>
 
-			<section className="py-8 -mx-4 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
+			<section className="py-8 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
 				<div className="max-w-4xl mx-auto">
 					<div className="flex items-center justify-center gap-4 mb-8">
 						{(() => {
@@ -229,7 +231,7 @@ export default function StatusPage() {
 				</div>
 			</section>
 
-			<section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
+			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
 				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Recent Incidents</h2>
 				<div className="max-w-4xl mx-auto">
 					<Card className="border-0 shadow-lg">
@@ -260,7 +262,7 @@ export default function StatusPage() {
 				</div>
 			</section>
 
-			<section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
+			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
 				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">30-Day Uptime History</h2>
 				<div className="max-w-4xl mx-auto">
 					<div className="grid gap-4">
@@ -293,14 +295,14 @@ export default function StatusPage() {
 				</p>
 				<div className="flex flex-col sm:flex-row gap-4 justify-center">
 					<Link
-						href="mailto:status@danke.no?subject=Status Updates Subscription"
-						className="inline-flex items-center justify-center px-6 py-3 bg-danke-gold text-danke-900 font-semibold rounded-lg hover:bg-danke-300 transition-colors"
+						href="mailto:status@trydanke.link?subject=Status Updates Subscription"
+						className="inline-flex items-center justify-center px-6 py-3 bg-danke-gold text-background font-medium rounded-lg hover:bg-danke-gold/90 transition-colors"
 					>
 						Subscribe to Email Updates
 					</Link>
 					<Link
 						href="/status/rss"
-						className="inline-flex items-center justify-center px-6 py-3 border border-danke-900 text-danke-900 font-semibold rounded-lg hover:bg-danke-900 hover:text-white transition-colors"
+						className="inline-flex items-center justify-center px-6 py-3 border border-border bg-background text-foreground font-medium rounded-lg hover:bg-muted transition-colors"
 					>
 						RSS Feed
 					</Link>

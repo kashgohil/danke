@@ -1,6 +1,7 @@
 import { Clock, Mail, MessageCircle, Send, Twitter } from "lucide-react";
 import { Metadata } from "next";
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Footer } from "@/components/ui/footer";
@@ -13,6 +14,29 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
+	const contactFAQs: Array<{ question: string; answer: string }> = [
+		{
+			question: "How do I create my first board?",
+			answer:
+				'Creating a board is simple! Just click "Create Board" from your dashboard, choose your board type, add some basic information, and you\'re ready to start collecting messages.',
+		},
+		{
+			question: "Can I customize the appearance of my board?",
+			answer:
+				"Yes! You can customize colors, layouts, and add your own branding to make each board unique and match your community's style.",
+		},
+		{
+			question: "Is there a limit to how many messages I can collect?",
+			answer:
+				"Our free plan allows up to 50 messages per board. For larger communities, check out our premium plans for unlimited messages and additional features.",
+		},
+		{
+			question: "How do I share my board with others?",
+			answer:
+				"Each board gets a unique shareable link that you can send via email, social media, or any other communication method. Contributors don't need to create an account to leave messages.",
+		},
+	];
+
 	return (
 		<div className="space-y-16 mt-8 mx-auto">
 			<section className="text-center">
@@ -23,7 +47,7 @@ export default function ContactPage() {
 			</section>
 
 			<section className="flex gap-12 max-w-6xl mx-auto">
-				<div className="space-y-6 max-w-3xl mx-auto bg-background backdrop-blur-2xl rounded-lg p-12">
+				<div className="space-y-6 max-w-3xl mx-auto bg-background/80 backdrop-blur-2xl rounded-lg p-12">
 					<div>
 						<h2 className="text-2xl font-bold mb-2 text-danke-gold">Send us a message</h2>
 						<p className="text-muted-foreground mb-6">
@@ -70,7 +94,7 @@ export default function ContactPage() {
 							<Label htmlFor="message">Message</Label>
 							<textarea
 								id="message"
-								className="min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+								className="min-h-[120px] w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 								placeholder="Tell us more about your question or feedback..."
 							/>
 						</div>
@@ -82,7 +106,7 @@ export default function ContactPage() {
 					</form>
 				</div>
 
-				<div className="space-y-6 max-w-3xl mx-auto bg-background backdrop-blur-2xl rounded-lg p-12">
+				<div className="space-y-6 max-w-3xl mx-auto bg-background/80 backdrop-blur-2xl rounded-lg p-12">
 					<div>
 						<h2 className="text-2xl font-bold mb-2 text-danke-gold">Get in touch</h2>
 						<p className="text-muted-foreground mb-6">
@@ -100,10 +124,10 @@ export default function ContactPage() {
 									<CardTitle className="text-lg">Email</CardTitle>
 									<CardDescription>
 										<a
-											href="mailto:hello@danke.app"
+											href="mailto:hello@trydanke.link"
 											className="text-danke-600 hover:text-danke-700"
 										>
-											hello@danke.app
+											hello@trydanke.link
 										</a>
 									</CardDescription>
 								</div>
@@ -119,10 +143,10 @@ export default function ContactPage() {
 									<CardTitle className="text-lg">Support</CardTitle>
 									<CardDescription>
 										<a
-											href="mailto:support@danke.app"
+											href="mailto:support@trydanke.link"
 											className="text-danke-600 hover:text-danke-700"
 										>
-											support@danke.app
+											support@trydanke.link
 										</a>
 									</CardDescription>
 								</div>
@@ -162,43 +186,29 @@ export default function ContactPage() {
 				</div>
 			</section>
 
-			{/* FAQ Section */}
-			<section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
+			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
 				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Frequently Asked Questions</h2>
-				<div className="max-w-4xl mx-auto space-y-8">
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">How do I create my first board?</h3>
-						<p className="text-muted-foreground">
-							Creating a board is simple! Just click &quot;Create Board&quot; from your dashboard, choose your board
-							type, add some basic information, and you&apos;re ready to start collecting messages.
-						</p>
-					</div>
-
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">Can I customize the appearance of my board?</h3>
-						<p className="text-muted-foreground">
-							Yes! You can customize colors, layouts, and add your own branding to make each board unique and match your
-							community&apos;s style.
-						</p>
-					</div>
-
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">
-							Is there a limit to how many messages I can collect?
-						</h3>
-						<p className="text-muted-foreground">
-							Our free plan allows up to 50 messages per board. For larger communities, check out our premium plans for
-							unlimited messages and additional features.
-						</p>
-					</div>
-
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">How do I share my board with others?</h3>
-						<p className="text-muted-foreground">
-							Each board gets a unique shareable link that you can send via email, social media, or any other
-							communication method. Contributors don&apos;t need to create an account to leave messages.
-						</p>
-					</div>
+				<div className="max-w-4xl mx-auto">
+					<Accordion
+						type="single"
+						collapsible
+						className="space-y-4"
+					>
+						{contactFAQs.map((item, index) => (
+							<AccordionItem
+								key={index}
+								value={`item-${index}`}
+								className="border border-border/40 rounded-lg bg-background/60 overflow-hidden"
+							>
+								<AccordionTrigger className="px-6 py-4 text-left cursor-pointer transition-colors [&[data-state=open]>svg]:rotate-180">
+									<h3 className="text-base text-muted-foreground pr-4">{item.question}</h3>
+								</AccordionTrigger>
+								<AccordionContent className="px-6 pb-4">
+									<p className="text-foreground leading-relaxed">{item.answer}</p>
+								</AccordionContent>
+							</AccordionItem>
+						))}
+					</Accordion>
 				</div>
 			</section>
 
@@ -211,14 +221,14 @@ export default function ContactPage() {
 				<div className="flex flex-col sm:flex-row gap-4 justify-center">
 					<Button
 						size="lg"
-						className="font-semibold"
+						className="inline-flex items-center justify-center px-6 py-3 bg-danke-gold text-background font-medium rounded-lg hover:bg-danke-gold/90 transition-colors"
 					>
 						Create Your First Board
 					</Button>
 					<Button
 						size="lg"
 						variant="outline"
-						className="text-white font-semibold"
+						className="inline-flex items-center justify-center px-6 py-3 border border-border bg-background text-foreground font-medium rounded-lg hover:bg-muted transition-colors"
 					>
 						View Examples
 					</Button>

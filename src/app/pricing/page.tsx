@@ -1,6 +1,7 @@
 import { Check, Crown, Heart, Star, Zap } from "lucide-react";
 import { Metadata } from "next";
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Footer } from "@/components/ui/footer";
@@ -12,6 +13,33 @@ export const metadata: Metadata = {
 };
 
 export default function PricingPage() {
+	const pricingFAQs: Array<{ question: string; answer: string }> = [
+		{
+			question: "Can I upgrade or downgrade my plan anytime?",
+			answer:
+				"Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate any billing adjustments.",
+		},
+		{
+			question: "What happens to my boards if I downgrade?",
+			answer:
+				"Your existing boards and messages remain safe. If you exceed the limits of your new plan, you'll have read-only access to the excess content until you upgrade again or remove some boards.",
+		},
+		{
+			question: "Is there a free trial for Pro plans?",
+			answer: "Yes! We offer a 14-day free trial for the Pro plan. No credit card required to start your trial.",
+		},
+		{
+			question: "Do you offer discounts for nonprofits or educational institutions?",
+			answer:
+				"Yes! We offer special pricing for qualified nonprofits and educational institutions. Contact our sales team for more information.",
+		},
+		{
+			question: "What payment methods do you accept?",
+			answer:
+				"We accept all major credit cards (Visa, MasterCard, American Express) and PayPal. Enterprise customers can also pay by invoice.",
+		},
+	];
+
 	return (
 		<div className="space-y-16 mt-8 mx-auto">
 			<section className="text-center">
@@ -193,39 +221,39 @@ export default function PricingPage() {
 				</div>
 			</section>
 
-			<section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg md:rounded-lg">
+			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg md:rounded-lg">
 				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Compare Plans</h2>
 				<div className="max-w-4xl mx-auto overflow-x-auto">
 					<table className="w-full">
 						<thead>
 							<tr className="border-b border-border">
-								<th className="text-left py-4 px-4 font-semibold text-danke-900">Features</th>
-								<th className="text-center py-4 px-4 font-semibold text-danke-900">Free</th>
-								<th className="text-center py-4 px-4 font-semibold text-danke-900">Pro</th>
-								<th className="text-center py-4 px-4 font-semibold text-danke-900">Enterprise</th>
+								<th className="text-left py-4 px-4 font-semibold text-muted-foreground">Features</th>
+								<th className="text-center py-4 px-4 font-semibold text-muted-foreground">Free</th>
+								<th className="text-center py-4 px-4 font-semibold text-muted-foreground">Pro</th>
+								<th className="text-center py-4 px-4 font-semibold text-muted-foreground">Enterprise</th>
 							</tr>
 						</thead>
 						<tbody className="divide-y divide-border">
 							<tr>
-								<td className="py-4 px-4 text-danke-900">Number of boards</td>
+								<td className="py-4 px-4 text-muted-foreground">Number of boards</td>
 								<td className="text-center py-4 px-4">3</td>
 								<td className="text-center py-4 px-4">Unlimited</td>
 								<td className="text-center py-4 px-4">Unlimited</td>
 							</tr>
 							<tr>
-								<td className="py-4 px-4 text-danke-900">Messages per board</td>
+								<td className="py-4 px-4 text-muted-foreground">Messages per board</td>
 								<td className="text-center py-4 px-4">50</td>
 								<td className="text-center py-4 px-4">Unlimited</td>
 								<td className="text-center py-4 px-4">Unlimited</td>
 							</tr>
 							<tr>
-								<td className="py-4 px-4 text-danke-900">Storage</td>
+								<td className="py-4 px-4 text-muted-foreground">Storage</td>
 								<td className="text-center py-4 px-4">100MB</td>
 								<td className="text-center py-4 px-4">10GB</td>
 								<td className="text-center py-4 px-4">Unlimited</td>
 							</tr>
 							<tr>
-								<td className="py-4 px-4 text-danke-900">Custom branding</td>
+								<td className="py-4 px-4 text-muted-foreground">Custom branding</td>
 								<td className="text-center py-4 px-4">-</td>
 								<td className="text-center py-4 px-4">
 									<Check className="w-5 h-5 text-danke-gold mx-auto" />
@@ -235,7 +263,7 @@ export default function PricingPage() {
 								</td>
 							</tr>
 							<tr>
-								<td className="py-4 px-4 text-danke-900">Export to PDF</td>
+								<td className="py-4 px-4 text-muted-foreground">Export to PDF</td>
 								<td className="text-center py-4 px-4">-</td>
 								<td className="text-center py-4 px-4">
 									<Check className="w-5 h-5 text-danke-gold mx-auto" />
@@ -245,21 +273,13 @@ export default function PricingPage() {
 								</td>
 							</tr>
 							<tr>
-								<td className="py-4 px-4 text-danke-900">Analytics</td>
+								<td className="py-4 px-4 text-muted-foreground">Analytics</td>
 								<td className="text-center py-4 px-4">Basic</td>
 								<td className="text-center py-4 px-4">Advanced</td>
 								<td className="text-center py-4 px-4">Enterprise</td>
 							</tr>
 							<tr>
-								<td className="py-4 px-4 text-danke-900">API access</td>
-								<td className="text-center py-4 px-4">-</td>
-								<td className="text-center py-4 px-4">-</td>
-								<td className="text-center py-4 px-4">
-									<Check className="w-5 h-5 text-danke-gold mx-auto" />
-								</td>
-							</tr>
-							<tr>
-								<td className="py-4 px-4 text-danke-900">Support</td>
+								<td className="py-4 px-4 text-muted-foreground">Support</td>
 								<td className="text-center py-4 px-4">Email</td>
 								<td className="text-center py-4 px-4">Priority</td>
 								<td className="text-center py-4 px-4">Dedicated</td>
@@ -269,49 +289,29 @@ export default function PricingPage() {
 				</div>
 			</section>
 
-			<section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg md:rounded-lg">
+			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg md:rounded-lg">
 				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Frequently Asked Questions</h2>
-				<div className="max-w-4xl mx-auto space-y-8">
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">Can I upgrade or downgrade my plan anytime?</h3>
-						<p className="text-muted-foreground">
-							Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we&apos;ll
-							prorate any billing adjustments.
-						</p>
-					</div>
-
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">What happens to my boards if I downgrade?</h3>
-						<p className="text-muted-foreground">
-							Your existing boards and messages remain safe. If you exceed the limits of your new plan, you&apos;ll have
-							read-only access to the excess content until you upgrade again or remove some boards.
-						</p>
-					</div>
-
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">Is there a free trial for Pro plans?</h3>
-						<p className="text-muted-foreground">
-							Yes! We offer a 14-day free trial for the Pro plan. No credit card required to start your trial.
-						</p>
-					</div>
-
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">
-							Do you offer discounts for nonprofits or educational institutions?
-						</h3>
-						<p className="text-muted-foreground">
-							Yes! We offer special pricing for qualified nonprofits and educational institutions. Contact our sales
-							team for more information.
-						</p>
-					</div>
-
-					<div className="space-y-4">
-						<h3 className="text-xl font-semibold text-danke-900">What payment methods do you accept?</h3>
-						<p className="text-muted-foreground">
-							We accept all major credit cards (Visa, MasterCard, American Express) and PayPal. Enterprise customers can
-							also pay by invoice.
-						</p>
-					</div>
+				<div className="max-w-4xl mx-auto">
+					<Accordion
+						type="single"
+						collapsible
+						className="space-y-4"
+					>
+						{pricingFAQs.map((item, index) => (
+							<AccordionItem
+								key={index}
+								value={`item-${index}`}
+								className="border border-border/40 rounded-lg bg-background/60 overflow-hidden"
+							>
+								<AccordionTrigger className="px-6 py-4 text-left cursor-pointer transition-colors [&[data-state=open]>svg]:rotate-180">
+									<h3 className="text-base text-muted-foreground pr-4">{item.question}</h3>
+								</AccordionTrigger>
+								<AccordionContent className="px-6 pb-4">
+									<p className="text-foreground leading-relaxed">{item.answer}</p>
+								</AccordionContent>
+							</AccordionItem>
+						))}
+					</Accordion>
 				</div>
 			</section>
 
@@ -359,7 +359,7 @@ export default function PricingPage() {
 					<Link href="/create-board">
 						<Button
 							size="lg"
-							className="font-semibold"
+							className="inline-flex items-center justify-center px-6 py-3 bg-danke-gold text-background font-medium rounded-lg hover:bg-danke-gold/90 transition-colors"
 						>
 							Start Free Today
 						</Button>
@@ -368,7 +368,7 @@ export default function PricingPage() {
 						<Button
 							size="lg"
 							variant="outline"
-							className="text-white font-semibold"
+							className="inline-flex items-center justify-center px-6 py-3 border border-border bg-background text-foreground font-medium rounded-lg hover:bg-muted transition-colors"
 						>
 							Contact Sales
 						</Button>

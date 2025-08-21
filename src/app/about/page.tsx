@@ -22,10 +22,10 @@ export default function AboutPage() {
 				</p>
 			</section>
 
-			<section>
+			<section className="py-16 -mx-4 px-4 text-center bg-background/80 backdrop-blur-lg rounded-lg">
 				<div className="max-w-4xl mx-auto">
-					<h2 className="text-3xl font-bold text-center text-danke-900 mb-12">Our Mission</h2>
-					<div className="prose prose-lg mx-auto text-danke-900">
+					<h2 className="text-3xl font-bold text-center text-danke-gold mb-12">Our Mission</h2>
+					<div className="prose prose-lg mx-auto text-foreground">
 						<p>
 							Danke was born from a simple observation: in our fast-paced digital world, we often forget to pause and
 							appreciate the people and moments that make our lives meaningful. We created Danke to bridge that gap,
@@ -41,7 +41,30 @@ export default function AboutPage() {
 				</div>
 			</section>
 
-			<section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg rounded-lg">
+			<section>
+				<div className="max-w-4xl mx-auto">
+					<h2 className="text-3xl font-bold text-center mb-12 text-danke-900">Our Story</h2>
+					<div className="prose prose-lg mx-auto text-danke-800 text-center">
+						<p>
+							Danke started as a weekend project when our founder noticed how difficult it was to coordinate
+							appreciation messages for a departing colleague. What began as a simple solution for collecting thank-you
+							notes evolved into something much bigger: a platform that could help any community celebrate their special
+							moments.
+						</p>
+						<p>
+							Today, Danke serves thousands of users across the globe, from small teams celebrating project completions
+							to large organizations recognizing employee achievements. Every board created on our platform represents a
+							moment of human connection, and that&apos;s what drives us forward every day.
+						</p>
+						<p>
+							We&apos;re just getting started. Our vision is to become the go-to platform for community appreciation,
+							helping people around the world build stronger, more grateful communities one board at a time.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
 				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Our Values</h2>
 				<div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center">
@@ -94,32 +117,9 @@ export default function AboutPage() {
 				</div>
 			</section>
 
-			<section>
-				<div className="max-w-4xl mx-auto">
-					<h2 className="text-3xl font-bold text-center mb-12 text-danke-900">Our Story</h2>
-					<div className="prose prose-lg mx-auto text-danke-900">
-						<p>
-							Danke started as a weekend project when our founder noticed how difficult it was to coordinate
-							appreciation messages for a departing colleague. What began as a simple solution for collecting thank-you
-							notes evolved into something much bigger: a platform that could help any community celebrate their special
-							moments.
-						</p>
-						<p>
-							Today, Danke serves thousands of users across the globe, from small teams celebrating project completions
-							to large organizations recognizing employee achievements. Every board created on our platform represents a
-							moment of human connection, and that&apos;s what drives us forward every day.
-						</p>
-						<p>
-							We&apos;re just getting started. Our vision is to become the go-to platform for community appreciation,
-							helping people around the world build stronger, more grateful communities one board at a time.
-						</p>
-					</div>
-				</div>
-			</section>
-
-			<section className="py-16 -mx-4 px-4 bg-background/50 backdrop-blur-lg rounded-lg text-center">
-				<h2 className="text-3xl font-bold mb-6 text-danke-gold">Get in Touch</h2>
-				<p className="text-xl mb-8 max-w-2xl mx-auto text-muted-foreground">
+			<section className="py-16 -mx-4 px-4 text-center">
+				<h2 className="text-3xl font-bold mb-6 text-danke-900">Get in Touch</h2>
+				<p className="text-xl mb-8 max-w-2xl mx-auto text-danke-800">
 					Have questions, feedback, or just want to say hello? We&apos;d love to hear from you.
 				</p>
 				<div className="flex flex-col sm:flex-row gap-4 justify-center">
