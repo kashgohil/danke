@@ -51,46 +51,38 @@ export function Footer() {
 
 					<div className="flex flex-col md:flex-row gap-12 md:justify-between">
 						<div className="space-y-4 md:text-end">
-							<h3 className="font-semibold text-foreground">Product</h3>
+							<h3 className="font-semibold text-foreground">Company</h3>
 							<ul className="space-y-2 text-sm">
 								<li>
 									<Link
-										href="/create-board"
+										href="/about"
 										className="text-muted-foreground hover:text-foreground transition-colors"
 									>
-										Create Board
+										About Us
 									</Link>
 								</li>
 								<li>
 									<Link
-										href="/dashboard"
+										href="/contact"
 										className="text-muted-foreground hover:text-foreground transition-colors"
 									>
-										Dashboard
+										Contact
 									</Link>
 								</li>
 								<li>
 									<Link
-										href="/features"
+										href="/privacy"
 										className="text-muted-foreground hover:text-foreground transition-colors"
 									>
-										Features
+										Privacy Policy
 									</Link>
 								</li>
 								<li>
 									<Link
-										href="/templates"
+										href="/terms"
 										className="text-muted-foreground hover:text-foreground transition-colors"
 									>
-										Templates
-									</Link>
-								</li>
-								<li>
-									<Link
-										href="/pricing"
-										className="text-muted-foreground hover:text-foreground transition-colors"
-									>
-										Pricing
+										Terms of Service
 									</Link>
 								</li>
 							</ul>
@@ -135,38 +127,46 @@ export function Footer() {
 						</div>
 
 						<div className="space-y-4 md:text-end">
-							<h3 className="font-semibold text-foreground">Company</h3>
+							<h3 className="font-semibold text-foreground">Product</h3>
 							<ul className="space-y-2 text-sm">
 								<li>
 									<Link
-										href="/about"
+										href="/create-board"
 										className="text-muted-foreground hover:text-foreground transition-colors"
 									>
-										About Us
+										Create Board
 									</Link>
 								</li>
 								<li>
 									<Link
-										href="/contact"
+										href="/dashboard"
 										className="text-muted-foreground hover:text-foreground transition-colors"
 									>
-										Contact
+										Dashboard
 									</Link>
 								</li>
 								<li>
 									<Link
-										href="/privacy"
+										href="/features"
 										className="text-muted-foreground hover:text-foreground transition-colors"
 									>
-										Privacy Policy
+										Features
 									</Link>
 								</li>
 								<li>
 									<Link
-										href="/terms"
+										href="/templates"
 										className="text-muted-foreground hover:text-foreground transition-colors"
 									>
-										Terms of Service
+										Templates
+									</Link>
+								</li>
+								<li>
+									<Link
+										href="/pricing"
+										className="text-muted-foreground hover:text-foreground transition-colors"
+									>
+										Pricing
 									</Link>
 								</li>
 							</ul>
