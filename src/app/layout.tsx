@@ -59,23 +59,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 											className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600"
 										/>
 										<div className="min-h-screen">
-											<header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 xl:top-4 xl:rounded-xl z-40 xl:mx-auto w-full md:container">
-												<div className="container mx-auto px-4 py-4">
-													<div className="flex justify-between items-center">
-														<Link
-															href="/"
-															className="text-2xl font-bold bg-gradient-to-r from-danke-600 to-danke-gold bg-clip-text text-transparent hover:from-danke-700 hover:to-danke-500 transition-all flex items-center gap-2"
-														>
-															<Image
-																src={logo}
-																alt="Danke"
-																width={32}
-																height={32}
-															/>
-															Danke
-														</Link>
-														<AuthHeader />
-													</div>
+											<header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 md:top-3 md:rounded-xl z-40 md:mx-auto w-full md:w-[calc(100%-5rem)]">
+												<div className="flex justify-between items-center mx-auto px-4 py-4 md:px-6">
+													<Link
+														href="/"
+														className="text-2xl font-bold bg-gradient-to-r from-danke-600 to-danke-gold bg-clip-text text-transparent hover:from-danke-700 hover:to-danke-500 transition-all flex items-center gap-2"
+													>
+														<Image
+															src={logo}
+															alt="Danke"
+															width={32}
+															height={32}
+														/>
+														Danke
+													</Link>
+													<AuthHeader />
 												</div>
 											</header>
 											<main className="container mx-auto px-4 py-12 flex-1">{children}</main>

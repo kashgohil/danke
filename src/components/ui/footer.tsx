@@ -1,4 +1,4 @@
-import { Github, Heart, Mail, Twitter } from "lucide-react";
+import { Github, Mail, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,7 +8,7 @@ export function Footer() {
 	const year = new Date().getFullYear();
 	return (
 		<footer className="bg-background/80 backdrop-blur-sm rounded-t-lg md:rounded-lg">
-			<div className="container mx-auto px-4 py-12">
+			<div className="mx-auto px-4 py-12 md:px-12">
 				<div className="flex flex-col md:flex-row gap-8 md:justify-between">
 					<div className="space-y-4">
 						<div className="flex items-center gap-2">
@@ -197,9 +197,9 @@ export function Footer() {
 								Cookies
 							</Link>
 							<div className="flex items-center gap-1 text-muted-foreground whitespace-nowrap">
-								<span>Made with</span>
-								<Heart className="w-3 h-3 text-red-500" />
-								<span>for communities</span>
+								<span>
+									Made by <a href="https://kashoverflow.com">Kash</a>
+								</span>
 							</div>
 						</div>
 					</div>
