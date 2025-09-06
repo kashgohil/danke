@@ -11,7 +11,6 @@ import {
   generateCardStyle,
   generateGradientStyle,
   getContrastTextStyles,
-  getGradientClasses,
   getTextColors,
 } from '@/lib/gradient-utils';
 import { perf } from '@/lib/performance';
@@ -70,6 +69,9 @@ interface BoardViewProps {
   onPostDeleted?: (postId: string) => void;
   isModerator?: boolean;
   isCreator?: boolean;
+  onFetchMorePosts?: () => Promise<void>;
+  hasMorePosts?: boolean;
+  isFetchingMore?: boolean;
 }
 
 function DoodleBackground() {
@@ -274,8 +276,6 @@ function PostCard({
 
       setCanDelete(userId === post.creator?.id || userId === board.creatorId);
 
-      console.log(isModerator, isCreator, userId, post.creator?.id);
-
       setShowModerationControls(
         (!!isModerator || !!isCreator) && userId !== post.creator?.id
       );
@@ -439,7 +439,7 @@ function PostCard({
           {canEdit && (
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -520,6 +520,9 @@ export function BoardView({
   onPostDeleted,
   isModerator,
   isCreator,
+  onFetchMorePosts,
+  hasMorePosts,
+  isFetchingMore,
 }: BoardViewProps) {
   const [slideshowOpen, setSlideshowOpen] = useState(false);
 
@@ -531,11 +534,6 @@ export function BoardView({
   }, []);
 
   const backgroundColor = (board.typeConfig as any)?.backgroundColor;
-  const gradientStyle = generateGradientStyle(backgroundColor);
-  const defaultClasses = getGradientClasses(
-    backgroundColor,
-    'fixed inset-0 w-full h-full'
-  );
   const textColors = getTextColors(backgroundColor);
   const contrastTextStyles = getContrastTextStyles(backgroundColor);
 
@@ -627,6 +625,9 @@ export function BoardView({
         isOpen={slideshowOpen}
         onClose={() => setSlideshowOpen(false)}
         backgroundColor={backgroundColor}
+        onFetchMorePosts={onFetchMorePosts}
+        hasMorePosts={hasMorePosts}
+        isFetchingMore={isFetchingMore}
       />
     </div>
   );
