@@ -3,7 +3,6 @@ import { Footer } from "@/components/ui/footer";
 import { ScrambledPictureLibrary } from "@/components/ui/scrambled-picture-library";
 import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import {
-  ArrowRight,
   Award,
   Cake,
   CheckCircle,
@@ -67,26 +66,12 @@ export default function HomePage() {
 
             {/* What It Actually Does - Clear Description */}
             <div className="animate-in-delay-2 bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 md:p-12 mb-12 shadow-2xl max-w-4xl mx-auto">
-              <p className="text-xl md:text-2xl text-white leading-relaxed mb-6">
+              <p className="text-xl md:text-2xl text-white leading-relaxed">
                 <span className="font-bold text-pink-300">Danke</span> brings
                 people together to celebrate what matters. Collect heartfelt
                 messages, cherished photos, and meaningful videos in one
                 beautiful place, then share the joy with a stunning slideshow.
               </p>
-              <div className="grid md:grid-cols-3 gap-4 text-white/80 text-sm md:text-base">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-300 flex-shrink-0" />
-                  <span>Collect contributions from anyone</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-300 flex-shrink-0" />
-                  <span>Support text, images, videos & audio</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-300 flex-shrink-0" />
-                  <span>Present with cinematic slideshow</span>
-                </div>
-              </div>
             </div>
 
             {/* CTA Buttons */}
@@ -158,19 +143,15 @@ export default function HomePage() {
       </section>
 
       {/* What Makes Danke Different */}
-      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-white relative">
+      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-white relative mt-16">
         <div className="container-default">
           <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-200 px-6 py-3 rounded-full text-sm font-bold mb-6">
+            <div className="inline-flex items-center gap-2 bg-purple-100 border border-purple-200 px-6 py-3 rounded-full text-sm font-bold mb-6">
               <Sparkles className="w-4 h-4 text-purple-600" />
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Why people like Danke
-              </span>
+              <span className="text-purple-600">Why people like Danke</span>
             </div>
             <h2 className="mb-6 text-gray-900 text-5xl md:text-6xl font-black">
-              <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent">
-                A Better Way to Appreciate
-              </span>
+              A Better Way to Appreciate
             </h2>
             <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto font-light">
               Cards get lost. Emails get buried. Sticky notes fade.{" "}
@@ -193,8 +174,8 @@ export default function HomePage() {
                   "Drag & drop media",
                   "Auto-optimized for web",
                 ],
-                color: "from-pink-500 to-rose-500",
-                bgGradient: "from-pink-50 to-rose-50",
+                color: "bg-pink-500",
+                bgColor: "bg-pink-50",
               },
               {
                 icon: Presentation,
@@ -207,8 +188,8 @@ export default function HomePage() {
                   "Auto-advance slides",
                   "Custom backgrounds",
                 ],
-                color: "from-purple-500 to-indigo-500",
-                bgGradient: "from-purple-50 to-indigo-50",
+                color: "bg-purple-500",
+                bgColor: "bg-purple-50",
               },
               {
                 icon: Users,
@@ -221,22 +202,22 @@ export default function HomePage() {
                   "Real-time updates",
                   "Anonymous posting option",
                 ],
-                color: "from-cyan-500 to-blue-500",
-                bgGradient: "from-cyan-50 to-blue-50",
+                color: "bg-cyan-500",
+                bgColor: "bg-cyan-50",
               },
             ].map((feature, idx) => {
               const Icon = feature.icon;
               return (
                 <div
                   key={feature.title}
-                  className={`bg-gradient-to-br ${feature.bgGradient} border-2 border-gray-200 rounded-3xl p-8 hover:shadow-2xl hover:scale-105 transition-all duration-500 group`}
+                  className={`${feature.bgColor} border-2 border-gray-200 rounded-3xl p-8 hover:shadow-2xl hover:scale-105 transition-all duration-500 group`}
                   style={{
                     animation: `fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 0.15}s forwards`,
                     opacity: 0,
                   }}
                 >
                   <div
-                    className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform`}
+                    className={`w-16 h-16 ${feature.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform`}
                   >
                     <Icon className="w-9 h-9 text-white" />
                   </div>
@@ -373,19 +354,15 @@ export default function HomePage() {
       </section>
 
       {/* Feature Deep Dive */}
-      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-white">
+      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-white mt-16">
         <div className="container-default">
           <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-200 px-6 py-3 rounded-full text-sm font-bold mb-6">
+            <div className="inline-flex items-center gap-2 bg-purple-100 border border-purple-200 px-6 py-3 rounded-full text-sm font-bold mb-6">
               <Wand2 className="w-4 h-4 text-purple-600" />
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Powerful Features
-              </span>
+              <span className="text-purple-600">Powerful Features</span>
             </div>
             <h2 className="mb-6 text-gray-900 text-5xl md:text-6xl font-black">
-              <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent">
-                What's Included
-              </span>
+              What's Included
             </h2>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto">
               Thoughtful features that make celebrating easy and meaningful
@@ -508,19 +485,15 @@ export default function HomePage() {
       </section>
 
       {/* Board Types Showcase */}
-      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-purple-50">
+      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-purple-50 mt-16">
         <div className="container-default">
           <div className="text-center mb-20">
             <div className="inline-flex items-center gap-2 bg-white border border-purple-200 px-6 py-3 rounded-full text-sm font-bold mb-6 shadow-sm">
               <Star className="w-4 h-4 text-orange-500" />
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                14 Ready-Made Templates
-              </span>
+              <span className="text-purple-600">14 Ready-Made Templates</span>
             </div>
             <h2 className="mb-6 text-gray-900 text-5xl md:text-6xl font-black">
-              <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent">
-                Every Occasion Covered
-              </span>
+              Every Occasion Covered
             </h2>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto">
               Pre-designed boards for life's most important moments
@@ -532,85 +505,85 @@ export default function HomePage() {
               {
                 name: "Birthday",
                 icon: Cake,
-                color: "from-pink-500 to-rose-500",
+                color: "bg-pink-500",
                 emoji: "🎂",
               },
               {
                 name: "Appreciation",
                 icon: Heart,
-                color: "from-red-500 to-pink-500",
+                color: "bg-red-500",
                 emoji: "❤️",
               },
               {
                 name: "Farewell",
                 icon: PartyPopper,
-                color: "from-blue-500 to-cyan-500",
+                color: "bg-blue-500",
                 emoji: "👋",
               },
               {
                 name: "Congratulations",
                 icon: Star,
-                color: "from-yellow-500 to-orange-500",
+                color: "bg-yellow-500",
                 emoji: "⭐",
               },
               {
                 name: "Graduation",
                 icon: GraduationCap,
-                color: "from-green-500 to-emerald-500",
+                color: "bg-green-500",
                 emoji: "🎓",
               },
               {
                 name: "Welcome",
                 icon: Home,
-                color: "from-purple-500 to-pink-500",
+                color: "bg-purple-500",
                 emoji: "🏠",
               },
               {
                 name: "Anniversary",
                 icon: Gift,
-                color: "from-pink-500 to-purple-500",
+                color: "bg-pink-500",
                 emoji: "🎁",
               },
               {
                 name: "Get Well Soon",
                 icon: Heart,
-                color: "from-green-500 to-teal-500",
+                color: "bg-green-500",
                 emoji: "💚",
               },
               {
                 name: "Thank You",
                 icon: Sparkles,
-                color: "from-cyan-500 to-blue-500",
+                color: "bg-cyan-500",
                 emoji: "🙏",
               },
               {
                 name: "Wedding",
                 icon: Heart,
-                color: "from-rose-500 to-pink-500",
+                color: "bg-rose-500",
                 emoji: "💍",
               },
               {
                 name: "Retirement",
                 icon: PartyPopper,
-                color: "from-orange-500 to-amber-500",
+                color: "bg-orange-500",
                 emoji: "🌅",
               },
               {
                 name: "Baby Shower",
                 icon: Gift,
-                color: "from-blue-400 to-pink-400",
+                color: "bg-blue-400",
                 emoji: "👶",
               },
               {
                 name: "Milestone",
                 icon: Award,
-                color: "from-purple-500 to-indigo-500",
+                color: "bg-purple-500",
                 emoji: "🏆",
               },
               {
                 name: "Condolences",
                 icon: Heart,
-                color: "from-gray-500 to-slate-500",
+                color: "bg-gray-500",
                 emoji: "🕊️",
               },
             ].map((type, idx) => {
@@ -626,7 +599,7 @@ export default function HomePage() {
                 >
                   <div className="flex items-center justify-between mb-3">
                     <div
-                      className={`w-14 h-14 bg-gradient-to-br ${type.color} rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}
+                      className={`w-14 h-14 ${type.color} rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}
                     >
                       <Icon className="w-7 h-7 text-white" />
                     </div>

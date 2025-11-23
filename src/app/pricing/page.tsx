@@ -1,4 +1,4 @@
-import { Check, Crown, Heart, Star, Zap } from "lucide-react";
+import { Check, Crown, Heart, Sparkles, Star, Zap } from "lucide-react";
 import { Metadata } from "next";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -41,56 +41,71 @@ export default function PricingPage() {
 	];
 
 	return (
-		<div className="space-y-16 mt-8 mx-auto">
-			<section className="text-center">
-				<h1 className="text-4xl md:text-6xl mt-12 font-bold mb-6 text-danke-900">
-					Simple, Transparent
-					<br />
-					<span className="text-teal">Pricing</span>
-				</h1>
-				<p className="text-xl max-w-3xl mx-auto leading-relaxed text-danke-900">
-					Start free and scale as your community grows. No hidden fees, no surprises. Just beautiful appreciation boards
-					for everyone.
-				</p>
+		<div className="relative min-h-screen bg-white flex flex-col overflow-hidden">
+			{/* Hero Section */}
+			<section className="relative py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-purple-900 overflow-hidden">
+				{/* Animated Background Pattern */}
+				<div className="absolute inset-0 opacity-10">
+					<div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] animate-pulse"></div>
+				</div>
+
+				<div className="container-default relative z-10 text-center">
+					<div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 px-6 py-3 rounded-full text-sm font-medium shadow-lg mb-8">
+						<Star className="w-4 h-4 text-pink-300" />
+						<span className="text-white font-semibold">Pricing</span>
+					</div>
+					<h1 className="text-5xl md:text-7xl font-black mb-6 text-white">
+						<span className="bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent">
+							Simple, Transparent Pricing
+						</span>
+					</h1>
+					<p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed font-light">
+						Start free and scale as your community grows. No hidden fees, no surprises.
+					</p>
+				</div>
+
+				{/* Floating Decorative Elements */}
+				<div className="absolute top-20 left-10 w-20 h-20 bg-pink-400/20 rounded-full blur-xl animate-pulse"></div>
+				<div className="absolute bottom-40 right-20 w-32 h-32 bg-purple-400/20 rounded-full blur-2xl animate-pulse"></div>
 			</section>
 
-			<section className="py-16 -mx-4 px-4">
+			<section className="py-20 px-6 md:px-12 lg:px-24 mt-16 relative z-20">
 				<div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
 					{/* Free Plan */}
-					<Card className="border-2 border-border shadow-lg hover:shadow-xl transition-all duration-300 relative">
-						<CardHeader className="text-center p-8">
-							<div className="w-16 h-16 bg-teal rounded-full flex items-center justify-center mx-auto mb-4">
-								<Heart className="w-8 h-8 text-danke-900" />
+					<Card className="bg-white border-2 border-gray-100 shadow-xl hover:shadow-2xl hover:border-purple-200 transition-all duration-300 relative rounded-3xl overflow-hidden group">
+						<CardHeader className="text-center p-8 bg-gray-50/50">
+							<div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+								<Heart className="w-8 h-8 text-purple-600" />
 							</div>
-							<CardTitle className="text-2xl mb-2">Free</CardTitle>
-							<div className="text-4xl font-bold text-teal mb-2">
+							<CardTitle className="text-2xl mb-2 font-bold text-gray-900">Free</CardTitle>
+							<div className="text-5xl font-black text-purple-600 mb-2">
 								$0
-								<span className="text-lg font-normal text-muted-foreground">/month</span>
+								<span className="text-lg font-normal text-gray-500 ml-1">/mo</span>
 							</div>
-							<CardDescription className="text-base">
+							<CardDescription className="text-base text-gray-600">
 								Perfect for getting started with small appreciation boards
 							</CardDescription>
 						</CardHeader>
-						<div className="px-8 pb-8">
-							<ul className="space-y-3 mb-8">
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+						<div className="p-8">
+							<ul className="space-y-4 mb-8">
+								<li className="flex items-center gap-3 text-gray-700">
+									<Check className="w-5 h-5 text-green-500 flex-shrink-0" />
 									<span>Up to 3 boards</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700">
+									<Check className="w-5 h-5 text-green-500 flex-shrink-0" />
 									<span>50 messages per board</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700">
+									<Check className="w-5 h-5 text-green-500 flex-shrink-0" />
 									<span>Basic customization</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700">
+									<Check className="w-5 h-5 text-green-500 flex-shrink-0" />
 									<span>Media uploads (100MB total)</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700">
+									<Check className="w-5 h-5 text-green-500 flex-shrink-0" />
 									<span>Email support</span>
 								</li>
 							</ul>
@@ -99,7 +114,7 @@ export default function PricingPage() {
 								className="block"
 							>
 								<Button
-									className="w-full"
+									className="w-full h-12 text-lg font-semibold bg-white border-2 border-purple-200 text-purple-700 hover:bg-purple-50 hover:border-purple-300"
 									variant="outline"
 								>
 									Get Started Free
@@ -108,51 +123,50 @@ export default function PricingPage() {
 						</div>
 					</Card>
 
-					<Card className="border-2 border-teal shadow-xl hover:shadow-2xl transition-all duration-300 relative scale-105">
-						<div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-							<div className="bg-teal text-danke-900 px-4 py-2 rounded-full text-sm font-semibold">
-								Most Popular
-							</div>
+					{/* Pro Plan */}
+					<Card className="bg-white border-2 border-purple-500 shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 relative rounded-3xl overflow-hidden scale-105 z-10 group">
+						<div className="absolute top-0 left-0 right-0 bg-purple-600 text-white text-center py-2 text-sm font-bold uppercase tracking-wider">
+							Most Popular
 						</div>
-						<CardHeader className="text-center p-8">
-							<div className="w-16 h-16 bg-teal rounded-full flex items-center justify-center mx-auto mb-4">
-								<Star className="w-8 h-8 text-danke-900" />
+						<CardHeader className="text-center p-8 pt-12 bg-purple-50/30">
+							<div className="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform">
+								<Star className="w-8 h-8 text-white" />
 							</div>
-							<CardTitle className="text-2xl mb-2">Pro</CardTitle>
-							<div className="text-4xl font-bold text-teal mb-2">
+							<CardTitle className="text-2xl mb-2 font-bold text-gray-900">Pro</CardTitle>
+							<div className="text-5xl font-black text-purple-600 mb-2">
 								$9
-								<span className="text-lg font-normal text-muted-foreground">/month</span>
+								<span className="text-lg font-normal text-gray-500 ml-1">/mo</span>
 							</div>
-							<CardDescription className="text-base">Ideal for teams and growing communities</CardDescription>
+							<CardDescription className="text-base text-gray-600">Ideal for teams and growing communities</CardDescription>
 						</CardHeader>
-						<div className="px-8 pb-8">
-							<ul className="space-y-3 mb-8">
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+						<div className="p-8">
+							<ul className="space-y-4 mb-8">
+								<li className="flex items-center gap-3 text-gray-700 font-medium">
+									<Check className="w-5 h-5 text-purple-600 flex-shrink-0" />
 									<span>Unlimited boards</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700 font-medium">
+									<Check className="w-5 h-5 text-purple-600 flex-shrink-0" />
 									<span>Unlimited messages</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700 font-medium">
+									<Check className="w-5 h-5 text-purple-600 flex-shrink-0" />
 									<span>Advanced customization</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700 font-medium">
+									<Check className="w-5 h-5 text-purple-600 flex-shrink-0" />
 									<span>Unlimited media uploads (10GB)</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700 font-medium">
+									<Check className="w-5 h-5 text-purple-600 flex-shrink-0" />
 									<span>Custom branding</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700 font-medium">
+									<Check className="w-5 h-5 text-purple-600 flex-shrink-0" />
 									<span>Export to PDF</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700 font-medium">
+									<Check className="w-5 h-5 text-purple-600 flex-shrink-0" />
 									<span>Priority support</span>
 								</li>
 							</ul>
@@ -160,48 +174,51 @@ export default function PricingPage() {
 								href="/create-board"
 								className="block"
 							>
-								<Button className="w-full bg-teal hover:bg-teal/90 text-danke-900">Start Pro Trial</Button>
+								<Button className="w-full h-14 text-lg font-bold bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-purple-500/25">
+									Start Pro Trial
+								</Button>
 							</Link>
 						</div>
 					</Card>
 
-					<Card className="border-2 border-border shadow-lg hover:shadow-xl transition-all duration-300 relative">
-						<CardHeader className="text-center p-8">
-							<div className="w-16 h-16 bg-teal rounded-full flex items-center justify-center mx-auto mb-4">
-								<Crown className="w-8 h-8 text-danke-900" />
+					{/* Enterprise Plan */}
+					<Card className="bg-white border-2 border-gray-100 shadow-xl hover:shadow-2xl hover:border-purple-200 transition-all duration-300 relative rounded-3xl overflow-hidden group">
+						<CardHeader className="text-center p-8 bg-gray-50/50">
+							<div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+								<Crown className="w-8 h-8 text-blue-600" />
 							</div>
-							<CardTitle className="text-2xl mb-2">Enterprise</CardTitle>
-							<div className="text-4xl font-bold text-teal mb-2">Custom</div>
-							<CardDescription className="text-base">For large organizations with specific needs</CardDescription>
+							<CardTitle className="text-2xl mb-2 font-bold text-gray-900">Enterprise</CardTitle>
+							<div className="text-5xl font-black text-blue-600 mb-2">Custom</div>
+							<CardDescription className="text-base text-gray-600">For large organizations with specific needs</CardDescription>
 						</CardHeader>
-						<div className="px-8 pb-8">
-							<ul className="space-y-3 mb-8">
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+						<div className="p-8">
+							<ul className="space-y-4 mb-8">
+								<li className="flex items-center gap-3 text-gray-700">
+									<Check className="w-5 h-5 text-blue-500 flex-shrink-0" />
 									<span>Everything in Pro</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700">
+									<Check className="w-5 h-5 text-blue-500 flex-shrink-0" />
 									<span>Unlimited storage</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700">
+									<Check className="w-5 h-5 text-blue-500 flex-shrink-0" />
 									<span>Advanced analytics</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700">
+									<Check className="w-5 h-5 text-blue-500 flex-shrink-0" />
 									<span>SSO integration</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700">
+									<Check className="w-5 h-5 text-blue-500 flex-shrink-0" />
 									<span>API access</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700">
+									<Check className="w-5 h-5 text-blue-500 flex-shrink-0" />
 									<span>Dedicated support</span>
 								</li>
-								<li className="flex items-center gap-3">
-									<Check className="w-5 h-5 text-teal flex-shrink-0" />
+								<li className="flex items-center gap-3 text-gray-700">
+									<Check className="w-5 h-5 text-blue-500 flex-shrink-0" />
 									<span>Custom integrations</span>
 								</li>
 							</ul>
@@ -210,7 +227,7 @@ export default function PricingPage() {
 								className="block"
 							>
 								<Button
-									className="w-full"
+									className="w-full h-12 text-lg font-semibold bg-white border-2 border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300"
 									variant="outline"
 								>
 									Contact Sales
@@ -221,77 +238,89 @@ export default function PricingPage() {
 				</div>
 			</section>
 
-			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg md:rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-teal">Compare Plans</h2>
-				<div className="max-w-4xl mx-auto overflow-x-auto">
-					<table className="w-full">
-						<thead>
-							<tr className="border-b border-border">
-								<th className="text-left py-4 px-4 font-semibold text-muted-foreground">Features</th>
-								<th className="text-center py-4 px-4 font-semibold text-muted-foreground">Free</th>
-								<th className="text-center py-4 px-4 font-semibold text-muted-foreground">Pro</th>
-								<th className="text-center py-4 px-4 font-semibold text-muted-foreground">Enterprise</th>
-							</tr>
-						</thead>
-						<tbody className="divide-y divide-border">
-							<tr>
-								<td className="py-4 px-4 text-muted-foreground">Number of boards</td>
-								<td className="text-center py-4 px-4">3</td>
-								<td className="text-center py-4 px-4">Unlimited</td>
-								<td className="text-center py-4 px-4">Unlimited</td>
-							</tr>
-							<tr>
-								<td className="py-4 px-4 text-muted-foreground">Messages per board</td>
-								<td className="text-center py-4 px-4">50</td>
-								<td className="text-center py-4 px-4">Unlimited</td>
-								<td className="text-center py-4 px-4">Unlimited</td>
-							</tr>
-							<tr>
-								<td className="py-4 px-4 text-muted-foreground">Storage</td>
-								<td className="text-center py-4 px-4">100MB</td>
-								<td className="text-center py-4 px-4">10GB</td>
-								<td className="text-center py-4 px-4">Unlimited</td>
-							</tr>
-							<tr>
-								<td className="py-4 px-4 text-muted-foreground">Custom branding</td>
-								<td className="text-center py-4 px-4">-</td>
-								<td className="text-center py-4 px-4">
-									<Check className="w-5 h-5 text-teal mx-auto" />
-								</td>
-								<td className="text-center py-4 px-4">
-									<Check className="w-5 h-5 text-teal mx-auto" />
-								</td>
-							</tr>
-							<tr>
-								<td className="py-4 px-4 text-muted-foreground">Export to PDF</td>
-								<td className="text-center py-4 px-4">-</td>
-								<td className="text-center py-4 px-4">
-									<Check className="w-5 h-5 text-teal mx-auto" />
-								</td>
-								<td className="text-center py-4 px-4">
-									<Check className="w-5 h-5 text-teal mx-auto" />
-								</td>
-							</tr>
-							<tr>
-								<td className="py-4 px-4 text-muted-foreground">Analytics</td>
-								<td className="text-center py-4 px-4">Basic</td>
-								<td className="text-center py-4 px-4">Advanced</td>
-								<td className="text-center py-4 px-4">Enterprise</td>
-							</tr>
-							<tr>
-								<td className="py-4 px-4 text-muted-foreground">Support</td>
-								<td className="text-center py-4 px-4">Email</td>
-								<td className="text-center py-4 px-4">Priority</td>
-								<td className="text-center py-4 px-4">Dedicated</td>
-							</tr>
-						</tbody>
-					</table>
+			<section className="py-20 px-6 md:px-12 lg:px-24 bg-gray-50 mt-16">
+				<div className="container-default max-w-5xl mx-auto">
+					<div className="text-center mb-12">
+						<h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">Compare Plans</h2>
+						<p className="text-gray-600 text-lg">Detailed feature breakdown</p>
+					</div>
+					
+					<div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
+						<div className="overflow-x-auto">
+							<table className="w-full">
+								<thead>
+									<tr className="bg-gray-50/50 border-b border-gray-100">
+										<th className="text-left py-6 px-8 font-bold text-gray-900 text-lg">Features</th>
+										<th className="text-center py-6 px-8 font-bold text-gray-900 text-lg">Free</th>
+										<th className="text-center py-6 px-8 font-bold text-purple-600 text-lg">Pro</th>
+										<th className="text-center py-6 px-8 font-bold text-blue-600 text-lg">Enterprise</th>
+									</tr>
+								</thead>
+								<tbody className="divide-y divide-gray-100">
+									<tr className="hover:bg-gray-50/50 transition-colors">
+										<td className="py-5 px-8 text-gray-700 font-medium">Number of boards</td>
+										<td className="text-center py-5 px-8 text-gray-600">3</td>
+										<td className="text-center py-5 px-8 text-gray-900 font-bold">Unlimited</td>
+										<td className="text-center py-5 px-8 text-gray-900 font-bold">Unlimited</td>
+									</tr>
+									<tr className="hover:bg-gray-50/50 transition-colors">
+										<td className="py-5 px-8 text-gray-700 font-medium">Messages per board</td>
+										<td className="text-center py-5 px-8 text-gray-600">50</td>
+										<td className="text-center py-5 px-8 text-gray-900 font-bold">Unlimited</td>
+										<td className="text-center py-5 px-8 text-gray-900 font-bold">Unlimited</td>
+									</tr>
+									<tr className="hover:bg-gray-50/50 transition-colors">
+										<td className="py-5 px-8 text-gray-700 font-medium">Storage</td>
+										<td className="text-center py-5 px-8 text-gray-600">100MB</td>
+										<td className="text-center py-5 px-8 text-gray-900 font-bold">10GB</td>
+										<td className="text-center py-5 px-8 text-gray-900 font-bold">Unlimited</td>
+									</tr>
+									<tr className="hover:bg-gray-50/50 transition-colors">
+										<td className="py-5 px-8 text-gray-700 font-medium">Custom branding</td>
+										<td className="text-center py-5 px-8 text-gray-400">-</td>
+										<td className="text-center py-5 px-8">
+											<Check className="w-6 h-6 text-purple-600 mx-auto" />
+										</td>
+										<td className="text-center py-5 px-8">
+											<Check className="w-6 h-6 text-blue-600 mx-auto" />
+										</td>
+									</tr>
+									<tr className="hover:bg-gray-50/50 transition-colors">
+										<td className="py-5 px-8 text-gray-700 font-medium">Export to PDF</td>
+										<td className="text-center py-5 px-8 text-gray-400">-</td>
+										<td className="text-center py-5 px-8">
+											<Check className="w-6 h-6 text-purple-600 mx-auto" />
+										</td>
+										<td className="text-center py-5 px-8">
+											<Check className="w-6 h-6 text-blue-600 mx-auto" />
+										</td>
+									</tr>
+									<tr className="hover:bg-gray-50/50 transition-colors">
+										<td className="py-5 px-8 text-gray-700 font-medium">Analytics</td>
+										<td className="text-center py-5 px-8 text-gray-600">Basic</td>
+										<td className="text-center py-5 px-8 text-gray-900 font-bold">Advanced</td>
+										<td className="text-center py-5 px-8 text-gray-900 font-bold">Enterprise</td>
+									</tr>
+									<tr className="hover:bg-gray-50/50 transition-colors">
+										<td className="py-5 px-8 text-gray-700 font-medium">Support</td>
+										<td className="text-center py-5 px-8 text-gray-600">Email</td>
+										<td className="text-center py-5 px-8 text-gray-900 font-bold">Priority</td>
+										<td className="text-center py-5 px-8 text-gray-900 font-bold">Dedicated</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 			</section>
 
-			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg md:rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-teal">Frequently Asked Questions</h2>
-				<div className="max-w-4xl mx-auto">
+			<section className="py-20 px-6 md:px-12 lg:px-24 bg-white mt-16">
+				<div className="container-default max-w-4xl mx-auto">
+					<div className="text-center mb-12">
+						<h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">Frequently Asked Questions</h2>
+						<p className="text-gray-600 text-lg">Common questions about our plans</p>
+					</div>
+					
 					<Accordion
 						type="single"
 						collapsible
@@ -301,13 +330,13 @@ export default function PricingPage() {
 							<AccordionItem
 								key={index}
 								value={`item-${index}`}
-								className="border border-border/40 rounded-lg bg-background/60 overflow-hidden"
+								className="border border-gray-200 rounded-2xl bg-white overflow-hidden shadow-sm hover:shadow-md transition-all"
 							>
-								<AccordionTrigger className="px-6 py-4 text-left cursor-pointer transition-colors [&[data-state=open]>svg]:rotate-180">
-									<h3 className="text-base text-muted-foreground pr-4">{item.question}</h3>
+								<AccordionTrigger className="px-6 py-4 text-left cursor-pointer hover:no-underline hover:bg-gray-50/50 [&[data-state=open]>svg]:rotate-180">
+									<h3 className="text-lg font-bold text-gray-900 pr-4">{item.question}</h3>
 								</AccordionTrigger>
-								<AccordionContent className="px-6 pb-4">
-									<p className="text-foreground leading-relaxed">{item.answer}</p>
+								<AccordionContent className="px-6 pb-6 pt-2">
+									<p className="text-gray-600 leading-relaxed text-base">{item.answer}</p>
 								</AccordionContent>
 							</AccordionItem>
 						))}
@@ -315,71 +344,88 @@ export default function PricingPage() {
 				</div>
 			</section>
 
-			<section>
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-900">Trusted by Communities Worldwide</h2>
-				<div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-					<Card className="border-0 shadow-lg text-center">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-full flex items-center justify-center mx-auto mb-4">
-								<Zap className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle className="text-2xl text-teal">10,000+</CardTitle>
-							<CardDescription>Boards created</CardDescription>
-						</CardHeader>
-					</Card>
+			<section className="py-20 px-6 md:px-12 lg:px-24 bg-gray-50 mt-16">
+				<div className="container-default">
+					<h2 className="text-3xl md:text-4xl font-black text-center mb-12 text-gray-900">Trusted by Communities Worldwide</h2>
+					<div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+						<Card className="border-0 shadow-lg text-center bg-white rounded-3xl p-6 hover:-translate-y-1 transition-transform duration-300">
+							<CardHeader>
+								<div className="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+									<Zap className="w-7 h-7 text-purple-600" />
+								</div>
+								<CardTitle className="text-3xl font-black text-gray-900 mb-1">10,000+</CardTitle>
+								<CardDescription className="text-gray-600 font-medium">Boards created</CardDescription>
+							</CardHeader>
+						</Card>
 
-					<Card className="border-0 shadow-lg text-center">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-full flex items-center justify-center mx-auto mb-4">
-								<Heart className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle className="text-2xl text-teal">500,000+</CardTitle>
-							<CardDescription>Messages shared</CardDescription>
-						</CardHeader>
-					</Card>
+						<Card className="border-0 shadow-lg text-center bg-white rounded-3xl p-6 hover:-translate-y-1 transition-transform duration-300">
+							<CardHeader>
+								<div className="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+									<Heart className="w-7 h-7 text-pink-600" />
+								</div>
+								<CardTitle className="text-3xl font-black text-gray-900 mb-1">500,000+</CardTitle>
+								<CardDescription className="text-gray-600 font-medium">Messages shared</CardDescription>
+							</CardHeader>
+						</Card>
 
-					<Card className="border-0 shadow-lg text-center">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-full flex items-center justify-center mx-auto mb-4">
-								<Star className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle className="text-2xl text-teal">99.9%</CardTitle>
-							<CardDescription>Uptime guarantee</CardDescription>
-						</CardHeader>
-					</Card>
+						<Card className="border-0 shadow-lg text-center bg-white rounded-3xl p-6 hover:-translate-y-1 transition-transform duration-300">
+							<CardHeader>
+								<div className="w-14 h-14 bg-cyan-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+									<Star className="w-7 h-7 text-cyan-600" />
+								</div>
+								<CardTitle className="text-3xl font-black text-gray-900 mb-1">99.9%</CardTitle>
+								<CardDescription className="text-gray-600 font-medium">Uptime guarantee</CardDescription>
+							</CardHeader>
+						</Card>
+					</div>
 				</div>
 			</section>
 
-			<section className="text-center py-20 -mx-4 px-8 bg-danke-500 rounded-3xl text-white shadow-2xl border-4 border-danke-400 relative overflow-hidden">
-				<div className="absolute inset-0 bg-purple/20 mix-blend-multiply"></div>
-				<div className="relative">
-				<h2 className="text-3xl font-bold mb-6">Ready to Start Building Appreciation?</h2>
-				<p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-					Join thousands of communities already using Danke to celebrate and connect. Start your free board today.
-				</p>
-				<div className="flex flex-col sm:flex-row gap-4 justify-center">
-					<Link href="/create-board">
-						<Button
-							size="lg"
-							className="inline-flex items-center justify-center px-6 py-3 bg-teal text-background font-medium rounded-lg hover:bg-teal/90 transition-colors"
-						>
-							Start Free Today
-						</Button>
-					</Link>
-					<Link href="/contact">
-						<Button
-							size="lg"
-							variant="outline"
-							className="inline-flex items-center justify-center px-6 py-3 border border-border bg-background text-foreground font-medium rounded-lg hover:bg-muted transition-colors"
-						>
-							Contact Sales
-						</Button>
-					</Link>
-				</div>
+			{/* Call to Action */}
+			<section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-white relative overflow-hidden mt-16">
+				<div className="container-narrow relative z-10">
+					<div className="bg-purple-600 rounded-3xl p-12 md:p-20 text-center shadow-2xl relative overflow-hidden">
+						{/* Decorative Background */}
+						<div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
+						
+						<div className="relative z-10">
+							<div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border border-white/30 px-6 py-3 rounded-full text-sm font-medium mb-8">
+								<Sparkles className="w-4 h-4 text-white" />
+								<span className="text-white font-bold">Ready to Start?</span>
+							</div>
+							
+							<h2 className="text-3xl md:text-5xl font-black mb-6 text-white">
+								Start building appreciation today
+							</h2>
+							<p className="text-xl mb-10 max-w-2xl mx-auto text-white/90 leading-relaxed">
+								Join thousands of communities already using Danke to celebrate and connect. Start your free board today.
+							</p>
+							
+							<div className="flex flex-col sm:flex-row gap-4 justify-center">
+								<Link href="/create-board">
+									<Button
+										size="lg"
+										className="bg-white text-purple-600 hover:bg-gray-100 font-bold h-16 px-8 text-lg shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+									>
+										Start Free Today
+									</Button>
+								</Link>
+								<Link href="/contact">
+									<Button
+										size="lg"
+										variant="outline"
+										className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-bold h-16 px-8 text-lg"
+									>
+										Contact Sales
+									</Button>
+								</Link>
+							</div>
+						</div>
+					</div>
 				</div>
 			</section>
 
-			<div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] -mb-12 md:p-12">
+			<div className="mt-auto w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
 				<Footer />
 			</div>
 		</div>
