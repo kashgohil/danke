@@ -31,7 +31,7 @@ export function ScrambledPictureLibrary({
           key={picture.id}
           className={cn(
             'absolute w-full h-full rounded-xl shadow-xl transition-all ease-out',
-            'border-4 border-danke-gold',
+            'border-4 border-teal',
             index === 0 && 'top-2 left-2 rotate-[-8deg] z-10',
             index === 1 && 'top-4 left-4 rotate-[3deg] z-20',
             index === 2 && 'top-6 left-0 rotate-[-2deg] z-30',
@@ -57,7 +57,7 @@ export function ScrambledPictureLibrary({
             />
             <div
               className={cn(
-                'absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300',
+                'absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300',
                 index === 2 && 'group-hover:delay-[100ms]',
                 index === 1 && 'group-hover:delay-[100ms]',
                 index === 0 && 'group-hover:delay-[100ms]'
@@ -67,7 +67,7 @@ export function ScrambledPictureLibrary({
         </div>
       ))}
 
-      <div className="absolute inset-0 bg-danke-gold/20 rounded-xl blur-xl scale-110 opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-teal/20 rounded-xl blur-xl scale-110 opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
     </div>
   );
 }

@@ -15,7 +15,7 @@ export default function AboutPage() {
 		<div className="space-y-16 mt-8 mx-auto">
 			<section className="text-center">
 				<h1 className="text-4xl md:text-6xl font-bold mb-6 text-danke-900">
-					About <span className="text-danke-gold">Danke</span>
+					About <span className="text-teal">Danke</span>
 				</h1>
 				<p className="text-xl max-w-3xl mx-auto leading-relaxed text-danke-900">
 					We believe in the power of gratitude to strengthen communities and celebrate the moments that matter most.
@@ -24,7 +24,7 @@ export default function AboutPage() {
 
 			<section className="py-16 -mx-4 px-4 text-center bg-background/80 backdrop-blur-lg rounded-lg">
 				<div className="max-w-4xl mx-auto">
-					<h2 className="text-3xl font-bold text-center text-danke-gold mb-12">Our Mission</h2>
+					<h2 className="text-3xl font-bold text-center text-teal mb-12">Our Mission</h2>
 					<div className="prose prose-lg mx-auto text-foreground">
 						<p>
 							Danke was born from a simple observation: in our fast-paced digital world, we often forget to pause and
@@ -65,11 +65,11 @@ export default function AboutPage() {
 			</section>
 
 			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Our Values</h2>
+				<h2 className="text-3xl font-bold text-center mb-12 text-teal">Our Values</h2>
 				<div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center">
 						<CardHeader className="flex flex-col gap-2">
-							<div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center mb-4 mx-auto">
+							<div className="w-12 h-12 bg-teal rounded-full flex items-center justify-center mb-4 mx-auto">
 								<Heart className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Gratitude First</CardTitle>
@@ -81,7 +81,7 @@ export default function AboutPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center">
 						<CardHeader className="flex flex-col gap-2">
-							<div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center mb-4 mx-auto">
+							<div className="w-12 h-12 bg-teal rounded-full flex items-center justify-center mb-4 mx-auto">
 								<Users className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Community Focused</CardTitle>
@@ -93,7 +93,7 @@ export default function AboutPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center">
 						<CardHeader className="flex flex-col gap-2">
-							<div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center mb-4 mx-auto">
+							<div className="w-12 h-12 bg-teal rounded-full flex items-center justify-center mb-4 mx-auto">
 								<Zap className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Simple & Powerful</CardTitle>
@@ -105,7 +105,7 @@ export default function AboutPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center">
 						<CardHeader className="flex flex-col gap-2">
-							<div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center mb-4 mx-auto">
+							<div className="w-12 h-12 bg-teal rounded-full flex items-center justify-center mb-4 mx-auto">
 								<Shield className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Privacy & Trust</CardTitle>
@@ -125,7 +125,7 @@ export default function AboutPage() {
 				<div className="flex flex-col sm:flex-row gap-4 justify-center">
 					<a
 						href="mailto:hello@danke.app"
-						className="inline-flex items-center justify-center px-6 py-3 bg-danke-gold text-background font-medium rounded-lg hover:bg-danke-gold/90 transition-colors"
+						className="inline-flex items-center justify-center px-6 py-3 bg-teal text-background font-medium rounded-lg hover:bg-teal/90 transition-colors"
 					>
 						Contact Us
 					</a>

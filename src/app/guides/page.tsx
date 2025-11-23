@@ -61,7 +61,7 @@ export default function GuidesPage() {
 				<h1 className="text-4xl md:text-6xl mt-12 font-bold mb-6 text-danke-900">
 					Learn to Create
 					<br />
-					<span className="text-danke-gold">Amazing Boards</span>
+					<span className="text-teal">Amazing Boards</span>
 				</h1>
 				<p className="text-xl max-w-3xl mx-auto leading-relaxed text-danke-900">
 					Master the art of appreciation with our step-by-step guides, best practices, and expert tips for creating
@@ -74,7 +74,7 @@ export default function GuidesPage() {
 					<div className="flex flex-col md:flex-row items-center gap-12">
 						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 							<CardHeader className="text-center">
-								<div className="w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
+								<div className="w-16 h-16 bg-teal rounded-full flex items-center justify-center mx-auto mb-4">
 									<span className="text-2xl font-bold text-danke-900">1</span>
 								</div>
 								<CardTitle>Create Your Board</CardTitle>
@@ -94,7 +94,7 @@ export default function GuidesPage() {
 						/>
 						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 							<CardHeader className="text-center">
-								<div className="w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
+								<div className="w-16 h-16 bg-teal rounded-full flex items-center justify-center mx-auto mb-4">
 									<span className="text-2xl font-bold text-danke-900">2</span>
 								</div>
 								<CardTitle>Share the Link</CardTitle>
@@ -114,7 +114,7 @@ export default function GuidesPage() {
 						/>
 						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 							<CardHeader className="text-center">
-								<div className="w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mx-auto mb-4">
+								<div className="w-16 h-16 bg-teal rounded-full flex items-center justify-center mx-auto mb-4">
 									<span className="text-2xl font-bold text-danke-900">3</span>
 								</div>
 								<CardTitle>Watch It Grow</CardTitle>
@@ -133,7 +133,7 @@ export default function GuidesPage() {
 				<div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<BookOpen className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Board Creation Basics</CardTitle>
@@ -141,15 +141,15 @@ export default function GuidesPage() {
 								<p>Learn the fundamentals of creating your first board:</p>
 								<ul className="space-y-2 text-sm">
 									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-danke-gold" />
+										<CheckCircle className="w-4 h-4 text-teal" />
 										Choosing the right template for your occasion
 									</li>
 									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-danke-gold" />
+										<CheckCircle className="w-4 h-4 text-teal" />
 										Writing compelling titles and descriptions
 									</li>
 									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-danke-gold" />
+										<CheckCircle className="w-4 h-4 text-teal" />
 										Setting up basic privacy and moderation
 									</li>
 								</ul>
@@ -159,7 +159,7 @@ export default function GuidesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<Palette className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Customization & Themes</CardTitle>
@@ -167,15 +167,15 @@ export default function GuidesPage() {
 								<p>Make your board uniquely yours:</p>
 								<ul className="space-y-2 text-sm">
 									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-danke-gold" />
+										<CheckCircle className="w-4 h-4 text-teal" />
 										Selecting colors that match your brand or event
 									</li>
 									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-danke-gold" />
+										<CheckCircle className="w-4 h-4 text-teal" />
 										Adding custom backgrounds and logos
 									</li>
 									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-danke-gold" />
+										<CheckCircle className="w-4 h-4 text-teal" />
 										Choosing layout styles for different content types
 									</li>
 								</ul>
@@ -185,7 +185,7 @@ export default function GuidesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<Share2 className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Sharing Strategies</CardTitle>
@@ -193,15 +193,15 @@ export default function GuidesPage() {
 								<p>Get maximum participation with effective sharing:</p>
 								<ul className="space-y-2 text-sm">
 									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-danke-gold" />
+										<CheckCircle className="w-4 h-4 text-teal" />
 										Crafting invitation messages that inspire action
 									</li>
 									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-danke-gold" />
+										<CheckCircle className="w-4 h-4 text-teal" />
 										Using multiple channels for broader reach
 									</li>
 									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-danke-gold" />
+										<CheckCircle className="w-4 h-4 text-teal" />
 										Timing your invitations for maximum impact
 									</li>
 								</ul>
@@ -211,7 +211,7 @@ export default function GuidesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<Settings className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Advanced Features</CardTitle>
@@ -219,15 +219,15 @@ export default function GuidesPage() {
 								<p>Unlock the full potential of your boards:</p>
 								<ul className="space-y-2 text-sm">
 									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-danke-gold" />
+										<CheckCircle className="w-4 h-4 text-teal" />
 										Setting up moderation and content filtering
 									</li>
 									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-danke-gold" />
+										<CheckCircle className="w-4 h-4 text-teal" />
 										Managing team permissions and collaboration
 									</li>
 									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-danke-gold" />
+										<CheckCircle className="w-4 h-4 text-teal" />
 										Exporting and archiving your boards
 									</li>
 								</ul>
@@ -238,11 +238,11 @@ export default function GuidesPage() {
 			</section>
 
 			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg md:rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Guides by Occasion</h2>
+				<h2 className="text-3xl font-bold text-center mb-12 text-teal">Guides by Occasion</h2>
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<Heart className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Farewell Boards</CardTitle>
@@ -255,7 +255,7 @@ export default function GuidesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<Sparkles className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Birthday Celebrations</CardTitle>
@@ -268,7 +268,7 @@ export default function GuidesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<Users className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Team Recognition</CardTitle>
@@ -281,7 +281,7 @@ export default function GuidesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<Zap className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Event Memories</CardTitle>
@@ -294,7 +294,7 @@ export default function GuidesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<MessageSquare className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Customer Testimonials</CardTitle>
@@ -307,7 +307,7 @@ export default function GuidesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<BookOpen className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Memorial Tributes</CardTitle>
@@ -329,25 +329,25 @@ export default function GuidesPage() {
 							<ul className="space-y-3">
 								<li className="flex items-start gap-3">
 									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-danke-gold mt-0.5 flex-shrink-0" />
+										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
 									</div>
 									<span>Send personal invitations with context about why their contribution matters</span>
 								</li>
 								<li className="flex items-start gap-3">
 									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-danke-gold mt-0.5 flex-shrink-0" />
+										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
 									</div>
 									<span>Provide example messages or prompts to help people get started</span>
 								</li>
 								<li className="flex items-start gap-3">
 									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-danke-gold mt-0.5 flex-shrink-0" />
+										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
 									</div>
 									<span>Set a deadline to create urgency and ensure timely participation</span>
 								</li>
 								<li className="flex items-start gap-3">
 									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-danke-gold mt-0.5 flex-shrink-0" />
+										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
 									</div>
 									<span>Follow up with gentle reminders for important contributors</span>
 								</li>
@@ -359,25 +359,25 @@ export default function GuidesPage() {
 							<ul className="space-y-3">
 								<li className="flex items-start gap-3">
 									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-danke-gold mt-0.5 flex-shrink-0" />
+										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
 									</div>
 									<span>Choose meaningful timing that aligns with the occasion or milestone</span>
 								</li>
 								<li className="flex items-start gap-3">
 									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-danke-gold mt-0.5 flex-shrink-0" />
+										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
 									</div>
 									<span>Curate and organize messages before the big reveal for maximum impact</span>
 								</li>
 								<li className="flex items-start gap-3">
 									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-danke-gold mt-0.5 flex-shrink-0" />
+										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
 									</div>
 									<span>Present the board in person when possible for an emotional moment</span>
 								</li>
 								<li className="flex items-start gap-3">
 									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-danke-gold mt-0.5 flex-shrink-0" />
+										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
 									</div>
 									<span>Create a lasting keepsake by exporting or printing the final board</span>
 								</li>
@@ -388,7 +388,7 @@ export default function GuidesPage() {
 			</section>
 
 			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg md:rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Frequently Asked Questions</h2>
+				<h2 className="text-3xl font-bold text-center mb-12 text-teal">Frequently Asked Questions</h2>
 				<div className="max-w-4xl mx-auto">
 					<Accordion
 						type="single"
@@ -413,7 +413,7 @@ export default function GuidesPage() {
 				</div>
 			</section>
 
-			<section className="text-center py-16 -mx-4 px-4 bg-gradient-to-r rounded-lg text-danke-900">
+			<section className="text-center py-20 -mx-4 px-8 bg-danke-600 rounded-3xl text-white shadow-2xl border-4 border-danke-500">
 				<h2 className="text-3xl font-bold mb-6">Ready to Create Your Board?</h2>
 				<p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
 					Put these guides into practice and start building meaningful connections with your first appreciation board.
@@ -422,7 +422,7 @@ export default function GuidesPage() {
 					<Link href="/create-board">
 						<Button
 							size="lg"
-							className="inline-flex items-center justify-center px-6 py-3 bg-danke-gold text-background font-medium rounded-lg hover:bg-danke-gold/90 transition-colors"
+							className="inline-flex items-center justify-center px-6 py-3 bg-teal text-background font-medium rounded-lg hover:bg-teal/90 transition-colors"
 						>
 							Create Your First Board
 						</Button>

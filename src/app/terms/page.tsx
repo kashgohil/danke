@@ -93,7 +93,7 @@ export default function TermsPage() {
 							Your privacy is important to us. Please review our{" "}
 							<Link
 								href="/privacy"
-								className="text-danke-gold hover:underline"
+								className="text-teal hover:underline"
 							>
 								Privacy Policy
 							</Link>
@@ -183,12 +183,12 @@ export default function TermsPage() {
 								Email:{" "}
 								<a
 									href="mailto:legal@trydanke.link"
-									className="text-danke-gold hover:underline"
+									className="text-teal hover:underline"
 								>
 									legal@trydanke.link
 								</a>
 								<br />
-								Subject: <span className="text-danke-gold">Terms of Service Inquiry</span>
+								Subject: <span className="text-teal">Terms of Service Inquiry</span>
 							</p>
 						</div>
 					</section>

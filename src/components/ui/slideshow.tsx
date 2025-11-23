@@ -476,15 +476,8 @@ export function Slideshow({
   return (
     <div
       key={`slideshow-${posts.length}`}
-      className="fixed inset-0 z-[9999] w-screen h-screen"
-      style={
-        backgroundColor
-          ? gradientStyle
-          : {
-              background:
-                'linear-gradient(135deg, #fef7ed 0%, #ffffff 50%, #fef7ed 100%)',
-            }
-      }
+      className={`fixed inset-0 z-[9999] w-screen h-screen ${backgroundColor ? '' : 'bg-[hsl(250,40%,99%)]'}`}
+      style={backgroundColor ? gradientStyle : {}}
     >
       {progressBar()}
       {actionBar()}

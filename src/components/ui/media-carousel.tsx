@@ -31,7 +31,7 @@ function CarouselMediaItem({ url, type, className }: CarouselMediaItemProps) {
     return (
       <div
         className={cn(
-          'relative w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800',
+          'relative w-full h-full flex items-center justify-center bg-gray-800',
           className
         )}
       >
@@ -101,7 +101,7 @@ function CarouselMediaItem({ url, type, className }: CarouselMediaItemProps) {
     return (
       <div
         className={cn(
-          'relative w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 p-8',
+          'relative w-full h-full flex items-center justify-center bg-purple-800 p-8',
           className
         )}
       >
@@ -416,8 +416,8 @@ export function MediaCarousel({
       </div>
 
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
     </div>
   );

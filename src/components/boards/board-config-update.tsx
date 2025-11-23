@@ -61,14 +61,16 @@ const visibilityOptions = [
 ];
 
 const backgroundColorOptions = [
-  { value: '#3B82F6', label: 'Blue', color: 'bg-blue-500' },
-  { value: '#10B981', label: 'Green', color: 'bg-green-500' },
-  { value: '#F59E0B', label: 'Yellow', color: 'bg-yellow-500' },
-  { value: '#EF4444', label: 'Red', color: 'bg-red-500' },
-  { value: '#8B5CF6', label: 'Purple', color: 'bg-purple-500' },
-  { value: '#F97316', label: 'Orange', color: 'bg-orange-500' },
-  { value: '#06B6D4', label: 'Cyan', color: 'bg-cyan-500' },
-  { value: '#84CC16', label: 'Lime', color: 'bg-lime-500' },
+  { value: '#2563EB', label: 'Blue', color: 'bg-blue-600' },
+  { value: '#059669', label: 'Green', color: 'bg-green-600' },
+  { value: '#D97706', label: 'Amber', color: 'bg-amber-600' },
+  { value: '#DC2626', label: 'Red', color: 'bg-red-600' },
+  { value: '#7C3AED', label: 'Purple', color: 'bg-purple-600' },
+  { value: '#0D9488', label: 'Teal', color: 'bg-teal-600' },
+  { value: '#0284C7', label: 'Sky', color: 'bg-sky-600' },
+  { value: '#65A30D', label: 'Lime', color: 'bg-lime-600' },
+  { value: '#DB2777', label: 'Pink', color: 'bg-pink-600' },
+  { value: '#EA580C', label: 'Orange', color: 'bg-orange-600' },
 ];
 
 // Email/Domain input component
@@ -254,7 +256,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="mx-auto inline-flex items-center gap-2 bg-danke-gold text-danke-900 px-4 py-2 rounded-full text-sm font-medium">
+      <div className="mx-auto inline-flex items-center gap-2 bg-teal text-danke-900 px-4 py-2 rounded-full text-sm font-medium">
         <Settings className="w-4 h-4" />
         <span>Board Configuration</span>
       </div>
@@ -275,7 +277,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
 
       {isSuccess && (
         <div className="bg-background/40 border border-border rounded-md p-4">
-          <p className="text-danke-gold text-sm font-medium flex items-center gap-4">
+          <p className="text-teal text-sm font-medium flex items-center gap-4">
             <Check /> Board configuration updated successfully! Redirecting...
           </p>
         </div>

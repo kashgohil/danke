@@ -4,18 +4,18 @@ import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-danke-50 via-white to-danke-100 relative">
+    <div className="min-h-screen flex items-center justify-center bg-[hsl(250,40%,99%)] relative">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-danke-gold/10 rounded-full blur-xl"></div>
+        <div className="absolute top-20 left-10 w-32 h-32 bg-purple/10 rounded-full blur-xl"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-pink-400/10 rounded-full blur-xl"></div>
         <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-purple-400/10 rounded-full blur-xl"></div>
       </div>
 
       <div className="text-center max-w-md mx-auto px-4 relative">
-        <div className="mx-auto w-24 h-24 bg-gradient-to-br from-danke-200 to-danke-300 rounded-full flex items-center justify-center mb-6 shadow-lg">
+        <div className="mx-auto w-28 h-28 bg-danke-100 rounded-3xl flex items-center justify-center mb-8 shadow-xl border-4 border-white rotate-6">
           <Search className="w-12 h-12 text-danke-700" />
         </div>
-        <h1 className="text-4xl font-bold text-danke-900 mb-4 bg-gradient-to-r from-danke-600 to-danke-gold bg-clip-text text-transparent">
+        <h1 className="text-5xl font-black text-danke-700 mb-6 tracking-tight">
           Board Not Found
         </h1>
         <p className="text-danke-600 mb-8 text-lg leading-relaxed">

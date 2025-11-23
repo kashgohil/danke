@@ -49,7 +49,7 @@ export default function ContactPage() {
 			<section className="flex gap-12 max-w-6xl mx-auto">
 				<div className="space-y-6 max-w-3xl mx-auto bg-background/80 backdrop-blur-2xl rounded-lg p-12">
 					<div>
-						<h2 className="text-2xl font-bold mb-2 text-danke-gold">Send us a message</h2>
+						<h2 className="text-2xl font-bold mb-2 text-teal">Send us a message</h2>
 						<p className="text-muted-foreground mb-6">
 							Fill out the form below and we&apos;ll get back to you within 24 hours.
 						</p>
@@ -99,7 +99,7 @@ export default function ContactPage() {
 							/>
 						</div>
 
-						<Button className="w-full bg-danke-gold hover:bg-danke-gold/90 text-background">
+						<Button className="w-full bg-teal hover:bg-teal/90 text-background">
 							<Send className="w-4 h-4 mr-2" />
 							Send Message
 						</Button>
@@ -108,7 +108,7 @@ export default function ContactPage() {
 
 				<div className="space-y-6 max-w-3xl mx-auto bg-background/80 backdrop-blur-2xl rounded-lg p-12">
 					<div>
-						<h2 className="text-2xl font-bold mb-2 text-danke-gold">Get in touch</h2>
+						<h2 className="text-2xl font-bold mb-2 text-teal">Get in touch</h2>
 						<p className="text-muted-foreground mb-6">
 							Prefer to reach out directly? Here are all the ways you can contact us.
 						</p>
@@ -117,7 +117,7 @@ export default function ContactPage() {
 					<div className="space-y-6">
 						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 							<CardHeader className="flex flex-row items-center gap-4">
-								<div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center">
+								<div className="w-12 h-12 bg-teal rounded-full flex items-center justify-center">
 									<Mail className="w-6 h-6 text-danke-900" />
 								</div>
 								<div>
@@ -136,7 +136,7 @@ export default function ContactPage() {
 
 						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 							<CardHeader className="flex flex-row items-center gap-4">
-								<div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center">
+								<div className="w-12 h-12 bg-teal rounded-full flex items-center justify-center">
 									<MessageCircle className="w-6 h-6 text-danke-900" />
 								</div>
 								<div>
@@ -155,7 +155,7 @@ export default function ContactPage() {
 
 						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 							<CardHeader className="flex flex-row items-center gap-4">
-								<div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center">
+								<div className="w-12 h-12 bg-teal rounded-full flex items-center justify-center">
 									<Twitter className="w-6 h-6 text-danke-900" />
 								</div>
 								<div>
@@ -173,7 +173,7 @@ export default function ContactPage() {
 						</Card>
 						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
 							<CardHeader className="flex flex-row items-center gap-4">
-								<div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center">
+								<div className="w-12 h-12 bg-teal rounded-full flex items-center justify-center">
 									<Clock className="w-6 h-6 text-danke-900" />
 								</div>
 								<div>
@@ -187,7 +187,7 @@ export default function ContactPage() {
 			</section>
 
 			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Frequently Asked Questions</h2>
+				<h2 className="text-3xl font-bold text-center mb-12 text-teal">Frequently Asked Questions</h2>
 				<div className="max-w-4xl mx-auto">
 					<Accordion
 						type="single"
@@ -213,7 +213,7 @@ export default function ContactPage() {
 			</section>
 
 			{/* Call to Action */}
-			<section className="text-center py-16 -mx-4 px-4 bg-gradient-to-r rounded-lg text-danke-900">
+			<section className="text-center py-20 -mx-4 px-8 bg-coral rounded-3xl text-white shadow-2xl border-4 border-coral/70">
 				<h2 className="text-3xl font-bold mb-6">Ready to get started?</h2>
 				<p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
 					Create your first appreciation board today and start building stronger connections in your community.
@@ -221,7 +221,7 @@ export default function ContactPage() {
 				<div className="flex flex-col sm:flex-row gap-4 justify-center">
 					<Button
 						size="lg"
-						className="inline-flex items-center justify-center px-6 py-3 bg-danke-gold text-background font-medium rounded-lg hover:bg-danke-gold/90 transition-colors"
+						className="inline-flex items-center justify-center px-6 py-3 bg-teal text-background font-medium rounded-lg hover:bg-teal/90 transition-colors"
 					>
 						Create Your First Board
 					</Button>

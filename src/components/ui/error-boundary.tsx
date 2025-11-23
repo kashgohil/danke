@@ -76,7 +76,7 @@ export class ErrorBoundary extends React.Component<
 
 function DefaultErrorFallback({ error, resetError }: ErrorFallbackProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600">
+    <div className="min-h-screen bg-[hsl(250,40%,99%)]">
       <Card className="max-w-md mx-auto mt-8">
         <CardHeader>
           <div className="flex items-center gap-2">

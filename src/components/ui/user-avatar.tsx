@@ -33,18 +33,18 @@ export function UserAvatar({ user, size = 'md', className }: UserAvatarProps) {
       return char.charCodeAt(0) + ((acc << 5) - acc);
     }, 0);
 
-    const gradients = [
-      'from-blue-500 to-purple-600',
-      'from-green-500 to-teal-600',
-      'from-orange-500 to-red-600',
-      'from-pink-500 to-rose-600',
-      'from-indigo-500 to-blue-600',
-      'from-purple-500 to-pink-600',
-      'from-teal-500 to-green-600',
-      'from-red-500 to-orange-600',
+    const colors = [
+      'bg-blue-500',
+      'bg-green-500',
+      'bg-yellow-500',
+      'bg-pink-500',
+      'bg-indigo-500',
+      'bg-purple-500',
+      'bg-teal-500',
+      'bg-red-500',
     ];
 
-    return gradients[Math.abs(hash) % gradients.length];
+    return colors[Math.abs(hash) % colors.length];
   };
 
   return (
@@ -52,7 +52,7 @@ export function UserAvatar({ user, size = 'md', className }: UserAvatarProps) {
       <AvatarImage src={user.avatarUrl || undefined} alt={user.name} />
       <AvatarFallback
         className={cn(
-          'bg-gradient-to-br text-white font-semibold',
+          'text-white font-semibold',
           getGradientClass(user.name)
         )}
       >

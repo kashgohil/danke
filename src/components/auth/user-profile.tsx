@@ -74,7 +74,7 @@ export function UserProfile() {
           <CardContent className="pt-8">
             <div className="text-center space-y-6">
               <div className="flex justify-center">
-                <div className="w-16 h-16 bg-danke-gold/40 rounded-full flex items-center justify-center">
+                <div className="w-16 h-16 bg-teal/40 rounded-full flex items-center justify-center">
                   <User className="h-8 w-8 text-danke-900" />
                 </div>
               </div>
@@ -84,7 +84,7 @@ export function UserProfile() {
                   Please sign in to view your profile and access all features
                 </p>
                 <SignInButton mode="modal">
-                  <Button className="bg-gradient-to-r from-danke-600 to-danke-gold hover:from-danke-700 hover:to-danke-500 text-white shadow-lg">
+                  <Button className="bg-danke-500 hover:bg-danke-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 rounded-2xl font-bold hover:scale-105">
                     Sign In
                   </Button>
                 </SignInButton>
@@ -111,7 +111,7 @@ export function UserProfile() {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8">
       <Card className="border-0 shadow-lg overflow-hidden">
-        <div className="bg-gradient-to-r from-danke-600 to-danke-gold h-32 relative">
+        <div className="bg-danke-500 h-40 relative">
           <div className="absolute -bottom-12 left-8">
             <div className="relative">
               <UserAvatar
@@ -137,7 +137,7 @@ export function UserProfile() {
               <div className="flex items-center gap-3 mb-4">
                 <Badge
                   variant="secondary"
-                  className="bg-danke-gold text-danke-900"
+                  className="bg-teal text-danke-900"
                 >
                   <User className="h-3 w-3 mr-1" />
                   Member
@@ -222,7 +222,7 @@ function UserProfileSkeleton() {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8">
       <Card className="border-0 shadow-lg overflow-hidden">
-        <div className="bg-gradient-to-r from-danke-600 to-danke-gold h-32 relative">
+        <div className="bg-danke-500 h-40 relative">
           <div className="absolute -bottom-12 left-8">
             <Skeleton className="h-24 w-24 rounded-full ring-4 ring-background shadow-lg" />
           </div>

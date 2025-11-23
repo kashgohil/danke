@@ -138,7 +138,7 @@ export default function PrivacyPage() {
 							To exercise these rights, please contact us at{" "}
 							<a
 								href="mailto:privacy@danke.app"
-								className="text-danke-gold hover:underline"
+								className="text-teal hover:underline"
 							>
 								privacy@danke.app
 							</a>
@@ -192,12 +192,12 @@ export default function PrivacyPage() {
 								Email:{" "}
 								<a
 									href="mailto:privacy@trydanke.link"
-									className="text-danke-gold hover:underline"
+									className="text-teal hover:underline"
 								>
 									privacy@trydanke.link
 								</a>
 								<br />
-								Subject: <span className="text-danke-gold">Privacy Policy Inquiry</span>
+								Subject: <span className="text-teal">Privacy Policy Inquiry</span>
 							</p>
 						</div>
 					</section>

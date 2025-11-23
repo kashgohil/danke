@@ -68,7 +68,7 @@ const services: ServiceStatus[] = [
 const getStatusColor = (status: ServiceStatus["status"]) => {
 	switch (status) {
 		case "operational":
-			return "text-danke-900 bg-danke-gold";
+			return "text-danke-900 bg-teal";
 		case "degraded":
 			return "text-yellow-600 bg-yellow-100";
 		case "outage":
@@ -117,7 +117,7 @@ export default function StatusPage() {
 		<div className="space-y-16 mt-8 mx-auto">
 			<section className="text-center">
 				<h1 className="text-4xl md:text-6xl mt-12 font-bold mb-6 text-danke-900">
-					System <span className="text-danke-gold">Status</span>
+					System <span className="text-teal">Status</span>
 				</h1>
 				<p className="text-xl max-w-3xl mx-auto leading-relaxed text-danke-800">
 					Real-time monitoring of all Danke services and infrastructure components.
@@ -131,9 +131,9 @@ export default function StatusPage() {
 							const StatusIcon = getStatusIcon(overallStatus);
 							return (
 								<div className="flex items-center gap-3">
-									<StatusIcon className="w-8 h-8 text-danke-gold" />
+									<StatusIcon className="w-8 h-8 text-teal" />
 									<div>
-										<h2 className="text-2xl font-bold text-danke-gold">All Systems Operational</h2>
+										<h2 className="text-2xl font-bold text-teal">All Systems Operational</h2>
 										<p className="text-muted-foreground">Last updated: {new Date().toLocaleString()}</p>
 									</div>
 								</div>
@@ -145,7 +145,7 @@ export default function StatusPage() {
 						<Card className="border-0 shadow-lg">
 							<CardHeader className="pb-3">
 								<CardTitle className="text-lg flex items-center gap-2">
-									<Activity className="w-5 h-5 text-danke-gold" />
+									<Activity className="w-5 h-5 text-teal" />
 									Overall Uptime
 								</CardTitle>
 							</CardHeader>
@@ -162,7 +162,7 @@ export default function StatusPage() {
 						<Card className="border-0 shadow-lg">
 							<CardHeader className="pb-3">
 								<CardTitle className="text-lg flex items-center gap-2">
-									<Clock className="w-5 h-5 text-danke-gold" />
+									<Clock className="w-5 h-5 text-teal" />
 									Response Time
 								</CardTitle>
 							</CardHeader>
@@ -178,7 +178,7 @@ export default function StatusPage() {
 						<Card className="border-0 shadow-lg">
 							<CardHeader className="pb-3">
 								<CardTitle className="text-lg flex items-center gap-2">
-									<CheckCircle className="w-5 h-5 text-danke-gold" />
+									<CheckCircle className="w-5 h-5 text-teal" />
 									Incidents
 								</CardTitle>
 							</CardHeader>
@@ -206,7 +206,7 @@ export default function StatusPage() {
 								<CardContent className="p-6">
 									<div className="flex items-center justify-between">
 										<div className="flex items-center gap-4">
-											<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center">
+											<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center">
 												<StatusIcon className="w-6 h-6 text-danke-900" />
 											</div>
 											<div>
@@ -232,11 +232,11 @@ export default function StatusPage() {
 			</section>
 
 			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Recent Incidents</h2>
+				<h2 className="text-3xl font-bold text-center mb-12 text-teal">Recent Incidents</h2>
 				<div className="max-w-4xl mx-auto">
 					<Card className="border-0 shadow-lg">
 						<CardContent className="p-8 text-center">
-							<CheckCircle className="w-16 h-16 text-danke-gold mx-auto mb-4" />
+							<CheckCircle className="w-16 h-16 text-teal mx-auto mb-4" />
 							<h3 className="text-xl font-semibold text-primary mb-2">No Recent Incidents</h3>
 							<p className="text-muted-foreground">
 								All systems have been running smoothly. Our last incident was resolved over 30 days ago.
@@ -251,7 +251,7 @@ export default function StatusPage() {
 				<div className="max-w-4xl mx-auto">
 					<Card className="border-0 shadow-lg">
 						<CardContent className="p-8 text-center">
-							<Clock className="w-16 h-16 text-danke-gold mx-auto mb-4" />
+							<Clock className="w-16 h-16 text-teal mx-auto mb-4" />
 							<h3 className="text-xl font-semibold text-primary mb-2">No Scheduled Maintenance</h3>
 							<p className="text-muted-foreground">
 								There are currently no planned maintenance windows. We&apos;ll notify users in advance of any scheduled
@@ -263,7 +263,7 @@ export default function StatusPage() {
 			</section>
 
 			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">30-Day Uptime History</h2>
+				<h2 className="text-3xl font-bold text-center mb-12 text-teal">30-Day Uptime History</h2>
 				<div className="max-w-4xl mx-auto">
 					<div className="grid gap-4">
 						{services.map((service) => (
@@ -272,7 +272,7 @@ export default function StatusPage() {
 								className="flex items-center justify-between p-4 bg-background rounded-lg"
 							>
 								<div className="flex items-center gap-3">
-									<service.icon className="w-5 h-5 text-danke-gold" />
+									<service.icon className="w-5 h-5 text-teal" />
 									<span className="font-medium text-primary">{service.name}</span>
 								</div>
 								<div className="flex items-center gap-4">
@@ -280,7 +280,7 @@ export default function StatusPage() {
 										value={service.uptime}
 										className="w-32 h-2"
 									/>
-									<span className="text-sm font-medium text-danke-gold w-16 text-right">{service.uptime}%</span>
+									<span className="text-sm font-medium text-teal w-16 text-right">{service.uptime}%</span>
 								</div>
 							</div>
 						))}
@@ -288,7 +288,7 @@ export default function StatusPage() {
 				</div>
 			</section>
 
-			<section className="text-center py-16 -mx-4 px-4 bg-gradient-to-r rounded-lg text-danke-900">
+			<section className="text-center py-20 -mx-4 px-8 bg-sky rounded-3xl text-white shadow-2xl border-4 border-sky/70">
 				<h2 className="text-3xl font-bold mb-6">Stay Updated on System Status</h2>
 				<p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
 					Get notified about incidents, maintenance windows, and system updates via email or RSS.
@@ -296,7 +296,7 @@ export default function StatusPage() {
 				<div className="flex flex-col sm:flex-row gap-4 justify-center">
 					<Link
 						href="mailto:status@trydanke.link?subject=Status Updates Subscription"
-						className="inline-flex items-center justify-center px-6 py-3 bg-danke-gold text-background font-medium rounded-lg hover:bg-danke-gold/90 transition-colors"
+						className="inline-flex items-center justify-center px-6 py-3 bg-teal text-background font-medium rounded-lg hover:bg-teal/90 transition-colors"
 					>
 						Subscribe to Email Updates
 					</Link>

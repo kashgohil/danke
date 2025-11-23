@@ -8,627 +8,466 @@ import { UserAvatar } from '@/components/ui/user-avatar';
 import { usePostEdit } from '@/contexts/post-edit-context';
 import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
 import {
-  generateCardStyle,
-  generateGradientStyle,
-  getContrastTextStyles,
-  getTextColors,
+	generateCardStyle,
+	generateGradientStyle,
+	getContrastTextStyles,
+	getTextColors,
 } from '@/lib/gradient-utils';
-import { perf } from '@/lib/performance';
 import { useAuth } from '@clerk/nextjs';
-import { Edit2, Heart, MessageCircle, Play, Trash2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import {
+	Calendar,
+	Edit2,
+	Heart,
+	Loader2,
+	MessageCircle,
+	Play,
+	Settings,
+	Sparkles,
+	Trash2,
+	User,
+} from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 import { PostModerationControls } from '../posts/post-moderation-controls';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { MediaCarousel } from '../ui/media-carousel';
 import { Slideshow } from '../ui/slideshow';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
 } from '../ui/tooltip';
 
 export interface Board {
-  id: string;
-  title: string;
-  recipientName: string;
-  creatorId: string;
-  typeConfig?: any;
-  createdAt: string;
-  updatedAt: string;
+	id: string;
+	title: string;
+	recipientName: string;
+	creatorId: string;
+	typeConfig?: any;
+	createdAt: string;
+	updatedAt: string;
 }
 
 export interface Post {
-  id: string;
-  content: string;
-  mediaUrls: string[] | null;
-  createdAt: string;
-  updatedAt: string;
-  isAnonymous: boolean;
-  anonymousName: string | null;
-  moderationStatus: string;
-  moderationReason: string | null;
-  moderatedBy: string | null;
-  moderatedAt: string | null;
-  deleteScheduledDate: string | null;
-  deleteScheduledBy: string | null;
-  isDeleted: boolean;
-  creatorId: string;
-  boardId: string;
-  creator: {
-    id: string;
-    name: string;
-    avatarUrl?: string;
-  };
+	id: string;
+	content: string;
+	mediaUrls: string[] | null;
+	createdAt: string;
+	updatedAt: string;
+	isAnonymous: boolean;
+	anonymousName: string | null;
+	moderationStatus: string;
+	moderationReason: string | null;
+	moderatedBy: string | null;
+	moderatedAt: string | null;
+	deleteScheduledDate: string | null;
+	deleteScheduledBy: string | null;
+	isDeleted: boolean;
+	creatorId: string;
+	boardId: string;
+	creator: {
+		id: string;
+		name: string;
+		avatarUrl?: string;
+	};
 }
 
 interface BoardViewProps {
-  board: Board;
-  posts: Post[];
-  onPostUpdated?: (updatedPost: Post) => void;
-  onPostDeleted?: (postId: string) => void;
-  isModerator?: boolean;
-  isCreator?: boolean;
-  onFetchMorePosts?: () => Promise<void>;
-  hasMorePosts?: boolean;
-  isFetchingMore?: boolean;
-}
-
-function DoodleBackground() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <svg
-        className="absolute w-full hopacity-10"
-        viewBox="0 0 1200 800"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M100 150 C100 120, 130 100, 150 120 C170 100, 200 120, 200 150 C200 180, 150 200, 150 180 C150 200, 100 180, 100 150 Z"
-          fill="currentColor"
-          className="text-danke-400"
-        />
-        <path
-          d="M300 250 C300 220, 330 200, 350 220 C370 200, 400 220, 400 250 C400 280, 350 300, 350 280 C350 300, 300 280, 300 250 Z"
-          fill="currentColor"
-          className="text-danke-500"
-        />
-        <path
-          d="M500 100 C500 70, 530 50, 550 70 C570 50, 600 70, 600 100 C600 130, 550 150, 550 130 C550 150, 500 130, 500 100 Z"
-          fill="currentColor"
-          className="text-danke-600"
-        />
-
-        {/* Stars */}
-        <path
-          d="M200 400 L220 420 L240 400 L220 380 Z M220 420 L240 440 L260 420 L240 400 Z M240 400 L260 420 L240 440 L220 420 Z M240 440 L220 420 L200 440 L220 460 Z M220 420 L200 400 L180 420 L200 440 Z"
-          fill="currentColor"
-          className="text-danke-gold"
-        />
-        <path
-          d="M700 300 L720 320 L740 300 L720 280 Z M720 320 L740 340 L760 320 L740 300 Z M740 300 L760 320 L740 340 L720 320 Z M740 340 L720 320 L700 340 L720 360 Z M720 320 L700 300 L680 320 L700 340 Z"
-          fill="currentColor"
-          className="text-danke-brown"
-        />
-
-        <circle
-          cx="150"
-          cy="500"
-          r="20"
-          fill="currentColor"
-          className="text-danke-300"
-        />
-        <circle
-          cx="400"
-          cy="600"
-          r="15"
-          fill="currentColor"
-          className="text-danke-400"
-        />
-        <circle
-          cx="600"
-          cy="450"
-          r="25"
-          fill="currentColor"
-          className="text-danke-500"
-        />
-
-        <path
-          d="M800 200 Q850 150, 900 200 T1000 200"
-          stroke="currentColor"
-          strokeWidth="3"
-          fill="none"
-          className="text-danke-300"
-        />
-        <path
-          d="M50 650 Q100 600, 150 650 T250 650"
-          stroke="currentColor"
-          strokeWidth="3"
-          fill="none"
-          className="text-danke-gold"
-        />
-        <path
-          d="M900 500 Q950 450, 1000 500 T1100 500"
-          stroke="currentColor"
-          strokeWidth="3"
-          fill="none"
-          className="text-danke-brown"
-        />
-      </svg>
-    </div>
-  );
-}
-
-function EmptyState({
-  recipientName,
-  textColors,
-  contrastTextStyles,
-}: {
-  recipientName: string;
-  textColors: {
-    primary: string;
-    secondary: string;
-    muted: string;
-    accent: string;
-  };
-  contrastTextStyles: {
-    primary: { color: string };
-    secondary: { color: string };
-    muted: { color: string };
-    accent: { color: string };
-  };
-}) {
-  return (
-    <div className="text-center py-20 relative">
-      <div className="absolute inset-0 flex items-center justify-center opacity-5">
-        <div className="w-96 h-96 rounded-full bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 animate-pulse" />
-      </div>
-
-      <div className="relative">
-        <div className="mx-auto w-32 h-32 rounded-full flex items-center justify-center mb-8 shadow-xl border-4 border-white/50">
-          <Heart className={`w-16 h-16 ${textColors.primary} animate-pulse`} />
-        </div>
-
-        <h3
-          className="text-3xl font-bold mb-6 tracking-tight"
-          style={contrastTextStyles.primary}
-        >
-          No messages yet
-        </h3>
-
-        <p
-          className="max-w-md mx-auto text-lg leading-relaxed mb-8"
-          style={contrastTextStyles.secondary}
-        >
-          Be the first to share an appreciation message for{' '}
-          <span className="font-bold" style={contrastTextStyles.accent}>
-            {recipientName}
-          </span>
-          !
-        </p>
-
-        <div className="flex justify-center">
-          <div
-            className={`inline-flex items-center gap-3 bg-gray-200/80 ${textColors.primary} px-6 py-3 rounded-full text-sm font-medium shadow-lg`}
-          >
-            <MessageCircle className="w-5 h-5" />
-            <span>Your message will make their day special</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+	board: Board;
+	posts: Post[];
+	onPostUpdated?: (updatedPost: Post) => void;
+	onPostDeleted?: (postId: string) => void;
+	isModerator?: boolean;
+	isCreator?: boolean;
+	onFetchMorePosts?: () => Promise<void>;
+	hasMorePosts?: boolean;
+	isFetchingMore?: boolean;
 }
 
 function PostCard({
-  post,
-  board,
-  onPostUpdated,
-  onPostDeleted,
-  isModerator,
-  isCreator,
+	post,
+	board,
+	onPostUpdated,
+	onPostDeleted,
+	isModerator,
+	isCreator,
 }: {
-  post: Post;
-  board: Board;
-  onPostUpdated?: (updatedPost: Post) => void;
-  onPostDeleted?: (postId: string) => void;
-  isModerator?: boolean;
-  isCreator?: boolean;
+	post: Post;
+	board: Board;
+	onPostUpdated?: (updatedPost: Post) => void;
+	onPostDeleted?: (postId: string) => void;
+	isModerator?: boolean;
+	isCreator?: boolean;
 }) {
-  const { userId } = useAuth();
-  const { handleError } = useApiErrorHandler();
-  const { openPostEdit } = usePostEdit();
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [canEdit, setCanEdit] = useState(false);
-  const [canDelete, setCanDelete] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [showModerationControls, setShowModerationControls] = useState(false);
+	const { userId } = useAuth();
+	const { openPostEdit } = usePostEdit();
+	const { handleError } = useApiErrorHandler();
+	const [isDeleting, setIsDeleting] = useState(false);
+	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  const getMediaType = (url: string): 'image' | 'video' | 'audio' => {
-    const extension = url.split('.').pop()?.toLowerCase();
-    if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(extension || '')) {
-      return 'image';
-    }
-    if (['mp4', 'webm'].includes(extension || '')) {
-      return 'video';
-    }
-    return 'audio';
-  };
+	const backgroundColor = (board.typeConfig as any)?.backgroundColor;
+	const cardStyle = generateCardStyle(backgroundColor);
+	const textColors = getTextColors(backgroundColor);
+	const contrastTextStyles = getContrastTextStyles(backgroundColor);
 
-  useEffect(() => {
-    const checkPermissions = () => {
-      if (!userId) {
-        setCanEdit(false);
-        setCanDelete(false);
-        return;
-      }
+	const isOwnPost = userId === post.creatorId;
+	const canEdit = isOwnPost && new Date().getTime() - new Date(post.createdAt).getTime() < 10 * 60 * 1000;
+	const canDelete = isOwnPost || isModerator || isCreator;
+	const showModerationControls = (isModerator || isCreator) && !isOwnPost;
 
-      if (userId === post.creator?.id) {
-        const now = new Date();
-        const createdAt = new Date(post.createdAt);
-        const timeDiff = now.getTime() - createdAt.getTime();
-        const tenMinutesInMs = 10 * 60 * 1000;
-        setCanEdit(timeDiff <= tenMinutesInMs);
-      } else {
-        setCanEdit(false);
-      }
+	const handleDelete = async () => {
+		try {
+			setIsDeleting(true);
+			await apiRequest(`/api/posts/${post.id}`, {
+				method: 'DELETE',
+			});
+			onPostDeleted?.(post.id);
+			setShowDeleteDialog(false);
+		} catch (error) {
+			handleError(error);
+		} finally {
+			setIsDeleting(false);
+		}
+	};
 
-      setCanDelete(userId === post.creator?.id || userId === board.creatorId);
+	const getMediaType = (url: string): 'image' | 'video' | 'audio' => {
+		const extension = url.split('.').pop()?.toLowerCase();
+		if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(extension || '')) {
+			return 'image';
+		}
+		if (['mp4', 'webm'].includes(extension || '')) {
+			return 'video';
+		}
+		return 'audio';
+	};
 
-      setShowModerationControls(
-        (!!isModerator || !!isCreator) && userId !== post.creator?.id
-      );
-    };
+	const hasMedia = post.mediaUrls && post.mediaUrls.length > 0;
 
-    checkPermissions();
+	return (
+		<>
+			{/* Delete Confirmation Dialog */}
+			<Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+				<DialogContent className="bg-white rounded-3xl border border-gray-200 shadow-2xl">
+					<DialogHeader>
+						<DialogTitle className="text-2xl font-bold text-gray-900">Delete Post</DialogTitle>
+					</DialogHeader>
+					<div className="space-y-4">
+						<p className="text-gray-600">
+							Are you sure you want to delete this post? This action cannot be undone.
+						</p>
+						<div className="flex gap-3 justify-end">
+							<Button variant="outline" onClick={() => setShowDeleteDialog(false)} disabled={isDeleting} className="border-gray-300">
+								Cancel
+							</Button>
+							<Button
+								variant="destructive"
+								onClick={handleDelete}
+								disabled={isDeleting}
+								className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white border-0"
+							>
+								{isDeleting ? (
+									<>
+										<Loader2 className="w-4 h-4 mr-2 animate-spin" />
+										Deleting...
+									</>
+								) : (
+									<>
+										<Trash2 className="w-4 h-4 mr-2" />
+										Delete
+									</>
+								)}
+							</Button>
+						</div>
+					</div>
+				</DialogContent>
+			</Dialog>
 
-    const interval = setInterval(checkPermissions, 60000);
-    return () => clearInterval(interval);
-  }, [
-    userId,
-    post.creator?.id,
-    post.createdAt,
-    board.creatorId,
-    isModerator,
-    isCreator,
-  ]);
+			{/* Post Card */}
+			<div className="bg-white border border-gray-200 rounded-3xl p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group animate-in" role="article">
+				{/* Media */}
+				{hasMedia && (
+					<div className="mb-6 -mt-8 -mx-8 rounded-t-3xl overflow-hidden">
+						<MediaCarousel mediaUrls={post.mediaUrls!} getMediaType={getMediaType} />
+					</div>
+				)}
 
-  const handleDeleteClick = () => {
-    setDeleteError(null);
-    setIsDeleteDialogOpen(true);
-  };
+				{/* Header */}
+				<div className="flex items-start justify-between mb-6">
+					<div className="flex items-center gap-3 flex-1 min-w-0">
+						<div className="flex-shrink-0">
+							{post.isAnonymous ? (
+								<div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white shadow-md">
+									<User className="w-6 h-6" />
+								</div>
+							) : (
+								<UserAvatar user={post.creator} size="lg" />
+							)}
+						</div>
+						<div className="flex-1 min-w-0">
+							<p className="text-base font-semibold text-gray-900 truncate">
+								{post.isAnonymous ? post.anonymousName || 'Anonymous' : post.creator.name || 'Unknown'}
+							</p>
+							<div className="flex items-center gap-1.5 text-xs text-gray-500">
+								<Calendar className="w-3 h-3" />
+								<time dateTime={post.createdAt}>
+									{new Date(post.createdAt).toLocaleDateString('en-US', {
+										month: 'short',
+										day: 'numeric',
+										year: 'numeric',
+									})}
+								</time>
+							</div>
+						</div>
+					</div>
 
-  const handleDeleteConfirm = async () => {
-    setIsDeleting(true);
-    setDeleteError(null);
+					{/* Actions */}
+					<div className="flex items-center gap-1">
+						{canEdit && (
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button
+											variant="ghost"
+											size="sm"
+											onClick={() => openPostEdit(post.id)}
+											className="h-9 w-9 rounded-full hover:bg-purple-50 hover:text-purple-600"
+										>
+											<Edit2 className="h-4 w-4" />
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent>Edit post</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
+						)}
+						{!showModerationControls && canDelete && (
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button
+											variant="ghost"
+											size="sm"
+											onClick={() => setShowDeleteDialog(true)}
+											disabled={isDeleting}
+											className="h-9 w-9 rounded-full hover:bg-red-50 hover:text-red-600"
+										>
+											<Trash2 className="h-4 w-4" />
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent>Delete post</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
+						)}
+						{showModerationControls && (
+							<PostModerationControls
+								textColors={textColors}
+								postId={post.id}
+								moderationStatus={post.moderationStatus}
+								onModerationComplete={() => {
+									onPostUpdated?.(post);
+								}}
+							/>
+						)}
+					</div>
+				</div>
 
-    try {
-      await apiRequest(`/api/posts/${post.id}`, {
-        method: 'DELETE',
-      });
+				{/* Content */}
+				<div className="prose prose-sm max-w-none text-gray-700">
+					<PostContent content={post.content} className="border-0 p-0 min-h-0 text-base leading-relaxed" />
+				</div>
 
-      setIsDeleteDialogOpen(false);
-      onPostDeleted?.(post.id);
-    } catch (error) {
-      console.error('Error deleting post:', error);
-      setDeleteError(handleError(error));
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
-  const handleDeleteCancel = () => {
-    setIsDeleteDialogOpen(false);
-    setDeleteError(null);
-  };
-
-  const backgroundColor = (board.typeConfig as any)?.backgroundColor;
-  const cardStyle = generateCardStyle(backgroundColor);
-  const textColors = getTextColors(backgroundColor);
-  const contrastTextStyles = getContrastTextStyles(backgroundColor);
-
-  function deleteDialog() {
-    return (
-      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Delete Message</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <p className="text-sm text-gray-400">
-              Are you sure you want to delete this message? This action cannot
-              be undone.
-            </p>
-
-            {deleteError && (
-              <div className="bg-red-900/20 border border-red-800 rounded-lg p-3">
-                <p className="text-red-400 text-sm flex items-center gap-2">
-                  <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-                  {deleteError}
-                </p>
-              </div>
-            )}
-
-            <div className="flex justify-end space-x-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleDeleteCancel}
-                disabled={isDeleting}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={handleDeleteConfirm}
-                disabled={isDeleting}
-                className="min-w-[80px]"
-              >
-                {isDeleting ? 'Deleting...' : 'Delete'}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
-
-  function media() {
-    if (!post.mediaUrls || !post.mediaUrls.length) return null;
-    return (
-      <div className="-mx-2" role="group" aria-label="Media attachments">
-        <MediaCarousel
-          mediaUrls={post.mediaUrls}
-          getMediaType={getMediaType}
-          className="w-full"
-        />
-      </div>
-    );
-  }
-
-  function postFooter() {
-    return (
-      <div className="flex items-center justify-between pt-4 border-t border-gray-200/30 relative">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-300/30 to-transparent" />
-
-        <div className="flex items-center space-x-3">
-          {post.isAnonymous ? (
-            <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center flex-shrink-0 ring-2 ring-gray-300/50 shadow-sm">
-              <MessageCircle className="w-5 h-5 text-white" />
-            </div>
-          ) : (
-            <UserAvatar
-              user={post.creator}
-              size="md"
-              className="flex-shrink-0 ring-2 ring-gray-300/50 shadow-sm hover:ring-gray-400/70 transition-all duration-200"
-            />
-          )}
-          <div className="flex-1 min-w-0">
-            <div
-              className="text-sm font-semibold truncate mb-0.5"
-              style={contrastTextStyles.primary}
-            >
-              {post.isAnonymous
-                ? post.anonymousName || 'Anonymous'
-                : post.creator.name || 'Unknown'}
-            </div>
-            <div
-              className="text-xs font-medium"
-              style={contrastTextStyles.muted}
-            >
-              <time dateTime={post.createdAt}>
-                {new Date(post.createdAt).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric',
-                  hour: 'numeric',
-                  minute: '2-digit',
-                })}
-              </time>
-            </div>
-          </div>
-        </div>
-
-        <div
-          className="flex items-center space-x-1"
-          role="group"
-          aria-label="Post actions"
-        >
-          {canEdit && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => openPostEdit(post.id)}
-                    className={`h-8 w-8 p-0 ${textColors.muted} hover:${textColors.primary} hover:bg-gray-100/50 rounded-full transition-all duration-200`}
-                    aria-label="Edit post"
-                  >
-                    <Edit2 className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Edit</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-          {!showModerationControls && canDelete && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleDeleteClick}
-              disabled={isDeleting}
-              className={`h-8 w-8 p-0 ${textColors.muted} hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-200`}
-              aria-label={isDeleting ? 'Deleting post...' : 'Delete post'}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          )}
-          {showModerationControls && (
-            <PostModerationControls
-              textColors={textColors}
-              postId={post.id}
-              moderationStatus={post.moderationStatus}
-              onModerationComplete={() => {
-                onPostUpdated?.(post);
-              }}
-            />
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      {deleteDialog()}
-
-      <Card
-        className="w-full h-fit overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 shadow-lg backdrop-blur-sm relative group border"
-        style={cardStyle}
-        role="article"
-        aria-label={`Post by ${
-          post.isAnonymous
-            ? post.anonymousName || 'Anonymous'
-            : post.creator.name || 'Unknown'
-        }`}
-      >
-        {media()}
-        <div className="p-6 space-y-4 relative">
-          <div
-            className="text-sm leading-relaxed"
-            style={contrastTextStyles.primary}
-          >
-            <PostContent
-              content={post.content}
-              className="border-0 p-0 min-h-0"
-            />
-          </div>
-          {postFooter()}
-        </div>
-      </Card>
-    </>
-  );
+				{/* Moderation Status */}
+				{post.moderationStatus !== 'approved' && (isModerator || isCreator || isOwnPost) && (
+					<div className="mt-6 pt-6 border-t border-gray-200">
+						<div
+							className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium ${
+								post.moderationStatus === 'pending'
+									? 'bg-yellow-50 text-yellow-700'
+									: post.moderationStatus === 'rejected'
+										? 'bg-red-50 text-red-700'
+										: 'bg-blue-50 text-blue-700'
+							}`}
+						>
+							<span className="w-2 h-2 rounded-full bg-current animate-pulse"></span>
+							{post.moderationStatus === 'pending' && 'Pending Moderation'}
+							{post.moderationStatus === 'rejected' && 'Rejected'}
+							{post.moderationStatus === 'change_requested' && 'Changes Requested'}
+						</div>
+						{post.moderationReason && (
+							<p className="text-xs text-gray-600 mt-2">Reason: {post.moderationReason}</p>
+						)}
+					</div>
+				)}
+			</div>
+		</>
+	);
 }
 
 export function BoardView({
-  board,
-  posts,
-  onPostUpdated,
-  onPostDeleted,
-  isModerator,
-  isCreator,
-  onFetchMorePosts,
-  hasMorePosts,
-  isFetchingMore,
+	board,
+	posts,
+	onPostUpdated,
+	onPostDeleted,
+	isModerator,
+	isCreator,
+	onFetchMorePosts,
+	hasMorePosts,
+	isFetchingMore,
 }: BoardViewProps) {
-  const [slideshowOpen, setSlideshowOpen] = useState(false);
+	const [slideshowOpen, setSlideshowOpen] = useState(false);
+	const backgroundColor = (board.typeConfig as any)?.backgroundColor;
+	const textColors = getTextColors(backgroundColor);
+	const contrastTextStyles = getContrastTextStyles(backgroundColor);
 
-  useEffect(() => {
-    if (process.env.NODE_ENV !== 'test') {
-      const stopTimer = perf.startTimer('component-render-board-view');
-      return stopTimer;
-    }
-  }, []);
+	const content = () => {
+		if (posts.length === 0) {
+			return (
+				<div className="bg-white border border-gray-200 rounded-3xl p-16 text-center shadow-lg mx-auto max-w-2xl">
+					<div className="w-20 h-20 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-6">
+						<MessageCircle className="w-10 h-10 text-purple-600" />
+					</div>
+					<h3 className="text-2xl font-bold text-gray-900 mb-3">No messages yet</h3>
+					<p className="text-gray-600 max-w-md mx-auto">
+						Be the first to share your appreciation for{' '}
+						<span className="font-semibold text-gray-900">{board.recipientName}</span>
+					</p>
+				</div>
+			);
+		}
 
-  const backgroundColor = (board.typeConfig as any)?.backgroundColor;
-  const textColors = getTextColors(backgroundColor);
-  const contrastTextStyles = getContrastTextStyles(backgroundColor);
+		return (
+			<section aria-label="Appreciation messages">
+				<MasonryLayout className="w-full" minColumnWidth={320} gap={24}>
+					{posts.map((post, idx) => (
+						<div
+							key={post.id}
+							style={{
+								animation: `fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 0.03}s forwards`,
+								opacity: 0,
+							}}
+						>
+							<PostCard
+								post={post}
+								board={board}
+								onPostUpdated={onPostUpdated}
+								onPostDeleted={onPostDeleted}
+								isModerator={isModerator}
+								isCreator={isCreator}
+							/>
+						</div>
+					))}
+				</MasonryLayout>
+			</section>
+		);
+	};
 
-  useEffect(() => {
-    if (backgroundColor) {
-      const style = generateGradientStyle(backgroundColor);
-      if (style.background) {
-        document.body.style.background = style.background as string;
-      }
-    } else {
-      document.body.style.background =
-        'linear-gradient(135deg, #fef7ed 0%, #ffffff 50%, #fef7ed 100%)';
-    }
+	return (
+		<div className="relative min-h-screen bg-gray-50">
+			{/* Header */}
+			<header className="relative section-padding py-16 md:py-24 text-center">
+				<div className="container-narrow">
+					<div className="inline-flex items-center gap-2 bg-white border border-purple-200 px-6 py-3 rounded-full text-sm font-medium mb-8 animate-in shadow-sm">
+						<Heart className="w-4 h-4 text-purple-600" />
+						<span className="text-gray-900">Messages of appreciation</span>
+					</div>
 
-    return () => {
-      document.body.style.background = '';
-    };
-  }, [backgroundColor]);
+					<h1 className="mb-6 animate-in-delay-1 text-gray-900">
+						<span className="bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">{board.title}</span>
+					</h1>
 
-  function content() {
-    if (!posts.length) {
-      return (
-        <EmptyState
-          recipientName={board.recipientName}
-          textColors={textColors}
-          contrastTextStyles={contrastTextStyles}
-        />
-      );
-    }
-    return (
-      <section aria-label="Appreciation messages">
-        <MasonryLayout className="w-full" minColumnWidth={320} gap={24}>
-          {posts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              board={board}
-              onPostUpdated={onPostUpdated}
-              onPostDeleted={onPostDeleted}
-              isModerator={isModerator}
-              isCreator={isCreator}
-            />
-          ))}
-        </MasonryLayout>
-      </section>
-    );
-  }
+					<p className="text-xl md:text-2xl text-gray-600 mb-10 animate-in-delay-2 text-balance">
+						Heartfelt messages and memories for{' '}
+						<span className="font-semibold text-gray-900">{board.recipientName}</span>
+					</p>
 
-  return (
-    <div className="relative min-h-screen">
-      <header className="relative py-8 text-center">
-        <h1
-          className="text-4xl md:text-5xl font-bold mb-4"
-          style={contrastTextStyles.primary}
-        >
-          {board.title}
-        </h1>
-        <p
-          className="text-xl max-w-2xl mx-auto mb-6"
-          style={contrastTextStyles.secondary}
-        >
-          Heartfelt messages and memories for{' '}
-          <span className="font-semibold" style={contrastTextStyles.accent}>
-            {board.recipientName}
-          </span>
-        </p>
-        {posts.length > 0 && (
-          <Button onClick={() => setSlideshowOpen(true)} size="lg">
-            <Play className="w-5 h-5 mr-2" />
-            Start Slideshow
-          </Button>
-        )}
-      </header>
+					<div className="flex flex-wrap items-center justify-center gap-4 animate-in-delay-3">
+						{posts.length > 0 && (
+							<Button
+								onClick={() => setSlideshowOpen(true)}
+								size="lg"
+								className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white border-0 shadow-lg hover:shadow-xl transition-all"
+							>
+								<Play className="w-5 h-5 mr-2" />
+								Start Slideshow
+							</Button>
+						)}
 
-      <main className="relative px-4 pb-8">{content()}</main>
+						{(isModerator || isCreator) && (
+							<Link href={`/boards/${board.id}/manage`}>
+								<Button variant="outline" size="lg" className="bg-white border-gray-300 text-gray-900 hover:bg-gray-50">
+									<Settings className="w-5 h-5 mr-2" />
+									Manage Board
+								</Button>
+							</Link>
+						)}
+					</div>
 
-      <Slideshow
-        posts={posts.map((post) => ({
-          id: post.id,
-          content: post.content,
-          mediaUrls: post.mediaUrls || [],
-          creatorId: post.isAnonymous
-            ? post.anonymousName || 'Anonymous'
-            : post.creator.name,
-          isAnonymous: post.isAnonymous,
-          anonymousName: post.anonymousName || undefined,
-          createdAt: post.createdAt,
-        }))}
-        isOpen={slideshowOpen}
-        onClose={() => setSlideshowOpen(false)}
-        backgroundColor={backgroundColor}
-        onFetchMorePosts={onFetchMorePosts}
-        hasMorePosts={hasMorePosts}
-        isFetchingMore={isFetchingMore}
-      />
-    </div>
-  );
+					{/* Stats */}
+					{posts.length > 0 && (
+						<div className="mt-12 flex items-center justify-center gap-8 text-sm text-gray-600 animate-in-delay-4">
+							<div className="flex items-center gap-2">
+								<MessageCircle className="w-4 h-4 text-purple-600" />
+								<span>
+									{posts.length} {posts.length === 1 ? 'message' : 'messages'}
+								</span>
+							</div>
+							<div className="flex items-center gap-2">
+								<Sparkles className="w-4 h-4 text-orange-500" />
+								<span>Shared with love</span>
+							</div>
+						</div>
+					)}
+				</div>
+			</header>
+
+			{/* Main Content */}
+			<main className="relative section-padding pb-20">
+				<div className="container-wide">{content()}</div>
+
+				{/* Load More */}
+				{hasMorePosts && (
+					<div className="flex justify-center mt-12">
+						<Button
+							onClick={onFetchMorePosts}
+							disabled={isFetchingMore}
+							size="lg"
+							variant="outline"
+							className="bg-white border-gray-300 text-gray-900 hover:bg-gray-50 min-w-[200px] shadow-sm"
+						>
+							{isFetchingMore ? (
+								<>
+									<Loader2 className="w-5 h-5 mr-2 animate-spin" />
+									Loading...
+								</>
+							) : (
+								<>
+									<MessageCircle className="w-5 h-5 mr-2" />
+									Load More Messages
+								</>
+							)}
+						</Button>
+					</div>
+				)}
+			</main>
+
+			{/* Slideshow */}
+			<Slideshow
+				posts={posts.map((post) => ({
+					id: post.id,
+					content: post.content,
+					mediaUrls: post.mediaUrls || [],
+					creatorId: post.isAnonymous ? post.anonymousName || 'Anonymous' : post.creator.name,
+					isAnonymous: post.isAnonymous,
+					anonymousName: post.anonymousName || undefined,
+					createdAt: post.createdAt,
+				}))}
+				isOpen={slideshowOpen}
+				onClose={() => setSlideshowOpen(false)}
+				backgroundColor={backgroundColor}
+				onFetchMorePosts={onFetchMorePosts}
+				hasMorePosts={hasMorePosts}
+				isFetchingMore={isFetchingMore}
+			/>
+		</div>
+	);
 }

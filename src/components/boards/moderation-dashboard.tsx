@@ -82,7 +82,7 @@ export function ModerationDashboard({ boardId }: ModerationDashboardProps) {
     return (
       <Card className="bg-background/80 backdrop-blur-sm border border-border/40 shadow-lg">
         <CardHeader className="text-center pb-4">
-          <div className="mx-auto w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto w-16 h-16 bg-teal rounded-full flex items-center justify-center mb-4">
             <Eye className="w-8 h-8 text-danke-900" />
           </div>
           <CardTitle className="text-xl text-foreground">
@@ -99,7 +99,7 @@ export function ModerationDashboard({ boardId }: ModerationDashboardProps) {
   return (
     <Card className="bg-background/80 backdrop-blur-sm border border-border/40 shadow-lg">
       <CardHeader className="text-center pb-4">
-        <div className="mx-auto w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mb-4">
+        <div className="mx-auto w-16 h-16 bg-teal rounded-full flex items-center justify-center mb-4">
           <Eye className="w-8 h-8 text-danke-900" />
         </div>
         <CardTitle className="text-xl text-foreground">
@@ -181,10 +181,10 @@ export function ModerationDashboard({ boardId }: ModerationDashboardProps) {
           <Dialog>
             <DialogTrigger>
               <div className="text-center p-3 bg-background/50 rounded-lg cursor-pointer">
-                <div className="text-2xl font-bold text-orange-600">
+                <div className="text-2xl font-bold text-yellow-600">
                   {postsNeedingChange.length}
                 </div>
-                <div className="text-xs text-orange-600">Need Changes</div>
+                <div className="text-xs text-yellow-600">Need Changes</div>
               </div>
             </DialogTrigger>
             <DialogContent className="gap-6">
@@ -219,7 +219,7 @@ export function ModerationDashboard({ boardId }: ModerationDashboardProps) {
                         </p>
                       </div>
                       {post.moderationReason && (
-                        <p className="text-xs px-3 py-2 bg-orange-800 text-foreground">
+                        <p className="text-xs px-3 py-2 bg-yellow-800 text-foreground">
                           Reason: {post.moderationReason}
                         </p>
                       )}

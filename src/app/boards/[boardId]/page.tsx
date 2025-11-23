@@ -68,9 +68,9 @@ export default async function BoardPage({ params }: BoardPageProps) {
   if (error) {
     console.error('BoardPage: Error occurred:', error);
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-danke-50 via-white to-danke-100">
+      <div className="min-h-screen flex items-center justify-center bg-[hsl(250,40%,99%)]">
         <div className="text-center max-w-md mx-auto px-4">
-          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-red-200 to-red-300 rounded-full flex items-center justify-center mb-6 shadow-lg">
+          <div className="mx-auto w-24 h-24 bg-red-100 rounded-3xl flex items-center justify-center mb-6 shadow-xl border-4 border-white rotate-6">
             <Heart className="w-10 h-10 text-red-700" />
           </div>
           <h1 className="text-3xl font-bold text-danke-900 mb-4">
@@ -96,7 +96,7 @@ export default async function BoardPage({ params }: BoardPageProps) {
   if (data.accessDenied) {
     return (
       <div className="text-center max-w-md mx-auto px-4 mt-20">
-        <div className="mx-auto w-20 h-20 bg-gradient-to-br from-orange-200 to-orange-300 rounded-full flex items-center justify-center mb-6 shadow-lg">
+        <div className="mx-auto w-24 h-24 bg-purple-100 rounded-3xl flex items-center justify-center mb-6 shadow-xl border-4 border-white rotate-3">
           <Lock className="w-10 h-10 text-danke-900" />
         </div>
         <h1 className="text-3xl font-bold text-danke-900 mb-4">

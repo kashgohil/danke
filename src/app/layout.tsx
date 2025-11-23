@@ -56,27 +56,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 									<PostEditProvider>
 										<div
 											aria-hidden="true"
-											className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600"
+											className="pointer-events-none fixed inset-0 -z-10 bg-[hsl(250,40%,99%)]"
 										/>
-										<div className="min-h-screen">
-											<header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 md:top-3 md:rounded-xl z-40 md:mx-auto w-full md:w-[calc(100%-5rem)]">
-												<div className="flex justify-between items-center mx-auto px-4 py-4 md:px-6">
+										<div className="min-h-screen flex flex-col">
+											<header className="border-b-4 border-white bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+												<div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-5">
 													<Link
 														href="/"
-														className="text-2xl font-bold bg-gradient-to-r from-danke-600 to-danke-gold bg-clip-text text-transparent hover:from-danke-700 hover:to-danke-500 transition-all flex items-center gap-2"
+														className="text-2xl font-black text-danke-600 hover:text-teal transition-colors flex items-center gap-3 group"
 													>
-														<Image
-															src={logo}
-															alt="Danke"
-															width={32}
-															height={32}
-														/>
-														Danke
+														<div className="w-10 h-10 rounded-2xl bg-danke-500 flex items-center justify-center shadow-lg rotate-3 group-hover:rotate-6 group-hover:scale-110 transition-all duration-300">
+															<Image
+																src={logo}
+																alt="Danke"
+																width={24}
+																height={24}
+																className="w-6 h-6 brightness-0 invert"
+															/>
+														</div>
+														<span className="tracking-tight">Danke</span>
 													</Link>
 													<AuthHeader />
 												</div>
 											</header>
-											<main className="container mx-auto px-4 py-12 flex-1">{children}</main>
+											<main className="flex-1 max-w-7xl w-full mx-auto px-6 py-10">{children}</main>
 										</div>
 									</PostEditProvider>
 								</AuthProvider>

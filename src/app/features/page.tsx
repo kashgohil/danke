@@ -19,7 +19,7 @@ export default function FeaturesPage() {
 				<h1 className="text-4xl md:text-6xl mt-12 font-bold mb-6 text-danke-900">
 					Powerful Features for
 					<br />
-					<span className="text-danke-gold">Beautiful Boards</span>
+					<span className="text-teal">Beautiful Boards</span>
 				</h1>
 				<p className="text-xl max-w-3xl mx-auto leading-relaxed text-danke-900">
 					Everything you need to create stunning appreciation boards that bring your community together and celebrate
@@ -28,11 +28,11 @@ export default function FeaturesPage() {
 			</section>
 
 			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Core Features</h2>
+				<h2 className="text-3xl font-bold text-center mb-12 text-teal">Core Features</h2>
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<MessageCircle className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Rich Text Messages</CardTitle>
@@ -45,7 +45,7 @@ export default function FeaturesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<ImageIcon className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Media Uploads</CardTitle>
@@ -58,7 +58,7 @@ export default function FeaturesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<Sparkles className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Beautiful Layouts</CardTitle>
@@ -71,7 +71,7 @@ export default function FeaturesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<Share2 className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Easy Sharing</CardTitle>
@@ -84,7 +84,7 @@ export default function FeaturesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<Heart className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Real-time Updates</CardTitle>
@@ -97,7 +97,7 @@ export default function FeaturesPage() {
 
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 						<CardHeader>
-							<div className="w-12 h-12 bg-danke-gold rounded-lg flex items-center justify-center mb-4">
+							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
 								<Palette className="w-6 h-6 text-danke-900" />
 							</div>
 							<CardTitle>Custom Themes</CardTitle>
@@ -118,31 +118,31 @@ export default function FeaturesPage() {
 							<h3 className="text-xl font-semibold text-danke-900 mb-6 text-center">Built for Scale</h3>
 							<div className="flex items-center gap-3">
 								<div className="flex items-center bg-background rounded-full p-1">
-									<Check className="w-5 h-5 text-danke-gold flex-shrink-0" />
+									<Check className="w-5 h-5 text-teal flex-shrink-0" />
 								</div>
 								<span>Handle thousands of messages per board</span>
 							</div>
 							<div className="flex items-center gap-3">
 								<div className="flex items-center bg-background rounded-full p-1">
-									<Check className="w-5 h-5 text-danke-gold flex-shrink-0" />
+									<Check className="w-5 h-5 text-teal flex-shrink-0" />
 								</div>
 								<span>Enterprise-grade security and reliability</span>
 							</div>
 							<div className="flex items-center gap-3">
 								<div className="flex items-center bg-background rounded-full p-1">
-									<Check className="w-5 h-5 text-danke-gold flex-shrink-0" />
+									<Check className="w-5 h-5 text-teal flex-shrink-0" />
 								</div>
 								<span>99.9% uptime guarantee</span>
 							</div>
 							<div className="flex items-center gap-3">
 								<div className="flex items-center bg-background rounded-full p-1">
-									<Check className="w-5 h-5 text-danke-gold flex-shrink-0" />
+									<Check className="w-5 h-5 text-teal flex-shrink-0" />
 								</div>
 								<span>Global CDN for fast loading worldwide</span>
 							</div>
 							<div className="flex items-center gap-3">
 								<div className="flex items-center bg-background rounded-full p-1">
-									<Check className="w-5 h-5 text-danke-gold flex-shrink-0" />
+									<Check className="w-5 h-5 text-teal flex-shrink-0" />
 								</div>
 								<span>24/7 customer support</span>
 							</div>
@@ -152,31 +152,31 @@ export default function FeaturesPage() {
 							<h3 className="text-xl font-semibold text-danke-900 mb-6 text-center">What Makes Us Different</h3>
 							<div className="flex items-center gap-4">
 								<div className="flex items-center bg-background rounded-full p-1">
-									<Check className="w-5 h-5 text-danke-gold flex-shrink-0" />
+									<Check className="w-5 h-5 text-teal flex-shrink-0" />
 								</div>
 								<span>No account required for contributors</span>
 							</div>
 							<div className="flex items-center gap-4">
 								<div className="flex items-center bg-background rounded-full p-1">
-									<Check className="w-5 h-5 text-danke-gold flex-shrink-0" />
+									<Check className="w-5 h-5 text-teal flex-shrink-0" />
 								</div>
 								<span>Beautiful, responsive design out of the box</span>
 							</div>
 							<div className="flex items-center gap-4">
 								<div className="flex items-center bg-background rounded-full p-1">
-									<Check className="w-5 h-5 text-danke-gold flex-shrink-0" />
+									<Check className="w-5 h-5 text-teal flex-shrink-0" />
 								</div>
 								<span>Real-time collaboration and updates</span>
 							</div>
 							<div className="flex items-center gap-4">
 								<div className="flex items-center bg-background rounded-full p-1">
-									<Check className="w-5 h-5 text-danke-gold flex-shrink-0" />
+									<Check className="w-5 h-5 text-teal flex-shrink-0" />
 								</div>
 								<span>Advanced privacy and moderation tools</span>
 							</div>
 							<div className="flex items-center gap-4">
 								<div className="flex items-center bg-background rounded-full p-1">
-									<Check className="w-5 h-5 text-danke-gold flex-shrink-0" />
+									<Check className="w-5 h-5 text-teal flex-shrink-0" />
 								</div>
 								<span>Unlimited media uploads and storage</span>
 							</div>
@@ -186,7 +186,7 @@ export default function FeaturesPage() {
 			</section>
 
 			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Perfect For Every Occasion</h2>
+				<h2 className="text-3xl font-bold text-center mb-12 text-teal">Perfect For Every Occasion</h2>
 				<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
 					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
 						<CardHeader>
@@ -246,7 +246,7 @@ export default function FeaturesPage() {
 				</div>
 			</section>
 
-			<section className="text-center py-16 -mx-4 px-4 bg-gradient-to-r rounded-lg text-danke-900">
+			<section className="text-center py-20 -mx-4 px-8 bg-teal rounded-3xl text-white shadow-2xl border-4 border-teal/70">
 				<h2 className="text-3xl font-bold mb-6">Ready to Experience These Features?</h2>
 				<p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
 					Start creating beautiful appreciation boards today and see why thousands of communities choose Danke.
@@ -255,7 +255,7 @@ export default function FeaturesPage() {
 					<Link href="/create-board">
 						<Button
 							size="lg"
-							className="inline-flex items-center justify-center px-6 py-3 bg-danke-gold text-background font-medium rounded-lg hover:bg-danke-gold/90 transition-colors"
+							className="inline-flex items-center justify-center px-6 py-3 bg-teal text-background font-medium rounded-lg hover:bg-teal/90 transition-colors"
 						>
 							Create Your First Board
 						</Button>

@@ -57,7 +57,7 @@ export default async function BoardManagePage({
 
   if (!board) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600">
+      <div className="min-h-screen bg-[hsl(250,40%,99%)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="max-w-md mx-auto text-center">
             <div className="mx-auto w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-6">
@@ -80,7 +80,7 @@ export default async function BoardManagePage({
 
   if (board.creatorId !== userId) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-danke-700 via-danke-300 to-danke-600">
+      <div className="min-h-screen bg-[hsl(250,40%,99%)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="max-w-md mx-auto text-center">
             <div className="mx-auto w-20 h-20 bg-destructive/10 rounded-full flex items-center justify-center mb-6">
@@ -113,7 +113,7 @@ export default async function BoardManagePage({
       <BackButton />
       <div className="space-y-8">
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 bg-danke-gold text-danke-900 px-4 py-2 rounded-full text-sm font-medium">
+          <div className="inline-flex items-center gap-2 bg-teal text-danke-900 px-4 py-2 rounded-full text-sm font-medium">
             <Settings className="w-4 h-4" />
             <span>Board Management</span>
           </div>
@@ -132,7 +132,7 @@ export default async function BoardManagePage({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
           <Card className="bg-background/80 backdrop-blur-sm border border-border/40 shadow-lg">
             <CardHeader className="text-center pb-4">
-              <div className="mx-auto w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mb-4">
+              <div className="mx-auto w-16 h-16 bg-teal rounded-full flex items-center justify-center mb-4">
                 <Heart className="w-8 h-8 text-danke-900" />
               </div>
               <CardTitle className="text-xl text-foreground">
@@ -171,7 +171,7 @@ export default async function BoardManagePage({
 
           <Card className="bg-background/80 backdrop-blur-sm border border-border/40 shadow-lg">
             <CardHeader className="text-center pb-4">
-              <div className="mx-auto w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mb-4">
+              <div className="mx-auto w-16 h-16 bg-teal rounded-full flex items-center justify-center mb-4">
                 <Share2 className="w-8 h-8 text-danke-900" />
               </div>
               <CardTitle className="text-xl text-foreground">

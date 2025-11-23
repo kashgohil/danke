@@ -144,7 +144,7 @@ export function ModeratorManagement({
   return (
     <Card className="bg-background/80 backdrop-blur-sm border border-border/40 shadow-lg z-1">
       <CardHeader className="text-center pb-4">
-        <div className="mx-auto w-16 h-16 bg-danke-gold rounded-full flex items-center justify-center mb-4">
+        <div className="mx-auto w-16 h-16 bg-teal rounded-full flex items-center justify-center mb-4">
           <Shield className="w-8 h-8 text-danke-900" />
         </div>
         <CardTitle className="text-xl text-foreground">
@@ -236,7 +236,7 @@ export function ModeratorManagement({
                 className="flex items-center justify-between p-3 bg-background/50 rounded-lg"
               >
                 <div className="flex items-center flex-1 gap-3">
-                  <div className="w-8 h-8 bg-danke-gold rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-teal rounded-full flex items-center justify-center">
                     <Mail className="w-4 h-4 text-danke-900" />
                   </div>
                   <div className="flex flex-col">

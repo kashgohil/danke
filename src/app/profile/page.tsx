@@ -20,7 +20,7 @@ export default function ProfilePage() {
       </div>
 
       <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 bg-danke-gold/40 text-danke-900 px-4 py-2 rounded-full text-sm font-medium mb-6">
+        <div className="inline-flex items-center gap-2 bg-teal/40 text-danke-900 px-4 py-2 rounded-full text-sm font-medium mb-6">
           <User className="w-4 h-4" />
           Your Profile
         </div>
@@ -40,7 +40,7 @@ export default function ProfilePage() {
         <SignedOut>
           <div className="text-center max-w-md mx-auto">
             <div className="bg-background/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-border/40">
-              <div className="w-16 h-16 bg-danke-gold/40 rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-teal/40 rounded-full flex items-center justify-center mx-auto mb-6">
                 <User className="h-8 w-8 text-danke-900" />
               </div>
               <h3 className="text-2xl font-bold mb-4">
@@ -53,7 +53,7 @@ export default function ProfilePage() {
               <SignUpButton>
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-danke-600 to-danke-gold hover:from-danke-700 hover:to-danke-500 text-white shadow-lg"
+                  className="bg-danke-500 hover:bg-danke-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 rounded-2xl font-bold hover:scale-105"
                 >
                   Get Started
                 </Button>
