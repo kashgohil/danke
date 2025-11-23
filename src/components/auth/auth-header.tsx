@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   SignedIn,
   SignedOut,
@@ -9,19 +9,19 @@ import {
   SignUpButton,
   UserButton,
   useUser,
-} from '@clerk/nextjs';
-import { LayoutDashboard, User } from 'lucide-react';
-import Link from 'next/link';
-import { useState } from 'react';
-import { NotificationBell } from '../ui/notification-bell';
-import { NotificationsDrawer } from '../ui/notifications-drawer';
+} from "@clerk/nextjs";
+import { LayoutDashboard, User } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { NotificationBell } from "../ui/notification-bell";
+import { NotificationsDrawer } from "../ui/notifications-drawer";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../ui/tooltip';
-import { useAuth } from './auth-context';
+} from "../ui/tooltip";
+import { useAuth } from "./auth-context";
 
 export function AuthHeader() {
   const { isLoaded } = useUser();
@@ -55,15 +55,24 @@ export function AuthHeader() {
 
   return (
     <>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <SignedOut>
           <SignInButton mode="modal">
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-purple-300 text-purple-900 hover:bg-purple-100 hover:text-purple-700 bg-purple-200"
+            >
               Sign In
             </Button>
           </SignInButton>
           <SignUpButton mode="modal">
-            <Button size="sm">Sign Up</Button>
+            <Button
+              size="sm"
+              className="bg-purple-600 hover:bg-purple-700 text-white border-0 shadow-md hover:shadow-lg font-semibold"
+            >
+              Sign Up
+            </Button>
           </SignUpButton>
         </SignedOut>
         <SignedIn>
@@ -74,7 +83,7 @@ export function AuthHeader() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 text-purple-900 hover:bg-purple-100 hover:text-purple-700"
                   >
                     <LayoutDashboard className="w-4 h-4" />
                   </Button>
@@ -90,7 +99,7 @@ export function AuthHeader() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 text-purple-900 hover:bg-purple-100 hover:text-purple-700"
                   >
                     <User className="w-4 h-4" />
                   </Button>
@@ -103,9 +112,9 @@ export function AuthHeader() {
           <UserButton
             appearance={{
               elements: {
-                avatarBox: 'ml-2 w-8 h-8',
-                userButtonPopoverCard: 'shadow-lg border',
-                userButtonPopoverActionButton: 'hover:bg-gray-50',
+                avatarBox: "ml-2 w-9 h-9 ring-2 ring-purple-200",
+                userButtonPopoverCard: "shadow-2xl border border-gray-200",
+                userButtonPopoverActionButton: "hover:bg-gray-50",
               },
             }}
             showName={false}

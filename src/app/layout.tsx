@@ -59,19 +59,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 											className="pointer-events-none fixed inset-0 -z-10 bg-[hsl(250,40%,99%)]"
 										/>
 										<div className="min-h-screen flex flex-col">
-											<header className="border-b-4 border-white bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm">
-												<div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-5">
+											<header className="border-b border-purple-200/50 bg-purple-50/90 backdrop-blur-xl sticky top-0 z-50 shadow-sm">
+												<div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
 													<Link
 														href="/"
-														className="text-2xl font-black text-danke-600 hover:text-teal transition-colors flex items-center gap-3 group"
+														className="text-2xl font-black text-purple-900 hover:text-purple-600 transition-colors flex items-center gap-3 group"
 													>
-														<div className="w-10 h-10 rounded-2xl bg-danke-500 flex items-center justify-center shadow-lg rotate-3 group-hover:rotate-6 group-hover:scale-110 transition-all duration-300">
+														<div className="w-12 h-12 rounded-2xl bg-purple-600 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:shadow-purple-500/30 rotate-3 group-hover:rotate-6 group-hover:scale-110 transition-all duration-300">
 															<Image
 																src={logo}
 																alt="Danke"
-																width={24}
-																height={24}
-																className="w-6 h-6 brightness-0 invert"
+																width={28}
+																height={28}
+																className="w-7 h-7 brightness-0 invert"
 															/>
 														</div>
 														<span className="tracking-tight">Danke</span>
@@ -79,7 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 													<AuthHeader />
 												</div>
 											</header>
-											<main className="flex-1 max-w-7xl w-full mx-auto px-6 py-10">{children}</main>
+											<main className="flex-1 w-full">{children}</main>
 										</div>
 									</PostEditProvider>
 								</AuthProvider>
