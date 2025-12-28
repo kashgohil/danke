@@ -17,8 +17,23 @@ export function Footer() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <Image src={logo} alt="Danke.png" height={24} width={24} />
-                  <span className="text-xl font-bold text-gray-900">Danke</span>
+                  <Link
+                    href="/"
+                    className="text-2xl font-black text-gray-900 hover:text-gray-700 transition-colors flex items-center gap-3 group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-gray-900 flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                      <Image
+                        src={logo}
+                        alt="Danke"
+                        width={16}
+                        height={16}
+                        className="w-5 h-5 brightness-0 invert"
+                      />
+                    </div>
+                    <span className="tracking-tight font-fuzzy-bubbles">
+                      Danke
+                    </span>
+                  </Link>
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed max-w-sm">
                   Create beautiful appreciation boards to celebrate moments,
@@ -177,7 +192,7 @@ export function Footer() {
               <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                   <div className="text-sm text-gray-600">
-                    © 2024 Danke. All rights reserved.
+                    © 2025 Danke. All rights reserved.
                   </div>
                   <div className="flex items-center gap-6 text-sm">
                     <Link
