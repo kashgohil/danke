@@ -5,23 +5,23 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer',
+  'inline-flex items-center justify-center whitespace-nowrap rounded-sm text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer shadow-md hover:shadow-lg',
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        default: 'bg-gray-900 text-white hover:bg-gray-800 border border-gray-900',
         destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'bg-background hover:bg-accent hover:text-accent-foreground',
+          'bg-red-600 text-white hover:bg-red-700 border border-red-600',
+        outline: 'bg-white border border-gray-300 text-gray-900 hover:bg-gray-50 hover:border-gray-400',
         secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
+          'bg-gray-100 text-gray-900 hover:bg-gray-200 border border-gray-200',
+        ghost: 'bg-transparent border border-transparent text-gray-900 hover:bg-gray-100 hover:border-gray-200',
+        link: 'bg-transparent border border-transparent text-gray-900 underline-offset-4 hover:underline hover:text-gray-700',
       },
       size: {
         default: 'h-10 px-4 py-2',
-        sm: 'h-9 rounded-md px-3',
-        lg: 'h-11 rounded-md px-8',
+        sm: 'h-9 rounded-sm px-3',
+        lg: 'h-11 rounded-sm px-8',
         icon: 'h-10 w-10',
       },
     },
@@ -63,7 +63,7 @@ export function IconButton({
       type="button"
       onClick={onClick}
       className={cn(
-        'inline-flex items-center justify-center rounded-full p-2 transition-colors hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring',
+        'inline-flex items-center justify-center rounded-full p-2 transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300',
         className
       )}
       {...props}

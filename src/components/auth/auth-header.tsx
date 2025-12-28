@@ -61,7 +61,7 @@ export function AuthHeader() {
             <Button
               variant="outline"
               size="sm"
-              className="border-purple-300 text-purple-900 hover:bg-purple-100 hover:text-purple-700 bg-purple-200"
+              className="font-semibold font-fuzzy-bubbles border-gray-300 text-gray-900 hover:bg-gray-100 hover:text-gray-700"
             >
               Sign In
             </Button>
@@ -69,7 +69,7 @@ export function AuthHeader() {
           <SignUpButton mode="modal">
             <Button
               size="sm"
-              className="bg-purple-600 hover:bg-purple-700 text-white border-0 shadow-md hover:shadow-lg font-semibold"
+              className="bg-gray-900 font-fuzzy-bubbles hover:bg-gray-800 text-white border-0 shadow-md hover:shadow-lg font-semibold"
             >
               Sign Up
             </Button>
@@ -83,13 +83,13 @@ export function AuthHeader() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="flex items-center gap-2 text-purple-900 hover:bg-purple-100 hover:text-purple-700"
+                    className="flex items-center gap-2 text-gray-900 hover:bg-gray-100 hover:text-gray-700"
                   >
                     <LayoutDashboard className="w-4 h-4" />
                   </Button>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent>Dashboard</TooltipContent>
+              <TooltipContent side="bottom">Dashboard</TooltipContent>
             </Tooltip>
           </TooltipProvider>
           <TooltipProvider>
@@ -99,20 +99,20 @@ export function AuthHeader() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="flex items-center gap-2 text-purple-900 hover:bg-purple-100 hover:text-purple-700"
+                    className="flex items-center gap-2 text-gray-900 hover:bg-gray-100 hover:text-gray-700"
                   >
                     <User className="w-4 h-4" />
                   </Button>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent>Profile</TooltipContent>
+              <TooltipContent side="bottom">Profile</TooltipContent>
             </Tooltip>
           </TooltipProvider>
           <NotificationBell onClick={() => setIsNotificationsOpen(true)} />
           <UserButton
             appearance={{
               elements: {
-                avatarBox: "ml-2 w-9 h-9 ring-2 ring-purple-200",
+                avatarBox: "ml-2 w-9 h-9 ring-2 ring-gray-300",
                 userButtonPopoverCard: "shadow-2xl border border-gray-200",
                 userButtonPopoverActionButton: "hover:bg-gray-50",
               },
