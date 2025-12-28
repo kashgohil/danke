@@ -1,3 +1,9 @@
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/ui/footer";
 import { PolaroidCard } from "@/components/ui/polaroid-card";
@@ -5,7 +11,6 @@ import { ScrambledPictureLibrary } from "@/components/ui/scrambled-picture-libra
 import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import {
   CheckCircle,
-  ChevronDown,
   Download,
   Eye,
   Grid,
@@ -28,6 +33,57 @@ import {
 import Link from "next/link";
 
 export default function HomePage() {
+  const faqItems = [
+    {
+      question: "Is Danke really free?",
+      answer:
+        "Yes! Danke is completely free to use. Create unlimited boards, invite unlimited contributors, and keep your boards forever. We believe appreciation shouldn't have a price tag.",
+      emoji: "💰",
+    },
+    {
+      question: "Do contributors need to create an account?",
+      answer:
+        "No! Anyone with the link can contribute messages, photos, and videos without signing up. Only board creators need an account to manage their boards.",
+      emoji: "👥",
+    },
+    {
+      question: "How long do boards stay available?",
+      answer:
+        "Forever! Your boards never expire. They're always accessible via their unique link, so recipients can revisit their memories anytime.",
+      emoji: "♾️",
+    },
+    {
+      question: "Can I moderate or remove posts?",
+      answer:
+        "Absolutely. As the board creator, you have full control. You can review posts before they appear (moderation mode), edit, or remove any content.",
+      emoji: "🛡️",
+    },
+    {
+      question: "What file types can I upload?",
+      answer:
+        "We support images (JPG, PNG, GIF, WebP), videos (MP4, WebM), and audio files. Each post can include multiple media files.",
+      emoji: "📁",
+    },
+    {
+      question: "Can I make my board private?",
+      answer:
+        "Yes! You can restrict who can view your board, require approval for posts, or even limit contributors to specific email domains (great for workplace boards).",
+      emoji: "🔒",
+    },
+    {
+      question: "How does the slideshow mode work?",
+      answer:
+        "Click the slideshow button on any board to launch a full-screen presentation. Posts auto-advance, long messages auto-scroll, and transitions are smooth. Perfect for parties and events!",
+      emoji: "🎬",
+    },
+    {
+      question: "Can I download or export my board?",
+      answer:
+        "Yes! You can share your board via link, and all the content is preserved permanently. We're also working on PDF and video export features.",
+      emoji: "📥",
+    },
+  ];
+
   return (
     <div
       className="relative min-h-screen flex flex-col overflow-hidden"
@@ -922,79 +978,32 @@ export default function HomePage() {
 
           <div className="max-w-3xl mx-auto">
             <div className="p-4 md:p-6">
-              <div className="space-y-3">
-                {[
-                  {
-                    question: "Is Danke really free?",
-                    answer:
-                      "Yes! Danke is completely free to use. Create unlimited boards, invite unlimited contributors, and keep your boards forever. We believe appreciation shouldn't have a price tag.",
-                    emoji: "💰",
-                  },
-                  {
-                    question: "Do contributors need to create an account?",
-                    answer:
-                      "No! Anyone with the link can contribute messages, photos, and videos without signing up. Only board creators need an account to manage their boards.",
-                    emoji: "👥",
-                  },
-                  {
-                    question: "How long do boards stay available?",
-                    answer:
-                      "Forever! Your boards never expire. They're always accessible via their unique link, so recipients can revisit their memories anytime.",
-                    emoji: "♾️",
-                  },
-                  {
-                    question: "Can I moderate or remove posts?",
-                    answer:
-                      "Absolutely. As the board creator, you have full control. You can review posts before they appear (moderation mode), edit, or remove any content.",
-                    emoji: "🛡️",
-                  },
-                  {
-                    question: "What file types can I upload?",
-                    answer:
-                      "We support images (JPG, PNG, GIF, WebP), videos (MP4, WebM), and audio files. Each post can include multiple media files.",
-                    emoji: "📁",
-                  },
-                  {
-                    question: "Can I make my board private?",
-                    answer:
-                      "Yes! You can restrict who can view your board, require approval for posts, or even limit contributors to specific email domains (great for workplace boards).",
-                    emoji: "🔒",
-                  },
-                  {
-                    question: "How does the slideshow mode work?",
-                    answer:
-                      "Click the slideshow button on any board to launch a full-screen presentation. Posts auto-advance, long messages auto-scroll, and transitions are smooth. Perfect for parties and events!",
-                    emoji: "🎬",
-                  },
-                  {
-                    question: "Can I download or export my board?",
-                    answer:
-                      "Yes! You can share your board via link, and all the content is preserved permanently. We're also working on PDF and video export features.",
-                    emoji: "📥",
-                  },
-                ].map((faq, idx) => (
-                  <details
-                    key={idx}
-                    className="group bg-white rounded-sm border-4 border-black relative"
+              <Accordion type="single" collapsible className="space-y-4">
+                {faqItems.map((faq, idx) => (
+                  <AccordionItem
+                    key={faq.question}
+                    value={`item-${idx}`}
+                    className="relative border-4 border-gray-900 bg-white rounded-sm shadow-2xl"
                   >
-                    <summary className="flex items-center gap-3 p-4 cursor-pointer hover:bg-amber-50/50 transition-colors">
-                      <div className="absolute -top-3 -left-2 z-10 transform -rotate-12">
-                        <Pin className="w-6 h-6 fill-black text-black drop-shadow-sm" />
+                    <div className="absolute -top-3 -left-2 z-10 transform -rotate-12">
+                      <Pin className="w-6 h-6 fill-black text-black drop-shadow-sm" />
+                    </div>
+                    <AccordionTrigger className="px-6 py-5 text-left hover:no-underline">
+                      <div className="flex items-center gap-3 text-left">
+                        <span className="text-xl">{faq.emoji}</span>
+                        <span className="font-semibold text-lg text-gray-900 font-fuzzy-bubbles">
+                          {faq.question}
+                        </span>
                       </div>
-                      <span className="text-xl">{faq.emoji}</span>
-                      <span className="font-semibold text-gray-900 text font-fuzzy-bubbles flex-1 text-left">
-                        {faq.question}
-                      </span>
-                      <ChevronDown className="w-4 h-4 text-gray-500 flex-shrink-0 transition-transform group-open:rotate-180" />
-                    </summary>
-                    <div className="p-4 pl-12">
-                      <p className="text-gray-600 leading-relaxed">
+                    </AccordionTrigger>
+                    <AccordionContent className="px-6 pb-6 pt-0">
+                      <p className="text-gray-600 text-base leading-relaxed">
                         {faq.answer}
                       </p>
-                    </div>
-                  </details>
+                    </AccordionContent>
+                  </AccordionItem>
                 ))}
-              </div>
+              </Accordion>
             </div>
 
             <div className="mt-10 text-center">
