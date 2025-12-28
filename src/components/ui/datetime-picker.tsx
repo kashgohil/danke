@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { format } from 'date-fns';
-import { CalendarIcon, ClockIcon } from 'lucide-react';
-import * as React from 'react';
+import { format } from "date-fns";
+import { CalendarIcon, ClockIcon } from "lucide-react";
+import * as React from "react";
 
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 interface DateTimePickerProps {
   date?: Date;
@@ -28,33 +28,33 @@ interface DateTimePickerProps {
 export function DateTimePicker({
   date,
   onDateTimeChange,
-  placeholder = 'Pick a date and time',
+  placeholder = "Pick a date and time",
   disabled = false,
   className,
   error = false,
   min,
 }: DateTimePickerProps) {
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
-    date
+    date,
   );
   const [timeValue, setTimeValue] = React.useState<string>(() => {
     if (date) {
-      const hours = date.getHours().toString().padStart(2, '0');
-      const minutes = date.getMinutes().toString().padStart(2, '0');
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
       return `${hours}:${minutes}`;
     }
-    return '';
+    return "";
   });
 
   // Update internal state when external date changes
   React.useEffect(() => {
     setSelectedDate(date);
     if (date) {
-      const hours = date.getHours().toString().padStart(2, '0');
-      const minutes = date.getMinutes().toString().padStart(2, '0');
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
       setTimeValue(`${hours}:${minutes}`);
     } else {
-      setTimeValue('');
+      setTimeValue("");
     }
   }, [date]);
 
@@ -62,7 +62,7 @@ export function DateTimePicker({
     if (newDate) {
       // If we have a time value, apply it to the new date
       if (timeValue) {
-        const [hours, minutes] = timeValue.split(':').map(Number);
+        const [hours, minutes] = timeValue.split(":").map(Number);
         newDate.setHours(hours, minutes, 0, 0);
       }
       setSelectedDate(newDate);
@@ -77,7 +77,7 @@ export function DateTimePicker({
     setTimeValue(newTime);
 
     if (selectedDate && newTime) {
-      const [hours, minutes] = newTime.split(':').map(Number);
+      const [hours, minutes] = newTime.split(":").map(Number);
       const newDateTime = new Date(selectedDate);
       newDateTime.setHours(hours, minutes, 0, 0);
       onDateTimeChange?.(newDateTime);
@@ -94,10 +94,10 @@ export function DateTimePicker({
         <Button
           variant="outline"
           className={cn(
-            'w-full justify-start text-left font-normal',
-            !selectedDate && 'text-muted-foreground',
-            error && 'border-destructive',
-            className
+            "w-full justify-start text-left font-normal rounded-sm border-2 bg-white text-gray-900 shadow-sm",
+            !selectedDate && "text-muted-foreground",
+            error ? "border-rose-500" : "border-gray-900",
+            className,
           )}
           disabled={disabled}
         >
@@ -109,7 +109,10 @@ export function DateTimePicker({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent
+        className="w-auto p-0 border-4 border-gray-900 rounded-sm bg-white shadow-2xl"
+        align="start"
+      >
         <div className="p-3 space-y-3">
           <Calendar
             mode="single"
@@ -123,10 +126,10 @@ export function DateTimePicker({
               return false;
             }}
           />
-          <div className="flex flex-col gap-2 border-t pt-3">
+          <div className="flex flex-col gap-2 border-t border-gray-200 pt-3">
             <Label
               htmlFor="time-input"
-              className="text-sm font-medium text-primary flex items-center gap-2"
+              className="text-sm font-semibold text-gray-700 flex items-center gap-2"
             >
               <ClockIcon className="h-4 w-4" />
               Time
@@ -138,7 +141,7 @@ export function DateTimePicker({
               value={timeValue}
               defaultValue="10:30:00"
               onChange={(e) => handleTimeChange(e.target.value)}
-              className="mt-1 text-center appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+              className="mt-1 text-center rounded-sm border-2 border-gray-900 bg-white text-gray-900 focus-visible:ring-gray-900/20 appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
             />
           </div>
         </div>
