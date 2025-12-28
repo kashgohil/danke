@@ -1,7 +1,7 @@
 import { db } from '@/lib/db';
 import { boards, posts } from '@/lib/db/schema';
 import { auth } from '@clerk/nextjs/server';
-import { desc, eq } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
@@ -20,27 +20,81 @@ export async function GET() {
         boardType: boards.boardType,
         createdAt: boards.createdAt,
         viewToken: boards.viewToken,
+        moderationEnabled: boards.moderationEnabled,
+        boardVisibility: boards.boardVisibility,
+        postingMode: boards.postingMode,
       })
       .from(boards)
       .where(eq(boards.creatorId, userId))
       .orderBy(desc(boards.createdAt));
 
-    // Get post counts for each board
-    const boardsWithCounts = await Promise.all(
+    // Get detailed stats for each board
+    const boardsWithStats = await Promise.all(
       userBoards.map(async (board) => {
-        const postCount = await db
-          .select({ count: posts.id })
+        // Total posts
+        const [totalPostsResult] = await db
+          .select({ count: sql<number>`cast(count(*) as int)` })
           .from(posts)
-          .where(eq(posts.boardId, board.id));
+          .where(and(eq(posts.boardId, board.id), eq(posts.isDeleted, false)));
+
+        // Approved posts
+        const [approvedPostsResult] = await db
+          .select({ count: sql<number>`cast(count(*) as int)` })
+          .from(posts)
+          .where(
+            and(
+              eq(posts.boardId, board.id),
+              eq(posts.isDeleted, false),
+              eq(posts.moderationStatus, 'approved')
+            )
+          );
+
+        // Pending posts
+        const [pendingPostsResult] = await db
+          .select({ count: sql<number>`cast(count(*) as int)` })
+          .from(posts)
+          .where(
+            and(
+              eq(posts.boardId, board.id),
+              eq(posts.isDeleted, false),
+              eq(posts.moderationStatus, 'pending')
+            )
+          );
+
+        // Rejected posts
+        const [rejectedPostsResult] = await db
+          .select({ count: sql<number>`cast(count(*) as int)` })
+          .from(posts)
+          .where(
+            and(
+              eq(posts.boardId, board.id),
+              eq(posts.isDeleted, false),
+              eq(posts.moderationStatus, 'rejected')
+            )
+          );
+
+        // Most recent post
+        const [recentPost] = await db
+          .select({ createdAt: posts.createdAt })
+          .from(posts)
+          .where(and(eq(posts.boardId, board.id), eq(posts.isDeleted, false)))
+          .orderBy(desc(posts.createdAt))
+          .limit(1);
 
         return {
           ...board,
-          postCount: postCount.length,
+          stats: {
+            totalPosts: totalPostsResult.count,
+            approvedPosts: approvedPostsResult.count,
+            pendingPosts: pendingPostsResult.count,
+            rejectedPosts: rejectedPostsResult.count,
+            lastPostAt: recentPost?.createdAt || null,
+          },
         };
       })
     );
 
-    return NextResponse.json(boardsWithCounts);
+    return NextResponse.json(boardsWithStats);
   } catch (error) {
     console.error('Error fetching user boards:', error);
     return NextResponse.json(
