@@ -1,167 +1,254 @@
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/ui/footer";
+import { PolaroidCard } from "@/components/ui/polaroid-card";
 import { ScrambledPictureLibrary } from "@/components/ui/scrambled-picture-library";
 import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import {
-  Award,
-  Cake,
   CheckCircle,
+  ChevronDown,
   Download,
   Eye,
-  Gift,
-  GraduationCap,
   Grid,
   Heart,
-  Home,
   ImageIcon,
   Lock,
   Mail,
   Monitor,
   Palette,
-  PartyPopper,
+  Pin,
   Presentation,
   QrCode,
-  Rocket,
-  Shield,
   Sparkles,
   Star,
   Type,
   Users,
-  Wand2,
+  X,
   Zap,
 } from "lucide-react";
 import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen bg-white flex flex-col overflow-hidden">
-      {/* Unique Hero Section - Memory Canvas Theme */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-purple-900 flex-shrink-0">
-        {/* Animated Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] animate-pulse"></div>
-        </div>
-
-        <div className="container-default section-padding relative z-10">
-          <div className="text-center max-w-6xl mx-auto">
-            {/* Badge */}
-            <div className="animate-in mb-8">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 px-6 py-3 rounded-full text-sm font-medium shadow-lg">
-                <Heart className="w-4 h-4 text-pink-300" />
-                <span className="text-white font-semibold">
-                  A simple way to share appreciation
+    <div
+      className="relative min-h-screen flex flex-col overflow-hidden"
+      style={{
+        backgroundColor: "#FDF6E3",
+        backgroundImage: `
+          radial-gradient(circle, #E8DCC4 1px, transparent 1px),
+          radial-gradient(circle, #F0E6D2 1px, transparent 1px)
+        `,
+        backgroundSize: "24px 24px, 48px 48px",
+        backgroundPosition: "0 0, 12px 12px",
+      }}
+    >
+      {/* Hero Section */}
+      <section className="relative min-h-[100vh] flex items-center justify-center overflow-hidden py-20">
+        <div className="flex-shrink-0 w-full px-4 sm:px-6 lg:px-0 lg:flex-grow lg:max-w-xl">
+          <PolaroidCard
+            size="large"
+            className="w-full transition-transform duration-500"
+          >
+            <div className="text-center p-4 md:p-8">
+              {/* Main Heading */}
+              <h1 className="mb-6 text-gray-900">
+                <span className="block text-6xl uppercase text-gray-800 font-fuzzy-bubbles">
+                  Collect memories, together
                 </span>
-              </div>
-            </div>
+              </h1>
 
-            {/* Main Heading - More Creative */}
-            <h1 className="animate-in-delay-1 mb-8 text-white">
-              <span className="block text-6xl md:text-8xl font-black mb-4 bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent">
-                Danke
-              </span>
-              <span className="block text-2xl md:text-4xl text-white/90 font-light">
-                Collect and share memories, together
-              </span>
-            </h1>
-
-            {/* What It Actually Does - Clear Description */}
-            <div className="animate-in-delay-2 bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 md:p-12 mb-12 shadow-2xl max-w-4xl mx-auto">
-              <p className="text-xl md:text-2xl text-white leading-relaxed">
-                <span className="font-bold text-pink-300">Danke</span> brings
-                people together to celebrate what matters. Collect heartfelt
-                messages, cherished photos, and meaningful videos in one
-                beautiful place, then share the joy with a stunning slideshow.
+              {/* Description */}
+              <p className="text-base md:text-lg text-black leading-relaxed mb-8 max-w-lg mx-auto">
+                Bring people together to celebrate what matters. Collect
+                heartfelt messages and cherished photos in one beautiful place.
               </p>
-            </div>
 
-            {/* CTA Buttons */}
-            <div className="animate-in-delay-3 flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-              <SignedIn>
-                <Link href="/create-board">
-                  <Button
-                    size="lg"
-                    className="bg-white hover:bg-gray-100 text-purple-900 border-0 min-w-[240px] h-16 text-lg font-bold shadow-2xl hover:shadow-pink-500/50 transition-all hover:scale-105"
-                  >
-                    <Sparkles className="w-6 h-6 mr-2" />
-                    Create a Board
-                  </Button>
-                </Link>
-                <Link href="/dashboard">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="bg-white/10 backdrop-blur-sm border-2 border-white/40 text-white hover:bg-white/20 min-w-[240px] h-16 text-lg font-semibold"
-                  >
-                    My Dashboard
-                  </Button>
-                </Link>
-              </SignedIn>
-              <SignedOut>
-                <SignUpButton>
-                  <Button
-                    size="lg"
-                    className="bg-white hover:bg-gray-100 text-purple-900 border-0 min-w-[240px] h-16 text-lg font-bold shadow-2xl hover:shadow-pink-500/50 transition-all hover:scale-105"
-                  >
-                    <Sparkles className="w-6 h-6 mr-2" />
-                    Try It Free
-                  </Button>
-                </SignUpButton>
-                <Link href="#how-it-works">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="bg-white/10 backdrop-blur-sm border-2 border-white/40 text-white hover:bg-white/20 min-w-[240px] h-16 text-lg font-semibold"
-                  >
-                    See How It Works
-                  </Button>
-                </Link>
-              </SignedOut>
-            </div>
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center max-w-sm mx-auto">
+                <SignedIn>
+                  <Link href="/create-board">
+                    <Button
+                      size="lg"
+                      className="bg-gray-900 hover:bg-gray-800 text-white border-0 px-8 font-semibold shadow-lg hover:shadow-xl transition-all"
+                    >
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Create a Board
+                    </Button>
+                  </Link>
+                  <Link href="/dashboard">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8"
+                    >
+                      My Dashboard
+                    </Button>
+                  </Link>
+                </SignedIn>
+                <SignedOut>
+                  <SignUpButton>
+                    <Button
+                      size="lg"
+                      className="bg-gray-900 hover:bg-gray-800 text-white border-0 px-8 font-semibold shadow-lg hover:shadow-xl transition-all"
+                    >
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Try It Free
+                    </Button>
+                  </SignUpButton>
+                  <Link href="#how-it-works">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8"
+                    >
+                      Learn More
+                    </Button>
+                  </Link>
+                </SignedOut>
+              </div>
 
-            {/* Trust Indicators */}
-            <div className="animate-in-delay-4 flex flex-wrap justify-center items-center gap-8 text-white/80">
-              <div className="flex items-center gap-2">
-                <Zap className="w-5 h-5 text-yellow-300" />
-                <span className="font-medium">Set up in 60 seconds</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Heart className="w-5 h-5 text-pink-300" />
-                <span className="font-medium">100% Free Forever</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-green-300" />
-                <span className="font-medium">Privacy Protected</span>
+              {/* Trust Indicators */}
+              <div className="mt-8 flex flex-wrap justify-center items-center gap-6 text-gray-500 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-3 h-3 text-green-600" />
+                  </div>
+                  <span>Quick setup</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 bg-red-100 rounded-full flex items-center justify-center">
+                    <Heart className="w-3 h-3 text-red-500" />
+                  </div>
+                  <span>Free forever</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Users className="w-3 h-3 text-black" />
+                  </div>
+                  <span>No signup needed</span>
+                </div>
               </div>
             </div>
-          </div>
+          </PolaroidCard>
         </div>
 
-        {/* Floating Decorative Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-pink-400/20 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute bottom-40 right-20 w-32 h-32 bg-purple-400/20 rounded-full blur-2xl animate-pulse"></div>
-        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-cyan-400/20 rounded-full blur-lg animate-pulse"></div>
+        {/* Decorative polaroids - distributed across all edges like a photoboard */}
+        {/* Top-left corner - visible on lg+ */}
+        <div className="absolute hidden lg:block top-[calc(50%_-_24rem)] left-[calc(50%_-_33rem)] xl:left-[calc(50%_-_34rem)] -rotate-6 hover:rotate-0 transition-transform duration-500 cursor-pointer opacity-90">
+          <PolaroidCard size="small" className="w-36 xl:w-40">
+            <div className="text-center p-2">
+              <div className="text-4xl mb-1">🎂</div>
+              <p className="text-base text-gray-800">Birthday wishes</p>
+            </div>
+          </PolaroidCard>
+        </div>
+
+        {/* Top-right corner - visible on lg+ */}
+        <div className="absolute hidden lg:block top-[calc(50%_-_24rem)] left-[calc(50%_+_24rem)] rotate-5 hover:rotate-0 transition-transform duration-500 cursor-pointer opacity-90">
+          <PolaroidCard size="small" className="w-36 xl:w-40">
+            <div className="text-center p-2">
+              <div className="text-4xl mb-1">💍</div>
+              <p className="text-base text-gray-800">Wedding memories</p>
+            </div>
+          </PolaroidCard>
+        </div>
+
+        {/* Top-center - visible on 2xl+ only (needs wide screen to not overlap main) */}
+        <div className="absolute hidden 2xl:block top-[calc(50%_-_28rem)] left-1/2 -translate-x-1/2 rotate-2 hover:rotate-0 transition-transform duration-500 cursor-pointer opacity-75">
+          <PolaroidCard size="small" className="w-36">
+            <div className="text-center p-2">
+              <div className="text-4xl mb-1">🌅</div>
+              <p className="text-base text-gray-800">Retirement</p>
+            </div>
+          </PolaroidCard>
+        </div>
+
+        {/* Left side upper - visible on xl+ */}
+        <div className="absolute hidden xl:block top-[calc(50%_-_8rem)] left-[calc(50%_-_33rem)] xl:left-[calc(50%_-_34rem)] -rotate-3 hover:rotate-0 transition-transform duration-500 cursor-pointer opacity-80">
+          <PolaroidCard size="small" className="w-36 xl:w-40">
+            <div className="text-center p-2">
+              <div className="text-4xl mb-1">🎓</div>
+              <p className="text-base text-gray-800">Graduation</p>
+            </div>
+          </PolaroidCard>
+        </div>
+
+        {/* Left side lower - visible on xl+ */}
+        <div className="absolute hidden xl:block top-[calc(50%_+_8rem)] left-[calc(50%_-_33rem)] xl:left-[calc(50%_-_34rem)] -rotate-4 hover:rotate-0 transition-transform duration-500 cursor-pointer opacity-80">
+          <PolaroidCard size="small" className="w-36 xl:w-40">
+            <div className="text-center p-2">
+              <div className="text-4xl mb-1">👋</div>
+              <p className="text-base text-gray-800">Farewell</p>
+            </div>
+          </PolaroidCard>
+        </div>
+
+        {/* Right side upper - visible on xl+ */}
+        <div className="absolute hidden xl:block top-[calc(50%_-_8rem)] left-[calc(50%_+_24rem)] rotate-3 hover:rotate-0 transition-transform duration-500 cursor-pointer opacity-80">
+          <PolaroidCard size="small" className="w-36 xl:w-40">
+            <div className="text-center p-2">
+              <div className="text-4xl mb-1">🎁</div>
+              <p className="text-base text-gray-800">Anniversary</p>
+            </div>
+          </PolaroidCard>
+        </div>
+
+        {/* Right side lower - visible on xl+ */}
+        <div className="absolute hidden xl:block top-[calc(50%_+_8rem)] left-[calc(50%_+_24rem)] rotate-4 hover:rotate-0 transition-transform duration-500 cursor-pointer opacity-80">
+          <PolaroidCard size="small" className="w-36 xl:w-40">
+            <div className="text-center p-2">
+              <div className="text-4xl mb-1">💕</div>
+              <p className="text-base text-gray-800">Appreciation</p>
+            </div>
+          </PolaroidCard>
+        </div>
+
+        {/* Bottom-left corner - visible on lg+ */}
+        <div className="absolute hidden lg:block top-[calc(50%_+_24rem)] left-[calc(50%_-_33rem)] xl:left-[calc(50%_-_34rem)] -rotate-5 hover:rotate-0 transition-transform duration-500 cursor-pointer opacity-90">
+          <PolaroidCard size="small" className="w-36 xl:w-40">
+            <div className="text-center p-2">
+              <div className="text-4xl mb-1">🙏</div>
+              <p className="text-base text-gray-800">Thank you</p>
+            </div>
+          </PolaroidCard>
+        </div>
+
+        {/* Bottom-right corner - visible on lg+ */}
+        <div className="absolute hidden lg:block top-[calc(50%_+_24rem)] left-[calc(50%_+_24rem)] rotate-6 hover:rotate-0 transition-transform duration-500 cursor-pointer opacity-90">
+          <PolaroidCard size="small" className="w-36 xl:w-40">
+            <div className="text-center p-2">
+              <div className="text-4xl mb-1">🎉</div>
+              <p className="text-base text-gray-800">Celebrations</p>
+            </div>
+          </PolaroidCard>
+        </div>
+
+        {/* Bottom-center - visible on 2xl+ only (needs wide screen to not overlap main) */}
+        <div className="absolute hidden 2xl:block top-[calc(50%_+_24rem)] left-1/2 -translate-x-1/2 -rotate-2 hover:rotate-0 transition-transform duration-500 cursor-pointer opacity-75">
+          <PolaroidCard size="small" className="w-36">
+            <div className="text-center p-2">
+              <div className="text-4xl mb-1">👶</div>
+              <p className="text-base text-gray-800">Baby shower</p>
+            </div>
+          </PolaroidCard>
+        </div>
       </section>
 
       {/* What Makes Danke Different */}
-      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-white relative mt-16">
+      <section className="py-16 md:py-24 px-6">
         <div className="container-default">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 bg-purple-100 border border-purple-200 px-6 py-3 rounded-full text-sm font-bold mb-6">
-              <Sparkles className="w-4 h-4 text-purple-600" />
-              <span className="text-purple-600">Why people like Danke</span>
-            </div>
-            <h2 className="mb-6 text-gray-900 text-5xl md:text-6xl font-black">
+          <div className="text-center mb-16">
+            <h2 className="mb-6 text-gray-900 text-3xl md:text-5xl font-fuzzy-bubbles font-bold">
               A Better Way to Appreciate
             </h2>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto font-light">
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Cards get lost. Emails get buried. Sticky notes fade.{" "}
-              <span className="font-bold text-purple-600">
+              <span className="font-semibold text-black">
                 Danke preserves appreciation beautifully, forever.
               </span>
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
               {
                 icon: Palette,
@@ -174,8 +261,6 @@ export default function HomePage() {
                   "Drag & drop media",
                   "Auto-optimized for web",
                 ],
-                color: "bg-pink-500",
-                bgColor: "bg-pink-50",
               },
               {
                 icon: Presentation,
@@ -188,8 +273,6 @@ export default function HomePage() {
                   "Auto-advance slides",
                   "Custom backgrounds",
                 ],
-                color: "bg-purple-500",
-                bgColor: "bg-purple-50",
               },
               {
                 icon: Users,
@@ -202,507 +285,788 @@ export default function HomePage() {
                   "Real-time updates",
                   "Anonymous posting option",
                 ],
-                color: "bg-cyan-500",
-                bgColor: "bg-cyan-50",
               },
-            ].map((feature, idx) => {
+            ].map((feature) => {
               const Icon = feature.icon;
               return (
-                <div
+                <PolaroidCard
                   key={feature.title}
-                  className={`${feature.bgColor} border-2 border-gray-200 rounded-3xl p-8 hover:shadow-2xl hover:scale-105 transition-all duration-500 group`}
-                  style={{
-                    animation: `fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 0.15}s forwards`,
-                    opacity: 0,
-                  }}
+                  size="medium"
+                  className="hover:rotate-0 transition-transform duration-300"
                 >
-                  <div
-                    className={`w-16 h-16 ${feature.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform`}
-                  >
-                    <Icon className="w-9 h-9 text-white" />
-                  </div>
-                  <div className="mb-2">
-                    <div className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-1">
-                      {feature.subtitle}
+                  <div className="text-center p-4">
+                    <div className="w-14 h-14 bg-gray-900 rounded-xl flex items-center justify-center mx-auto mb-5 shadow-lg">
+                      <Icon className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="text-2xl font-black text-gray-900 mb-3">
-                      {feature.title}
-                    </h3>
+                    <div className="mb-3">
+                      <div className="text-xs font-semibold text-black uppercase tracking-wide mb-2">
+                        {feature.subtitle}
+                      </div>
+                      <h3 className="text-xl font-fuzzy-bubbles font-bold text-gray-900">
+                        {feature.title}
+                      </h3>
+                    </div>
+                    <p className="text-gray-600 leading-relaxed mb-5">
+                      {feature.description}
+                    </p>
+                    <ul className="space-y-2 text-left bg-gray-50 rounded-lg p-4">
+                      {feature.features.map((item) => (
+                        <li
+                          key={item}
+                          className="flex items-center gap-2 text-gray-600 text-sm"
+                        >
+                          <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <p className="text-gray-700 leading-relaxed mb-6 text-lg">
-                    {feature.description}
-                  </p>
-                  <ul className="space-y-2">
-                    {feature.features.map((item) => (
-                      <li
-                        key={item}
-                        className="flex items-start gap-2 text-sm text-gray-600"
-                      >
-                        <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                </PolaroidCard>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* How It Actually Works - Detailed */}
-      <section
-        id="how-it-works"
-        className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-indigo-900 text-white relative overflow-hidden"
-      >
-        {/* Decorative Grid */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjAzIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40"></div>
-
-        <div className="container-default relative z-10">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full text-sm font-bold mb-6">
-              <Rocket className="w-4 h-4 text-cyan-300" />
-              <span className="text-white">Step-by-Step Guide</span>
-            </div>
-            <h2 className="mb-6 text-white text-5xl md:text-6xl font-black">
-              How Danke Works
+      {/* How It Works */}
+      <section id="how-it-works" className="py-16 md:py-24 px-6 bg-white/40">
+        <div className="container-default">
+          <div className="flex flex-col items-center mb-16">
+            <h2 className="mb-4 text-gray-900 text-3xl md:text-5xl font-fuzzy-bubbles font-bold">
+              Create & Celebrate in Minutes
             </h2>
-            <p className="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto lg:mx-0">
               From creation to celebration in four simple steps
             </p>
           </div>
 
-          <div className="max-w-5xl mx-auto space-y-8">
-            {[
-              {
-                step: "01",
-                emoji: "🎨",
-                title: "Create Your Board",
-                description:
-                  "Pick from 14 board types for any occasion, choose your colors, and set privacy controls. Takes about a minute to get everything ready.",
-              },
-              {
-                step: "02",
-                emoji: "🔗",
-                title: "Share the Link",
-                description:
-                  "Copy your unique link and share it however you like—email, text, QR code. Contributors don't need to sign up, they just click and start adding.",
-              },
-              {
-                step: "03",
-                emoji: "💝",
-                title: "Watch It Fill Up",
-                description:
-                  "People add messages, photos, videos, and more. Everything appears in real-time in a beautiful layout, and you can moderate posts if you want.",
-              },
-              {
-                step: "04",
-                emoji: "🎭",
-                title: "Present & Celebrate",
-                description:
-                  "Launch full-screen slideshow mode to display everything beautifully. Auto-scrolling handles long messages, and smooth transitions make every contribution shine.",
-              },
-            ].map((step, idx) => {
-              return (
-                <div
-                  key={step.step}
-                  className="relative"
-                  style={{
-                    animation: `fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 0.15}s forwards`,
-                    opacity: 0,
-                  }}
-                >
-                  <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 md:p-10 hover:bg-white/10 transition-all duration-300">
-                    <div className="flex flex-col md:flex-row gap-6">
-                      {/* Step Number & Emoji */}
-                      <div className="flex-shrink-0">
-                        <div className="relative">
-                          <div className="text-8xl md:text-9xl font-black text-white/5 absolute -top-6 -left-2">
-                            {step.step}
-                          </div>
-                          <div className="relative w-20 h-20 rounded-2xl flex items-center justify-center">
-                            <span className="text-6xl">{step.emoji}</span>
-                          </div>
+          <div className="max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  step: "01",
+                  emoji: "🎨",
+                  title: "Create Your Board",
+                  description:
+                    "Pick from 14 board types for any occasion, choose your colors, and set privacy controls. Takes about a minute.",
+                },
+                {
+                  step: "02",
+                  emoji: "🔗",
+                  title: "Share the Link",
+                  description:
+                    "Copy your unique link and share it however you like—email, text, QR code. No signup required for contributors.",
+                },
+                {
+                  step: "03",
+                  emoji: "💝",
+                  title: "Watch It Fill Up",
+                  description:
+                    "People add messages, photos, and videos. Everything appears in real-time. Moderate posts whenever you want.",
+                },
+                {
+                  step: "04",
+                  emoji: "🎭",
+                  title: "Present & Celebrate",
+                  description:
+                    "Launch full-screen slideshow mode. Auto-scrolling handles long messages with smooth transitions.",
+                },
+              ].map((step, idx) => {
+                return (
+                  <PolaroidCard
+                    key={step.step}
+                    size="medium"
+                    className="hover:rotate-0 transition-transform duration-300"
+                  >
+                    <div className="p-5">
+                      <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center text-2xl shadow-lg">
+                          {step.emoji}
                         </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1">
-                        <div className="mb-4">
-                          <h3 className="text-3xl md:text-4xl font-black text-white mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-xs font-bold text-black uppercase tracking-wide">
+                              Step {step.step}
+                            </span>
+                          </div>
+                          <h3 className="text-lg font-bold text-gray-900 font-fuzzy-bubbles mb-2">
                             {step.title}
                           </h3>
-                          <p className="text-lg md:text-xl text-white/80 leading-relaxed">
+                          <p className="text-gray-600 leading-relaxed">
                             {step.description}
                           </p>
                         </div>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Connector Line */}
-                  {idx < 3 && (
-                    <div className="flex justify-center py-4">
-                      <div className="w-1 h-12 bg-gradient-to-b from-white/20 to-transparent rounded-full"></div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                  </PolaroidCard>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Feature Deep Dive */}
-      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-white mt-16">
+      {/* Features Grid */}
+      <section className="py-16 md:py-24 px-6">
         <div className="container-default">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 bg-purple-100 border border-purple-200 px-6 py-3 rounded-full text-sm font-bold mb-6">
-              <Wand2 className="w-4 h-4 text-purple-600" />
-              <span className="text-purple-600">Powerful Features</span>
-            </div>
-            <h2 className="mb-6 text-gray-900 text-5xl md:text-6xl font-black">
-              What's Included
+          <div className="flex flex-col items-center mb-16">
+            <h2 className="mb-4 text-gray-900 text-center text-3xl md:text-5xl font-fuzzy-bubbles font-bold">
+              Everything You Need
             </h2>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+            <p className="text-lg text-gray-600 w-full max-w-2xl text-center mx-auto lg:mx-0">
               Thoughtful features that make celebrating easy and meaningful
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto">
             {[
               {
                 icon: Type,
-                title: "Rich Text Editor",
+                title: "Rich Text",
                 description:
-                  "Format text with colors, styles, headings, lists, and emojis. Make your message stand out.",
-                color: "bg-blue-500",
+                  "Format with colors, styles, headings, and emojis.",
               },
               {
                 icon: ImageIcon,
                 title: "Media Gallery",
-                description:
-                  "Upload photos, videos, GIFs, and audio. Each post supports multiple files.",
-                color: "bg-pink-500",
+                description: "Photos, videos, GIFs, and audio support.",
               },
               {
                 icon: Grid,
                 title: "Masonry Layout",
-                description:
-                  "Your board automatically arranges in a beautiful Pinterest-style grid.",
-                color: "bg-purple-500",
+                description: "Beautiful Pinterest-style grid automatically.",
               },
               {
                 icon: Monitor,
                 title: "Slideshow Mode",
-                description:
-                  "Full-screen presentation with auto-advance, transitions, and custom backgrounds.",
-                color: "bg-cyan-500",
+                description: "Full-screen presentations with transitions.",
               },
               {
                 icon: QrCode,
-                title: "QR Code Sharing",
-                description:
-                  "Generate QR codes for events. Perfect for weddings, parties, and gatherings.",
-                color: "bg-green-500",
+                title: "QR Codes",
+                description: "Generate codes for events and parties.",
               },
               {
                 icon: Mail,
                 title: "Email Invites",
-                description:
-                  "Send contribution invites directly via email from the platform.",
-                color: "bg-orange-500",
+                description: "Send contribution invites directly.",
               },
               {
                 icon: Lock,
                 title: "Privacy Controls",
-                description:
-                  "Restrict access by email domain, enable moderation, or keep it fully public.",
-                color: "bg-red-500",
+                description: "Domain restrictions and moderation.",
               },
               {
                 icon: Zap,
                 title: "Real-time Updates",
-                description:
-                  "Watch posts appear live as people contribute. No refresh needed.",
-                color: "bg-yellow-500",
+                description: "Watch posts appear live as they come in.",
               },
               {
                 icon: Download,
                 title: "Export & Share",
-                description:
-                  "Download your board or share it anywhere with a permanent link.",
-                color: "bg-indigo-500",
+                description: "Download or share with permanent links.",
               },
               {
                 icon: Users,
-                title: "Unlimited Contributors",
+                title: "Unlimited People",
                 description:
-                  "No limits on how many people can add to your board. The more, the merrier!",
-                color: "bg-teal-500",
+                  "No limits on contributors. The more, the merrier!",
               },
               {
                 icon: Eye,
                 title: "View Tracking",
-                description:
-                  "See how many people have viewed your board and contributed.",
-                color: "bg-violet-500",
+                description: "See how many viewed and contributed.",
               },
               {
                 icon: Palette,
-                title: "10 Color Themes",
-                description:
-                  "Choose from 10 vibrant background colors to match your event's vibe.",
-                color: "bg-rose-500",
+                title: "Color Themes",
+                description: "10 vibrant backgrounds to match your event.",
               },
             ].map((feature, idx) => {
               const Icon = feature.icon;
               return (
-                <div
+                <PolaroidCard
                   key={feature.title}
-                  className="bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 hover:border-purple-300 transition-all duration-300 group"
-                  style={{
-                    animation: `fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 0.05}s forwards`,
-                    opacity: 0,
-                  }}
+                  className="hover:rotate-0 w-full transition-all duration-300 hover:shadow-xl"
                 >
-                  <div
-                    className={`w-14 h-14 ${feature.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}
-                  >
-                    <Icon className="w-7 h-7 text-white" />
+                  <div className="text-center p-4">
+                    <div className="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center mx-auto mb-3 shadow-md">
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-lg font-fuzzy-bubbles font-bold mb-2 text-gray-900">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {feature.description}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold mb-2 text-gray-900">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
+                </PolaroidCard>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* Board Types Showcase */}
-      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-purple-50 mt-16">
+      {/* Board Types */}
+      <section className="py-16 md:py-24 px-6 bg-white/40">
         <div className="container-default">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 bg-white border border-purple-200 px-6 py-3 rounded-full text-sm font-bold mb-6 shadow-sm">
-              <Star className="w-4 h-4 text-orange-500" />
-              <span className="text-purple-600">14 Ready-Made Templates</span>
-            </div>
-            <h2 className="mb-6 text-gray-900 text-5xl md:text-6xl font-black">
+          <div className="text-center mb-16">
+            <h2 className="mb-4 text-gray-900 text-3xl font-fuzzy-bubbles md:text-5xl font-bold">
               Every Occasion Covered
             </h2>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Pre-designed boards for life's most important moments
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 max-w-6xl mx-auto">
             {[
-              {
-                name: "Birthday",
-                icon: Cake,
-                color: "bg-pink-500",
-                emoji: "🎂",
-              },
-              {
-                name: "Appreciation",
-                icon: Heart,
-                color: "bg-red-500",
-                emoji: "❤️",
-              },
-              {
-                name: "Farewell",
-                icon: PartyPopper,
-                color: "bg-blue-500",
-                emoji: "👋",
-              },
-              {
-                name: "Congratulations",
-                icon: Star,
-                color: "bg-yellow-500",
-                emoji: "⭐",
-              },
-              {
-                name: "Graduation",
-                icon: GraduationCap,
-                color: "bg-green-500",
-                emoji: "🎓",
-              },
-              {
-                name: "Welcome",
-                icon: Home,
-                color: "bg-purple-500",
-                emoji: "🏠",
-              },
-              {
-                name: "Anniversary",
-                icon: Gift,
-                color: "bg-pink-500",
-                emoji: "🎁",
-              },
-              {
-                name: "Get Well Soon",
-                icon: Heart,
-                color: "bg-green-500",
-                emoji: "💚",
-              },
-              {
-                name: "Thank You",
-                icon: Sparkles,
-                color: "bg-cyan-500",
-                emoji: "🙏",
-              },
-              {
-                name: "Wedding",
-                icon: Heart,
-                color: "bg-rose-500",
-                emoji: "💍",
-              },
-              {
-                name: "Retirement",
-                icon: PartyPopper,
-                color: "bg-orange-500",
-                emoji: "🌅",
-              },
-              {
-                name: "Baby Shower",
-                icon: Gift,
-                color: "bg-blue-400",
-                emoji: "👶",
-              },
-              {
-                name: "Milestone",
-                icon: Award,
-                color: "bg-purple-500",
-                emoji: "🏆",
-              },
-              {
-                name: "Condolences",
-                icon: Heart,
-                color: "bg-gray-500",
-                emoji: "🕊️",
-              },
+              { name: "Birthday", emoji: "🎂" },
+              { name: "Appreciation", emoji: "💕" },
+              { name: "Farewell", emoji: "👋" },
+              { name: "Congratulations", emoji: "⭐" },
+              { name: "Graduation", emoji: "🎓" },
+              { name: "Welcome", emoji: "🏠" },
+              { name: "Anniversary", emoji: "💝" },
+              { name: "Get Well", emoji: "💚" },
+              { name: "Thank You", emoji: "🙏" },
+              { name: "Wedding", emoji: "💍" },
+              { name: "Retirement", emoji: "🌅" },
+              { name: "Baby Shower", emoji: "👶" },
+              { name: "Milestone", emoji: "🏆" },
+              { name: "Condolences", emoji: "🕊️" },
             ].map((type, idx) => {
-              const Icon = type.icon;
               return (
-                <div
+                <PolaroidCard
                   key={type.name}
-                  className="bg-white border-2 border-gray-200 rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group cursor-pointer"
-                  style={{
-                    animation: `fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 0.05}s forwards`,
-                    opacity: 0,
-                  }}
+                  className="hover:rotate-0 transition-all duration-300 hover:shadow-xl cursor-pointer"
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <div
-                      className={`w-14 h-14 ${type.color} rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}
-                    >
-                      <Icon className="w-7 h-7 text-white" />
-                    </div>
-                    <span className="text-4xl group-hover:scale-125 transition-transform duration-300">
-                      {type.emoji}
-                    </span>
+                  <div className="text-center p-3">
+                    <div className="text-4xl mb-3">{type.emoji}</div>
+                    <h3 className="font-fuzzy-bubbles text-lg font-bold text-gray-900">
+                      {type.name}
+                    </h3>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900">
-                    {type.name}
-                  </h3>
-                </div>
+                </PolaroidCard>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* Visual Demo Section */}
-      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-slate-800 text-white">
+      {/* Visual Demo */}
+      <section className="py-16 md:py-24 px-6">
         <div className="container-default">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full text-sm font-bold mb-6">
-              <Eye className="w-4 h-4 text-cyan-300" />
-              <span className="text-white">See It In Action</span>
-            </div>
-            <h2 className="mb-6 text-white text-5xl md:text-6xl font-black">
-              See What It Looks Like
+          <div className="text-center mb-12">
+            <h2 className="mb-4 text-gray-900 text-3xl md:text-5xl font-fuzzy-bubbles font-bold">
+              See It in Action
             </h2>
-            <p className="text-xl text-white/80 max-w-4xl mx-auto">
-              Here are some example boards
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Here are some example boards from real celebrations
             </p>
           </div>
 
-          {/* Add the scrambled picture library here as a visual demo */}
-          <div className="max-w-4xl mx-auto mb-12">
-            <ScrambledPictureLibrary className="hover:cursor-pointer" />
+          <div className="max-w-5xl mx-auto mb-8">
+            <div className="bg-white rounded-2xl shadow-xl p-4 md:p-8">
+              <ScrambledPictureLibrary className="hover:cursor-pointer" />
+            </div>
           </div>
 
           <div className="text-center">
-            <p className="text-white/70 text-lg mb-8">
+            <p className="text-gray-500 text-sm">
               Hover over the boards above to see them in action →
             </p>
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-purple-600 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
-
-        <div className="container-narrow relative z-10">
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-12 md:p-20 text-center shadow-2xl">
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border border-white/30 px-6 py-3 rounded-full text-sm font-medium mb-8">
-              <Sparkles className="w-4 h-4 text-white" />
-              <span className="text-white font-bold">Ready to Start?</span>
-            </div>
-
-            <h2 className="mb-6 text-white text-4xl md:text-6xl font-black">
-              Want to Try It?
-              <br />
-              <span className="text-white/90 text-3xl md:text-5xl">
-                It takes about a minute to set up
-              </span>
+      {/* Use Cases / Inspiration */}
+      <section className="py-16 md:py-24 px-6 bg-white/40">
+        <div className="container-default">
+          <div className="text-center mb-16">
+            <h2 className="mb-4 text-gray-900 text-3xl md:text-5xl font-fuzzy-bubbles font-bold">
+              How People Use Danke
             </h2>
-
-            <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Free to use, no credit card needed.
-              <br />
-              <span className="font-bold">
-                Create as many boards as you'd like.
-              </span>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Real stories of connection and celebration from our community
             </p>
+          </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <SignedIn>
-                <Link href="/create-board">
-                  <Button
-                    size="lg"
-                    className="bg-white hover:bg-gray-100 text-purple-700 border-0 min-w-[220px] h-16 text-lg font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                  >
-                    <Sparkles className="w-5 h-5 mr-2" />
-                    Create a Board
-                  </Button>
-                </Link>
-              </SignedIn>
-              <SignedOut>
-                <SignUpButton>
-                  <Button
-                    size="lg"
-                    className="bg-white hover:bg-gray-100 text-purple-700 border-0 min-w-[220px] h-16 text-lg font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                  >
-                    <Sparkles className="w-5 h-5 mr-2" />
-                    Try It Free
-                  </Button>
-                </SignUpButton>
-              </SignedOut>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {[
+              {
+                emoji: "🏢",
+                title: "Workplace Celebrations",
+                scenario:
+                  "Sarah's team surprised her with 47 heartfelt messages when she got promoted",
+                quote:
+                  "I cried happy tears reading every single one. It's something I'll treasure forever.",
+                person: "Sarah, Marketing Director",
+              },
+              {
+                emoji: "🌍",
+                title: "Long-Distance Love",
+                scenario:
+                  "A family scattered across 5 countries came together for grandma's 80th birthday",
+                quote:
+                  "My grandchildren in Australia, Germany, and the US all contributed. It felt like everyone was in the room.",
+                person: "Maria, Grandmother",
+              },
+              {
+                emoji: "🎓",
+                title: "Graduation Memories",
+                scenario:
+                  "A graduating class of 200 students created a board for their beloved teacher",
+                quote:
+                  "After 30 years of teaching, this was the most meaningful gift I've ever received.",
+                person: "Mr. Johnson, Teacher",
+              },
+              {
+                emoji: "👋",
+                title: "Farewell with Heart",
+                scenario:
+                  "When Jake left for his new adventure, his coworkers filled a board with memories",
+                quote:
+                  "I look back at it whenever I miss my old team. The photos and inside jokes are priceless.",
+                person: "Jake, Software Engineer",
+              },
+              {
+                emoji: "💒",
+                title: "Wedding Wishes",
+                scenario:
+                  "Guests who couldn't attend the wedding sent video messages and photos",
+                quote:
+                  "We played the slideshow at our reception. There wasn't a dry eye in the house.",
+                person: "Emma & David, Newlyweds",
+              },
+              {
+                emoji: "🏥",
+                title: "Get Well Support",
+                scenario:
+                  "A community rallied around a neighbor recovering from surgery",
+                quote:
+                  "Reading those messages during recovery gave me strength. I felt so supported.",
+                person: "Robert, Community Member",
+              },
+            ].map((useCase) => (
+              <PolaroidCard
+                key={useCase.title}
+                className="hover:rotate-0 transition-all duration-300"
+              >
+                <div className="p-2">
+                  <div className="text-center mb-3">
+                    <span className="text-4xl">{useCase.emoji}</span>
+                  </div>
+                  <h3 className="text-lg font-fuzzy-bubbles font-bold text-gray-900 text-center mb-2">
+                    {useCase.title}
+                  </h3>
+                  <p className="text-gray-600 text-xs mb-3 leading-relaxed text-center">
+                    {useCase.scenario}
+                  </p>
+                  <div className="bg-amber-50/50 rounded p-3 border border-amber-100">
+                    <p className="text-gray-700 mb-2 text-center">
+                      "{useCase.quote}"
+                    </p>
+                    <p className="text-xs text-gray-500 text-center">
+                      — {useCase.person}
+                    </p>
+                  </div>
+                </div>
+              </PolaroidCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats / Social Proof Numbers */}
+      <section className="py-16 md:py-20 px-6">
+        <div className="container-default">
+          <div className="text-center mb-12">
+            <h2 className="mb-4 text-gray-900 text-3xl md:text-5xl font-fuzzy-bubbles font-bold">
+              Spreading Gratitude Everywhere
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Join thousands who are making appreciation meaningful
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto">
+            {[
+              { number: "10,000+", label: "Boards Created", emoji: "📋" },
+              { number: "50,000+", label: "Messages Shared", emoji: "💌" },
+              { number: "100+", label: "Countries", emoji: "🌎" },
+              { number: "4.9/5", label: "User Rating", emoji: "⭐" },
+            ].map((stat) => (
+              <PolaroidCard
+                key={stat.label}
+                size="small"
+                className="hover:rotate-0 transition-all duration-300 w-36 md:w-44"
+              >
+                <div className="text-center p-2">
+                  <span className="text-3xl mb-2 block">{stat.emoji}</span>
+                  <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+                    {stat.number}
+                  </div>
+                  <div className="text-gray-600 text-xs">{stat.label}</div>
+                </div>
+              </PolaroidCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-16 md:py-24 px-6 bg-white/40">
+        <div className="container-default">
+          <div className="text-center mb-16">
+            <h2 className="mb-4 text-gray-900 text-3xl md:text-5xl font-fuzzy-bubbles font-bold">
+              Loved by Teams & Families
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              See what people are saying about their Danke experience
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {[
+              {
+                quote:
+                  "We used Danke for our CEO's retirement. The slideshow at the party had everyone in tears. So much better than a generic card!",
+                author: "Jennifer M.",
+                role: "HR Director",
+                emoji: "👩‍💼",
+              },
+              {
+                quote:
+                  "My daughter is in the military overseas. For her birthday, we collected messages from 30+ family members. She said it was the best gift ever.",
+                author: "Patricia L.",
+                role: "Proud Mom",
+                emoji: "👩",
+              },
+              {
+                quote:
+                  "As a teacher, I created boards for each graduating class. Parents love contributing, and students have a keepsake forever.",
+                author: "Michael T.",
+                role: "High School Teacher",
+                emoji: "👨‍🏫",
+              },
+              {
+                quote:
+                  "The QR code feature is genius! We put it on the party invitation and people contributed before they even arrived.",
+                author: "Amanda K.",
+                role: "Event Planner",
+                emoji: "🎉",
+              },
+              {
+                quote:
+                  "I've tried other group card apps. Danke is the only one that looks beautiful AND is actually easy to use. The slideshow mode is amazing.",
+                author: "David R.",
+                role: "Designer",
+                emoji: "🎨",
+              },
+              {
+                quote:
+                  "We surprised our volunteer coordinator with messages from everyone she's helped over the years. She couldn't stop smiling for days.",
+                author: "Community Center",
+                role: "Non-profit Organization",
+                emoji: "💚",
+              },
+            ].map((testimonial, idx) => (
+              <PolaroidCard
+                key={idx}
+                className="hover:rotate-0 transition-all duration-300"
+              >
+                <div className="p-3">
+                  <div className="flex gap-1 mb-3 justify-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-4 h-4 fill-yellow-400 text-yellow-400"
+                      />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 leading-relaxed mb-4 text-center">
+                    "{testimonial.quote}"
+                  </p>
+                  <div className="flex items-center justify-center gap-2 pt-3 border-t border-gray-100">
+                    <span className="text-2xl">{testimonial.emoji}</span>
+                    <div>
+                      <p className="font-semibold text-gray-900">
+                        {testimonial.author}
+                      </p>
+                      <p className="text-gray-500 text-xs">
+                        {testimonial.role}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </PolaroidCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison Section */}
+      <section className="py-16 md:py-24 px-6">
+        <div className="container-default">
+          <div className="text-center mb-16">
+            <h2 className="mb-4 text-gray-900 text-3xl md:text-5xl font-fuzzy-bubbles font-bold">
+              Why Choose Danke?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              See how Danke compares to traditional ways of showing appreciation
+            </p>
+          </div>
+
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Traditional Card */}
+              <PolaroidCard className="hover:rotate-0 transition-all duration-300 opacity-75">
+                <div className="p-4 text-center">
+                  <span className="text-4xl mb-3 block">💌</span>
+                  <h3 className="text-xl font-fuzzy-bubbles font-bold text-gray-900 mb-1">
+                    Traditional Card
+                  </h3>
+                  <p className="text-gray-500 text-xs mb-4">The old way</p>
+                  <ul className="space-y-2 text-left">
+                    {[
+                      "Limited space for messages",
+                      "Gets lost or damaged",
+                      "No photos or videos",
+                      "Hard to coordinate",
+                      "One-time viewing",
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex items-center gap-2">
+                        <X className="w-3 h-3 text-red-400 flex-shrink-0" />
+                        <span className="text-gray-600">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </PolaroidCard>
+
+              {/* Group Email */}
+              <PolaroidCard className="hover:rotate-0 transition-all duration-300 opacity-75">
+                <div className="p-4 text-center">
+                  <span className="text-4xl mb-3 block">📧</span>
+                  <h3 className="text-xl font-fuzzy-bubbles font-bold text-gray-900 mb-1">
+                    Group Email
+                  </h3>
+                  <p className="text-gray-500 text-xs mb-4">The messy way</p>
+                  <ul className="space-y-2 text-left">
+                    {[
+                      "Gets buried in inbox",
+                      "Messy reply-all chains",
+                      "No presentation mode",
+                      "Attachments get lost",
+                      "Not visually appealing",
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex items-center gap-2">
+                        <X className="w-3 h-3 text-red-400 flex-shrink-0" />
+                        <span className="text-gray-600">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </PolaroidCard>
+
+              {/* Danke */}
+              <div className="relative">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-md">
+                  RECOMMENDED
+                </div>
+                <PolaroidCard className="hover:rotate-0 transition-all duration-300">
+                  <div className="p-4 text-center">
+                    <span className="text-4xl mb-3 block">✨</span>
+                    <h3 className="text-xl font-fuzzy-bubbles font-bold text-gray-900 mb-1">
+                      Danke
+                    </h3>
+                    <p className="text-gray-900 text-xs mb-4 font-medium">
+                      The better way
+                    </p>
+                    <ul className="space-y-2 text-left">
+                      {[
+                        "Unlimited messages & media",
+                        "Beautiful & permanent",
+                        "Cinematic slideshow mode",
+                        "Easy to share & contribute",
+                        "Free forever",
+                      ].map((item, idx) => (
+                        <li key={idx} className="flex items-center gap-2">
+                          <CheckCircle className="w-3 h-3 text-green-500 flex-shrink-0" />
+                          <span className="text-gray-700 font-medium">
+                            {item}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </PolaroidCard>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-16 md:py-24 px-6 bg-white/40">
+        <div className="container-default">
+          <div className="text-center mb-16">
+            <span className="text-5xl mb-4 block">🤔</span>
+            <h2 className="mb-4 text-gray-900 text-3xl md:text-5xl font-fuzzy-bubbles font-bold">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Everything you need to know about Danke
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <div className="p-4 md:p-6">
+              <div className="space-y-3">
+                {[
+                  {
+                    question: "Is Danke really free?",
+                    answer:
+                      "Yes! Danke is completely free to use. Create unlimited boards, invite unlimited contributors, and keep your boards forever. We believe appreciation shouldn't have a price tag.",
+                    emoji: "💰",
+                  },
+                  {
+                    question: "Do contributors need to create an account?",
+                    answer:
+                      "No! Anyone with the link can contribute messages, photos, and videos without signing up. Only board creators need an account to manage their boards.",
+                    emoji: "👥",
+                  },
+                  {
+                    question: "How long do boards stay available?",
+                    answer:
+                      "Forever! Your boards never expire. They're always accessible via their unique link, so recipients can revisit their memories anytime.",
+                    emoji: "♾️",
+                  },
+                  {
+                    question: "Can I moderate or remove posts?",
+                    answer:
+                      "Absolutely. As the board creator, you have full control. You can review posts before they appear (moderation mode), edit, or remove any content.",
+                    emoji: "🛡️",
+                  },
+                  {
+                    question: "What file types can I upload?",
+                    answer:
+                      "We support images (JPG, PNG, GIF, WebP), videos (MP4, WebM), and audio files. Each post can include multiple media files.",
+                    emoji: "📁",
+                  },
+                  {
+                    question: "Can I make my board private?",
+                    answer:
+                      "Yes! You can restrict who can view your board, require approval for posts, or even limit contributors to specific email domains (great for workplace boards).",
+                    emoji: "🔒",
+                  },
+                  {
+                    question: "How does the slideshow mode work?",
+                    answer:
+                      "Click the slideshow button on any board to launch a full-screen presentation. Posts auto-advance, long messages auto-scroll, and transitions are smooth. Perfect for parties and events!",
+                    emoji: "🎬",
+                  },
+                  {
+                    question: "Can I download or export my board?",
+                    answer:
+                      "Yes! You can share your board via link, and all the content is preserved permanently. We're also working on PDF and video export features.",
+                    emoji: "📥",
+                  },
+                ].map((faq, idx) => (
+                  <details
+                    key={idx}
+                    className="group bg-white rounded-sm border-4 border-black relative"
+                  >
+                    <summary className="flex items-center gap-3 p-4 cursor-pointer hover:bg-amber-50/50 transition-colors">
+                      <div className="absolute -top-3 -left-2 z-10 transform -rotate-12">
+                        <Pin className="w-6 h-6 fill-black text-black drop-shadow-sm" />
+                      </div>
+                      <span className="text-xl">{faq.emoji}</span>
+                      <span className="font-semibold text-gray-900 text font-fuzzy-bubbles flex-1 text-left">
+                        {faq.question}
+                      </span>
+                      <ChevronDown className="w-4 h-4 text-gray-500 flex-shrink-0 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <div className="p-4 pl-12">
+                      <p className="text-gray-600 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-10 text-center">
+              <p className="text-gray-600 mb-4">Still have questions?</p>
+              <Link href="/help">
+                <Button
+                  variant="outline"
+                  className="border-2 border-gray-300 text-gray-700 hover:bg-white/50"
+                >
+                  <Mail className="w-4 h-4 mr-2" />
+                  Contact Support
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-20 md:py-28 px-6">
+        <div className="container-narrow">
+          <div className="flex flex-col items-center gap-8">
+            <PolaroidCard
+              size="large"
+              className="hover:rotate-0 transition-transform duration-500 w-full"
+            >
+              <div className="text-center relative p-8 md:p-12">
+                <div className="relative z-10">
+                  <h2 className="mb-4 text-gray-900 text-3xl md:text-5xl font-fuzzy-bubbles font-bold">
+                    Ready to Try It?
+                  </h2>
+                  <p className="text-xl text-gray-600 mb-3 max-w-xl mx-auto">
+                    It takes about a minute to set up your first board
+                  </p>
+                  <p className="text-base text-gray-500 mb-8 max-w-xl mx-auto">
+                    Free to use, no credit card required. Create as many boards
+                    as you'd like.
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                    <SignedIn>
+                      <Link href="/create-board">
+                        <Button
+                          size="lg"
+                          className="bg-gray-900 hover:bg-gray-800 text-white border-0 px-8 font-semibold shadow-lg hover:shadow-xl transition-all"
+                        >
+                          <Sparkles className="w-4 h-4 mr-2" />
+                          Create a Board
+                        </Button>
+                      </Link>
+                    </SignedIn>
+                    <SignedOut>
+                      <SignUpButton>
+                        <Button
+                          size="lg"
+                          className="bg-gray-900 hover:bg-gray-800 text-white border-0 px-8 font-semibold shadow-lg hover:shadow-xl transition-all"
+                        >
+                          <Sparkles className="w-4 h-4 mr-2" />
+                          Try It Free
+                        </Button>
+                      </SignUpButton>
+                    </SignedOut>
+                  </div>
+                </div>
+              </div>
+            </PolaroidCard>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
-      <div className="mt-auto w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
+      <div className="mt-auto">
         <Footer />
       </div>
     </div>

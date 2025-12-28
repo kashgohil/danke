@@ -56,69 +56,95 @@ export default function GuidesPage() {
 	];
 
 	return (
-		<div className="space-y-16 mt-8 mx-auto">
-			<section className="text-center">
-				<h1 className="text-4xl md:text-6xl mt-12 font-bold mb-6 text-danke-900">
-					Learn to Create
-					<br />
-					<span className="text-teal">Amazing Boards</span>
-				</h1>
-				<p className="text-xl max-w-3xl mx-auto leading-relaxed text-danke-900">
-					Master the art of appreciation with our step-by-step guides, best practices, and expert tips for creating
-					meaningful boards that bring communities together.
-				</p>
+		<div className="relative min-h-screen bg-white flex flex-col overflow-hidden">
+			{/* Hero Section */}
+			<section className="relative py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-purple-900 overflow-hidden">
+				{/* Animated Background Pattern */}
+				<div className="absolute inset-0 opacity-10">
+					<div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] animate-pulse"></div>
+				</div>
+
+				<div className="container-default relative z-10 text-center">
+					<div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 px-6 py-3 rounded-full text-sm font-medium shadow-lg mb-8">
+						<BookOpen className="w-4 h-4 text-pink-300" />
+						<span className="text-white font-semibold">Guides & Tutorials</span>
+					</div>
+					<h1 className="text-5xl md:text-7xl font-black mb-6 text-white">
+						<span className="bg-gradient-to-r from-pink-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent">
+							Learn to Create
+						</span>
+						<br />
+						<span className="text-white/90 text-3xl md:text-5xl">Amazing Boards</span>
+					</h1>
+					<p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed font-light">
+						Master the art of appreciation with our step-by-step guides, best practices, and expert tips for creating
+						meaningful boards that bring communities together.
+					</p>
+				</div>
+
+				{/* Floating Decorative Elements */}
+				<div className="absolute top-20 left-10 w-20 h-20 bg-pink-400/20 rounded-full blur-xl animate-pulse"></div>
+				<div className="absolute bottom-40 right-20 w-32 h-32 bg-purple-400/20 rounded-full blur-2xl animate-pulse"></div>
 			</section>
 
-			<section className="py-16 -mx-4 px-4">
-				<div className="mx-auto">
-					<div className="flex flex-col md:flex-row items-center gap-12">
-						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-							<CardHeader className="text-center">
-								<div className="w-16 h-16 bg-teal rounded-full flex items-center justify-center mx-auto mb-4">
-									<span className="text-2xl font-bold text-danke-900">1</span>
+			{/* Getting Started Steps */}
+			<section className="py-20 px-6 md:px-12 lg:px-24 bg-white mt-16">
+				<div className="container-default">
+					<div className="text-center mb-16">
+						<div className="inline-flex items-center gap-2 bg-purple-100 border border-purple-200 px-6 py-3 rounded-full text-sm font-bold mb-6">
+							<Sparkles className="w-4 h-4 text-purple-600" />
+							<span className="text-purple-600">Quick Start</span>
+						</div>
+						<h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">Getting Started in 3 Steps</h2>
+					</div>
+					<div className="flex flex-col md:flex-row items-center justify-center gap-8 max-w-6xl mx-auto">
+						<Card className="bg-white border-2 border-gray-100 shadow-xl hover:shadow-2xl hover:border-purple-200 transition-all duration-300 rounded-3xl overflow-hidden group flex-1">
+							<CardHeader className="text-center p-8">
+								<div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+									<span className="text-3xl font-black text-purple-600">1</span>
 								</div>
-								<CardTitle>Create Your Board</CardTitle>
-								<CardDescription>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Create Your Board</CardTitle>
+								<CardDescription className="text-base text-gray-600 leading-relaxed">
 									Choose a template, add a title and description, then customize your board&apos;s appearance to match
 									the occasion.
 								</CardDescription>
 							</CardHeader>
 						</Card>
 						<MoveRight
-							size={84}
-							className="hidden md:block text-danke-900"
+							size={48}
+							className="hidden md:block text-purple-300 flex-shrink-0"
 						/>
 						<MoveDown
 							size={48}
-							className="md:hidden text-danke-900"
+							className="md:hidden text-purple-300 flex-shrink-0"
 						/>
-						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-							<CardHeader className="text-center">
-								<div className="w-16 h-16 bg-teal rounded-full flex items-center justify-center mx-auto mb-4">
-									<span className="text-2xl font-bold text-danke-900">2</span>
+						<Card className="bg-white border-2 border-gray-100 shadow-xl hover:shadow-2xl hover:border-pink-200 transition-all duration-300 rounded-3xl overflow-hidden group flex-1">
+							<CardHeader className="text-center p-8">
+								<div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+									<span className="text-3xl font-black text-pink-600">2</span>
 								</div>
-								<CardTitle>Share the Link</CardTitle>
-								<CardDescription>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Share the Link</CardTitle>
+								<CardDescription className="text-base text-gray-600 leading-relaxed">
 									Copy your unique board link and share it with friends, colleagues, or community members via email or
 									social media.
 								</CardDescription>
 							</CardHeader>
 						</Card>
 						<MoveRight
-							size={84}
-							className="hidden md:block text-danke-900"
+							size={48}
+							className="hidden md:block text-purple-300 flex-shrink-0"
 						/>
 						<MoveDown
 							size={48}
-							className="md:hidden text-danke-900"
+							className="md:hidden text-purple-300 flex-shrink-0"
 						/>
-						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-							<CardHeader className="text-center">
-								<div className="w-16 h-16 bg-teal rounded-full flex items-center justify-center mx-auto mb-4">
-									<span className="text-2xl font-bold text-danke-900">3</span>
+						<Card className="bg-white border-2 border-gray-100 shadow-xl hover:shadow-2xl hover:border-cyan-200 transition-all duration-300 rounded-3xl overflow-hidden group flex-1">
+							<CardHeader className="text-center p-8">
+								<div className="w-16 h-16 bg-cyan-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+									<span className="text-3xl font-black text-cyan-600">3</span>
 								</div>
-								<CardTitle>Watch It Grow</CardTitle>
-								<CardDescription>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Watch It Grow</CardTitle>
+								<CardDescription className="text-base text-gray-600 leading-relaxed">
 									Contributors add messages, photos, and memories in real-time. No account required for them to
 									participate!
 								</CardDescription>
@@ -128,268 +154,310 @@ export default function GuidesPage() {
 				</div>
 			</section>
 
-			<section>
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-900">Detailed Guides</h2>
-				<div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
-								<BookOpen className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle>Board Creation Basics</CardTitle>
-							<CardDescription className="space-y-3">
-								<p>Learn the fundamentals of creating your first board:</p>
-								<ul className="space-y-2 text-sm">
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-teal" />
-										Choosing the right template for your occasion
-									</li>
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-teal" />
-										Writing compelling titles and descriptions
-									</li>
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-teal" />
-										Setting up basic privacy and moderation
-									</li>
-								</ul>
-							</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
-								<Palette className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle>Customization & Themes</CardTitle>
-							<CardDescription className="space-y-3">
-								<p>Make your board uniquely yours:</p>
-								<ul className="space-y-2 text-sm">
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-teal" />
-										Selecting colors that match your brand or event
-									</li>
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-teal" />
-										Adding custom backgrounds and logos
-									</li>
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-teal" />
-										Choosing layout styles for different content types
-									</li>
-								</ul>
-							</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
-								<Share2 className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle>Sharing Strategies</CardTitle>
-							<CardDescription className="space-y-3">
-								<p>Get maximum participation with effective sharing:</p>
-								<ul className="space-y-2 text-sm">
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-teal" />
-										Crafting invitation messages that inspire action
-									</li>
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-teal" />
-										Using multiple channels for broader reach
-									</li>
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-teal" />
-										Timing your invitations for maximum impact
-									</li>
-								</ul>
-							</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
-								<Settings className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle>Advanced Features</CardTitle>
-							<CardDescription className="space-y-3">
-								<p>Unlock the full potential of your boards:</p>
-								<ul className="space-y-2 text-sm">
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-teal" />
-										Setting up moderation and content filtering
-									</li>
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-teal" />
-										Managing team permissions and collaboration
-									</li>
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-teal" />
-										Exporting and archiving your boards
-									</li>
-								</ul>
-							</CardDescription>
-						</CardHeader>
-					</Card>
-				</div>
-			</section>
-
-			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg md:rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-teal">Guides by Occasion</h2>
-				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
-								<Heart className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle>Farewell Boards</CardTitle>
-							<CardDescription>
-								Create meaningful goodbye experiences with tips for collecting heartfelt messages, organizing team
-								contributions, and presenting the final board.
-							</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
-								<Sparkles className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle>Birthday Celebrations</CardTitle>
-							<CardDescription>
-								Make birthdays special with photo collections, surprise coordination, and creative message prompts that
-								capture cherished memories.
-							</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
-								<Users className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle>Team Recognition</CardTitle>
-							<CardDescription>
-								Celebrate achievements and milestones with structured feedback, peer recognition, and professional
-								presentation formats.
-							</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
-								<Zap className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle>Event Memories</CardTitle>
-							<CardDescription>
-								Capture special moments from weddings, graduations, and community events with multimedia collections and
-								guest contributions.
-							</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
-								<MessageSquare className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle>Customer Testimonials</CardTitle>
-							<CardDescription>
-								Collect authentic feedback and testimonials with professional formatting, easy sharing, and integration
-								with marketing materials.
-							</CardDescription>
-						</CardHeader>
-					</Card>
-
-					<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-						<CardHeader>
-							<div className="w-12 h-12 bg-teal rounded-lg flex items-center justify-center mb-4">
-								<BookOpen className="w-6 h-6 text-danke-900" />
-							</div>
-							<CardTitle>Memorial Tributes</CardTitle>
-							<CardDescription>
-								Create lasting tributes with sensitive moderation, family collaboration, and meaningful ways to preserve
-								and share memories.
-							</CardDescription>
-						</CardHeader>
-					</Card>
-				</div>
-			</section>
-
-			<section>
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-900">Best Practices & Tips</h2>
-				<div className="max-w-4xl mx-auto space-y-8 text-danke-900">
-					<div className="grid md:grid-cols-2 gap-8">
-						<div className="space-y-6">
-							<h3 className="text-xl font-semibold">Encouraging Participation</h3>
-							<ul className="space-y-3">
-								<li className="flex items-start gap-3">
-									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
-									</div>
-									<span>Send personal invitations with context about why their contribution matters</span>
-								</li>
-								<li className="flex items-start gap-3">
-									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
-									</div>
-									<span>Provide example messages or prompts to help people get started</span>
-								</li>
-								<li className="flex items-start gap-3">
-									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
-									</div>
-									<span>Set a deadline to create urgency and ensure timely participation</span>
-								</li>
-								<li className="flex items-start gap-3">
-									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
-									</div>
-									<span>Follow up with gentle reminders for important contributors</span>
-								</li>
-							</ul>
+			{/* Detailed Guides */}
+			<section className="py-20 px-6 md:px-12 lg:px-24 bg-gray-50 mt-16">
+				<div className="container-default">
+					<div className="text-center mb-16">
+						<div className="inline-flex items-center gap-2 bg-white border border-purple-200 px-6 py-3 rounded-full text-sm font-bold mb-6 shadow-sm">
+							<BookOpen className="w-4 h-4 text-purple-600" />
+							<span className="text-purple-600">In-Depth Guides</span>
 						</div>
+						<h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">Detailed Guides</h2>
+					</div>
+					<div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+						<Card className="bg-white border-2 border-gray-100 shadow-xl hover:shadow-2xl hover:border-purple-200 transition-all duration-300 hover:-translate-y-1 rounded-3xl overflow-hidden">
+							<CardHeader className="p-8">
+								<div className="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mb-6">
+									<BookOpen className="w-7 h-7 text-purple-600" />
+								</div>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Board Creation Basics</CardTitle>
+								<CardDescription className="space-y-4 text-gray-600">
+									<p className="text-base">Learn the fundamentals of creating your first board:</p>
+									<ul className="space-y-3">
+										<li className="flex items-center gap-3">
+											<CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+											<span className="text-sm">Choosing the right template for your occasion</span>
+										</li>
+										<li className="flex items-center gap-3">
+											<CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+											<span className="text-sm">Writing compelling titles and descriptions</span>
+										</li>
+										<li className="flex items-center gap-3">
+											<CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+											<span className="text-sm">Setting up basic privacy and moderation</span>
+										</li>
+									</ul>
+								</CardDescription>
+							</CardHeader>
+						</Card>
 
-						<div className="space-y-6">
-							<h3 className="text-xl font-semibold">Creating Impact</h3>
-							<ul className="space-y-3">
-								<li className="flex items-start gap-3">
-									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
+						<Card className="bg-white border-2 border-gray-100 shadow-xl hover:shadow-2xl hover:border-pink-200 transition-all duration-300 hover:-translate-y-1 rounded-3xl overflow-hidden">
+							<CardHeader className="p-8">
+								<div className="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center mb-6">
+									<Palette className="w-7 h-7 text-pink-600" />
+								</div>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Customization & Themes</CardTitle>
+								<CardDescription className="space-y-4 text-gray-600">
+									<p className="text-base">Make your board uniquely yours:</p>
+									<ul className="space-y-3">
+										<li className="flex items-center gap-3">
+											<CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+											<span className="text-sm">Selecting colors that match your brand or event</span>
+										</li>
+										<li className="flex items-center gap-3">
+											<CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+											<span className="text-sm">Adding custom backgrounds and logos</span>
+										</li>
+										<li className="flex items-center gap-3">
+											<CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+											<span className="text-sm">Choosing layout styles for different content types</span>
+										</li>
+									</ul>
+								</CardDescription>
+							</CardHeader>
+						</Card>
+
+						<Card className="bg-white border-2 border-gray-100 shadow-xl hover:shadow-2xl hover:border-cyan-200 transition-all duration-300 hover:-translate-y-1 rounded-3xl overflow-hidden">
+							<CardHeader className="p-8">
+								<div className="w-14 h-14 bg-cyan-100 rounded-2xl flex items-center justify-center mb-6">
+									<Share2 className="w-7 h-7 text-cyan-600" />
+								</div>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Sharing Strategies</CardTitle>
+								<CardDescription className="space-y-4 text-gray-600">
+									<p className="text-base">Get maximum participation with effective sharing:</p>
+									<ul className="space-y-3">
+										<li className="flex items-center gap-3">
+											<CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+											<span className="text-sm">Crafting invitation messages that inspire action</span>
+										</li>
+										<li className="flex items-center gap-3">
+											<CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+											<span className="text-sm">Using multiple channels for broader reach</span>
+										</li>
+										<li className="flex items-center gap-3">
+											<CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+											<span className="text-sm">Timing your invitations for maximum impact</span>
+										</li>
+									</ul>
+								</CardDescription>
+							</CardHeader>
+						</Card>
+
+						<Card className="bg-white border-2 border-gray-100 shadow-xl hover:shadow-2xl hover:border-orange-200 transition-all duration-300 hover:-translate-y-1 rounded-3xl overflow-hidden">
+							<CardHeader className="p-8">
+								<div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center mb-6">
+									<Settings className="w-7 h-7 text-orange-600" />
+								</div>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Advanced Features</CardTitle>
+								<CardDescription className="space-y-4 text-gray-600">
+									<p className="text-base">Unlock the full potential of your boards:</p>
+									<ul className="space-y-3">
+										<li className="flex items-center gap-3">
+											<CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+											<span className="text-sm">Setting up moderation and content filtering</span>
+										</li>
+										<li className="flex items-center gap-3">
+											<CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+											<span className="text-sm">Managing team permissions and collaboration</span>
+										</li>
+										<li className="flex items-center gap-3">
+											<CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+											<span className="text-sm">Exporting and archiving your boards</span>
+										</li>
+									</ul>
+								</CardDescription>
+							</CardHeader>
+						</Card>
+					</div>
+				</div>
+			</section>
+
+			{/* Guides by Occasion */}
+			<section className="py-20 px-6 md:px-12 lg:px-24 bg-white mt-16">
+				<div className="container-default">
+					<div className="text-center mb-16">
+						<div className="inline-flex items-center gap-2 bg-purple-100 border border-purple-200 px-6 py-3 rounded-full text-sm font-bold mb-6">
+							<Heart className="w-4 h-4 text-purple-600" />
+							<span className="text-purple-600">Occasion Specific</span>
+						</div>
+						<h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">Guides by Occasion</h2>
+					</div>
+					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+						<Card className="bg-white border-2 border-gray-100 shadow-lg hover:shadow-xl hover:border-red-200 transition-all duration-300 rounded-3xl overflow-hidden group">
+							<CardHeader className="p-8">
+								<div className="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+									<Heart className="w-7 h-7 text-red-600" />
+								</div>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Farewell Boards</CardTitle>
+								<CardDescription className="text-base text-gray-600 leading-relaxed">
+									Create meaningful goodbye experiences with tips for collecting heartfelt messages, organizing team
+									contributions, and presenting the final board.
+								</CardDescription>
+							</CardHeader>
+						</Card>
+
+						<Card className="bg-white border-2 border-gray-100 shadow-lg hover:shadow-xl hover:border-pink-200 transition-all duration-300 rounded-3xl overflow-hidden group">
+							<CardHeader className="p-8">
+								<div className="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+									<Sparkles className="w-7 h-7 text-pink-600" />
+								</div>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Birthday Celebrations</CardTitle>
+								<CardDescription className="text-base text-gray-600 leading-relaxed">
+									Make birthdays special with photo collections, surprise coordination, and creative message prompts that
+									capture cherished memories.
+								</CardDescription>
+							</CardHeader>
+						</Card>
+
+						<Card className="bg-white border-2 border-gray-100 shadow-lg hover:shadow-xl hover:border-purple-200 transition-all duration-300 rounded-3xl overflow-hidden group">
+							<CardHeader className="p-8">
+								<div className="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+									<Users className="w-7 h-7 text-purple-600" />
+								</div>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Team Recognition</CardTitle>
+								<CardDescription className="text-base text-gray-600 leading-relaxed">
+									Celebrate achievements and milestones with structured feedback, peer recognition, and professional
+									presentation formats.
+								</CardDescription>
+							</CardHeader>
+						</Card>
+
+						<Card className="bg-white border-2 border-gray-100 shadow-lg hover:shadow-xl hover:border-cyan-200 transition-all duration-300 rounded-3xl overflow-hidden group">
+							<CardHeader className="p-8">
+								<div className="w-14 h-14 bg-cyan-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+									<Zap className="w-7 h-7 text-cyan-600" />
+								</div>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Event Memories</CardTitle>
+								<CardDescription className="text-base text-gray-600 leading-relaxed">
+									Capture special moments from weddings, graduations, and community events with multimedia collections and
+									guest contributions.
+								</CardDescription>
+							</CardHeader>
+						</Card>
+
+						<Card className="bg-white border-2 border-gray-100 shadow-lg hover:shadow-xl hover:border-orange-200 transition-all duration-300 rounded-3xl overflow-hidden group">
+							<CardHeader className="p-8">
+								<div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+									<MessageSquare className="w-7 h-7 text-orange-600" />
+								</div>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Customer Testimonials</CardTitle>
+								<CardDescription className="text-base text-gray-600 leading-relaxed">
+									Collect authentic feedback and testimonials with professional formatting, easy sharing, and integration
+									with marketing materials.
+								</CardDescription>
+							</CardHeader>
+						</Card>
+
+						<Card className="bg-white border-2 border-gray-100 shadow-lg hover:shadow-xl hover:border-blue-200 transition-all duration-300 rounded-3xl overflow-hidden group">
+							<CardHeader className="p-8">
+								<div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+									<BookOpen className="w-7 h-7 text-blue-600" />
+								</div>
+								<CardTitle className="text-xl font-bold text-gray-900 mb-3">Memorial Tributes</CardTitle>
+								<CardDescription className="text-base text-gray-600 leading-relaxed">
+									Create lasting tributes with sensitive moderation, family collaboration, and meaningful ways to preserve
+									and share memories.
+								</CardDescription>
+							</CardHeader>
+						</Card>
+					</div>
+				</div>
+			</section>
+
+			{/* Best Practices & Tips */}
+			<section className="py-20 px-6 md:px-12 lg:px-24 bg-gray-50 mt-16">
+				<div className="container-default">
+					<div className="text-center mb-16">
+						<div className="inline-flex items-center gap-2 bg-white border border-purple-200 px-6 py-3 rounded-full text-sm font-bold mb-6 shadow-sm">
+							<Zap className="w-4 h-4 text-purple-600" />
+							<span className="text-purple-600">Pro Tips</span>
+						</div>
+						<h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">Best Practices & Tips</h2>
+					</div>
+					<div className="max-w-6xl mx-auto">
+						<div className="grid md:grid-cols-2 gap-12">
+							<div className="bg-white rounded-3xl p-8 md:p-10 shadow-lg border border-gray-100">
+								<div className="flex items-center gap-3 mb-6">
+									<div className="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center">
+										<Users className="w-6 h-6 text-purple-600" />
 									</div>
-									<span>Choose meaningful timing that aligns with the occasion or milestone</span>
-								</li>
-								<li className="flex items-start gap-3">
-									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
+									<h3 className="text-2xl font-black text-gray-900">Encouraging Participation</h3>
+								</div>
+								<ul className="space-y-4">
+									<li className="flex items-start gap-3">
+										<div className="p-1 bg-purple-100 rounded-full mt-1">
+											<ArrowRight className="w-5 h-5 text-purple-600 flex-shrink-0" />
+										</div>
+										<span className="text-gray-700 leading-relaxed">Send personal invitations with context about why their contribution matters</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<div className="p-1 bg-purple-100 rounded-full mt-1">
+											<ArrowRight className="w-5 h-5 text-purple-600 flex-shrink-0" />
+										</div>
+										<span className="text-gray-700 leading-relaxed">Provide example messages or prompts to help people get started</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<div className="p-1 bg-purple-100 rounded-full mt-1">
+											<ArrowRight className="w-5 h-5 text-purple-600 flex-shrink-0" />
+										</div>
+										<span className="text-gray-700 leading-relaxed">Set a deadline to create urgency and ensure timely participation</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<div className="p-1 bg-purple-100 rounded-full mt-1">
+											<ArrowRight className="w-5 h-5 text-purple-600 flex-shrink-0" />
+										</div>
+										<span className="text-gray-700 leading-relaxed">Follow up with gentle reminders for important contributors</span>
+									</li>
+								</ul>
+							</div>
+
+							<div className="bg-white rounded-3xl p-8 md:p-10 shadow-lg border border-gray-100">
+								<div className="flex items-center gap-3 mb-6">
+									<div className="w-12 h-12 bg-pink-100 rounded-2xl flex items-center justify-center">
+										<Sparkles className="w-6 h-6 text-pink-600" />
 									</div>
-									<span>Curate and organize messages before the big reveal for maximum impact</span>
-								</li>
-								<li className="flex items-start gap-3">
-									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
-									</div>
-									<span>Present the board in person when possible for an emotional moment</span>
-								</li>
-								<li className="flex items-start gap-3">
-									<div className="p-1.5 bg-background rounded-full">
-										<ArrowRight className="w-5 h-5 text-teal mt-0.5 flex-shrink-0" />
-									</div>
-									<span>Create a lasting keepsake by exporting or printing the final board</span>
-								</li>
-							</ul>
+									<h3 className="text-2xl font-black text-gray-900">Creating Impact</h3>
+								</div>
+								<ul className="space-y-4">
+									<li className="flex items-start gap-3">
+										<div className="p-1 bg-pink-100 rounded-full mt-1">
+											<ArrowRight className="w-5 h-5 text-pink-600 flex-shrink-0" />
+										</div>
+										<span className="text-gray-700 leading-relaxed">Choose meaningful timing that aligns with the occasion or milestone</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<div className="p-1 bg-pink-100 rounded-full mt-1">
+											<ArrowRight className="w-5 h-5 text-pink-600 flex-shrink-0" />
+										</div>
+										<span className="text-gray-700 leading-relaxed">Curate and organize messages before the big reveal for maximum impact</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<div className="p-1 bg-pink-100 rounded-full mt-1">
+											<ArrowRight className="w-5 h-5 text-pink-600 flex-shrink-0" />
+										</div>
+										<span className="text-gray-700 leading-relaxed">Present the board in person when possible for an emotional moment</span>
+									</li>
+									<li className="flex items-start gap-3">
+										<div className="p-1 bg-pink-100 rounded-full mt-1">
+											<ArrowRight className="w-5 h-5 text-pink-600 flex-shrink-0" />
+										</div>
+										<span className="text-gray-700 leading-relaxed">Create a lasting keepsake by exporting or printing the final board</span>
+									</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg md:rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-teal">Frequently Asked Questions</h2>
-				<div className="max-w-4xl mx-auto">
+			{/* FAQ Section */}
+			<section className="py-20 px-6 md:px-12 lg:px-24 bg-white mt-16">
+				<div className="container-default max-w-4xl mx-auto">
+					<div className="text-center mb-12">
+						<h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">Frequently Asked Questions</h2>
+						<p className="text-gray-600 text-lg">Common questions about creating boards</p>
+					</div>
+
 					<Accordion
 						type="single"
 						collapsible
@@ -399,13 +467,13 @@ export default function GuidesPage() {
 							<AccordionItem
 								key={index}
 								value={`item-${index}`}
-								className="border border-border/40 rounded-lg bg-background/60 overflow-hidden"
+								className="border border-gray-200 rounded-2xl bg-white overflow-hidden shadow-sm hover:shadow-md transition-all"
 							>
-								<AccordionTrigger className="px-6 py-4 text-left cursor-pointer transition-colors [&[data-state=open]>svg]:rotate-180">
-									<h3 className="text-base text-muted-foreground pr-4">{item.question}</h3>
+								<AccordionTrigger className="px-6 py-4 text-left cursor-pointer hover:no-underline hover:bg-gray-50/50 [&[data-state=open]>svg]:rotate-180">
+									<h3 className="text-lg font-bold text-gray-900 pr-4">{item.question}</h3>
 								</AccordionTrigger>
-								<AccordionContent className="px-6 pb-4">
-									<p className="text-muted-foreground leading-relaxed">{item.answer}</p>
+								<AccordionContent className="px-6 pb-6 pt-2">
+									<p className="text-gray-600 leading-relaxed text-base">{item.answer}</p>
 								</AccordionContent>
 							</AccordionItem>
 						))}
@@ -413,33 +481,52 @@ export default function GuidesPage() {
 				</div>
 			</section>
 
-			<section className="text-center py-20 -mx-4 px-8 bg-danke-600 rounded-3xl text-white shadow-2xl border-4 border-danke-500">
-				<h2 className="text-3xl font-bold mb-6">Ready to Create Your Board?</h2>
-				<p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-					Put these guides into practice and start building meaningful connections with your first appreciation board.
-				</p>
-				<div className="flex flex-col sm:flex-row gap-4 justify-center">
-					<Link href="/create-board">
-						<Button
-							size="lg"
-							className="inline-flex items-center justify-center px-6 py-3 bg-teal text-background font-medium rounded-lg hover:bg-teal/90 transition-colors"
-						>
-							Create Your First Board
-						</Button>
-					</Link>
-					<Link href="/contact">
-						<Button
-							size="lg"
-							variant="outline"
-							className="inline-flex items-center justify-center px-6 py-3 border border-border bg-background text-foreground font-medium rounded-lg hover:bg-muted transition-colors"
-						>
-							Need More Help?
-						</Button>
-					</Link>
+			{/* Call to Action */}
+			<section className="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-white relative overflow-hidden mt-16">
+				<div className="container-narrow relative z-10">
+					<div className="bg-purple-600 rounded-3xl p-12 md:p-20 text-center shadow-2xl relative overflow-hidden">
+						{/* Decorative Background */}
+						<div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
+
+						<div className="relative z-10">
+							<div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border border-white/30 px-6 py-3 rounded-full text-sm font-medium mb-8">
+								<Sparkles className="w-4 h-4 text-white" />
+								<span className="text-white font-bold">Ready to Start?</span>
+							</div>
+
+							<h2 className="text-3xl md:text-5xl font-black mb-6 text-white">
+								Ready to Create Your Board?
+							</h2>
+							<p className="text-xl mb-10 max-w-2xl mx-auto text-white/90 leading-relaxed">
+								Put these guides into practice and start building meaningful connections with your first appreciation board.
+							</p>
+
+							<div className="flex flex-col sm:flex-row gap-4 justify-center">
+								<Link href="/create-board">
+									<Button
+										size="lg"
+										className="bg-white text-purple-600 hover:bg-gray-100 font-bold h-16 px-8 text-lg shadow-xl hover:shadow-2xl transition-all hover:scale-105"
+									>
+										Create Your First Board
+									</Button>
+								</Link>
+								<Link href="/contact">
+									<Button
+										size="lg"
+										variant="outline"
+										className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-bold h-16 px-8 text-lg"
+									>
+										Need More Help?
+									</Button>
+								</Link>
+							</div>
+						</div>
+					</div>
 				</div>
 			</section>
 
-			<div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] -mb-12 md:p-12">
+			{/* Footer */}
+			<div className="mt-auto w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
 				<Footer />
 			</div>
 		</div>
