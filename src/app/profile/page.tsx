@@ -18,7 +18,7 @@ export default function ProfilePage() {
         backgroundPosition: "0 0, 12px 12px",
       }}
     >
-      <section className="relative pt-24 pb-16 md:pt-28 md:pb-20 lg:pt-32 px-6 md:px-12 lg:px-24">
+      <section className="relative pt-40 pb-16 md:pt-40 md:pb-20 lg:pt-50 px-6 md:px-12 lg:px-24">
         <div className="container-default">
           <div className="mb-8">
             <Link href="/">
