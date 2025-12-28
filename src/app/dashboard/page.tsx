@@ -1,10 +1,7 @@
-import { Button } from '@/components/ui/button';
-import { auth } from '@clerk/nextjs/server';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import { Suspense } from 'react';
-import { DashboardClient } from './dashboard-client';
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { DashboardClient } from "./dashboard-client";
 
 function DashboardSkeleton() {
   return (
@@ -51,25 +48,14 @@ export default async function DashboardPage() {
   const { userId } = await auth();
 
   if (!userId) {
-    redirect('/sign-in?redirect_url=/dashboard');
+    redirect("/sign-in?redirect_url=/dashboard");
   }
 
   return (
-    <>
-      <div className="mb-6">
-        <Link href="/">
-          <Button
-            variant="ghost"
-            className="flex items-center gap-2 text-danke-900"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
-          </Button>
-        </Link>
-      </div>
+    <div className="min-h-screen bg-white">
       <Suspense fallback={<DashboardSkeleton />}>
         <DashboardClient />
       </Suspense>
-    </>
+    </div>
   );
 }
