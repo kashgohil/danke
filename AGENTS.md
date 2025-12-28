@@ -1,0 +1,1 @@
+- Do not build the application after making changes to the codebase.
