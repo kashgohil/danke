@@ -14,6 +14,7 @@ import {
   Edit2,
   Loader2,
   MessageCircle,
+  Pin,
   Play,
   Settings,
   Trash2,
@@ -221,7 +222,7 @@ function PostCard({
         <PolaroidCard className="w-full max-w-none">
           {/* Media */}
           {hasMedia && (
-            <div className="mb-4 -mt-4 -mx-4 md:-mt-6 md:-mx-6 overflow-hidden rounded-t-sm">
+            <div className="mb-4 -mt-4 -mx-4 md:-mt-6 md:-mx-6 overflow-hidden">
               <MediaCarousel
                 mediaUrls={post.mediaUrls!}
                 getMediaType={getMediaType}
@@ -322,24 +323,6 @@ function PostCard({
             content={post.content}
             className={`border-0 p-0 min-h-0 text-base leading-relaxed ${textColors.secondary}`}
           />
-
-          {/* Footer */}
-          <div
-            className={`mt-4 pt-4 border-t border-gray-300 text-xs text-center ${textColors.muted}`}
-          >
-            <p className={`font-medium ${textColors.primary}`}>
-              {post.isAnonymous
-                ? post.anonymousName || "Anonymous"
-                : post.creator.name || "Unknown"}
-            </p>
-            <p>
-              {new Date(post.createdAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </p>
-          </div>
 
           {/* Moderation Status */}
           {post.moderationStatus !== "approved" &&
@@ -459,7 +442,10 @@ export function BoardView({
       {/* Greeting Card Header */}
       <section className="relative section-padding pt-16 md:pt-20 pb-6">
         <div className="container-wide">
-          <div className="bg-white/90 border-4 border-gray-900 rounded-sm shadow-2xl px-6 py-6 md:px-8 animate-in">
+          <div className="relative bg-white/90 border-4 border-gray-900 rounded-sm shadow-2xl px-6 py-6 md:px-8 animate-in">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
+              <Pin className="w-6 h-6 fill-black text-black drop-shadow-sm" />
+            </div>
             <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-3 text-left">
                 <h1 className="text-3xl md:text-4xl text-gray-900 font-fuzzy-bubbles">

@@ -1,8 +1,7 @@
 import { UserProfile } from "@/components/auth/user-profile";
 import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
-import { ArrowLeft, User } from "lucide-react";
-import Link from "next/link";
+import { User } from "lucide-react";
 
 export default function ProfilePage() {
   return (
@@ -20,18 +19,6 @@ export default function ProfilePage() {
     >
       <section className="relative pt-40 pb-16 md:pt-40 md:pb-20 lg:pt-50 px-6 md:px-12 lg:px-24">
         <div className="container-default">
-          <div className="mb-8">
-            <Link href="/">
-              <Button
-                variant="ghost"
-                className="flex items-center gap-2 text-gray-700 hover:text-gray-900 hover:bg-white/60"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back to Home
-              </Button>
-            </Link>
-          </div>
-
           <SignedIn>
             <UserProfile />
           </SignedIn>
