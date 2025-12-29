@@ -1,8 +1,8 @@
-import { auth } from '@clerk/nextjs/server';
-import { getCurrentUser } from './auth';
-import { Board } from './db';
-import { BoardModel, ErrorType } from './models/board';
-import { ModeratorModel } from './models/moderator';
+import { auth } from "@clerk/nextjs/server";
+import { getCurrentUser } from "./auth";
+import { Board } from "./db";
+import { BoardModel, ErrorType } from "./models/board";
+import { ModeratorModel } from "./models/moderator";
 
 export interface AccessCheckResult {
   hasAccess: boolean;
@@ -14,26 +14,36 @@ export interface AccessCheckResult {
 }
 
 export async function checkBoardAccess(
-  board: Board
+  board: Board,
 ): Promise<AccessCheckResult> {
   try {
     const { userId } = await auth();
 
     if (!userId) {
+      const accessCheck = BoardModel.checkBoardAccess(board);
       return {
-        hasAccess: false,
-        errorType: ErrorType.NOT_SIGNED_IN,
-        reason: 'Authentication required for private board',
+        hasAccess: accessCheck.hasAccess,
+        errorType: accessCheck.errorType,
+        reason: accessCheck.reason,
       };
     }
 
     const user = await getCurrentUser();
 
     if (!user) {
+      const accessCheck = BoardModel.checkBoardAccess(board);
+
+      if (accessCheck.hasAccess) {
+        return { hasAccess: true };
+      }
+
       return {
         hasAccess: false,
-        errorType: ErrorType.NOT_SIGNED_IN,
-        reason: 'Email address required for private board access',
+        errorType: accessCheck.errorType ?? ErrorType.NOT_SIGNED_IN,
+        reason:
+          board.boardVisibility === "private"
+            ? "Email address required for private board access"
+            : accessCheck.reason,
       };
     }
 
@@ -62,11 +72,11 @@ export async function checkBoardAccess(
       isCreator,
     };
   } catch (error) {
-    console.error('Error checking board access:', error);
+    console.error("Error checking board access:", error);
     return {
       hasAccess: false,
       errorType: ErrorType.NOT_SIGNED_IN,
-      reason: 'Unable to verify access permissions',
+      reason: "Unable to verify access permissions",
     };
   }
 }
