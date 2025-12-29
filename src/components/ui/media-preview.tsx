@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { cn } from '@/lib/utils';
-import { Volume2, VolumeX, X } from 'lucide-react';
-import Image from 'next/image';
-import { useState } from 'react';
-import { Button } from './button';
-import { Card, CardContent } from './card';
+import { cn } from "@/lib/utils";
+import { Volume2, VolumeX, X } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { Button } from "./button";
+import { Card, CardContent } from "./card";
 
 interface MediaPreviewProps {
   url: string;
-  type: 'image' | 'video' | 'audio';
+  type: "image" | "video" | "audio";
   filename?: string;
   onRemove?: () => void;
   className?: string;
@@ -39,7 +39,12 @@ export function MediaPreview({
   };
 
   return (
-    <Card className={cn('relative group overflow-hidden', className)}>
+    <Card
+      className={cn(
+        "relative group overflow-hidden border-2 border-gray-900 rounded-sm shadow-sm bg-white",
+        className,
+      )}
+    >
       {onRemove && (
         <Button
           type="button"
@@ -52,11 +57,11 @@ export function MediaPreview({
         </Button>
       )}
 
-      {type === 'image' && (
+      {type === "image" && (
         <div className="relative overflow-hidden bg-muted">
           <Image
             src={url}
-            alt={filename || 'Uploaded image'}
+            alt={filename || "Uploaded image"}
             width={400}
             height={300}
             className="w-full h-auto object-cover transition-transform duration-200 hover:scale-105"
@@ -70,7 +75,7 @@ export function MediaPreview({
         </div>
       )}
 
-      {type === 'video' && (
+      {type === "video" && (
         <div className="relative overflow-hidden bg-black">
           <video
             src={url}
@@ -79,8 +84,8 @@ export function MediaPreview({
             preload="none"
             onPlay={(e) => handleVideoPlay(e.currentTarget)}
             onPause={(e) => handleVideoPlay(e.currentTarget)}
-            style={{ maxHeight: '400px' }}
-            aria-label={filename || 'Video attachment'}
+            style={{ maxHeight: "400px" }}
+            aria-label={filename || "Video attachment"}
           >
             <track kind="captions" />
             Your browser does not support the video tag.
@@ -93,11 +98,11 @@ export function MediaPreview({
               size="sm"
               onClick={(e) => {
                 const video = e.currentTarget
-                  .closest('div')
-                  ?.querySelector('video');
+                  .closest("div")
+                  ?.querySelector("video");
                 if (video) toggleMute(video);
               }}
-              aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+              aria-label={isMuted ? "Unmute video" : "Mute video"}
               className="shadow-lg"
             >
               {isMuted ? (
@@ -110,15 +115,15 @@ export function MediaPreview({
         </div>
       )}
 
-      {type === 'audio' && (
+      {type === "audio" && (
         <CardContent className="p-4">
           <div className="flex items-center space-x-3 mb-3">
-            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-              <Volume2 className="h-5 w-5 text-primary" aria-hidden="true" />
+            <div className="w-10 h-10 bg-[#FDF6E3] border-2 border-gray-900 rounded-sm flex items-center justify-center">
+              <Volume2 className="h-5 w-5 text-gray-900" aria-hidden="true" />
             </div>
             <div className="flex-1 min-w-0">
               <span className="text-sm font-medium text-foreground block truncate">
-                {filename || 'Audio file'}
+                {filename || "Audio file"}
               </span>
               <span className="text-xs text-muted-foreground">Audio</span>
             </div>
@@ -131,14 +136,14 @@ export function MediaPreview({
             preload="metadata"
             onPlay={(e) => handleAudioPlay(e.currentTarget)}
             onPause={(e) => handleAudioPlay(e.currentTarget)}
-            aria-label={filename || 'Audio attachment'}
+            aria-label={filename || "Audio attachment"}
           >
             Your browser does not support the audio tag.
           </audio>
         </CardContent>
       )}
 
-      {filename && type !== 'audio' && (
+      {filename && type !== "audio" && (
         <CardContent className="p-3 pt-2">
           <p className="text-xs text-muted-foreground truncate">{filename}</p>
         </CardContent>
