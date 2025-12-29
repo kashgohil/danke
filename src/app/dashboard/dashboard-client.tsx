@@ -72,6 +72,15 @@ interface BoardSummaryStats {
   pendingPosts: number;
 }
 
+type PostStatusFilter =
+  | "all"
+  | "approved"
+  | "pending"
+  | "rejected"
+  | "change_requested";
+
+type PostAnonymousFilter = "all" | "anonymous" | "named";
+
 function ShimmerBlock({ className }: { className: string }) {
   return (
     <div
@@ -173,11 +182,19 @@ export function DashboardClient() {
     approvedPosts: 0,
     pendingPosts: 0,
   });
+  const [postStatusFilter, setPostStatusFilter] =
+    useState<PostStatusFilter>("all");
+  const [postAnonymousFilter, setPostAnonymousFilter] =
+    useState<PostAnonymousFilter>("all");
   const [loading, setLoading] = useState(true);
   const [boardsLoading, setBoardsLoading] = useState(false);
   const [postsLoading, setPostsLoading] = useState(false);
   const { handleError } = useApiErrorHandler();
   const hasLoadedBoards = useRef(false);
+  const previousPostFilters = useRef({
+    status: postStatusFilter,
+    anonymous: postAnonymousFilter,
+  });
 
   useEffect(() => {
     const fetchBoards = async () => {
@@ -213,12 +230,34 @@ export function DashboardClient() {
     fetchBoards();
   }, [boardsPagination.page, boardsPagination.limit, handleError]);
 
+  const buildPostsQuery = (page: number, limit: number) => {
+    const params = new URLSearchParams({
+      page: String(page),
+      limit: String(limit),
+    });
+
+    if (postStatusFilter !== "all") {
+      params.set("status", postStatusFilter);
+    }
+
+    if (postAnonymousFilter !== "all") {
+      params.set(
+        "anonymous",
+        postAnonymousFilter === "anonymous" ? "true" : "false",
+      );
+    }
+
+    return params.toString();
+  };
+
   const fetchPosts = async () => {
     setPostsLoading(true);
     try {
-      const response = await apiRequest(
-        `/api/user/posts?page=${postsPagination.page}&limit=${postsPagination.limit}`,
+      const query = buildPostsQuery(
+        postsPagination.page,
+        postsPagination.limit,
       );
+      const response = await apiRequest(`/api/user/posts?${query}`);
       setPosts(response.posts || []);
       setPostsPagination((prev) => ({
         ...prev,
@@ -233,8 +272,34 @@ export function DashboardClient() {
   };
 
   useEffect(() => {
+    const filtersChanged =
+      previousPostFilters.current.status !== postStatusFilter ||
+      previousPostFilters.current.anonymous !== postAnonymousFilter;
+
+    if (filtersChanged && postsPagination.page !== 1) {
+      previousPostFilters.current = {
+        status: postStatusFilter,
+        anonymous: postAnonymousFilter,
+      };
+      setPostsPagination((prev) => ({
+        ...prev,
+        page: 1,
+      }));
+      return;
+    }
+
+    previousPostFilters.current = {
+      status: postStatusFilter,
+      anonymous: postAnonymousFilter,
+    };
+
     fetchPosts();
-  }, [postsPagination.page, postsPagination.limit]);
+  }, [
+    postsPagination.page,
+    postsPagination.limit,
+    postStatusFilter,
+    postAnonymousFilter,
+  ]);
 
   const getContentPreview = (content: any): string => {
     if (typeof content === "string") {
@@ -252,11 +317,18 @@ export function DashboardClient() {
     return "Post content";
   };
 
+  const clearPostFilters = () => {
+    setPostStatusFilter("all");
+    setPostAnonymousFilter("all");
+  };
+
   // Calculate aggregate stats
   const totalBoards = boardStats.totalBoards;
   const totalPosts = boardStats.totalPosts;
   const totalApproved = boardStats.approvedPosts;
   const totalPending = boardStats.pendingPosts;
+  const hasActivePostFilters =
+    postStatusFilter !== "all" || postAnonymousFilter !== "all";
 
   if (loading) {
     return <DashboardSkeleton />;
@@ -528,19 +600,94 @@ export function DashboardClient() {
           {/* Posts View */}
           <TabsContent value="posts" className="mt-0">
             <div className="bg-white border-4 border-t-0 border-gray-900 rounded-b-sm overflow-hidden shadow-2xl">
+              <div className="px-6 py-4 border-b border-gray-200 bg-[#FDF6E3]">
+                <div className="flex flex-wrap items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                      Status
+                    </span>
+                    <Select
+                      value={postStatusFilter}
+                      onValueChange={(value) =>
+                        setPostStatusFilter(value as PostStatusFilter)
+                      }
+                      disabled={postsLoading}
+                    >
+                      <SelectTrigger className="h-9 w-44">
+                        <SelectValue placeholder="All statuses" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All statuses</SelectItem>
+                        <SelectItem value="approved">Approved</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="rejected">Rejected</SelectItem>
+                        <SelectItem value="change_requested">
+                          Change requested
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                      Identity
+                    </span>
+                    <Select
+                      value={postAnonymousFilter}
+                      onValueChange={(value) =>
+                        setPostAnonymousFilter(value as PostAnonymousFilter)
+                      }
+                      disabled={postsLoading}
+                    >
+                      <SelectTrigger className="h-9 w-44">
+                        <SelectValue placeholder="All posts" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All posts</SelectItem>
+                        <SelectItem value="anonymous">
+                          Anonymous only
+                        </SelectItem>
+                        <SelectItem value="named">Named only</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={clearPostFilters}
+                    disabled={!hasActivePostFilters || postsLoading}
+                    className="border-2 border-gray-900 text-gray-900 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                  >
+                    Clear filters
+                  </Button>
+                </div>
+              </div>
               {postsLoading ? (
                 <div className="px-6 py-12 text-center">
                   <div className="animate-spin w-8 h-8 border-4 border-gray-900 border-t-transparent rounded-full mx-auto"></div>
                 </div>
-              ) : posts.length === 0 && postsPagination.total === 0 ? (
+              ) : posts.length === 0 ? (
                 <div className="px-6 py-12 text-center">
                   <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    No posts yet
+                    {hasActivePostFilters
+                      ? "No posts match these filters"
+                      : "No posts yet"}
                   </h3>
                   <p className="text-gray-600">
-                    Your contributions to boards will appear here
+                    {hasActivePostFilters
+                      ? "Try adjusting your filters to see more posts."
+                      : "Your contributions to boards will appear here"}
                   </p>
+                  {hasActivePostFilters && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={clearPostFilters}
+                      className="mt-4 border-2 border-gray-900 text-gray-900 hover:bg-[#FDF6E3] transition-all duration-200"
+                    >
+                      Clear filters
+                    </Button>
+                  )}
                 </div>
               ) : (
                 <>
@@ -597,12 +744,14 @@ export function DashboardClient() {
                                   className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border-2 border-gray-900 w-fit ${
                                     post.moderationStatus === "approved"
                                       ? "bg-emerald-100 text-gray-900"
-                                      : post.moderationStatus === "pending"
+                                      : post.moderationStatus === "pending" ||
+                                          post.moderationStatus ===
+                                            "change_requested"
                                         ? "bg-amber-100 text-gray-900"
                                         : "bg-rose-100 text-gray-900"
                                   }`}
                                 >
-                                  {post.moderationStatus}
+                                  {post.moderationStatus.replace(/_/g, " ")}
                                 </span>
                                 {post.isAnonymous && (
                                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white border-2 border-gray-900 text-gray-900 w-fit">

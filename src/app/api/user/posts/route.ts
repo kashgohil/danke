@@ -16,6 +16,8 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = Math.min(parseInt(searchParams.get('limit') || '10', 10), 50);
+    const status = searchParams.get('status');
+    const anonymous = searchParams.get('anonymous');
 
     if (
       !Number.isFinite(page) ||
@@ -30,11 +32,47 @@ export async function GET(request: Request) {
     }
     const offset = (page - 1) * limit;
 
+    const allowedStatuses = new Set([
+      'approved',
+      'pending',
+      'rejected',
+      'change_requested',
+    ]);
+
+    if (status && !allowedStatuses.has(status)) {
+      return NextResponse.json(
+        { error: 'Invalid status filter' },
+        { status: 400 },
+      );
+    }
+
+    if (anonymous !== null && anonymous !== 'true' && anonymous !== 'false') {
+      return NextResponse.json(
+        { error: 'Invalid anonymous filter' },
+        { status: 400 },
+      );
+    }
+
+    const conditions = [
+      eq(posts.creatorId, userId),
+      eq(posts.isDeleted, false),
+    ];
+
+    if (status) {
+      conditions.push(eq(posts.moderationStatus, status));
+    }
+
+    if (anonymous !== null) {
+      conditions.push(eq(posts.isAnonymous, anonymous === 'true'));
+    }
+
+    const whereCondition = and(...conditions);
+
     // Get total count
     const [{ count: totalCount }] = await db
       .select({ count: sql<number>`cast(count(*) as int)` })
       .from(posts)
-      .where(and(eq(posts.creatorId, userId), eq(posts.isDeleted, false)));
+      .where(whereCondition);
 
     // Get paginated posts
     const userPosts = await db
@@ -54,7 +92,7 @@ export async function GET(request: Request) {
       })
       .from(posts)
       .innerJoin(boards, eq(posts.boardId, boards.id))
-      .where(and(eq(posts.creatorId, userId), eq(posts.isDeleted, false)))
+      .where(whereCondition)
       .orderBy(desc(posts.createdAt))
       .limit(limit)
       .offset(offset);
