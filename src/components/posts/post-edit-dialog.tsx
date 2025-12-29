@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Post } from '@/lib/db';
-import { useEffect, useState } from 'react';
-import { PostEditForm } from './post-edit-form';
+} from "@/components/ui/dialog";
+import { Post } from "@/lib/db";
+import { MessageCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { PostEditForm } from "./post-edit-form";
 
 interface PostEditDialogProps {
   postId: string | null;
@@ -46,14 +47,14 @@ export function PostEditDialog({
       const response = await fetch(`/api/posts/${postId}`);
 
       if (!response.ok) {
-        throw new Error('Failed to fetch post');
+        throw new Error("Failed to fetch post");
       }
 
       const data = await response.json();
       setPost(data.post);
     } catch (error) {
-      console.error('Error fetching post:', error);
-      setError('Failed to load post');
+      console.error("Error fetching post:", error);
+      setError("Failed to load post");
     } finally {
       setLoading(false);
     }
@@ -72,31 +73,34 @@ export function PostEditDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden">
-        <DialogHeader>
-          <DialogTitle>Edit Your Message</DialogTitle>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden border-4 border-gray-900 rounded-sm! bg-white p-0 shadow-2xl">
+        <DialogHeader className="border-b-2 border-gray-900 bg-[#FDF6E3] px-6 py-4 text-left">
+          <DialogTitle className="text-2xl font-fuzzy-bubbles text-gray-900 flex items-center gap-2">
+            <MessageCircle className="w-5 h-5 text-gray-900!" />
+            Edit Your Message
+          </DialogTitle>
         </DialogHeader>
 
-        {loading && (
-          <div className="p-8 text-center text-muted-foreground">
-            Loading post...
-          </div>
-        )}
+        <div className="p-6">
+          {loading && (
+            <div className="p-6 text-center text-gray-600">Loading post...</div>
+          )}
 
-        {error && (
-          <div className="p-4 bg-red-900/20 border border-red-800 rounded-lg">
-            <p className="text-red-400 text-sm">{error}</p>
-          </div>
-        )}
+          {error && (
+            <div className="p-4 bg-rose-50 border-2 border-rose-500 rounded-sm">
+              <p className="text-rose-700 text-sm">{error}</p>
+            </div>
+          )}
 
-        {post && (
-          <PostEditForm
-            post={post}
-            onSuccess={handlePostUpdated}
-            onCancel={handleCancel}
-            className="border-0 shadow-none p-0"
-          />
-        )}
+          {post && (
+            <PostEditForm
+              post={post}
+              onSuccess={handlePostUpdated}
+              onCancel={handleCancel}
+              className="border-0 shadow-none p-0"
+            />
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );
