@@ -10,7 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { apiRequest, useApiErrorHandler } from "@/lib/api-error-handler";
 import { formatDistanceToNow } from "date-fns";
 import {
-  Calendar,
   ChevronLeft,
   ChevronRight,
   ExternalLink,
@@ -18,7 +17,6 @@ import {
   MessageSquare,
   Plus,
   Settings,
-  TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -198,10 +196,9 @@ export function DashboardClient() {
         backgroundPosition: "0 0, 12px 12px",
       }}
     >
-      <div className="container-default w-full px-6 md:px-12 lg:px-24 pt-40 md:pt-40 lg:pt-50 pb-16">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
+      <div className="container-default w-full px-6 md:px-12 lg:px-24 pt-32 md:pt-36 lg:pt-40 pb-16">
+        <div className="mb-8 space-y-4">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h1 className="text-3xl font-fuzzy-bubbles text-gray-900">
                 Dashboard
@@ -217,71 +214,33 @@ export function DashboardClient() {
               </Button>
             </Link>
           </div>
-        </div>
 
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white border-4 border-gray-900 rounded-sm p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-bold text-lg font-fuzzy-bubbles text-gray-600">
-                  Total Boards
-                </p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">
-                  {totalBoards}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-black border-2 border-gray-900 rounded-sm flex items-center justify-center shadow-sm">
-                <TrendingUp className="w-6 h-6 text-white" />
-              </div>
+          <div className="flex flex-wrap gap-3">
+            <div className="bg-white border-2 border-gray-900 rounded-sm px-4 py-3 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                Total Boards
+              </p>
+              <p className="text-2xl font-bold text-gray-900">{totalBoards}</p>
             </div>
-          </div>
-
-          <div className="bg-white border-4 border-gray-900 rounded-sm p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-bold text-lg font-fuzzy-bubbles text-gray-600">
-                  Total Posts
-                </p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">
-                  {totalPosts}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-black border-2 border-gray-900 rounded-sm flex items-center justify-center shadow-sm">
-                <MessageSquare className="w-6 h-6 text-white" />
-              </div>
+            <div className="bg-white border-2 border-gray-900 rounded-sm px-4 py-3 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                Total Posts
+              </p>
+              <p className="text-2xl font-bold text-gray-900">{totalPosts}</p>
             </div>
-          </div>
-
-          <div className="bg-white border-4 border-gray-900 rounded-sm p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-bold text-lg font-fuzzy-bubbles text-gray-600">
-                  Approved
-                </p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">
-                  {totalApproved}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-black border-2 border-gray-900 rounded-sm flex items-center justify-center shadow-sm">
-                <Eye className="w-6 h-6 text-white" />
-              </div>
+            <div className="bg-white border-2 border-gray-900 rounded-sm px-4 py-3 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                Approved
+              </p>
+              <p className="text-2xl font-bold text-gray-900">
+                {totalApproved}
+              </p>
             </div>
-          </div>
-
-          <div className="bg-white border-4 border-gray-900 rounded-sm p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-bold text-lg font-fuzzy-bubbles text-gray-600">
-                  Pending Review
-                </p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">
-                  {totalPending}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-black border-2 border-gray-900 rounded-sm flex items-center justify-center shadow-sm">
-                <Calendar className="w-6 h-6 text-white" />
-              </div>
+            <div className="bg-white border-2 border-gray-900 rounded-sm px-4 py-3 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                Pending
+              </p>
+              <p className="text-2xl font-bold text-gray-900">{totalPending}</p>
             </div>
           </div>
         </div>

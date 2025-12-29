@@ -1,15 +1,11 @@
-import { BoardPageClient } from '@/components/boards/board-page-client';
-import { Button } from '@/components/ui/button';
-import { checkBoardAccess } from '@/lib/board-access';
-import {
-  generateGradientStyle,
-  getGradientClasses,
-} from '@/lib/gradient-utils';
-import { BoardModel, ErrorType } from '@/lib/models/board';
-import { tryCatch } from '@/lib/try-catch';
-import { Heart, Lock } from 'lucide-react';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { BoardPageClient } from "@/components/boards/board-page-client";
+import { Button } from "@/components/ui/button";
+import { checkBoardAccess } from "@/lib/board-access";
+import { BoardModel, ErrorType } from "@/lib/models/board";
+import { tryCatch } from "@/lib/try-catch";
+import { Heart, Lock } from "lucide-react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 interface BoardPageProps {
   params: Promise<{
@@ -55,7 +51,7 @@ async function getBoardData(boardId: string) {
       isCreator: accessCheck.isCreator || false,
     };
   } catch (error) {
-    console.error('Error fetching board data:', error);
+    console.error("Error fetching board data:", error);
     throw error;
   }
 }
@@ -66,7 +62,7 @@ export default async function BoardPage({ params }: BoardPageProps) {
   const { result: data, error } = await tryCatch(getBoardData(boardId));
 
   if (error) {
-    console.error('BoardPage: Error occurred:', error);
+    console.error("BoardPage: Error occurred:", error);
     return (
       <div className="min-h-screen flex items-center justify-center bg-[hsl(250,40%,99%)]">
         <div className="text-center max-w-md mx-auto px-4">
@@ -104,7 +100,7 @@ export default async function BoardPage({ params }: BoardPageProps) {
         </h1>
         <p className="text-danke-800 mb-8 text-lg">
           {data.accessReason ||
-            'You do not have permission to view this board.'}
+            "You do not have permission to view this board."}
         </p>
         <div className="flex justify-center gap-2">
           {data.errorType === ErrorType.NOT_SIGNED_IN && (
@@ -131,19 +127,15 @@ export default async function BoardPage({ params }: BoardPageProps) {
   }
 
   const backgroundColor = (data.board?.typeConfig as any)?.backgroundColor;
-  const gradientStyle = generateGradientStyle(backgroundColor);
-  const defaultClasses = getGradientClasses(
-    backgroundColor,
-    'fixed inset-0 w-full h-full'
-  );
-
-  function layover() {
-    return <div className={defaultClasses} style={gradientStyle} />;
-  }
+  const baseBackground = backgroundColor || "#FDF6E3";
 
   return (
     <>
-      {layover()}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 -z-10 w-full h-full"
+        style={{ backgroundColor: baseBackground }}
+      />
       <BoardPageClient
         initialBoard={data.board!}
         boardId={boardId}
@@ -162,7 +154,7 @@ export async function generateMetadata({ params }: BoardPageProps) {
 
     if (!data) {
       return {
-        title: 'Board Not Found',
+        title: "Board Not Found",
       };
     }
 
@@ -172,7 +164,7 @@ export async function generateMetadata({ params }: BoardPageProps) {
     };
   } catch (error) {
     return {
-      title: 'Board Not Found',
+      title: "Board Not Found",
     };
   }
 }

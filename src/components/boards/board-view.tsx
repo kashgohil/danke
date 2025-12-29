@@ -3,25 +3,19 @@
 import { PostContent } from "@/components/posts/post-content";
 import { Button } from "@/components/ui/button";
 import { MasonryLayout } from "@/components/ui/masonry-layout";
+import { PolaroidCard } from "@/components/ui/polaroid-card";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { usePostEdit } from "@/contexts/post-edit-context";
 import { apiRequest, useApiErrorHandler } from "@/lib/api-error-handler";
-import {
-  generateCardStyle,
-  getContrastTextStyles,
-  getTextColors,
-} from "@/lib/gradient-utils";
+import { getTextColors } from "@/lib/gradient-utils";
 import { useAuth } from "@clerk/nextjs";
 import {
   Calendar,
   Edit2,
-  Heart,
   Loader2,
   MessageCircle,
-  Pin,
   Play,
   Settings,
-  Sparkles,
   Trash2,
   User,
 } from "lucide-react";
@@ -84,6 +78,32 @@ interface BoardViewProps {
   isFetchingMore?: boolean;
 }
 
+const hexToRgb = (hex: string) => {
+  const sanitized = hex.replace("#", "");
+  if (sanitized.length !== 6) {
+    return null;
+  }
+
+  const r = parseInt(sanitized.slice(0, 2), 16);
+  const g = parseInt(sanitized.slice(2, 4), 16);
+  const b = parseInt(sanitized.slice(4, 6), 16);
+
+  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) {
+    return null;
+  }
+
+  return { r, g, b };
+};
+
+const toRgba = (hex: string, alpha: number) => {
+  const rgb = hexToRgb(hex);
+  if (!rgb) {
+    return null;
+  }
+
+  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+};
+
 function PostCard({
   post,
   board,
@@ -106,9 +126,13 @@ function PostCard({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const backgroundColor = (board.typeConfig as any)?.backgroundColor;
-  const cardStyle = generateCardStyle(backgroundColor);
-  const textColors = getTextColors(backgroundColor);
-  const contrastTextStyles = getContrastTextStyles(backgroundColor);
+  const textColors = {
+    primary: "text-gray-900",
+    secondary: "text-gray-700",
+    muted: "text-gray-500",
+    accent: "text-gray-900",
+  };
+  const accentColor = backgroundColor || "#F59E0B";
 
   const isOwnPost = userId === post.creatorId;
   const canEdit =
@@ -193,172 +217,157 @@ function PostCard({
       </Dialog>
 
       {/* Post Card */}
-      <div
-        className="relative bg-white border-4 border-gray-900 shadow-2xl rounded-sm p-4 group animate-in"
-        role="article"
-        style={{ transform: `rotate(${Math.random() * 10 - 5}deg)` }}
-      >
-        {/* Thumbtack */}
-        <div className="absolute -top-2 -left-2 z-10">
-          <Pin className="w-6 h-6 fill-gray-700 text-gray-700 drop-shadow-sm" />
-        </div>
-        {/* Media */}
-        {hasMedia && (
-          <div className="mb-4 -mt-4 -mx-4 overflow-hidden rounded-t-sm">
-            <MediaCarousel
-              mediaUrls={post.mediaUrls!}
-              getMediaType={getMediaType}
-            />
-          </div>
-        )}
-
-        {/* Header */}
-        <div className="flex items-start justify-between mb-6">
-          <div className="flex items-center gap-3 flex-1 min-w-0">
-            <div className="flex-shrink-0">
-              {post.isAnonymous ? (
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white shadow-md">
-                  <User className="w-6 h-6" />
-                </div>
-              ) : (
-                <UserAvatar user={post.creator} size="lg" />
-              )}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-base font-semibold text-gray-900 truncate">
-                {post.isAnonymous
-                  ? post.anonymousName || "Anonymous"
-                  : post.creator.name || "Unknown"}
-              </p>
-              <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                <Calendar className="w-3 h-3" />
-                <time dateTime={post.createdAt}>
-                  {new Date(post.createdAt).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </time>
-              </div>
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="flex items-center gap-1">
-            {canEdit && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => openPostEdit(post.id)}
-                      className="h-9 w-9 rounded-full hover:bg-purple-50 hover:text-purple-600"
-                    >
-                      <Edit2 className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Edit post</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
-            {!showModerationControls && canDelete && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowDeleteDialog(true)}
-                      disabled={isDeleting}
-                      className="h-9 w-9 rounded-full hover:bg-red-50 hover:text-red-600"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Delete post</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
-            {showModerationControls && (
-              <PostModerationControls
-                textColors={textColors}
-                postId={post.id}
-                moderationStatus={post.moderationStatus}
-                onModerationComplete={() => {
-                  onPostUpdated?.(post);
-                }}
+      <div role="article" className="w-full">
+        <PolaroidCard className="w-full max-w-none">
+          {/* Media */}
+          {hasMedia && (
+            <div className="mb-4 -mt-4 -mx-4 md:-mt-6 md:-mx-6 overflow-hidden rounded-t-sm">
+              <MediaCarousel
+                mediaUrls={post.mediaUrls!}
+                getMediaType={getMediaType}
               />
-            )}
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="prose prose-sm max-w-none text-gray-700">
-          <PostContent
-            content={post.content}
-            className="border-0 p-0 min-h-0 text-base leading-relaxed"
-          />
-        </div>
-
-        {/* Footer */}
-        <div className="mt-4 pt-4 border-t border-gray-300 text-xs text-gray-600 text-center">
-          <p className="font-medium">
-            {post.isAnonymous
-              ? post.anonymousName || "Anonymous"
-              : post.creator.name || "Unknown"}
-          </p>
-          <p>
-            {new Date(post.createdAt).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </p>
-        </div>
-
-        {/* Footer */}
-        <div className="mt-4 pt-4 border-t border-gray-300 text-xs text-gray-600 text-center">
-          <p className="font-medium">
-            {post.isAnonymous
-              ? post.anonymousName || "Anonymous"
-              : post.creator.name || "Unknown"}
-          </p>
-          <p>
-            {new Date(post.createdAt).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </p>
-        </div>
-
-        {/* Moderation Status */}
-        {post.moderationStatus !== "approved" &&
-          (isModerator || isCreator || isOwnPost) && (
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <div
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium ${
-                  post.moderationStatus === "pending"
-                    ? "bg-yellow-50 text-yellow-700"
-                    : post.moderationStatus === "rejected"
-                      ? "bg-red-50 text-red-700"
-                      : "bg-blue-50 text-blue-700"
-                }`}
-              >
-                <span className="w-2 h-2 rounded-full bg-current animate-pulse"></span>
-                {post.moderationStatus === "pending" && "Pending Moderation"}
-                {post.moderationStatus === "rejected" && "Rejected"}
-                {post.moderationStatus === "change_requested" &&
-                  "Changes Requested"}
-              </div>
-              {post.moderationReason && (
-                <p className="text-xs text-gray-600 mt-2">
-                  Reason: {post.moderationReason}
-                </p>
-              )}
             </div>
           )}
+
+          {/* Header */}
+          <div className="flex items-start justify-between mb-6">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <div className="flex-shrink-0">
+                {post.isAnonymous ? (
+                  <div
+                    className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md"
+                    style={{ backgroundColor: accentColor }}
+                  >
+                    <User className="w-6 h-6" />
+                  </div>
+                ) : (
+                  <UserAvatar user={post.creator} size="lg" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p
+                  className={`text-base font-semibold truncate ${textColors.primary}`}
+                >
+                  {post.isAnonymous
+                    ? post.anonymousName || "Anonymous"
+                    : post.creator.name || "Unknown"}
+                </p>
+                <div
+                  className={`flex items-center gap-1.5 text-xs ${textColors.muted}`}
+                >
+                  <Calendar className="w-3 h-3" />
+                  <time dateTime={post.createdAt}>
+                    {new Date(post.createdAt).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </time>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center gap-1">
+              {canEdit && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => openPostEdit(post.id)}
+                        className={`h-9 w-9 rounded-full transition-colors ${textColors.muted} hover:bg-gray-100 hover:text-gray-900`}
+                      >
+                        <Edit2 className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Edit post</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+              {!showModerationControls && canDelete && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowDeleteDialog(true)}
+                        disabled={isDeleting}
+                        className={`h-9 w-9 rounded-full transition-colors ${textColors.muted} hover:bg-red-50 hover:text-red-600`}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Delete post</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+              {showModerationControls && (
+                <PostModerationControls
+                  textColors={textColors}
+                  postId={post.id}
+                  moderationStatus={post.moderationStatus}
+                  onModerationComplete={() => {
+                    onPostUpdated?.(post);
+                  }}
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Content */}
+          <PostContent
+            content={post.content}
+            className={`border-0 p-0 min-h-0 text-base leading-relaxed ${textColors.secondary}`}
+          />
+
+          {/* Footer */}
+          <div
+            className={`mt-4 pt-4 border-t border-gray-300 text-xs text-center ${textColors.muted}`}
+          >
+            <p className={`font-medium ${textColors.primary}`}>
+              {post.isAnonymous
+                ? post.anonymousName || "Anonymous"
+                : post.creator.name || "Unknown"}
+            </p>
+            <p>
+              {new Date(post.createdAt).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </p>
+          </div>
+
+          {/* Moderation Status */}
+          {post.moderationStatus !== "approved" &&
+            (isModerator || isCreator || isOwnPost) && (
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <div
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium ${
+                    post.moderationStatus === "pending"
+                      ? "bg-yellow-50 text-yellow-700"
+                      : post.moderationStatus === "rejected"
+                        ? "bg-red-50 text-red-700"
+                        : "bg-blue-50 text-blue-700"
+                  }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-current animate-pulse"></span>
+                  {post.moderationStatus === "pending" && "Pending Moderation"}
+                  {post.moderationStatus === "rejected" && "Rejected"}
+                  {post.moderationStatus === "change_requested" &&
+                    "Changes Requested"}
+                </div>
+                {post.moderationReason && (
+                  <p className={`text-xs mt-2 ${textColors.muted}`}>
+                    Reason: {post.moderationReason}
+                  </p>
+                )}
+              </div>
+            )}
+        </PolaroidCard>
       </div>
     </>
   );
@@ -378,19 +387,38 @@ export function BoardView({
   const [slideshowOpen, setSlideshowOpen] = useState(false);
   const backgroundColor = (board.typeConfig as any)?.backgroundColor;
   const textColors = getTextColors(backgroundColor);
-  const contrastTextStyles = getContrastTextStyles(backgroundColor);
+  const isDarkTheme = textColors.primary === "text-white";
+  const accentColor = backgroundColor || "#F59E0B";
+  const accentTint =
+    toRgba(accentColor, isDarkTheme ? 0.25 : 0.12) ||
+    (isDarkTheme ? "rgba(255,255,255,0.2)" : "rgba(17,24,39,0.08)");
+  const patternColor = isDarkTheme
+    ? "rgba(255,255,255,0.2)"
+    : "rgba(17,24,39,0.12)";
+  const textureStyle = {
+    backgroundColor: backgroundColor || "#FDF6E3",
+    backgroundImage: `radial-gradient(circle, ${patternColor} 1px, transparent 1px), radial-gradient(circle, ${patternColor} 1px, transparent 1px)`,
+    backgroundSize: "24px 24px, 48px 48px",
+    backgroundPosition: "0 0, 12px 12px",
+  };
 
   const content = () => {
     if (posts.length === 0) {
       return (
-        <div className="bg-white border border-gray-200 rounded-3xl p-16 text-center shadow-lg mx-auto max-w-2xl">
-          <div className="w-20 h-20 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-6">
-            <MessageCircle className="w-10 h-10 text-purple-600" />
+        <div className="bg-white/90 border-4 border-gray-900 rounded-sm p-12 text-center shadow-2xl mx-auto max-w-2xl">
+          <div
+            className="w-20 h-20 rounded-full border-2 flex items-center justify-center mx-auto mb-6"
+            style={{ backgroundColor: accentTint, borderColor: accentColor }}
+          >
+            <MessageCircle
+              className="w-10 h-10"
+              style={{ color: accentColor }}
+            />
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-3">
             No messages yet
           </h3>
-          <p className="text-gray-600 max-w-md mx-auto">
+          <p className="text-gray-700 max-w-md mx-auto">
             Be the first to share your appreciation for{" "}
             <span className="font-semibold text-gray-900">
               {board.recipientName}
@@ -427,82 +455,56 @@ export function BoardView({
   };
 
   return (
-    <div
-      className="relative min-h-screen"
-      style={{
-        backgroundColor: "#D2B48C",
-        backgroundImage:
-          "radial-gradient(circle, #8B4513 1px, transparent 1px)",
-        backgroundSize: "20px 20px",
-      }}
-    >
-      {/* Header */}
-      <header className="relative section-padding py-16 md:py-24 text-center">
-        <div className="container-narrow">
-          <div className="inline-flex items-center gap-2 bg-white border border-purple-200 px-6 py-3 rounded-full text-sm font-medium mb-8 animate-in shadow-sm">
-            <Heart className="w-4 h-4 text-purple-600" />
-            <span className="text-gray-900">Messages of appreciation</span>
-          </div>
-
-          <h1 className="mb-6 animate-in-delay-1 text-gray-900">
-            <span className="bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
-              {board.title}
-            </span>
-          </h1>
-
-          <p className="text-xl md:text-2xl text-gray-600 mb-10 animate-in-delay-2 text-balance">
-            Heartfelt messages and memories for{" "}
-            <span className="font-semibold text-gray-900">
-              {board.recipientName}
-            </span>
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-4 animate-in-delay-3">
-            {posts.length > 0 && (
-              <Button
-                onClick={() => setSlideshowOpen(true)}
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white border-0 shadow-lg hover:shadow-xl transition-all"
-              >
-                <Play className="w-5 h-5 mr-2" />
-                Start Slideshow
-              </Button>
-            )}
-
-            {(isModerator || isCreator) && (
-              <Link href={`/boards/${board.id}/manage`}>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="bg-white border-gray-300 text-gray-900 hover:bg-gray-50"
-                >
-                  <Settings className="w-5 h-5 mr-2" />
-                  Manage Board
-                </Button>
-              </Link>
-            )}
-          </div>
-
-          {/* Stats */}
-          {posts.length > 0 && (
-            <div className="mt-12 flex items-center justify-center gap-8 text-sm text-gray-600 animate-in-delay-4">
-              <div className="flex items-center gap-2">
-                <MessageCircle className="w-4 h-4 text-purple-600" />
-                <span>
-                  {posts.length} {posts.length === 1 ? "message" : "messages"}
-                </span>
+    <div className="relative min-h-screen overflow-hidden" style={textureStyle}>
+      {/* Greeting Card Header */}
+      <section className="relative section-padding pt-16 md:pt-20 pb-6">
+        <div className="container-wide">
+          <div className="bg-white/90 border-4 border-gray-900 rounded-sm shadow-2xl px-6 py-6 md:px-8 animate-in">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+              <div className="space-y-3 text-left">
+                <h1 className="text-3xl md:text-4xl text-gray-900 font-fuzzy-bubbles">
+                  {board.title}
+                </h1>
+                <p className="text-base md:text-lg text-gray-700 text-balance">
+                  Heartfelt messages and memories for{" "}
+                  <span className="font-semibold text-gray-900">
+                    {board.recipientName}
+                  </span>
+                </p>
               </div>
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-orange-500" />
-                <span>Shared with love</span>
+
+              <div className="flex flex-wrap items-center gap-3">
+                {posts.length > 0 && (
+                  <Button
+                    onClick={() => setSlideshowOpen(true)}
+                    size="lg"
+                    className="px-6 shadow-lg hover:shadow-xl"
+                  >
+                    <Play className="w-5 h-5 mr-2" />
+                    Start Slideshow
+                  </Button>
+                )}
+
+                {(isModerator || isCreator) && (
+                  <Link href={`/boards/${board.id}/manage`}>
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="border-2 border-gray-900 bg-white shadow-sm hover:bg-gray-50"
+                    >
+                      <Settings className="w-5 h-5 mr-2" />
+                      Manage Board
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
-          )}
+          </div>
         </div>
-      </header>
+      </section>
 
       {/* Main Content */}
-      <main className="relative section-padding pb-20">
+      <main className="relative section-padding pb-20 pt-4">
         <div className="container-wide">{content()}</div>
 
         {/* Load More */}
@@ -513,7 +515,7 @@ export function BoardView({
               disabled={isFetchingMore}
               size="lg"
               variant="outline"
-              className="bg-white border-gray-300 text-gray-900 hover:bg-gray-50 min-w-[200px] shadow-sm"
+              className="border-2 border-gray-900 bg-white hover:bg-gray-50 min-w-[200px] shadow-lg"
             >
               {isFetchingMore ? (
                 <>

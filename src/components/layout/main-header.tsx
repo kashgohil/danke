@@ -4,9 +4,17 @@ import { AuthHeader } from "@/components/auth/auth-header";
 import { Pin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import logo from "public/danke.png";
 
 export function MainHeader() {
+  const pathname = usePathname();
+  const hideOnBoardView = !!pathname && /^\/boards\/[^/]+$/.test(pathname);
+
+  if (hideOnBoardView) {
+    return null;
+  }
+
   return (
     <header className="fixed top-4 z-50 px-4 w-full">
       <div className="relative max-w-7xl mx-auto">
