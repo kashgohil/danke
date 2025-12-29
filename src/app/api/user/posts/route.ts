@@ -15,7 +15,19 @@ export async function GET(request: Request) {
     // Parse pagination parameters from URL
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1', 10);
-    const limit = parseInt(searchParams.get('limit') || '10', 10);
+    const limit = Math.min(parseInt(searchParams.get('limit') || '10', 10), 50);
+
+    if (
+      !Number.isFinite(page) ||
+      !Number.isFinite(limit) ||
+      page < 1 ||
+      limit < 1
+    ) {
+      return NextResponse.json(
+        { error: 'Page and limit must be positive numbers' },
+        { status: 400 },
+      );
+    }
     const offset = (page - 1) * limit;
 
     // Get total count
@@ -61,7 +73,7 @@ export async function GET(request: Request) {
     console.error('Error fetching user posts:', error);
     return NextResponse.json(
       { error: 'Failed to fetch posts' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
