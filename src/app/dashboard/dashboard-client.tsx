@@ -6,6 +6,13 @@
 // - Accents: Amber, emerald, and rose highlights
 
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { apiRequest, useApiErrorHandler } from "@/lib/api-error-handler";
 import { formatDistanceToNow } from "date-fns";
@@ -63,13 +70,6 @@ interface PaginationInfo {
   total: number;
   totalPages: number;
   hasMore: boolean;
-}
-
-interface BoardSummaryStats {
-  totalBoards: number;
-  totalPosts: number;
-  approvedPosts: number;
-  pendingPosts: number;
 }
 
 type PostStatusFilter =
@@ -176,12 +176,6 @@ export function DashboardClient() {
     totalPages: 0,
     hasMore: false,
   });
-  const [boardStats, setBoardStats] = useState<BoardSummaryStats>({
-    totalBoards: 0,
-    totalPosts: 0,
-    approvedPosts: 0,
-    pendingPosts: 0,
-  });
   const [postStatusFilter, setPostStatusFilter] =
     useState<PostStatusFilter>("all");
   const [postAnonymousFilter, setPostAnonymousFilter] =
@@ -212,10 +206,6 @@ export function DashboardClient() {
         setBoardsPagination((prev) => ({
           ...prev,
           ...response.pagination,
-        }));
-        setBoardStats((prev) => ({
-          ...prev,
-          ...response.stats,
         }));
       } catch (error) {
         console.error("Error fetching boards:", error);
@@ -323,10 +313,7 @@ export function DashboardClient() {
   };
 
   // Calculate aggregate stats
-  const totalBoards = boardStats.totalBoards;
-  const totalPosts = boardStats.totalPosts;
-  const totalApproved = boardStats.approvedPosts;
-  const totalPending = boardStats.pendingPosts;
+  const totalBoards = boardsPagination.total;
   const hasActivePostFilters =
     postStatusFilter !== "all" || postAnonymousFilter !== "all";
 
@@ -364,35 +351,6 @@ export function DashboardClient() {
                 Create Board
               </Button>
             </Link>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            <div className="bg-white border-2 border-gray-900 rounded-sm px-4 py-3 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
-                Total Boards
-              </p>
-              <p className="text-2xl font-bold text-gray-900">{totalBoards}</p>
-            </div>
-            <div className="bg-white border-2 border-gray-900 rounded-sm px-4 py-3 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
-                Total Posts
-              </p>
-              <p className="text-2xl font-bold text-gray-900">{totalPosts}</p>
-            </div>
-            <div className="bg-white border-2 border-gray-900 rounded-sm px-4 py-3 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
-                Approved
-              </p>
-              <p className="text-2xl font-bold text-gray-900">
-                {totalApproved}
-              </p>
-            </div>
-            <div className="bg-white border-2 border-gray-900 rounded-sm px-4 py-3 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
-                Pending
-              </p>
-              <p className="text-2xl font-bold text-gray-900">{totalPending}</p>
-            </div>
           </div>
         </div>
 
