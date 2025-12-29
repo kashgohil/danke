@@ -129,7 +129,7 @@ export function DateTimePicker({
           <div className="flex flex-col gap-2 border-t border-gray-200 pt-3">
             <Label
               htmlFor="time-input"
-              className="text-sm font-semibold text-gray-700 flex items-center gap-2"
+              className="text-sm font-fuzzy-bubbles font-semibold text-gray-700 flex items-center gap-2"
             >
               <ClockIcon className="h-4 w-4" />
               Time

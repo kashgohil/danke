@@ -1,15 +1,16 @@
-'use client';
+"use client";
 
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { BasicInfoData } from '@/types/multi-step-form';
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+import { BasicInfoData } from "@/types/multi-step-form";
 import {
   Baby,
   Cake,
@@ -24,8 +25,8 @@ import {
   PartyPopper,
   Rainbow,
   TreePalm,
-} from 'lucide-react';
-import { useCallback } from 'react';
+} from "lucide-react";
+import { useCallback } from "react";
 
 interface BasicInfoStepProps {
   data: BasicInfoData;
@@ -36,127 +37,127 @@ interface BasicInfoStepProps {
 
 const boardTypeOptions = [
   {
-    value: 'appreciation' as const,
-    label: 'Appreciation Board',
-    description: 'Celebrate achievements and show gratitude',
+    value: "appreciation" as const,
+    label: "Appreciation Board",
+    description: "Celebrate achievements and show gratitude",
     icon: <PartyPopper />,
   },
   {
-    value: 'birthday' as const,
-    label: 'Birthday Board',
+    value: "birthday" as const,
+    label: "Birthday Board",
     description: "Celebrate someone's special day",
     icon: <Cake />,
   },
   {
-    value: 'farewell' as const,
-    label: 'Farewell Board',
-    description: 'Say goodbye and share memories',
+    value: "farewell" as const,
+    label: "Farewell Board",
+    description: "Say goodbye and share memories",
     icon: <Handshake />,
   },
   {
-    value: 'welcome' as const,
-    label: 'Welcome Board',
-    description: 'Welcome new team members or colleagues',
+    value: "welcome" as const,
+    label: "Welcome Board",
+    description: "Welcome new team members or colleagues",
     icon: <Drum />,
   },
   {
-    value: 'congratulations' as const,
-    label: 'Congratulations Board',
-    description: 'Celebrate achievements and milestones',
+    value: "congratulations" as const,
+    label: "Congratulations Board",
+    description: "Celebrate achievements and milestones",
     icon: <PartyPopper />,
   },
   {
-    value: 'get-well' as const,
-    label: 'Get Well Soon Board',
-    description: 'Send healing thoughts and support',
+    value: "get-well" as const,
+    label: "Get Well Soon Board",
+    description: "Send healing thoughts and support",
     icon: <Flower2 />,
   },
   {
-    value: 'sympathy' as const,
-    label: 'Sympathy Board',
-    description: 'Share condolences and support during difficult times',
+    value: "sympathy" as const,
+    label: "Sympathy Board",
+    description: "Share condolences and support during difficult times",
     icon: <Origami />,
   },
   {
-    value: 'holiday' as const,
-    label: 'Holiday Board',
-    description: 'Celebrate holidays and seasonal occasions',
+    value: "holiday" as const,
+    label: "Holiday Board",
+    description: "Celebrate holidays and seasonal occasions",
     icon: <TreePalm />,
   },
   {
-    value: 'anniversary' as const,
-    label: 'Anniversary Board',
-    description: 'Celebrate work anniversaries and milestones',
+    value: "anniversary" as const,
+    label: "Anniversary Board",
+    description: "Celebrate work anniversaries and milestones",
     icon: <Medal />,
   },
   {
-    value: 'retirement' as const,
-    label: 'Retirement Board',
-    description: 'Honor someone entering retirement',
+    value: "retirement" as const,
+    label: "Retirement Board",
+    description: "Honor someone entering retirement",
     icon: <Rainbow />,
   },
   {
-    value: 'graduation' as const,
-    label: 'Graduation Board',
-    description: 'Celebrate educational achievements',
+    value: "graduation" as const,
+    label: "Graduation Board",
+    description: "Celebrate educational achievements",
     icon: <GraduationCap />,
   },
   {
-    value: 'baby-shower' as const,
-    label: 'Baby Shower Board',
-    description: 'Celebrate new arrivals and growing families',
+    value: "baby-shower" as const,
+    label: "Baby Shower Board",
+    description: "Celebrate new arrivals and growing families",
     icon: <Baby />,
   },
   {
-    value: 'wedding' as const,
-    label: 'Wedding Board',
-    description: 'Celebrate love and new beginnings',
+    value: "wedding" as const,
+    label: "Wedding Board",
+    description: "Celebrate love and new beginnings",
     icon: <Heart />,
   },
   {
-    value: 'general' as const,
-    label: 'General Board',
-    description: 'For any other occasion',
+    value: "general" as const,
+    label: "General Board",
+    description: "For any other occasion",
     icon: <Gem />,
   },
 ];
 
 function generateTitle(
-  boardType: BasicInfoData['boardType'],
-  recipientName: string
+  boardType: BasicInfoData["boardType"],
+  recipientName: string,
 ): string {
-  if (!recipientName.trim()) return '';
+  if (!recipientName.trim()) return "";
 
   const formattedName = recipientName.trim();
 
   switch (boardType) {
-    case 'appreciation':
+    case "appreciation":
       return `Appreciation Board for ${formattedName}`;
-    case 'birthday':
+    case "birthday":
       return `Happy Birthday ${formattedName}!`;
-    case 'farewell':
+    case "farewell":
       return `Farewell ${formattedName}`;
-    case 'welcome':
+    case "welcome":
       return `Welcome ${formattedName}!`;
-    case 'congratulations':
+    case "congratulations":
       return `Congratulations ${formattedName}!`;
-    case 'get-well':
+    case "get-well":
       return `Get Well Soon ${formattedName}`;
-    case 'sympathy':
+    case "sympathy":
       return `In Memory of ${formattedName}`;
-    case 'holiday':
+    case "holiday":
       return `Holiday Wishes for ${formattedName}`;
-    case 'anniversary':
+    case "anniversary":
       return `Celebrating ${formattedName}'s Anniversary`;
-    case 'retirement':
+    case "retirement":
       return `Happy Retirement ${formattedName}!`;
-    case 'graduation':
+    case "graduation":
       return `Congratulations Graduate ${formattedName}!`;
-    case 'baby-shower':
+    case "baby-shower":
       return `Baby Shower for ${formattedName}`;
-    case 'wedding':
+    case "wedding":
       return `Wedding Wishes for ${formattedName}`;
-    case 'general':
+    case "general":
       return `Board for ${formattedName}`;
     default:
       return `Board for ${formattedName}`;
@@ -173,36 +174,51 @@ export function BasicInfoStep({
     (field: keyof BasicInfoData, value: string) => {
       let updatedData = { ...data, [field]: value };
 
-      if (field === 'recipientName') {
+      if (field === "recipientName") {
         updatedData.title = generateTitle(
           updatedData.boardType,
-          updatedData.recipientName
+          updatedData.recipientName,
         );
       }
 
       onChange(updatedData);
     },
-    [onChange, data]
+    [onChange, data],
   );
 
-  const handleBoardTypeSelect = (boardType: BasicInfoData['boardType']) => {
-    handleFieldChange('boardType', boardType);
+  const handleBoardTypeSelect = (boardType: BasicInfoData["boardType"]) => {
+    handleFieldChange("boardType", boardType);
   };
 
   return (
     <div className="flex flex-col space-y-6">
       <div className="flex flex-col gap-4">
-        <Label htmlFor="boardType" className="text-sm text-primary">
+        <Label
+          htmlFor="boardType"
+          className="font-semibold text-base font-fuzzy-bubbles text-gray-700"
+        >
           What type of board are you creating?
         </Label>
         <Select
           value={data.boardType}
           onValueChange={(value) =>
-            handleBoardTypeSelect(value as BasicInfoData['boardType'])
+            handleBoardTypeSelect(value as BasicInfoData["boardType"])
           }
         >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select a board type" />
+          <SelectTrigger className="w-full h-12 shadow-sm">
+            <SelectValue placeholder="Select a board type">
+              {data.boardType ? (
+                <span className="text-base">
+                  {
+                    boardTypeOptions.find(
+                      (option) => option.value === data.boardType,
+                    )?.label
+                  }
+                </span>
+              ) : (
+                "Select a board type"
+              )}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {boardTypeOptions.map((option) => (
@@ -212,12 +228,12 @@ export function BasicInfoStep({
                 className="group"
               >
                 <div className="flex items-center gap-4 py-1">
-                  <span className="text-lg text-danke-500 group-focus:text-danke-900">
+                  <span className="text-lg text-amber-500 group-focus:text-gray-900">
                     {option.icon}
                   </span>
                   <div className="flex flex-col items-start gap-1">
                     <span className="font-medium">{option.label}</span>
-                    <span className="text-xs text-muted-foreground group-focus:text-danke-900">
+                    <span className="text-xs text-gray-500 group-focus:text-gray-900">
                       {option.description}
                     </span>
                   </div>
@@ -226,13 +242,16 @@ export function BasicInfoStep({
             ))}
           </SelectContent>
         </Select>
-        {errors.boardType && touchedFields.has('boardType') && (
+        {errors.boardType && touchedFields.has("boardType") && (
           <p className="text-sm text-destructive">{errors.boardType}</p>
         )}
       </div>
 
       <div className="flex flex-col gap-4">
-        <Label htmlFor="recipientName" className="text-sm  text-primary">
+        <Label
+          htmlFor="recipientName"
+          className="font-semibold text-base font-fuzzy-bubbles text-gray-700"
+        >
           Who is this board for?
         </Label>
         <Input
@@ -240,34 +259,47 @@ export function BasicInfoStep({
           type="text"
           placeholder="Enter the recipient's name"
           value={data.recipientName}
-          onChange={(e) => handleFieldChange('recipientName', e.target.value)}
-          error={touchedFields.has('recipientName') && !!errors.recipientName}
-          className="text-sm"
+          onChange={(e) => handleFieldChange("recipientName", e.target.value)}
+          error={touchedFields.has("recipientName") && !!errors.recipientName}
+          className={cn(
+            "text-base rounded-sm border-2 bg-white text-gray-900 placeholder:text-gray-500 focus-visible:ring-gray-900/20 p-3",
+            touchedFields.has("recipientName") && errors.recipientName
+              ? "border-rose-500 focus-visible:ring-rose-500/30"
+              : "border-gray-900",
+          )}
         />
-        {errors.recipientName && touchedFields.has('recipientName') && (
+        {errors.recipientName && touchedFields.has("recipientName") && (
           <p className="text-sm text-destructive">{errors.recipientName}</p>
         )}
       </div>
 
       {data.boardType && data.recipientName && (
         <div className="flex flex-col gap-4">
-          <Label htmlFor="title" className="text-sm text-primary">
+          <Label
+            htmlFor="title"
+            className="text-base font-fuzzy-bubbles font-semibold text-gray-700"
+          >
             Board Title
           </Label>
           <Input
             id="title"
             type="text"
             placeholder="Board title will be generated automatically"
-            value={data.title || ''}
-            onChange={(e) => handleFieldChange('title', e.target.value)}
-            error={touchedFields.has('title') && !!errors.title}
-            className="text-sm"
+            value={data.title || ""}
+            onChange={(e) => handleFieldChange("title", e.target.value)}
+            error={touchedFields.has("title") && !!errors.title}
+            className={cn(
+              "text-base p-3 rounded-sm border-2 bg-white text-gray-900 placeholder:text-gray-500 focus-visible:ring-gray-900/20",
+              touchedFields.has("title") && errors.title
+                ? "border-rose-500 focus-visible:ring-rose-500/30"
+                : "border-gray-900",
+            )}
           />
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-600">
             The title is automatically generated based on your selections, but
             you can customize it.
           </p>
-          {errors.title && touchedFields.has('title') && (
+          {errors.title && touchedFields.has("title") && (
             <p className="text-sm text-destructive">{errors.title}</p>
           )}
         </div>
