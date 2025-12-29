@@ -11,7 +11,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { apiRequest, useApiErrorHandler } from "@/lib/api-error-handler";
@@ -21,6 +20,7 @@ import {
   ChevronRight,
   ExternalLink,
   Eye,
+  Filter,
   MessageSquare,
   Plus,
   Settings,
@@ -558,67 +558,6 @@ export function DashboardClient() {
           {/* Posts View */}
           <TabsContent value="posts" className="mt-0">
             <div className="bg-white border-4 border-t-0 border-gray-900 rounded-b-sm overflow-hidden shadow-2xl">
-              <div className="px-6 py-4 border-b border-gray-200 bg-[#FDF6E3]">
-                <div className="flex flex-wrap items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs uppercase tracking-[0.2em] text-gray-500">
-                      Status
-                    </span>
-                    <Select
-                      value={postStatusFilter}
-                      onValueChange={(value) =>
-                        setPostStatusFilter(value as PostStatusFilter)
-                      }
-                      disabled={postsLoading}
-                    >
-                      <SelectTrigger className="h-9 w-44">
-                        <SelectValue placeholder="All statuses" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All statuses</SelectItem>
-                        <SelectItem value="approved">Approved</SelectItem>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="rejected">Rejected</SelectItem>
-                        <SelectItem value="change_requested">
-                          Change requested
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs uppercase tracking-[0.2em] text-gray-500">
-                      Identity
-                    </span>
-                    <Select
-                      value={postAnonymousFilter}
-                      onValueChange={(value) =>
-                        setPostAnonymousFilter(value as PostAnonymousFilter)
-                      }
-                      disabled={postsLoading}
-                    >
-                      <SelectTrigger className="h-9 w-44">
-                        <SelectValue placeholder="All posts" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All posts</SelectItem>
-                        <SelectItem value="anonymous">
-                          Anonymous only
-                        </SelectItem>
-                        <SelectItem value="named">Named only</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={clearPostFilters}
-                    disabled={!hasActivePostFilters || postsLoading}
-                    className="border-2 border-gray-900 text-gray-900 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-                  >
-                    Clear filters
-                  </Button>
-                </div>
-              </div>
               {postsLoading ? (
                 <div className="px-6 py-12 text-center">
                   <div className="animate-spin w-8 h-8 border-4 border-gray-900 border-t-transparent rounded-full mx-auto"></div>
@@ -659,8 +598,75 @@ export function DashboardClient() {
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Board
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
+                          <th className="px-6 py-3 text-left">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                              </span>
+                              <Select
+                                value={postStatusFilter}
+                                onValueChange={(value) =>
+                                  setPostStatusFilter(value as PostStatusFilter)
+                                }
+                                disabled={postsLoading}
+                              >
+                                <SelectTrigger
+                                  className="h-8 w-8 p-0 justify-center border-none! bg-transparent! text-gray-900 shadow-none [&>svg:last-child]:hidden"
+                                  aria-label="Filter by status"
+                                >
+                                  <Filter className="h-4 w-4 text-gray-400" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="all">
+                                    All statuses
+                                  </SelectItem>
+                                  <SelectItem value="approved">
+                                    Approved
+                                  </SelectItem>
+                                  <SelectItem value="pending">
+                                    Pending
+                                  </SelectItem>
+                                  <SelectItem value="rejected">
+                                    Rejected
+                                  </SelectItem>
+                                  <SelectItem value="change_requested">
+                                    Change requested
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </th>
+                          <th className="px-6 py-3 text-left">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Identity
+                              </span>
+                              <Select
+                                value={postAnonymousFilter}
+                                onValueChange={(value) =>
+                                  setPostAnonymousFilter(
+                                    value as PostAnonymousFilter,
+                                  )
+                                }
+                                disabled={postsLoading}
+                              >
+                                <SelectTrigger
+                                  className="h-8 w-8 p-0 justify-center border-none! bg-transparent! text-gray-900 shadow-none [&>svg:last-child]:hidden"
+                                  aria-label="Filter by identity"
+                                >
+                                  <Filter className="h-4 w-4 text-gray-400" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="all">All posts</SelectItem>
+                                  <SelectItem value="anonymous">
+                                    Anonymous only
+                                  </SelectItem>
+                                  <SelectItem value="named">
+                                    Named only
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Posted
@@ -697,26 +703,30 @@ export function DashboardClient() {
                               </div>
                             </td>
                             <td className="px-6 py-4">
-                              <div className="flex flex-col gap-1">
-                                <span
-                                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border-2 border-gray-900 w-fit ${
-                                    post.moderationStatus === "approved"
-                                      ? "bg-emerald-100 text-gray-900"
-                                      : post.moderationStatus === "pending" ||
-                                          post.moderationStatus ===
-                                            "change_requested"
-                                        ? "bg-amber-100 text-gray-900"
-                                        : "bg-rose-100 text-gray-900"
-                                  }`}
-                                >
-                                  {post.moderationStatus.replace(/_/g, " ")}
-                                </span>
-                                {post.isAnonymous && (
-                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white border-2 border-gray-900 text-gray-900 w-fit">
-                                    Anonymous
-                                  </span>
-                                )}
-                              </div>
+                              <span
+                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border-2 border-gray-900 w-fit ${
+                                  post.moderationStatus === "approved"
+                                    ? "bg-emerald-100 text-gray-900"
+                                    : post.moderationStatus === "pending" ||
+                                        post.moderationStatus ===
+                                          "change_requested"
+                                      ? "bg-amber-100 text-gray-900"
+                                      : "bg-rose-100 text-gray-900"
+                                }`}
+                              >
+                                {post.moderationStatus.replace(/_/g, " ")}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span
+                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border-2 border-gray-900 w-fit ${
+                                  post.isAnonymous
+                                    ? "bg-amber-50 text-gray-900"
+                                    : "bg-white text-gray-900"
+                                }`}
+                              >
+                                {post.isAnonymous ? "Anonymous" : "Named"}
+                              </span>
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-500">
                               {formatDistanceToNow(new Date(post.createdAt), {
