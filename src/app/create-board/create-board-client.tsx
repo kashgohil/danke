@@ -1,15 +1,25 @@
-'use client';
+"use client";
 
-import { BasicInfoStep } from '@/components/boards/basic-info-step';
-import { BoardConfigStep } from '@/components/boards/board-config-step';
-import { NavigationControls } from '@/components/boards/navigation-controls';
-import { TypeConfigStep } from '@/components/boards/type-config-step';
-import { ErrorBoundary } from '@/components/ui/error-boundary';
-import { useMultiStepForm } from '@/hooks/use-multi-step-form';
-import { apiRequest, useApiErrorHandler } from '@/lib/api-error-handler';
-import { Board } from '@/lib/db';
-import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { BasicInfoStep } from "@/components/boards/basic-info-step";
+import { BoardConfigStep } from "@/components/boards/board-config-step";
+import { NavigationControls } from "@/components/boards/navigation-controls";
+import { TypeConfigStep } from "@/components/boards/type-config-step";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { useMultiStepForm } from "@/hooks/use-multi-step-form";
+import { apiRequest, useApiErrorHandler } from "@/lib/api-error-handler";
+import { Board } from "@/lib/db";
+import { AlertCircle, Check, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
+
+const STEPS = [
+  {
+    title: "Basic Info",
+    description: "Name your board and choose the occasion",
+  },
+  { title: "Customize", description: "Personalize for your recipient" },
+  { title: "Settings", description: "Configure privacy and moderation" },
+];
 
 export function CreateBoardClient() {
   const router = useRouter();
@@ -51,13 +61,13 @@ export function CreateBoardClient() {
 
       const isValid = validateAllSteps();
       if (!isValid) {
-        setSubmitError('Please fix all validation errors before submitting.');
+        setSubmitError("Please fix all validation errors before submitting.");
         return;
       }
 
       const submissionData = {
         // Basic info
-        title: stepData.basicInfo.title || '',
+        title: stepData.basicInfo.title || "",
         recipientName: stepData.basicInfo.recipientName,
         boardType: stepData.basicInfo.boardType,
 
@@ -76,15 +86,15 @@ export function CreateBoardClient() {
         typeConfig: stepData.typeConfig as Record<string, unknown>,
       };
 
-      const result = await apiRequest('/api/boards', {
-        method: 'POST',
+      const result = await apiRequest("/api/boards", {
+        method: "POST",
         body: JSON.stringify(submissionData),
       });
 
       const board = result.data;
 
       if (!board) {
-        throw new Error('No board data received from server');
+        throw new Error("No board data received from server");
       }
 
       onSuccess(board);
@@ -134,108 +144,167 @@ export function CreateBoardClient() {
   return (
     <ErrorBoundary
       onError={(error, errorInfo) => {
-        console.error('MultiStepBoardCreationForm error:', error, errorInfo);
+        console.error("MultiStepBoardCreationForm error:", error, errorInfo);
       }}
     >
-      <div className="w-full">
-        <div className="max-w-4xl mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8">
-          <div className="text-center space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-danke-900">
+      <div
+        className="relative min-h-screen flex flex-col overflow-hidden"
+        style={{
+          backgroundColor: "#FDF6E3",
+          backgroundImage: `
+					radial-gradient(circle, #E8DCC4 1px, transparent 1px),
+					radial-gradient(circle, #F0E6D2 1px, transparent 1px)
+				`,
+          backgroundSize: "24px 24px, 48px 48px",
+          backgroundPosition: "0 0, 12px 12px",
+        }}
+      >
+        <div className="container-default w-full section-padding pt-50 pb-16">
+          {/* Header */}
+          <div className="text-center mb-12 animate-in">
+            <h1 className="mb-4 text-4xl text-gray-900 font-fuzzy-bubbles">
               Create Your Board
             </h1>
-            <p className="text-sm sm:text-base text-danke-900">
-              Follow these steps to create a personalized board for your
-              occasion
+            <p className="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto">
+              Set up a personalized appreciation board in just a few steps
             </p>
           </div>
 
-          <div className="p-6 sm:p-8 lg:p-12 flex flex-col bg-background/80 backdrop-blur-sm rounded-lg gap-6 sm:gap-8">
-            {submitError && (
-              <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
-                <div className="flex items-start space-x-3">
-                  <div className="flex-shrink-0">
-                    <svg
-                      className="h-5 w-5 text-destructive"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-medium text-destructive">
-                      Error Creating Board
-                    </h3>
-                    <p className="mt-1 text-sm text-destructive/80">
-                      {submitError}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setSubmitError(null)}
-                    className="flex-shrink-0 text-destructive/60 hover:text-destructive"
+          {/* Progress Steps */}
+          <div className="max-w-3xl mx-auto mb-12 animate-in-delay-1">
+            <div className="flex items-center justify-between relative">
+              {STEPS.map((step, index) => {
+                const isCompleted = index < currentStep;
+                const isCurrent = index === currentStep;
+
+                return (
+                  <div
+                    key={index}
+                    className="flex flex-col items-center flex-1"
                   >
-                    <span className="sr-only">Dismiss</span>
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
+                    <div
+                      className={`
+												w-12 h-12 rounded-full flex items-center justify-center font-semibold text-sm
+												transition-all duration-300 shadow-sm
+												${
+                          isCompleted
+                            ? "bg-gray-900 text-white border-2 border-gray-900 scale-110"
+                            : isCurrent
+                              ? "bg-[#FDF6E3] border-2 border-gray-900 text-gray-900 scale-110"
+                              : "bg-white border border-gray-300 text-black"
+                        }
+											`}
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
+                      {isCompleted ? (
+                        <Check className="w-6 h-6" />
+                      ) : (
+                        <span>{index + 1}</span>
+                      )}
+                    </div>
+                    <div className="mt-3 text-center">
+                      <p
+                        className={`text-lg font-bold transition-colors ${
+                          isCurrent ? "text-gray-900" : "text-gray-600"
+                        }`}
+                      >
+                        {step.title}
+                      </p>
+                      <p className="text-sm text-gray-500 mt-1 hidden sm:block">
+                        {step.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Main Content Card */}
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white border-4 border-gray-900 rounded-sm p-8 md:p-12 shadow-2xl animate-in-delay-2">
+              {/* Error Message */}
+              {submitError && (
+                <div className="mb-8 rounded-sm p-6 bg-rose-50 border-4 border-gray-900 animate-in">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-rose-100 border-2 border-gray-900 flex items-center justify-center">
+                        <AlertCircle className="w-5 h-5 text-rose-600" />
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-sm font-semibold text-rose-900 mb-1">
+                        Error Creating Board
+                      </h3>
+                      <p className="text-sm text-rose-800">{submitError}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setSubmitError(null)}
+                      className="flex-shrink-0 text-rose-500 hover:text-rose-700 transition-colors"
+                    >
+                      <span className="sr-only">Dismiss</span>
+                      <svg
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
+              )}
+
+              {/* Step Content */}
+              <div className="mb-8">{renderStepContent()}</div>
+
+              {/* Navigation */}
+              <NavigationControls
+                currentStep={currentStep}
+                totalSteps={3}
+                isValid={isValid}
+                canGoNext={canGoNext}
+                canGoBack={canGoBack}
+                isSubmitting={isSubmitting}
+                onNext={nextStep}
+                onBack={prevStep}
+                onSubmit={handleSubmit}
+              />
+
+              {/* Cancel Link */}
+              <div className="text-center pt-6 border-t-4 border-gray-900 mt-8">
+                <button
+                  type="button"
+                  onClick={() => router.push("/")}
+                  disabled={isSubmitting}
+                  className="text-sm text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Cancel and return home
+                </button>
               </div>
-            )}
-
-            {renderStepContent()}
-
-            <NavigationControls
-              currentStep={currentStep}
-              totalSteps={3}
-              isValid={isValid}
-              canGoNext={canGoNext}
-              canGoBack={canGoBack}
-              isSubmitting={isSubmitting}
-              onNext={nextStep}
-              onBack={prevStep}
-              onSubmit={handleSubmit}
-            />
-
-            <div className="text-center pt-4">
-              <button
-                type="button"
-                onClick={() => router.push('/')}
-                disabled={isSubmitting}
-                className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <span className="hidden sm:inline">
-                  Cancel and return to dashboard
-                </span>
-                <span className="sm:hidden">Cancel</span>
-              </button>
             </div>
           </div>
         </div>
+
+        {/* Creating Modal */}
         {isCreating && (
-          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center">
-            <div className="bg-card border border-border rounded-lg p-6 shadow-lg max-w-sm mx-4">
-              <div className="flex items-center space-x-3">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-                <div>
-                  <h3 className="font-semibold">Creating Your Board</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Please wait while we set up your board...
-                  </p>
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-md z-50 flex items-center justify-center animate-in">
+            <div className="bg-white rounded-sm p-10 shadow-2xl max-w-md mx-4 animate-scale-in border-4 border-gray-900">
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-gray-900 flex items-center justify-center mb-6 shadow-lg">
+                  <Loader2 className="w-8 h-8 text-white animate-spin" />
                 </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Creating Your Board
+                </h3>
+                <p className="text-gray-600">
+                  Please wait while we set up your beautiful appreciation
+                  board...
+                </p>
               </div>
             </div>
           </div>

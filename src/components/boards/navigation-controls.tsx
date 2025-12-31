@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { LoadingButton } from '@/components/ui/loading-states';
+import { Button } from "@/components/ui/button";
+import { LoadingButton } from "@/components/ui/loading-states";
 
 export interface NavigationControlsProps {
   currentStep: number;
@@ -55,7 +55,7 @@ export function NavigationControls({
             variant="outline"
             onClick={handleBack}
             disabled={isSubmitting}
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto border-2 border-gray-900"
           >
             Back
           </Button>
@@ -70,7 +70,7 @@ export function NavigationControls({
             loading={isSubmitting}
             loadingText="Creating Board..."
             disabled={!isValid || isSubmitting}
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto border-2 border-gray-900"
           >
             <span className="hidden sm:inline">Create Board</span>
             <span className="sm:hidden">Create</span>
@@ -80,7 +80,7 @@ export function NavigationControls({
             type="button"
             onClick={handleNext}
             disabled={!isValid || !canGoNext}
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto border-2 border-gray-900"
           >
             Next
           </Button>

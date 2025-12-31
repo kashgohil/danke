@@ -1,56 +1,22 @@
 import { CSSProperties } from 'react';
 
 /**
- * Generates a gradient background style based on a selected color
+ * Generates a solid background style based on a selected color
  * @param backgroundColor - Hex color string (e.g., "#3B82F6")
- * @returns CSS properties object with gradient background or empty object if no color
+ * @returns CSS properties object with solid background or empty object if no color
  */
 export function generateGradientStyle(backgroundColor?: string): CSSProperties {
   if (!backgroundColor) {
     return {};
   }
 
-  // Convert hex to RGB for gradient calculations
-  const hexToRgb = (hex: string) => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16),
-        }
-      : null;
-  };
-
-  const rgb = hexToRgb(backgroundColor);
-  if (!rgb) {
-    return {};
-  }
-
-  // Create lighter and darker variations for gradient
-  const lighterRgb = {
-    r: Math.min(255, rgb.r + 80),
-    g: Math.min(255, rgb.g + 80),
-    b: Math.min(255, rgb.b + 80),
-  };
-
-  const darkerRgb = {
-    r: Math.max(0, rgb.r - 40),
-    g: Math.max(0, rgb.g - 40),
-    b: Math.max(0, rgb.b - 40),
-  };
-
-  const lighterColor = `rgb(${lighterRgb.r}, ${lighterRgb.g}, ${lighterRgb.b})`;
-  const baseColor = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-  const darkerColor = `rgb(${darkerRgb.r}, ${darkerRgb.g}, ${darkerRgb.b})`;
-
   return {
-    background: `linear-gradient(135deg, ${baseColor} 0%, ${lighterColor} 50%, ${baseColor} 100%)`,
+    backgroundColor: backgroundColor,
   };
 }
 
 /**
- * Gets the default CSS classes for a container with optional gradient background
+ * Gets the default CSS classes for a container with optional solid background
  * @param backgroundColor - Hex color string
  * @param baseClasses - Base CSS classes to apply
  * @returns CSS class string
@@ -61,7 +27,7 @@ export function getGradientClasses(
 ): string {
   return backgroundColor
     ? baseClasses
-    : `${baseClasses} bg-gradient-to-br from-danke-50 via-white to-danke-100`;
+    : `${baseClasses} bg-[hsl(250,40%,99%)]`;
 }
 
 /**
@@ -96,21 +62,14 @@ export function generateCardStyle(backgroundColor?: string): CSSProperties {
     };
   }
 
-  // Calculate the lighter gradient color (same as background)
-  const lighterRgb = {
-    r: Math.min(255, rgb.r + 80),
-    g: Math.min(255, rgb.g + 80),
-    b: Math.min(255, rgb.b + 80),
-  };
-
   // Calculate luminance to determine card strategy
   const luminance =
-    (0.299 * lighterRgb.r + 0.587 * lighterRgb.g + 0.114 * lighterRgb.b) / 255;
+    (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
 
   if (luminance > 0.5) {
     // Light background - use white/light cards for contrast
     return {
-      backgroundColor: `rgba(${lighterRgb.r}, ${lighterRgb.g}, ${lighterRgb.b}, 0.5)`,
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
       borderColor: 'rgba(0, 0, 0, 0.1)',
     };
   } else {
@@ -159,16 +118,9 @@ export function getTextColors(backgroundColor?: string) {
     };
   }
 
-  // Calculate the lighter gradient color (what users actually see as background)
-  const lighterRgb = {
-    r: Math.min(255, rgb.r + 80),
-    g: Math.min(255, rgb.g + 80),
-    b: Math.min(255, rgb.b + 80),
-  };
-
-  // Calculate relative luminance of the lighter gradient color
+  // Calculate relative luminance of the background color
   const luminance =
-    (0.299 * lighterRgb.r + 0.587 * lighterRgb.g + 0.114 * lighterRgb.b) / 255;
+    (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
 
   // Use a more conservative threshold for better contrast
   if (luminance > 0.5) {
@@ -227,16 +179,9 @@ export function getContrastTextStyles(backgroundColor?: string) {
     };
   }
 
-  // Calculate the lighter gradient color (what users actually see as background)
-  const lighterRgb = {
-    r: Math.min(255, rgb.r + 80),
-    g: Math.min(255, rgb.g + 80),
-    b: Math.min(255, rgb.b + 80),
-  };
-
-  // Calculate relative luminance of the lighter gradient color
+  // Calculate relative luminance of the background color
   const luminance =
-    (0.299 * lighterRgb.r + 0.587 * lighterRgb.g + 0.114 * lighterRgb.b) / 255;
+    (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
 
   if (luminance > 0.5) {
     // Light background - use very dark colors for maximum contrast

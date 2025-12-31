@@ -1,243 +1,392 @@
-import { Clock, Mail, MessageCircle, Send, Twitter } from "lucide-react";
+import { Clock, Mail, MessageCircle, Pin, Send, Twitter } from "lucide-react";
 import { Metadata } from "next";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Footer } from "@/components/ui/footer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PolaroidCard } from "@/components/ui/polaroid-card";
 
 export const metadata: Metadata = {
-	title: "Contact Us - Danke",
-	description: "Get in touch with the Danke team. We're here to help with questions, feedback, or support.",
+  title: "Contact Us - Danke",
+  description:
+    "Get in touch with the Danke team. We're here to help with questions, feedback, or support.",
 };
 
 export default function ContactPage() {
-	const contactFAQs: Array<{ question: string; answer: string }> = [
-		{
-			question: "How do I create my first board?",
-			answer:
-				'Creating a board is simple! Just click "Create Board" from your dashboard, choose your board type, add some basic information, and you\'re ready to start collecting messages.',
-		},
-		{
-			question: "Can I customize the appearance of my board?",
-			answer:
-				"Yes! You can customize colors, layouts, and add your own branding to make each board unique and match your community's style.",
-		},
-		{
-			question: "Is there a limit to how many messages I can collect?",
-			answer:
-				"Our free plan allows up to 50 messages per board. For larger communities, check out our premium plans for unlimited messages and additional features.",
-		},
-		{
-			question: "How do I share my board with others?",
-			answer:
-				"Each board gets a unique shareable link that you can send via email, social media, or any other communication method. Contributors don't need to create an account to leave messages.",
-		},
-	];
+  const faqItems = [
+    {
+      question: "Is Danke really free?",
+      answer:
+        "Yes! Danke is completely free to use. Create unlimited boards, invite unlimited contributors, and keep your boards forever. We believe appreciation shouldn't have a price tag.",
+      emoji: "\u{1F4B0}",
+    },
+    {
+      question: "Do contributors need to create an account?",
+      answer:
+        "No! Anyone with the link can contribute messages, photos, and videos without signing up. Only board creators need an account to manage their boards.",
+      emoji: "\u{1F465}",
+    },
+    {
+      question: "How long do boards stay available?",
+      answer:
+        "Forever! Your boards never expire. They're always accessible via their unique link, so recipients can revisit their memories anytime.",
+      emoji: "\u{267E}\u{FE0F}",
+    },
+    {
+      question: "Can I moderate or remove posts?",
+      answer:
+        "Absolutely. As the board creator, you have full control. You can review posts before they appear (moderation mode), edit, or remove any content.",
+      emoji: "\u{1F6E1}\u{FE0F}",
+    },
+    {
+      question: "What file types can I upload?",
+      answer:
+        "We support images (JPG, PNG, GIF, WebP), videos (MP4, WebM), and audio files. Each post can include multiple media files.",
+      emoji: "\u{1F4C1}",
+    },
+    {
+      question: "Can I make my board private?",
+      answer:
+        "Yes! You can restrict who can view your board, require approval for posts, or even limit contributors to specific email domains (great for workplace boards).",
+      emoji: "\u{1F512}",
+    },
+    {
+      question: "How does the slideshow mode work?",
+      answer:
+        "Click the slideshow button on any board to launch a full-screen presentation. Posts auto-advance, long messages auto-scroll, and transitions are smooth. Perfect for parties and events!",
+      emoji: "\u{1F3AC}",
+    },
+    {
+      question: "Can I download or export my board?",
+      answer:
+        "Yes! You can share your board via link, and all the content is preserved permanently. We're also working on PDF and video export features.",
+      emoji: "\u{1F4E5}",
+    },
+  ];
 
-	return (
-		<div className="space-y-16 mt-8 mx-auto">
-			<section className="text-center">
-				<h1 className="text-4xl md:text-6xl font-bold mb-6 text-danke-900">Contact Us</h1>
-				<p className="text-xl max-w-3xl mx-auto leading-relaxed text-danke-900">
-					We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
-				</p>
-			</section>
+  return (
+    <div
+      className="relative min-h-screen flex flex-col overflow-hidden"
+      style={{
+        backgroundColor: "#FDF6E3",
+        backgroundImage: `
+					radial-gradient(circle, #E8DCC4 1px, transparent 1px),
+					radial-gradient(circle, #F0E6D2 1px, transparent 1px)
+				`,
+        backgroundSize: "24px 24px, 48px 48px",
+        backgroundPosition: "0 0, 12px 12px",
+      }}
+    >
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 lg:pt-44 px-6 md:px-12 lg:px-24">
+        <div className="container-default">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-center">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-500">
+                Contact
+              </p>
+              <h1 className="mt-6 text-5xl md:text-6xl text-gray-900 font-fuzzy-bubbles leading-tight">
+                Let&apos;s keep the gratitude going.
+              </h1>
+              <p className="mt-6 text-lg md:text-xl text-gray-700 leading-relaxed max-w-2xl">
+                We&apos;d love to hear from you. Share feedback, ask a question, or
+                tell us about the celebration you&apos;re planning.
+              </p>
+              <div className="mt-6 flex items-center gap-3 text-sm text-gray-600">
+                <MessageCircle className="w-4 h-4 text-gray-700" />
+                <span>We read every message and respond with care.</span>
+              </div>
+            </div>
 
-			<section className="flex gap-12 max-w-6xl mx-auto">
-				<div className="space-y-6 max-w-3xl mx-auto bg-background/80 backdrop-blur-2xl rounded-lg p-12">
-					<div>
-						<h2 className="text-2xl font-bold mb-2 text-danke-gold">Send us a message</h2>
-						<p className="text-muted-foreground mb-6">
-							Fill out the form below and we&apos;ll get back to you within 24 hours.
-						</p>
-					</div>
+            <PolaroidCard
+              size="large"
+              className="w-full max-w-lg mx-auto p-8 md:p-10"
+            >
+              <div className="space-y-4">
+                <p className="text-xs uppercase tracking-[0.3em] text-gray-500">
+                  A quick note
+                </p>
+                <h2 className="text-3xl md:text-4xl font-fuzzy-bubbles text-gray-900">
+                  We reply within 24 hours.
+                </h2>
+                <p className="text-gray-700 text-lg leading-relaxed">
+                  Whether it&apos;s a question or a bug report, we want you to feel
+                  heard.
+                </p>
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <Clock className="w-4 h-4 text-gray-700" />
+                  <span>Support hours: Monday to Friday</span>
+                </div>
+              </div>
+            </PolaroidCard>
+          </div>
+        </div>
+      </section>
 
-					<form className="space-y-4">
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-							<div className="space-y-2">
-								<Label htmlFor="firstName">First Name</Label>
-								<Input
-									id="firstName"
-									placeholder="John"
-								/>
-							</div>
-							<div className="space-y-2">
-								<Label htmlFor="lastName">Last Name</Label>
-								<Input
-									id="lastName"
-									placeholder="Doe"
-								/>
-							</div>
-						</div>
+      <section className="py-20 px-6 md:px-12 lg:px-24 bg-white/40">
+        <div className="container-default">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] items-start">
+            {/* Contact Form */}
+            <PolaroidCard className="w-full max-w-none p-8 md:p-12">
+              <div className="mb-8">
+                <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-3">
+                  Send a message
+                </p>
+                <h2 className="text-3xl md:text-4xl font-fuzzy-bubbles text-gray-900">
+                  We&apos;re happy to help.
+                </h2>
+                <p className="text-gray-600 text-lg mt-3">
+                  Fill out the form and we&apos;ll get back to you soon.
+                </p>
+              </div>
 
-						<div className="space-y-2">
-							<Label htmlFor="email">Email</Label>
-							<Input
-								id="email"
-								type="email"
-								placeholder="john@example.com"
-							/>
-						</div>
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="firstName"
+                      className="text-gray-700 font-semibold"
+                    >
+                      First Name
+                    </Label>
+                    <Input
+                      id="firstName"
+                      placeholder="John"
+                      className="h-12 bg-white border-gray-300 focus:border-gray-900 focus:ring-gray-900/20"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="lastName"
+                      className="text-gray-700 font-semibold"
+                    >
+                      Last Name
+                    </Label>
+                    <Input
+                      id="lastName"
+                      placeholder="Doe"
+                      className="h-12 bg-white border-gray-300 focus:border-gray-900 focus:ring-gray-900/20"
+                    />
+                  </div>
+                </div>
 
-						<div className="space-y-2">
-							<Label htmlFor="subject">Subject</Label>
-							<Input
-								id="subject"
-								placeholder="How can we help you?"
-							/>
-						</div>
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="email"
+                    className="text-gray-700 font-semibold"
+                  >
+                    Email
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="john@example.com"
+                    className="h-12 bg-white border-gray-300 focus:border-gray-900 focus:ring-gray-900/20"
+                  />
+                </div>
 
-						<div className="space-y-2">
-							<Label htmlFor="message">Message</Label>
-							<textarea
-								id="message"
-								className="min-h-[120px] w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-								placeholder="Tell us more about your question or feedback..."
-							/>
-						</div>
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="subject"
+                    className="text-gray-700 font-semibold"
+                  >
+                    Subject
+                  </Label>
+                  <Input
+                    id="subject"
+                    placeholder="How can we help you?"
+                    className="h-12 bg-white border-gray-300 focus:border-gray-900 focus:ring-gray-900/20"
+                  />
+                </div>
 
-						<Button className="w-full bg-danke-gold hover:bg-danke-gold/90 text-background">
-							<Send className="w-4 h-4 mr-2" />
-							Send Message
-						</Button>
-					</form>
-				</div>
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="message"
+                    className="text-gray-700 font-semibold"
+                  >
+                    Message
+                  </Label>
+                  <textarea
+                    id="message"
+                    className="min-h-[150px] w-full rounded-md border border-gray-300 bg-white px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900/20 focus-visible:border-gray-900 disabled:cursor-not-allowed disabled:opacity-50 resize-y"
+                    placeholder="Tell us more about your question or feedback..."
+                  />
+                </div>
 
-				<div className="space-y-6 max-w-3xl mx-auto bg-background/80 backdrop-blur-2xl rounded-lg p-12">
-					<div>
-						<h2 className="text-2xl font-bold mb-2 text-danke-gold">Get in touch</h2>
-						<p className="text-muted-foreground mb-6">
-							Prefer to reach out directly? Here are all the ways you can contact us.
-						</p>
-					</div>
+                <Button
+                  size="lg"
+                  className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold h-14 text-base shadow-lg hover:shadow-xl transition-all"
+                >
+                  <Send className="w-5 h-5 mr-2" />
+                  Send Message
+                </Button>
+              </form>
+            </PolaroidCard>
 
-					<div className="space-y-6">
-						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-							<CardHeader className="flex flex-row items-center gap-4">
-								<div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center">
-									<Mail className="w-6 h-6 text-danke-900" />
-								</div>
-								<div>
-									<CardTitle className="text-lg">Email</CardTitle>
-									<CardDescription>
-										<a
-											href="mailto:hello@trydanke.link"
-											className="text-danke-600 hover:text-danke-700"
-										>
-											hello@trydanke.link
-										</a>
-									</CardDescription>
-								</div>
-							</CardHeader>
-						</Card>
+            {/* Contact Info Cards */}
+            <div className="space-y-6">
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-500">
+                Other ways to connect
+              </p>
 
-						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-							<CardHeader className="flex flex-row items-center gap-4">
-								<div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center">
-									<MessageCircle className="w-6 h-6 text-danke-900" />
-								</div>
-								<div>
-									<CardTitle className="text-lg">Support</CardTitle>
-									<CardDescription>
-										<a
-											href="mailto:support@trydanke.link"
-											className="text-danke-600 hover:text-danke-700"
-										>
-											support@trydanke.link
-										</a>
-									</CardDescription>
-								</div>
-							</CardHeader>
-						</Card>
+              <PolaroidCard size="medium" className="w-full max-w-none p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-[#FDF6E3] rounded-xl flex items-center justify-center">
+                    <Mail className="w-6 h-6 text-gray-800" />
+                  </div>
+                  <div>
+                    <p className="text-base font-bold text-gray-900">Email</p>
+                    <a
+                      href="mailto:hello@trydanke.link"
+                      className="text-gray-700 hover:text-gray-900 font-medium"
+                    >
+                      hello@trydanke.link
+                    </a>
+                  </div>
+                </div>
+              </PolaroidCard>
 
-						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-							<CardHeader className="flex flex-row items-center gap-4">
-								<div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center">
-									<Twitter className="w-6 h-6 text-danke-900" />
-								</div>
-								<div>
-									<CardTitle className="text-lg">Twitter / X</CardTitle>
-									<CardDescription>
-										<a
-											href="https://x.com/trydanke"
-											className="text-danke-600 hover:text-danke-700"
-										>
-											@trydanke
-										</a>
-									</CardDescription>
-								</div>
-							</CardHeader>
-						</Card>
-						<Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-							<CardHeader className="flex flex-row items-center gap-4">
-								<div className="w-12 h-12 bg-danke-gold rounded-full flex items-center justify-center">
-									<Clock className="w-6 h-6 text-danke-900" />
-								</div>
-								<div>
-									<CardTitle className="text-lg">Response Time</CardTitle>
-									<CardDescription>We typically respond within 24 hours</CardDescription>
-								</div>
-							</CardHeader>
-						</Card>
-					</div>
-				</div>
-			</section>
+              <PolaroidCard size="medium" className="w-full max-w-none p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-[#FDF6E3] rounded-xl flex items-center justify-center">
+                    <MessageCircle className="w-6 h-6 text-gray-800" />
+                  </div>
+                  <div>
+                    <p className="text-base font-bold text-gray-900">Support</p>
+                    <a
+                      href="mailto:support@trydanke.link"
+                      className="text-gray-700 hover:text-gray-900 font-medium"
+                    >
+                      support@trydanke.link
+                    </a>
+                  </div>
+                </div>
+              </PolaroidCard>
 
-			<section className="py-16 -mx-4 px-4 bg-background/80 backdrop-blur-lg rounded-lg">
-				<h2 className="text-3xl font-bold text-center mb-12 text-danke-gold">Frequently Asked Questions</h2>
-				<div className="max-w-4xl mx-auto">
-					<Accordion
-						type="single"
-						collapsible
-						className="space-y-4"
-					>
-						{contactFAQs.map((item, index) => (
-							<AccordionItem
-								key={index}
-								value={`item-${index}`}
-								className="border border-border/40 rounded-lg bg-background/60 overflow-hidden"
-							>
-								<AccordionTrigger className="px-6 py-4 text-left cursor-pointer transition-colors [&[data-state=open]>svg]:rotate-180">
-									<h3 className="text-base text-muted-foreground pr-4">{item.question}</h3>
-								</AccordionTrigger>
-								<AccordionContent className="px-6 pb-4">
-									<p className="text-foreground leading-relaxed">{item.answer}</p>
-								</AccordionContent>
-							</AccordionItem>
-						))}
-					</Accordion>
-				</div>
-			</section>
+              <PolaroidCard size="medium" className="w-full max-w-none p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-[#FDF6E3] rounded-xl flex items-center justify-center">
+                    <Twitter className="w-6 h-6 text-gray-800" />
+                  </div>
+                  <div>
+                    <p className="text-base font-bold text-gray-900">
+                      Twitter / X
+                    </p>
+                    <a
+                      href="https://x.com/trydanke"
+                      className="text-gray-700 hover:text-gray-900 font-medium"
+                    >
+                      @trydanke
+                    </a>
+                  </div>
+                </div>
+              </PolaroidCard>
 
-			{/* Call to Action */}
-			<section className="text-center py-16 -mx-4 px-4 bg-gradient-to-r rounded-lg text-danke-900">
-				<h2 className="text-3xl font-bold mb-6">Ready to get started?</h2>
-				<p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-					Create your first appreciation board today and start building stronger connections in your community.
-				</p>
-				<div className="flex flex-col sm:flex-row gap-4 justify-center">
-					<Button
-						size="lg"
-						className="inline-flex items-center justify-center px-6 py-3 bg-danke-gold text-background font-medium rounded-lg hover:bg-danke-gold/90 transition-colors"
-					>
-						Create Your First Board
-					</Button>
-					<Button
-						size="lg"
-						variant="outline"
-						className="inline-flex items-center justify-center px-6 py-3 border border-border bg-background text-foreground font-medium rounded-lg hover:bg-muted transition-colors"
-					>
-						View Examples
-					</Button>
-				</div>
-			</section>
+              <PolaroidCard size="medium" className="w-full max-w-none p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-[#FDF6E3] rounded-xl flex items-center justify-center">
+                    <Clock className="w-6 h-6 text-gray-800" />
+                  </div>
+                  <div>
+                    <p className="text-base font-bold text-gray-900">
+                      Response Time
+                    </p>
+                    <p className="text-gray-700 font-medium">Within 24 hours</p>
+                  </div>
+                </div>
+              </PolaroidCard>
+            </div>
+          </div>
+        </div>
+      </section>
 
-			<div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] -mb-12 md:p-12">
-				<Footer />
-			</div>
-		</div>
-	);
+      <section className="py-20 px-6 md:px-12 lg:px-24">
+        <div className="container-default max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-4">
+              FAQ
+            </p>
+            <h2 className="text-3xl md:text-4xl font-fuzzy-bubbles text-gray-900 mb-4">
+              Frequently asked questions
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Common questions about getting in touch
+            </p>
+          </div>
+
+          <Accordion type="single" collapsible className="space-y-6">
+            {faqItems.map((item, index) => (
+              <AccordionItem
+                key={item.question}
+                value={`item-${index}`}
+                className="relative border-4 border-gray-900 rounded-sm bg-white shadow-2xl"
+              >
+                <div className="absolute -top-3 -left-2 z-10 transform -rotate-12">
+                  <Pin className="w-6 h-6 fill-black text-black drop-shadow-sm" />
+                </div>
+                <AccordionTrigger className="px-6 py-5 text-left hover:no-underline">
+                  <div className="flex items-center gap-3 text-left">
+                    <span className="text-xl">{item.emoji}</span>
+                    <span className="text-lg font-bold text-gray-900 font-fuzzy-bubbles">
+                      {item.question}
+                    </span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-6 pt-0">
+                  <p className="text-gray-600 leading-relaxed text-base">
+                    {item.answer}
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-20 md:py-28 px-6 md:px-12 lg:px-24 bg-white/40">
+        <div className="container-narrow">
+          <PolaroidCard className="w-full max-w-none p-10 md:p-16 text-center">
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-4">
+              Ready to start?
+            </p>
+            <h2 className="text-3xl md:text-5xl font-fuzzy-bubbles mb-6 text-gray-900">
+              Create your first appreciation board today
+            </h2>
+            <p className="text-lg mb-10 max-w-2xl mx-auto text-gray-700 leading-relaxed">
+              Start building stronger connections in your community. It&apos;s free
+              and takes less than a minute.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                size="lg"
+                className="bg-gray-900 text-white hover:bg-gray-800 font-semibold h-14 px-8 text-base shadow-lg hover:shadow-xl transition-all"
+              >
+                Create Your First Board
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-2 border-gray-900 text-gray-900 hover:bg-gray-50 font-semibold h-14 px-8 text-base"
+              >
+                View Examples
+              </Button>
+            </div>
+          </PolaroidCard>
+        </div>
+      </section>
+
+      <div className="mt-auto w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
+        <Footer />
+      </div>
+    </div>
+  );
 }

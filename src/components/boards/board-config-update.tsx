@@ -1,30 +1,30 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { DateTimePicker } from '@/components/ui/datetime-picker';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Board } from '@/lib/db';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/card";
+import { DateTimePicker } from "@/components/ui/datetime-picker";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Board } from "@/lib/db";
+import { cn } from "@/lib/utils";
 import {
   Check,
   Globe,
   LayoutDashboard,
   Lock,
+  Pin,
   Save,
-  Settings,
   StickyNote,
   X,
-} from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState, type ReactNode } from "react";
 
 interface BoardConfigUpdateProps {
   board: Board;
@@ -32,43 +32,45 @@ interface BoardConfigUpdateProps {
 
 const postingModeOptions = [
   {
-    value: 'single' as const,
-    label: 'Single Post',
-    description: 'one post per contributor',
-    icon: <StickyNote className="h-8 w-8" />,
+    value: "single" as const,
+    label: "Single Post",
+    description: "one post per contributor",
+    icon: <StickyNote className="h-8 w-8 text-gray-900" />,
   },
   {
-    value: 'multiple' as const,
-    label: 'Multiple Posts',
-    description: 'multiple posts per contributor',
-    icon: <LayoutDashboard className="h-8 w-8" />,
+    value: "multiple" as const,
+    label: "Multiple Posts",
+    description: "multiple posts per contributor",
+    icon: <LayoutDashboard className="h-8 w-8 text-gray-900" />,
   },
 ];
 
 const visibilityOptions = [
   {
-    value: 'public' as const,
-    label: 'Public Board',
-    description: 'Anyone with the link can view the board',
-    icon: <Globe className="h-8 w-8" />,
+    value: "public" as const,
+    label: "Public Board",
+    description: "Anyone with the link can view the board",
+    icon: <Globe className="h-8 w-8 text-gray-900" />,
   },
   {
-    value: 'private' as const,
-    label: 'Private Board',
-    description: 'Only people you invite can view the board',
-    icon: <Lock className="h-8 w-8" />,
+    value: "private" as const,
+    label: "Private Board",
+    description: "Only people you invite can view the board",
+    icon: <Lock className="h-8 w-8 text-gray-900" />,
   },
 ];
 
 const backgroundColorOptions = [
-  { value: '#3B82F6', label: 'Blue', color: 'bg-blue-500' },
-  { value: '#10B981', label: 'Green', color: 'bg-green-500' },
-  { value: '#F59E0B', label: 'Yellow', color: 'bg-yellow-500' },
-  { value: '#EF4444', label: 'Red', color: 'bg-red-500' },
-  { value: '#8B5CF6', label: 'Purple', color: 'bg-purple-500' },
-  { value: '#F97316', label: 'Orange', color: 'bg-orange-500' },
-  { value: '#06B6D4', label: 'Cyan', color: 'bg-cyan-500' },
-  { value: '#84CC16', label: 'Lime', color: 'bg-lime-500' },
+  { value: "#2563EB", label: "Blue", color: "bg-blue-600" },
+  { value: "#059669", label: "Green", color: "bg-green-600" },
+  { value: "#D97706", label: "Amber", color: "bg-amber-600" },
+  { value: "#DC2626", label: "Red", color: "bg-red-600" },
+  { value: "#7C3AED", label: "Purple", color: "bg-purple-600" },
+  { value: "#0D9488", label: "Teal", color: "bg-teal-600" },
+  { value: "#0284C7", label: "Sky", color: "bg-sky-600" },
+  { value: "#65A30D", label: "Lime", color: "bg-lime-600" },
+  { value: "#DB2777", label: "Pink", color: "bg-pink-600" },
+  { value: "#EA580C", label: "Orange", color: "bg-orange-600" },
 ];
 
 // Email/Domain input component
@@ -81,15 +83,15 @@ function EmailDomainInput({
   value: string[];
   onChange: (value: string[]) => void;
   placeholder: string;
-  type: 'email' | 'domain';
+  type: "email" | "domain";
 }) {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
 
   const addItem = () => {
     const trimmed = inputValue.trim();
     if (trimmed && !value.includes(trimmed)) {
       onChange([...value, trimmed]);
-      setInputValue('');
+      setInputValue("");
     }
   };
 
@@ -98,7 +100,7 @@ function EmailDomainInput({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ',') {
+    if (e.key === "Enter" || e.key === ",") {
       e.preventDefault();
       addItem();
     }
@@ -112,20 +114,20 @@ function EmailDomainInput({
         onKeyDown={handleKeyDown}
         onBlur={addItem}
         placeholder={placeholder}
-        className="text-sm"
+        className="text-sm border-2 border-gray-900 rounded-sm bg-white focus-visible:ring-gray-900/20"
       />
       {value.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {value.map((item) => (
             <div
               key={item}
-              className="flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-md text-sm border border-border"
+              className="flex items-center gap-1 px-2 py-1 bg-[#FDF6E3] text-gray-900 rounded-sm text-xs border-2 border-gray-900"
             >
               <span>{item}</span>
               <button
                 type="button"
                 onClick={() => removeItem(item)}
-                className="hover:bg-primary/20 rounded p-0.5"
+                className="hover:bg-white/60 rounded-sm p-0.5"
               >
                 <X className="h-3 w-3" />
               </button>
@@ -134,6 +136,27 @@ function EmailDomainInput({
         </div>
       )}
     </div>
+  );
+}
+
+interface ConfigCardProps {
+  children: ReactNode;
+  className?: string;
+}
+
+function ConfigCard({ children, className }: ConfigCardProps) {
+  return (
+    <Card
+      className={cn(
+        "relative bg-white border-4 border-gray-900 rounded-sm shadow-2xl",
+        className,
+      )}
+    >
+      <div className="absolute -top-3 -left-2 z-10 transform -rotate-12">
+        <Pin className="w-6 h-6 fill-black text-black drop-shadow-sm" />
+      </div>
+      {children}
+    </Card>
   );
 }
 
@@ -148,39 +171,39 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
   const [title, setTitle] = useState(board.title);
   const [recipientName, setRecipientName] = useState(board.recipientName);
   const [postingMode, setPostingMode] = useState(
-    board.postingMode as 'single' | 'multiple'
+    board.postingMode as "single" | "multiple",
   );
   const [moderationEnabled, setModerationEnabled] = useState(
-    board.moderationEnabled
+    board.moderationEnabled,
   );
   const [allowAnonymous, setAllowAnonymous] = useState(board.allowAnonymous);
   const [maxPostsPerUser, setMaxPostsPerUser] = useState(
-    board.maxPostsPerUser?.toString() || ''
+    board.maxPostsPerUser?.toString() || "",
   );
   const [boardVisibility, setBoardVisibility] = useState(
-    board.boardVisibility as 'public' | 'private'
+    board.boardVisibility as "public" | "private",
   );
   const [expirationDate, setExpirationDate] = useState<Date | undefined>(
-    board.expirationDate ? new Date(board.expirationDate) : undefined
+    board.expirationDate ? new Date(board.expirationDate) : undefined,
   );
   const [backgroundColor, setBackgroundColor] = useState<string | undefined>(
-    (board.typeConfig as any)?.backgroundColor || undefined
+    (board.typeConfig as any)?.backgroundColor || undefined,
   );
   const [allowedDomains, setAllowedDomains] = useState<string[]>(
-    board.allowedDomains || []
+    board.allowedDomains || [],
   );
   const [blockedDomains, setBlockedDomains] = useState<string[]>(
-    board.blockedDomains || []
+    board.blockedDomains || [],
   );
   const [allowedEmails, setAllowedEmails] = useState<string[]>(
-    board.allowedEmails || []
+    board.allowedEmails || [],
   );
   const [blockedEmails, setBlockedEmails] = useState<string[]>(
-    board.blockedEmails || []
+    board.blockedEmails || [],
   );
 
   const handleMaxPostsChange = (value: string) => {
-    if (value === '' || /^\d+$/.test(value)) {
+    if (value === "" || /^\d+$/.test(value)) {
       setMaxPostsPerUser(value);
     }
   };
@@ -212,9 +235,9 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
       };
 
       const response = await fetch(`/api/boards/${board.id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(updateData),
       });
@@ -231,7 +254,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
           });
           setErrors(fieldErrors);
         } else {
-          throw new Error(errorData.error || 'Failed to update board');
+          throw new Error(errorData.error || "Failed to update board");
         }
         return;
       }
@@ -242,10 +265,10 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
         router.push(`/boards/${result.board.id}/manage?updated=true`);
       }, 1500);
     } catch (error) {
-      console.error('Error updating board:', error);
+      console.error("Error updating board:", error);
       setErrors({
         general:
-          error instanceof Error ? error.message : 'Failed to update board',
+          error instanceof Error ? error.message : "Failed to update board",
       });
     } finally {
       setIsLoading(false);
@@ -253,57 +276,48 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="mx-auto inline-flex items-center gap-2 bg-danke-gold text-danke-900 px-4 py-2 rounded-full text-sm font-medium">
-        <Settings className="w-4 h-4" />
-        <span>Board Configuration</span>
-      </div>
-      <div className="text-center space-y-2 mb-4">
-        <h2 className="text-2xl font-bold text-danke-900">
-          Update Board Configuration
-        </h2>
-        <p className="text-danke-900">
-          Modify your board settings and preferences
-        </p>
-      </div>
-
+    <div className="flex flex-col gap-6">
       {errors.general && (
-        <div className="bg-destructive/10 border border-destructive/20 rounded-md p-4">
-          <p className="text-destructive text-sm">{errors.general}</p>
+        <div className="bg-rose-50 border-2 border-rose-500 rounded-sm p-4">
+          <p className="text-rose-700 text-sm">{errors.general}</p>
         </div>
       )}
 
       {isSuccess && (
-        <div className="bg-background/40 border border-border rounded-md p-4">
-          <p className="text-danke-gold text-sm font-medium flex items-center gap-4">
-            <Check /> Board configuration updated successfully! Redirecting...
+        <div className="bg-[#FDF6E3] border-2 border-gray-900 rounded-sm p-4">
+          <p className="text-gray-900 text-sm font-medium flex items-center gap-2">
+            <Check className="w-4 h-4" />
+            Board configuration updated successfully! Redirecting...
           </p>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {isSuccess && (
-          <div className="fixed h-full w-full inset-0 bg-background/50 backdrop-blur-sm z-10 flex items-center justify-center">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-              <p className="text-sm text-muted-foreground">
+          <div className="fixed h-full w-full inset-0 bg-[#FDF6E3]/80 backdrop-blur-sm z-10 flex items-center justify-center">
+            <div className="text-center bg-white border-4 border-gray-900 rounded-sm shadow-2xl p-6">
+              <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-900 border-t-transparent mx-auto mb-4"></div>
+              <p className="text-sm text-gray-600">
                 Updating board configuration...
               </p>
             </div>
           </div>
         )}
-        <Card className="bg-background/80">
-          <CardHeader>
-            <CardTitle className="text-xl mb-0 text-primary">
+        <ConfigCard>
+          <CardHeader className="border-b-2 border-gray-900 bg-[#FDF6E3]">
+            <CardTitle className="text-xl md:text-2xl font-fuzzy-bubbles text-gray-900">
               Basic Information
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-600">
               Update the basic details of your board
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 p-6 text-black">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="title" className="text-primary">
+              <Label
+                htmlFor="title"
+                className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600"
+              >
                 Board Title
               </Label>
               <Input
@@ -312,14 +326,23 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Enter board title"
                 error={!!errors.title}
+                className={cn(
+                  "border-2 text-base rounded-sm bg-white focus-visible:ring-2",
+                  errors.title
+                    ? "border-rose-500 focus-visible:ring-rose-200"
+                    : "border-gray-900 focus-visible:ring-gray-900/20",
+                )}
               />
               {errors.title && (
-                <p className="text-sm text-destructive">{errors.title}</p>
+                <p className="text-xs text-rose-700">{errors.title}</p>
               )}
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="recipientName" className="text-primary">
+              <Label
+                htmlFor="recipientName"
+                className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600"
+              >
                 Recipient Name
               </Label>
               <Input
@@ -328,49 +351,53 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                 onChange={(e) => setRecipientName(e.target.value)}
                 placeholder="Enter recipient name"
                 error={!!errors.recipientName}
+                className={cn(
+                  "border-2 text-base rounded-sm bg-white focus-visible:ring-2",
+                  errors.recipientName
+                    ? "border-rose-500 focus-visible:ring-rose-200"
+                    : "border-gray-900 focus-visible:ring-gray-900/20",
+                )}
               />
               {errors.recipientName && (
-                <p className="text-sm text-destructive">
-                  {errors.recipientName}
-                </p>
+                <p className="text-xs text-rose-700">{errors.recipientName}</p>
               )}
             </div>
           </CardContent>
-        </Card>
+        </ConfigCard>
 
-        <Card className="bg-background/80">
-          <CardHeader>
-            <CardTitle className="text-xl mb-0 text-primary">
+        <ConfigCard>
+          <CardHeader className="border-b-2 border-gray-900 bg-[#FDF6E3]">
+            <CardTitle className="text-xl md:text-2xl font-fuzzy-bubbles text-gray-900">
               Posting Configuration
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-600">
               Configure how people can post to your board
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 p-6">
             <div className="flex flex-col gap-2">
-              <Label className="text-sm text-primary">Posting Mode</Label>
+              <Label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600">
+                Posting Mode
+              </Label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {postingModeOptions.map((option) => (
                   <Card
                     key={option.value}
                     className={cn(
-                      'cursor-pointer transition-all hover:shadow-md',
+                      "cursor-pointer transition-all border-2 border-gray-900 rounded-sm bg-white shadow-sm hover:bg-[#FDF6E3]",
                       postingMode === option.value
-                        ? 'ring-2 ring-primary border-primary'
-                        : 'hover:border-primary/50'
+                        ? "ring-2 ring-gray-900 bg-[#FDF6E3]"
+                        : "",
                     )}
                     onClick={() => setPostingMode(option.value)}
                   >
                     <CardHeader className="p-6">
                       <div className="flex flex-col items-center gap-1">
-                        <span className="p-1 mb-2 text-primary">
-                          {option.icon}
-                        </span>
-                        <CardTitle className="text-lg">
+                        <span className="p-1 mb-2">{option.icon}</span>
+                        <CardTitle className="text-lg text-gray-900">
                           {option.label}
                         </CardTitle>
-                        <CardDescription className="text-sm">
+                        <CardDescription className="text-sm text-gray-600">
                           {option.description}
                         </CardDescription>
                       </div>
@@ -380,9 +407,12 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
               </div>
             </div>
 
-            {postingMode === 'multiple' && (
+            {postingMode === "multiple" && (
               <div className="flex flex-col gap-2">
-                <Label htmlFor="maxPostsPerUser" className="text-primary">
+                <Label
+                  htmlFor="maxPostsPerUser"
+                  className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600"
+                >
                   Maximum Posts Per User (Optional)
                 </Label>
                 <Input
@@ -394,39 +424,42 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                   value={maxPostsPerUser}
                   onChange={(e) => handleMaxPostsChange(e.target.value)}
                   error={!!errors.maxPostsPerUser}
-                  className="max-w-xs"
+                  className={cn(
+                    "max-w-xs border-2 rounded-sm bg-white focus-visible:ring-2",
+                    errors.maxPostsPerUser
+                      ? "border-rose-500 focus-visible:ring-rose-200"
+                      : "border-gray-900 focus-visible:ring-gray-900/20",
+                  )}
                 />
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   Leave empty for no limit. Maximum allowed is 50 posts per
                   user.
                 </p>
                 {errors.maxPostsPerUser && (
-                  <p className="text-sm text-destructive">
+                  <p className="text-xs text-rose-700">
                     {errors.maxPostsPerUser}
                   </p>
                 )}
               </div>
             )}
           </CardContent>
-        </Card>
+        </ConfigCard>
 
-        <Card className="bg-background/80">
-          <CardHeader>
-            <CardTitle className="text-xl mb-0 text-primary">
+        <ConfigCard>
+          <CardHeader className="border-b-2 border-gray-900 bg-[#FDF6E3]">
+            <CardTitle className="text-xl md:text-2xl font-fuzzy-bubbles text-gray-900">
               Board Settings
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-600">
               Configure additional board options
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Card
                 className={cn(
-                  'cursor-pointer transition-all hover:shadow-sm',
-                  moderationEnabled
-                    ? 'ring-2 ring-primary border-primary'
-                    : 'hover:border-primary/50'
+                  "cursor-pointer transition-all border-2 border-gray-900 rounded-sm bg-white shadow-sm hover:bg-[#FDF6E3]",
+                  moderationEnabled ? "ring-2 ring-gray-900 bg-[#FDF6E3]" : "",
                 )}
                 onClick={() => setModerationEnabled(!moderationEnabled)}
               >
@@ -434,10 +467,10 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                   <div className="flex items-start gap-4">
                     <div
                       className={cn(
-                        'w-4 h-4 rounded border-2 flex items-center justify-center mt-1',
+                        "w-4 h-4 rounded-sm border-2 flex items-center justify-center mt-1",
                         moderationEnabled
-                          ? 'border-primary bg-primary'
-                          : 'border-gray-300'
+                          ? "border-gray-900 bg-gray-900"
+                          : "border-gray-900 bg-white",
                       )}
                     >
                       {moderationEnabled && (
@@ -455,8 +488,10 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium">Enable Moderation</p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="font-medium text-gray-900">
+                        Enable Moderation
+                      </p>
+                      <p className="text-sm text-gray-600">
                         Review posts before they appear on board
                       </p>
                     </div>
@@ -466,10 +501,8 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
 
               <Card
                 className={cn(
-                  'cursor-pointer transition-all hover:shadow-sm',
-                  allowAnonymous
-                    ? 'ring-2 ring-primary border-primary'
-                    : 'hover:border-primary/50'
+                  "cursor-pointer transition-all border-2 border-gray-900 rounded-sm bg-white shadow-sm hover:bg-[#FDF6E3]",
+                  allowAnonymous ? "ring-2 ring-gray-900 bg-[#FDF6E3]" : "",
                 )}
                 onClick={() => setAllowAnonymous(!allowAnonymous)}
               >
@@ -477,10 +510,10 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                   <div className="flex items-start gap-4">
                     <div
                       className={cn(
-                        'w-4 h-4 rounded border-2 flex items-center justify-center mt-1',
+                        "w-4 h-4 rounded-sm border-2 flex items-center justify-center mt-1",
                         allowAnonymous
-                          ? 'border-primary bg-primary'
-                          : 'border-gray-300'
+                          ? "border-gray-900 bg-gray-900"
+                          : "border-gray-900 bg-white",
                       )}
                     >
                       {allowAnonymous && (
@@ -498,8 +531,10 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium">Allow Anonymous Posts</p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="font-medium text-gray-900">
+                        Allow Anonymous Posts
+                      </p>
+                      <p className="text-sm text-gray-600">
                         Let users post without revealing their identity
                       </p>
                     </div>
@@ -508,39 +543,41 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
               </Card>
             </div>
           </CardContent>
-        </Card>
+        </ConfigCard>
 
-        <Card className="bg-background/80">
-          <CardHeader>
-            <CardTitle className="text-xl mb-0 text-primary">
+        <ConfigCard>
+          <CardHeader className="border-b-2 border-gray-900 bg-[#FDF6E3]">
+            <CardTitle className="text-xl md:text-2xl font-fuzzy-bubbles text-gray-900">
               Visibility Settings
             </CardTitle>
-            <CardDescription>Control who can view your board</CardDescription>
+            <CardDescription className="text-gray-600">
+              Control who can view your board
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 p-6">
             <div className="flex flex-col gap-2">
-              <Label className="text-sm text-primary">Board Visibility</Label>
+              <Label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600">
+                Board Visibility
+              </Label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {visibilityOptions.map((option) => (
                   <Card
                     key={option.value}
                     className={cn(
-                      'cursor-pointer transition-all hover:shadow-md',
+                      "cursor-pointer transition-all border-2 border-gray-900 rounded-sm bg-white shadow-sm hover:bg-[#FDF6E3]",
                       boardVisibility === option.value
-                        ? 'ring-2 ring-primary border-primary'
-                        : 'hover:border-primary/50'
+                        ? "ring-2 ring-gray-900 bg-[#FDF6E3]"
+                        : "",
                     )}
                     onClick={() => setBoardVisibility(option.value)}
                   >
-                    <CardHeader>
+                    <CardHeader className="p-6">
                       <div className="flex flex-col items-center gap-1">
-                        <span className="p-1 mb-2 text-primary">
-                          {option.icon}
-                        </span>
-                        <CardTitle className="text-lg">
+                        <span className="p-1 mb-2">{option.icon}</span>
+                        <CardTitle className="text-lg text-gray-900">
                           {option.label}
                         </CardTitle>
-                        <CardDescription className="text-sm">
+                        <CardDescription className="text-sm text-gray-600">
                           {option.description}
                         </CardDescription>
                       </div>
@@ -550,13 +587,13 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
               </div>
             </div>
 
-            {boardVisibility === 'private' && (
-              <div className="flex flex-col gap-6 py-6 px-8 border rounded-lg bg-card">
+            {boardVisibility === "private" && (
+              <div className="flex flex-col gap-6 py-6 px-6 border-2 border-gray-900 rounded-sm bg-[#FDF6E3]/60">
                 <div className="flex flex-col gap-2">
-                  <Label className="text-sm font-medium text-primary">
+                  <Label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600">
                     Access Restrictions
                   </Label>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-600">
                     Control who can access this private board by email or domain
                   </p>
                 </div>
@@ -564,7 +601,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Allowed Domains */}
                   <div className="flex flex-col gap-3">
-                    <Label className="text-sm text-primary">
+                    <Label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600">
                       Allowed Domains
                     </Label>
                     <EmailDomainInput
@@ -573,14 +610,14 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                       placeholder="company.com"
                       type="domain"
                     />
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-600">
                       Only users with these email domains can access the board
                     </p>
                   </div>
 
                   {/* Blocked Domains */}
                   <div className="flex flex-col gap-3">
-                    <Label className="text-sm text-primary">
+                    <Label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600">
                       Blocked Domains
                     </Label>
                     <EmailDomainInput
@@ -589,14 +626,14 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                       placeholder="competitor.com"
                       type="domain"
                     />
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-600">
                       Users with these email domains cannot access the board
                     </p>
                   </div>
 
                   {/* Allowed Emails */}
                   <div className="flex flex-col gap-3">
-                    <Label className="text-sm text-primary">
+                    <Label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600">
                       Allowed Emails
                     </Label>
                     <EmailDomainInput
@@ -605,14 +642,14 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                       placeholder="user@example.com"
                       type="email"
                     />
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-600">
                       Only these specific email addresses can access the board
                     </p>
                   </div>
 
                   {/* Blocked Emails */}
                   <div className="flex flex-col gap-3">
-                    <Label className="text-sm text-primary">
+                    <Label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600">
                       Blocked Emails
                     </Label>
                     <EmailDomainInput
@@ -621,7 +658,7 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                       placeholder="blocked@example.com"
                       type="email"
                     />
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-600">
                       These specific email addresses cannot access the board
                     </p>
                   </div>
@@ -629,21 +666,24 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
               </div>
             )}
           </CardContent>
-        </Card>
+        </ConfigCard>
 
-        <Card className="bg-background/80">
-          <CardHeader>
-            <CardTitle className="text-xl mb-0 text-primary">
+        <ConfigCard>
+          <CardHeader className="border-b-2 border-gray-900 bg-[#FDF6E3]">
+            <CardTitle className="text-xl md:text-2xl font-fuzzy-bubbles text-gray-900">
               Expiration Settings
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-600">
               Set when this board should become read-only
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6">
             <div className="space-y-4">
               <div className="flex flex-col gap-2">
-                <Label htmlFor="expirationDate" className="text-primary">
+                <Label
+                  htmlFor="expirationDate"
+                  className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600"
+                >
                   Board Expiration (Optional)
                 </Label>
                 <DateTimePicker
@@ -651,36 +691,36 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                   onDateTimeChange={setExpirationDate}
                   placeholder="Select expiration date and time"
                   error={!!errors.expirationDate}
-                  className="w-fit"
+                  className="w-full sm:w-fit"
                   min={new Date().toISOString().slice(0, 16)}
                 />
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   Leave empty for no expiration. Board will automatically become
                   read-only after this date.
                 </p>
                 {errors.expirationDate && (
-                  <p className="text-sm text-destructive">
+                  <p className="text-xs text-rose-700">
                     {errors.expirationDate}
                   </p>
                 )}
               </div>
             </div>
           </CardContent>
-        </Card>
+        </ConfigCard>
 
-        <Card className="bg-background/80">
-          <CardHeader>
-            <CardTitle className="text-xl mb-0 text-primary">
+        <ConfigCard>
+          <CardHeader className="border-b-2 border-gray-900 bg-[#FDF6E3]">
+            <CardTitle className="text-xl md:text-2xl font-fuzzy-bubbles text-gray-900">
               Theme Settings
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-600">
               Customize the visual appearance of your board
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6">
             <div className="space-y-4">
               <div className="flex flex-col gap-2">
-                <Label className="text-primary">
+                <Label className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600">
                   Background Color (Optional)
                 </Label>
                 <div className="grid grid-cols-4 md:grid-cols-8 gap-3">
@@ -688,14 +728,14 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                     <div
                       key={option.value}
                       className={cn(
-                        'cursor-pointer rounded-lg transition-all hover:scale-105',
+                        "cursor-pointer rounded-sm transition-all hover:scale-105",
                         backgroundColor === option.value
-                          ? 'ring-2 ring-offset-2 ring-primary'
-                          : ''
+                          ? "ring-2 ring-offset-2 ring-gray-900 ring-offset-white"
+                          : "",
                       )}
                       onClick={() => setBackgroundColor(option.value)}
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
+                        if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
                           setBackgroundColor(option.value);
                         }
@@ -706,44 +746,48 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                       aria-label={`Select ${option.label} background color`}
                     >
                       <div
-                        className={cn('w-full h-12 rounded-lg', option.color)}
+                        className={cn(
+                          "w-full h-12 rounded-sm border-2 border-gray-900",
+                          option.color,
+                        )}
                       />
                     </div>
                   ))}
                 </div>
-                <div className="flex items-center gap-2 mt-3">
+                <div className="flex flex-wrap items-center gap-2 mt-3">
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     onClick={() => setBackgroundColor(undefined)}
                     disabled={!backgroundColor}
+                    className="border-2 border-gray-900 bg-white text-gray-900 hover:bg-[#FDF6E3]"
                   >
                     Clear Color
                   </Button>
                   {backgroundColor && (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
                       <div
-                        className="w-4 h-4 rounded border border-border"
+                        className="w-4 h-4 rounded-sm border-2 border-gray-900"
                         style={{ backgroundColor }}
                       />
                       <span>{backgroundColor}</span>
                     </div>
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   Choose a background color theme for your board. This will
                   create a beautiful gradient background.
                 </p>
                 {errors.backgroundColor && (
-                  <p className="text-sm text-destructive">
+                  <p className="text-xs text-rose-700">
                     {errors.backgroundColor}
                   </p>
                 )}
               </div>
             </div>
           </CardContent>
-        </Card>
+        </ConfigCard>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-end">
           <Button
@@ -751,20 +795,21 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
             variant="outline"
             disabled={isLoading || isSuccess}
             onClick={() => router.push(`/boards/${board.id}/manage`)}
+            className="border-2 border-gray-900 bg-white text-gray-900 hover:bg-[#FDF6E3]"
           >
             Cancel
           </Button>
           <Button
             type="submit"
-            variant="secondary"
             disabled={isLoading || isSuccess}
+            className="bg-gray-900 text-white hover:bg-gray-800 shadow-md hover:shadow-lg transition-all"
           >
             <Save className="w-4 h-4 mr-2" />
             {isSuccess
-              ? 'Updated!'
+              ? "Updated!"
               : isLoading
-              ? 'Updating...'
-              : 'Update Board'}
+                ? "Updating..."
+                : "Update Board"}
           </Button>
         </div>
       </form>

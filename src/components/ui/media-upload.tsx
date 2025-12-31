@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { useApiErrorHandler } from '@/lib/api-error-handler';
-import { cn } from '@/lib/utils';
-import { FileText, Image, Music, Upload, Video, X } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
-import { Card, CardContent } from './card';
+import { Button } from "@/components/ui/button";
+import { useApiErrorHandler } from "@/lib/api-error-handler";
+import { cn } from "@/lib/utils";
+import { FileText, Image, Music, Upload, Video, X } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { Card, CardContent } from "./card";
 
 export interface MediaFile {
   id: string;
   file: File;
   url?: string;
-  type: 'image' | 'video' | 'audio';
+  type: "image" | "video" | "audio";
   uploadProgress?: number;
   error?: string;
 }
@@ -24,33 +24,33 @@ interface MediaUploadProps {
 }
 
 const ALLOWED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/gif',
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
 ];
-const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/webm'];
+const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm"];
 const ALLOWED_AUDIO_TYPES = [
-  'audio/mp3',
-  'audio/wav',
-  'audio/ogg',
-  'audio/mpeg',
+  "audio/mp3",
+  "audio/wav",
+  "audio/ogg",
+  "audio/mpeg",
 ];
 
-const getFileType = (mimeType: string): 'image' | 'video' | 'audio' => {
-  if (ALLOWED_IMAGE_TYPES.includes(mimeType)) return 'image';
-  if (ALLOWED_VIDEO_TYPES.includes(mimeType)) return 'video';
-  if (ALLOWED_AUDIO_TYPES.includes(mimeType)) return 'audio';
-  throw new Error('Unsupported file type');
+const getFileType = (mimeType: string): "image" | "video" | "audio" => {
+  if (ALLOWED_IMAGE_TYPES.includes(mimeType)) return "image";
+  if (ALLOWED_VIDEO_TYPES.includes(mimeType)) return "video";
+  if (ALLOWED_AUDIO_TYPES.includes(mimeType)) return "audio";
+  throw new Error("Unsupported file type");
 };
 
-const getFileIcon = (type: 'image' | 'video' | 'audio') => {
+const getFileIcon = (type: "image" | "video" | "audio") => {
   switch (type) {
-    case 'image':
+    case "image":
       return Image;
-    case 'video':
+    case "video":
       return Video;
-    case 'audio':
+    case "audio":
       return Music;
     default:
       return FileText;
@@ -76,7 +76,7 @@ export function MediaUpload({
       setFiles(newFiles);
       onFilesChange(newFiles);
     },
-    [onFilesChange]
+    [onFilesChange],
   );
 
   const validateFile = (file: File): string | null => {
@@ -87,7 +87,7 @@ export function MediaUpload({
     ];
 
     if (!allowedTypes.includes(file.type)) {
-      return 'File type not supported. Allowed: images (JPEG, PNG, WebP, GIF), videos (MP4, WebM), audio (MP3, WAV, OGG)';
+      return "File type not supported. Allowed: images (JPEG, PNG, WebP, GIF), videos (MP4, WebM), audio (MP3, WAV, OGG)";
     }
 
     // Check file size based on type
@@ -95,21 +95,21 @@ export function MediaUpload({
       ALLOWED_IMAGE_TYPES.includes(file.type) &&
       file.size > 2 * 1024 * 1024
     ) {
-      return 'Image files cannot be larger than 2MB';
+      return "Image files cannot be larger than 2MB";
     }
 
     if (
       ALLOWED_VIDEO_TYPES.includes(file.type) &&
       file.size > 10 * 1024 * 1024
     ) {
-      return 'Video files cannot be larger than 10MB';
+      return "Video files cannot be larger than 10MB";
     }
 
     if (
       ALLOWED_AUDIO_TYPES.includes(file.type) &&
       file.size > 5 * 1024 * 1024
     ) {
-      return 'Audio files cannot be larger than 5MB';
+      return "Audio files cannot be larger than 5MB";
     }
 
     return null;
@@ -140,8 +140,8 @@ export function MediaUpload({
           const mediaFile: MediaFile = {
             id: `${Date.now()}-${i}`,
             file,
-            type: 'image', // fallback
-            error: 'Unsupported file type',
+            type: "image", // fallback
+            error: "Unsupported file type",
           };
           newFiles.push(mediaFile);
         }
@@ -149,7 +149,7 @@ export function MediaUpload({
 
       updateFiles([...files, ...newFiles]);
     },
-    [files, maxFiles, updateFiles]
+    [files, maxFiles, updateFiles],
   );
 
   const handleDrop = useCallback(
@@ -162,7 +162,7 @@ export function MediaUpload({
         processFiles(droppedFiles);
       }
     },
-    [processFiles]
+    [processFiles],
   );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -180,7 +180,7 @@ export function MediaUpload({
     if (selectedFiles && selectedFiles.length > 0) {
       processFiles(selectedFiles);
     }
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const removeFile = (id: string) => {
@@ -190,18 +190,18 @@ export function MediaUpload({
 
   const uploadFile = async (mediaFile: MediaFile) => {
     const formData = new FormData();
-    formData.append('file', mediaFile.file);
+    formData.append("file", mediaFile.file);
 
     try {
       const updatedFiles = files.map((f) =>
         f.id === mediaFile.id
           ? { ...f, uploadProgress: 0, error: undefined }
-          : f
+          : f,
       );
       updateFiles(updatedFiles);
 
-      const response = await fetch('/api/upload', {
-        method: 'POST',
+      const response = await fetch("/api/upload", {
+        method: "POST",
         body: formData,
       });
 
@@ -217,23 +217,23 @@ export function MediaUpload({
       const result = await response.json();
 
       if (!result.url) {
-        throw new Error('Upload completed but no file URL received');
+        throw new Error("Upload completed but no file URL received");
       }
 
       const finalFiles = files.map((f) =>
         f.id === mediaFile.id
           ? { ...f, url: result.url, uploadProgress: 100, error: undefined }
-          : f
+          : f,
       );
       updateFiles(finalFiles);
     } catch (error) {
-      console.error('Upload error:', error);
+      console.error("Upload error:", error);
 
       let errorMessage = handleError(error);
 
-      if (errorMessage.includes('fetch') || errorMessage.includes('network')) {
+      if (errorMessage.includes("fetch") || errorMessage.includes("network")) {
         errorMessage =
-          'Network error. Please check your connection and try again.';
+          "Network error. Please check your connection and try again.";
       }
 
       const errorFiles = files.map((f) =>
@@ -243,20 +243,18 @@ export function MediaUpload({
               error: errorMessage,
               uploadProgress: undefined,
             }
-          : f
+          : f,
       );
       updateFiles(errorFiles);
     }
   };
 
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn("space-y-4", className)}>
       <Card
         className={cn(
-          'border-2 border-dashed transition-all duration-200 cursor-pointer hover:shadow-md',
-          isDragOver
-            ? 'border-primary bg-primary/5 shadow-md'
-            : 'border-muted hover:border-primary/50'
+          "border-2 border-dashed border-gray-900 rounded-sm bg-white transition-all duration-200 cursor-pointer hover:shadow-md",
+          isDragOver ? "bg-[#FDF6E3] shadow-md" : "hover:bg-[#FDF6E3]/60",
         )}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
@@ -265,14 +263,14 @@ export function MediaUpload({
         <CardContent className="p-8 text-center">
           <Upload
             className={cn(
-              'mx-auto h-12 w-12 mb-4 transition-colors',
-              isDragOver ? 'text-primary' : 'text-muted-foreground'
+              "mx-auto h-12 w-12 mb-4 transition-colors",
+              isDragOver ? "text-gray-900" : "text-gray-600",
             )}
           />
-          <h3 className="text-lg font-semibold text-foreground mb-2">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
             Drop files here or click to upload
           </h3>
-          <p className="text-sm text-muted-foreground mb-6">
+          <p className="text-sm text-gray-600 mb-6">
             Images (max 2MB), videos (max 10MB), and audio files (max 5MB)
           </p>
           <input
@@ -286,7 +284,7 @@ export function MediaUpload({
           <Button
             type="button"
             variant="outline"
-            onClick={() => document.getElementById('file-upload')?.click()}
+            onClick={() => document.getElementById("file-upload")?.click()}
             disabled={files.length >= maxFiles}
             className="min-w-32"
           >
@@ -308,7 +306,7 @@ export function MediaUpload({
             return (
               <Card
                 key={mediaFile.id}
-                className="transition-all hover:shadow-sm"
+                className="border-2 border-gray-900 rounded-sm bg-white shadow-sm transition-all hover:shadow-md"
               >
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between gap-4">
@@ -334,9 +332,9 @@ export function MediaUpload({
                       )}
 
                       {mediaFile.uploadProgress !== undefined && (
-                        <div className="w-20 bg-muted rounded-full h-2">
+                        <div className="w-20 bg-gray-200 rounded-full h-2">
                           <div
-                            className="bg-primary h-2 rounded-full transition-all duration-300"
+                            className="bg-gray-900 h-2 rounded-full transition-all duration-300"
                             style={{ width: `${mediaFile.uploadProgress}%` }}
                           />
                         </div>
@@ -356,7 +354,7 @@ export function MediaUpload({
                         )}
 
                       {mediaFile.url && (
-                        <span className="text-xs text-primary font-medium">
+                        <span className="text-xs text-gray-900 font-medium">
                           Uploaded
                         </span>
                       )}
