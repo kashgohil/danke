@@ -77,7 +77,7 @@ export async function GET(
       board.id,
       page,
       limit,
-      user?.id ?? userId,
+      user?.id ?? userId ?? undefined,
     );
 
     const creatorIds = [...new Set(posts.map((post) => post.creatorId))];

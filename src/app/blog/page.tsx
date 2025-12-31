@@ -465,7 +465,7 @@ export default function BlogPage() {
               Create your first board today
             </h2>
             <p className="text-lg mb-10 max-w-2xl mx-auto text-gray-700 leading-relaxed">
-              Put what you've learned into practice. Start creating meaningful
+              Put what you&apos;ve learned into practice. Start creating meaningful
               appreciation moments now.
             </p>
 

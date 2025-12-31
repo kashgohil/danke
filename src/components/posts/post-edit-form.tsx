@@ -12,7 +12,7 @@ import { Post } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { updatePostSchema } from "@/lib/validations/post";
 import { useAuth } from "@clerk/nextjs";
-import { Image, MessageCircle, Pin } from "lucide-react";
+import { Image as ImageIcon, MessageCircle, Pin } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface PostEditFormProps {
@@ -209,7 +209,7 @@ function PostEditFormContent({
 
       <div>
         <label className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gray-600 mb-3">
-          <Image className="w-4 h-4 text-gray-900" />
+          <ImageIcon className="w-4 h-4 text-gray-900" aria-hidden="true" />
           Media Files (Optional)
         </label>
         <div

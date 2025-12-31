@@ -327,7 +327,7 @@ export default function AboutPage() {
         <div className="container-default relative z-10">
           <div className="text-center mb-16">
             <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-4">
-              How it's going
+              How it&apos;s going
             </p>
             <h2 className="mb-6 text-gray-900 text-4xl md:text-5xl font-fuzzy-bubbles">
               Helping more people celebrate
@@ -479,7 +479,7 @@ export default function AboutPage() {
         <div className="container-narrow">
           <PolaroidCard className="w-full max-w-none p-10 md:p-16 text-center">
             <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-4">
-              Let's Connect
+              Let&apos;s Connect
             </p>
 
             <h2 className="mb-6 text-gray-900 text-4xl md:text-5xl font-fuzzy-bubbles">

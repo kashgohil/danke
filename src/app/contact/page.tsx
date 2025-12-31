@@ -93,11 +93,11 @@ export default function ContactPage() {
                 Contact
               </p>
               <h1 className="mt-6 text-5xl md:text-6xl text-gray-900 font-fuzzy-bubbles leading-tight">
-                Let's keep the gratitude going.
+                Let&apos;s keep the gratitude going.
               </h1>
               <p className="mt-6 text-lg md:text-xl text-gray-700 leading-relaxed max-w-2xl">
-                We'd love to hear from you. Share feedback, ask a question, or
-                tell us about the celebration you're planning.
+                We&apos;d love to hear from you. Share feedback, ask a question, or
+                tell us about the celebration you&apos;re planning.
               </p>
               <div className="mt-6 flex items-center gap-3 text-sm text-gray-600">
                 <MessageCircle className="w-4 h-4 text-gray-700" />
@@ -117,7 +117,7 @@ export default function ContactPage() {
                   We reply within 24 hours.
                 </h2>
                 <p className="text-gray-700 text-lg leading-relaxed">
-                  Whether it's a question or a bug report, we want you to feel
+                  Whether it&apos;s a question or a bug report, we want you to feel
                   heard.
                 </p>
                 <div className="flex items-center gap-3 text-sm text-gray-600">
@@ -140,10 +140,10 @@ export default function ContactPage() {
                   Send a message
                 </p>
                 <h2 className="text-3xl md:text-4xl font-fuzzy-bubbles text-gray-900">
-                  We're happy to help.
+                  We&apos;re happy to help.
                 </h2>
                 <p className="text-gray-600 text-lg mt-3">
-                  Fill out the form and we'll get back to you soon.
+                  Fill out the form and we&apos;ll get back to you soon.
                 </p>
               </div>
 
@@ -361,7 +361,7 @@ export default function ContactPage() {
               Create your first appreciation board today
             </h2>
             <p className="text-lg mb-10 max-w-2xl mx-auto text-gray-700 leading-relaxed">
-              Start building stronger connections in your community. It's free
+              Start building stronger connections in your community. It&apos;s free
               and takes less than a minute.
             </p>
 

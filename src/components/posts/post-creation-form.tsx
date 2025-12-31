@@ -17,7 +17,7 @@ import { Label } from "@radix-ui/react-label";
 import {
   AlertCircle,
   Heart,
-  Image,
+  Image as ImageIcon,
   MessageCircle,
   Pin,
   Send,
@@ -329,7 +329,7 @@ function PostCreationFormContent({
 
             <div className="space-y-3">
               <label className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-gray-600">
-                <Image className="w-4 h-4 text-gray-900" />
+                <ImageIcon className="w-4 h-4 text-gray-900" aria-hidden="true" />
                 Add Media (Optional)
               </label>
               <div

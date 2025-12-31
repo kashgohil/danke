@@ -571,7 +571,7 @@ export default function HomePage() {
               Every Occasion Covered
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Pre-designed boards for life's most important moments
+              Pre-designed boards for life&apos;s most important moments
             </p>
           </div>
 
@@ -721,7 +721,7 @@ export default function HomePage() {
                   </p>
                   <div className="bg-amber-50/50 rounded p-3 border border-amber-100">
                     <p className="text-gray-700 mb-2 text-center">
-                      "{useCase.quote}"
+                      &quot;{useCase.quote}&quot;
                     </p>
                     <p className="text-xs text-gray-500 text-center">
                       — {useCase.person}
@@ -841,7 +841,7 @@ export default function HomePage() {
                     ))}
                   </div>
                   <p className="text-gray-700 leading-relaxed mb-4 text-center">
-                    "{testimonial.quote}"
+                    &quot;{testimonial.quote}&quot;
                   </p>
                   <div className="flex items-center justify-center gap-2 pt-3 border-t border-gray-100">
                     <span className="text-2xl">{testimonial.emoji}</span>
@@ -1040,7 +1040,7 @@ export default function HomePage() {
                   </p>
                   <p className="text-base text-gray-500 mb-8 max-w-xl mx-auto">
                     Free to use, no credit card required. Create as many boards
-                    as you'd like.
+                    as you&apos;d like.
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">

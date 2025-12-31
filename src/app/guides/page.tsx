@@ -258,7 +258,7 @@ export default function GuidesPage() {
                 </h3>
                 <p className="text-base text-gray-600 leading-relaxed">
                   Choose a template, add a title and description, then customize
-                  your board's appearance to match the occasion.
+                  your board&apos;s appearance to match the occasion.
                 </p>
               </div>
             </PolaroidCard>
