@@ -49,6 +49,20 @@ export interface BoardConfigData {
   allowedEmails?: string[];
   blockedEmails?: string[];
   expirationDate?: Date;
+  // Background configuration
+  backgroundType?: 'color' | 'gradient' | 'pattern' | 'image' | 'video';
+  backgroundValue?: string;
+  backgroundPattern?: string;
+  backgroundVideoUrl?: string;
+  backgroundPosition?: string;
+  backgroundSize?: string;
+  backgroundOverlay?: string;
+  backgroundOverlayOpacity?: number;
+  backgroundOverlayColor?: string;
+  backgroundParallax?: boolean;
+  // Typography configuration
+  fontPairingId?: string;
+  fontScaleMultiplier?: number;
 }
 
 export interface MultiStepFormData {

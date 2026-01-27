@@ -82,6 +82,22 @@ export function CreateBoardClient() {
           ? stepData.boardConfig.expirationDate
           : undefined,
 
+        // Background configuration
+        backgroundType: stepData.boardConfig.backgroundType || 'color',
+        backgroundValue: stepData.boardConfig.backgroundValue || '#ffffff',
+        backgroundPattern: stepData.boardConfig.backgroundPattern,
+        backgroundVideoUrl: stepData.boardConfig.backgroundVideoUrl,
+        backgroundPosition: stepData.boardConfig.backgroundPosition || 'center',
+        backgroundSize: stepData.boardConfig.backgroundSize || 'cover',
+        backgroundOverlay: stepData.boardConfig.backgroundOverlay || 'none',
+        backgroundOverlayOpacity: stepData.boardConfig.backgroundOverlayOpacity || 0,
+        backgroundOverlayColor: stepData.boardConfig.backgroundOverlayColor,
+        backgroundParallax: stepData.boardConfig.backgroundParallax || false,
+
+        // Typography configuration (defaults)
+        fontPairingId: stepData.boardConfig.fontPairingId || 'modern',
+        fontScaleMultiplier: stepData.boardConfig.fontScaleMultiplier || 100,
+
         // Type-specific configuration
         typeConfig: stepData.typeConfig as Record<string, unknown>,
       };

@@ -10,9 +10,11 @@ import {
 import { DateTimePicker } from "@/components/ui/datetime-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BackgroundSettings } from "@/components/backgrounds/background-settings";
+import { TypographySettings } from "@/components/typography/typography-settings";
 import { cn } from "@/lib/utils";
 import { BoardConfigData } from "@/types/multi-step-form";
-import { Globe, LayoutDashboard, Lock, StickyNote, X } from "lucide-react";
+import { Globe, LayoutDashboard, Lock, StickyNote, X, Palette } from "lucide-react";
 import { useState } from "react";
 
 interface BoardConfigStepProps {
@@ -491,30 +493,87 @@ export function BoardConfigStep({
   function expiration() {
     return (
       <div className="flex flex-col gap-4">
-        <Label
-          htmlFor="expirationDate"
-          className="text-lg font-fuzzy-bubbles font-semibold text-gray-700"
-        >
-          Board Expiration (Optional)
+        <Label className="text-lg font-fuzzy-bubbles font-semibold text-gray-700">
+          Expiration Date (Optional)
         </Label>
+        <p className="text-sm text-gray-600">
+          Set an expiration date for your board. After this date, the board will no longer accept new messages.
+        </p>
         <DateTimePicker
           date={data.expirationDate}
-          onDateTimeChange={handleDateTimePickerChange}
-          placeholder="Select expiration date and time"
+          onDateTimeChange={(date) => onChange({ expirationDate: date })}
+          placeholder="No expiration date"
           error={!!errors.expirationDate}
-          className={cn(
-            "text-base w-fit rounded-sm border-2 bg-white text-gray-900 shadow-sm hover:bg-[#FDF6E3]/40",
-            errors.expirationDate ? "border-rose-500" : "border-gray-900",
-          )}
-          min={new Date().toISOString().slice(0, 16)}
         />
-        <p className="text-sm text-gray-600">
-          Set when this board should automatically become read-only. Leave empty
-          for no expiration.
-        </p>
         {errors.expirationDate && touchedFields?.has("expirationDate") && (
           <p className="text-sm text-destructive">{errors.expirationDate}</p>
         )}
+      </div>
+    );
+  }
+
+  function backgroundSettings() {
+    const backgroundConfig = {
+      type: data.backgroundType || 'color',
+      value: data.backgroundValue || '#ffffff',
+      pattern: data.backgroundPattern,
+      videoUrl: data.backgroundVideoUrl,
+      position: data.backgroundPosition || 'center',
+      size: data.backgroundSize || 'cover',
+      overlay: data.backgroundOverlay || 'none',
+      overlayOpacity: data.backgroundOverlayOpacity || 0,
+      overlayColor: data.backgroundOverlayColor,
+      parallax: data.backgroundParallax || false,
+    };
+
+    const typographyConfig = {
+      pairingId: data.fontPairingId || 'modern',
+      fontScale: (data.fontScaleMultiplier || 100) / 100,
+    };
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-2">
+          <Palette className="h-5 w-5 text-gray-700" />
+          <Label className="text-lg font-fuzzy-bubbles font-semibold text-gray-700">
+            Background & Typography
+          </Label>
+        </div>
+        <p className="text-sm text-gray-600">
+          Customize the visual appearance, background, and fonts of your board.
+        </p>
+        <div className="space-y-6">
+          <BackgroundSettings
+            initialConfig={backgroundConfig}
+            onSave={(config) => {
+              if (config) {
+                onChange({
+                  backgroundType: config.type,
+                  backgroundValue: config.value,
+                  backgroundPattern: config.pattern,
+                  backgroundVideoUrl: config.videoUrl,
+                  backgroundPosition: config.position,
+                  backgroundSize: config.size,
+                  backgroundOverlay: config.overlay,
+                  backgroundOverlayOpacity: config.overlayOpacity,
+                  backgroundOverlayColor: config.overlayColor,
+                  backgroundParallax: config.parallax,
+                });
+              }
+            }}
+          />
+
+          <TypographySettings
+            initialPairingId={typographyConfig.pairingId}
+            initialFontScale={typographyConfig.fontScale}
+            onSave={(config) => {
+              onChange({
+                fontPairingId: config.pairingId,
+                fontScaleMultiplier: Math.round(config.fontScale * 100),
+              });
+            }}
+          />
+        </div>
       </div>
     );
   }
@@ -527,6 +586,7 @@ export function BoardConfigStep({
       {visibility()}
       {visibilityRestrictions()}
       {expiration()}
+      {backgroundSettings()}
     </div>
   );
 }

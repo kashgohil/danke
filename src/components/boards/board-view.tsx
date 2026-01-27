@@ -39,6 +39,21 @@ export interface Board {
   recipientName: string;
   creatorId: string;
   typeConfig?: any;
+  // Background configuration
+  backgroundType?: string;
+  backgroundValue?: string;
+  backgroundPattern?: string;
+  backgroundVideoUrl?: string;
+  backgroundPosition?: string;
+  backgroundSize?: string;
+  backgroundOverlay?: string;
+  backgroundOverlayOpacity?: number;
+  backgroundOverlayColor?: string;
+  backgroundParallax?: boolean;
+  // Typography configuration
+  fontPairingId?: string;
+  fontScaleMultiplier?: number;
+  customTypographyConfig?: any;
   createdAt: string;
   updatedAt: string;
 }

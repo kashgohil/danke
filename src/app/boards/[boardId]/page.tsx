@@ -53,6 +53,21 @@ async function getBoardData(boardId: string) {
         moderationEnabled: board.moderationEnabled,
         maxPostsPerUser: board.maxPostsPerUser,
         typeConfig: board.typeConfig,
+        // Background configuration
+        backgroundType: board.backgroundType || undefined,
+        backgroundValue: board.backgroundValue || undefined,
+        backgroundPattern: board.backgroundPattern || undefined,
+        backgroundVideoUrl: board.backgroundVideoUrl || undefined,
+        backgroundPosition: board.backgroundPosition || undefined,
+        backgroundSize: board.backgroundSize || undefined,
+        backgroundOverlay: board.backgroundOverlay || undefined,
+        backgroundOverlayOpacity: board.backgroundOverlayOpacity || undefined,
+        backgroundOverlayColor: board.backgroundOverlayColor || undefined,
+        backgroundParallax: board.backgroundParallax || undefined,
+        // Typography configuration
+        fontPairingId: board.fontPairingId || undefined,
+        fontScaleMultiplier: board.fontScaleMultiplier || undefined,
+        customTypographyConfig: board.customTypographyConfig || undefined,
         createdAt: board.createdAt.toISOString(),
         updatedAt: board.updatedAt.toISOString(),
       },
@@ -96,6 +111,10 @@ export default async function BoardPage({ params }: BoardPageProps) {
   }
 
   if (!data) {
+    notFound();
+  }
+
+  if (!data.board) {
     notFound();
   }
 
@@ -143,18 +162,75 @@ export default async function BoardPage({ params }: BoardPageProps) {
     );
   }
 
-  const backgroundColor = (data.board?.typeConfig as any)?.backgroundColor;
-  const baseBackground = backgroundColor || "#FDF6E3";
+  // Extract background and typography configuration
+  const board = data.board;
+  const backgroundConfig = board ? {
+    type: board.backgroundType || 'color',
+    value: board.backgroundValue || (board.typeConfig as any)?.backgroundColor || '#FDF6E3',
+    pattern: board.backgroundPattern,
+    videoUrl: board.backgroundVideoUrl,
+    position: board.backgroundPosition || 'center',
+    size: board.backgroundSize || 'cover',
+    overlay: board.backgroundOverlay || 'none',
+    overlayOpacity: board.backgroundOverlayOpacity || 0,
+    overlayColor: board.backgroundOverlayColor,
+    parallax: board.backgroundParallax || false,
+  } : null;
+
+  const typographyConfig = board ? {
+    pairingId: board.fontPairingId || 'modern',
+    fontScale: (board.fontScaleMultiplier || 100) / 100,
+  } : null;
+
+  // Apply typography if configured
+  if (typographyConfig && board) {
+    // Import TypographyService dynamically to avoid SSR issues
+    import('@/lib/typography-service').then(({ TypographyService }) => {
+      const pairing = TypographyService.getTypography(typographyConfig.pairingId);
+      if (pairing) {
+        TypographyService.applyTypography(pairing, typographyConfig.fontScale);
+      }
+    });
+  }
 
   return (
     <>
+      {/* Background Layer */}
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 -z-10 w-full h-full"
-        style={{ backgroundColor: baseBackground }}
-      />
+        className="pointer-events-none fixed inset-0 -z-10 w-full h-full transition-all duration-1000 ease-in-out"
+        style={backgroundConfig ? {
+          backgroundColor: backgroundConfig.type === 'color' ? backgroundConfig.value : undefined,
+          backgroundImage: backgroundConfig.type === 'gradient' ? backgroundConfig.value :
+                          backgroundConfig.type === 'image' && backgroundConfig.value ? `url(${backgroundConfig.value})` : undefined,
+          backgroundPosition: backgroundConfig.position,
+          backgroundSize: backgroundConfig.size,
+          backgroundRepeat: backgroundConfig.size === 'tile' ? 'repeat' : 'no-repeat',
+          backgroundAttachment: backgroundConfig.parallax ? 'fixed' : 'scroll',
+        } : { backgroundColor: '#FDF6E3' }}
+      >
+        {/* Background Overlay */}
+        {backgroundConfig && backgroundConfig.overlay !== 'none' && backgroundConfig.overlayOpacity > 0 && (
+          <div
+            className="absolute inset-0 pointer-events-none transition-opacity duration-1000 ease-in-out"
+            style={{
+              background: backgroundConfig.overlay === 'custom' && backgroundConfig.overlayColor
+                ? backgroundConfig.overlayColor
+                : backgroundConfig.overlay === 'light'
+                ? 'rgba(255, 255, 255, 0.3)'
+                : backgroundConfig.overlay === 'dark'
+                ? 'rgba(0, 0, 0, 0.3)'
+                : backgroundConfig.overlay === 'gradient'
+                ? 'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)'
+                : 'none',
+              opacity: backgroundConfig.overlayOpacity / 100,
+            }}
+          />
+        )}
+      </div>
+
       <BoardPageClient
-        initialBoard={data.board!}
+        initialBoard={board!}
         boardId={boardId}
         isModerator={data.isModerator}
         isCreator={data.isCreator}

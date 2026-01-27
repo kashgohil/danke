@@ -11,6 +11,8 @@ import {
 import { DateTimePicker } from "@/components/ui/datetime-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BackgroundSettings } from "@/components/backgrounds/background-settings";
+import { TypographySettings } from "@/components/typography/typography-settings";
 import { Board } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import {
@@ -189,6 +191,38 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
   const [backgroundColor, setBackgroundColor] = useState<string | undefined>(
     (board.typeConfig as any)?.backgroundColor || undefined,
   );
+
+  // Background configuration state
+  const [backgroundConfig, setBackgroundConfig] = useState<{
+    type: 'color' | 'gradient' | 'pattern' | 'image' | 'video';
+    value?: string;
+    pattern?: string;
+    videoUrl?: string;
+    position: string;
+    size: string;
+    overlay: string;
+    overlayOpacity: number;
+    overlayColor?: string;
+    parallax: boolean;
+  }>({
+    type: (board.backgroundType as any) || 'color',
+    value: board.backgroundValue || (board.typeConfig as any)?.backgroundColor || '#ffffff',
+    pattern: board.backgroundPattern || undefined,
+    videoUrl: board.backgroundVideoUrl || undefined,
+    position: board.backgroundPosition || 'center',
+    size: board.backgroundSize || 'cover',
+    overlay: board.backgroundOverlay || 'none',
+    overlayOpacity: board.backgroundOverlayOpacity || 0,
+    overlayColor: board.backgroundOverlayColor || undefined,
+    parallax: board.backgroundParallax || false,
+  });
+
+  // Typography configuration state
+  const [typographyConfig, setTypographyConfig] = useState({
+    pairingId: board.fontPairingId || 'modern',
+    fontScale: (board.fontScaleMultiplier || 100) / 100,
+  });
+
   const [allowedDomains, setAllowedDomains] = useState<string[]>(
     board.allowedDomains || [],
   );
@@ -232,6 +266,20 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
           ...((board.typeConfig as any) || {}),
           backgroundColor,
         },
+        // Background configuration
+        backgroundType: backgroundConfig.type,
+        backgroundValue: backgroundConfig.value,
+        backgroundPattern: backgroundConfig.pattern,
+        backgroundVideoUrl: backgroundConfig.videoUrl,
+        backgroundPosition: backgroundConfig.position,
+        backgroundSize: backgroundConfig.size,
+        backgroundOverlay: backgroundConfig.overlay,
+        backgroundOverlayOpacity: backgroundConfig.overlayOpacity,
+        backgroundOverlayColor: backgroundConfig.overlayColor,
+        backgroundParallax: backgroundConfig.parallax,
+        // Typography configuration
+        fontPairingId: typographyConfig.pairingId,
+        fontScaleMultiplier: Math.round(typographyConfig.fontScale * 100),
       };
 
       const response = await fetch(`/api/boards/${board.id}`, {
@@ -786,6 +834,43 @@ export function BoardConfigUpdate({ board }: BoardConfigUpdateProps) {
                 )}
               </div>
             </div>
+          </CardContent>
+        </ConfigCard>
+
+        {/* Background Settings */}
+        <ConfigCard>
+          <CardHeader className="border-b-2 border-gray-900 bg-[#FDF6E3]">
+            <CardTitle className="text-xl md:text-2xl font-fuzzy-bubbles text-gray-900">
+              Background & Appearance
+            </CardTitle>
+            <CardDescription className="text-gray-600">
+              Customize the visual appearance and background of your board
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-6">
+            <BackgroundSettings
+              initialConfig={backgroundConfig}
+              onSave={(config) => config && setBackgroundConfig(config)}
+            />
+          </CardContent>
+        </ConfigCard>
+
+        {/* Typography Settings */}
+        <ConfigCard>
+          <CardHeader className="border-b-2 border-gray-900 bg-[#FDF6E3]">
+            <CardTitle className="text-xl md:text-2xl font-fuzzy-bubbles text-gray-900">
+              Typography & Fonts
+            </CardTitle>
+            <CardDescription className="text-gray-600">
+              Choose fonts and customize text appearance for your board
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-6">
+            <TypographySettings
+              initialPairingId={typographyConfig.pairingId}
+              initialFontScale={typographyConfig.fontScale}
+              onSave={(config) => setTypographyConfig(config)}
+            />
           </CardContent>
         </ConfigCard>
 

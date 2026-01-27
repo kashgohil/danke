@@ -195,6 +195,39 @@ export const boardConfigStepSchema = z.object({
       if (!date) return true;
       return date > new Date();
     }, 'Expiration date must be in the future'),
+
+  // Background configuration (optional - defaults will be applied)
+  backgroundType: z
+    .string()
+    .optional()
+    .default('color'),
+  backgroundValue: z.string().optional(),
+  backgroundPattern: z.string().optional(),
+  backgroundVideoUrl: z.string().url().optional(),
+  backgroundPosition: z
+    .string()
+    .optional()
+    .default('center'),
+  backgroundSize: z
+    .string()
+    .optional()
+    .default('cover'),
+  backgroundOverlay: z
+    .string()
+    .optional()
+    .default('none'),
+  backgroundOverlayOpacity: z
+    .number()
+    .min(0)
+    .max(100)
+    .optional()
+    .default(0),
+  backgroundOverlayColor: z.string().optional(),
+  backgroundParallax: z.boolean().optional().default(false),
+
+  // Typography configuration
+  fontPairingId: z.string().optional().default('modern'),
+  fontScaleMultiplier: z.number().min(50).max(150).optional().default(100),
 });
 
 export type CreateMultiStepBoardSchema = z.infer<
