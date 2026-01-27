@@ -37,6 +37,8 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .kiro
 .next
 .vscode
+.opencode
+.claude
 
 # uploads
 public/uploads
