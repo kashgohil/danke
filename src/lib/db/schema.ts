@@ -2,6 +2,7 @@ import { relations } from "drizzle-orm";
 import {
   boolean,
   index,
+  integer,
   json,
   pgTable,
   text,
@@ -60,10 +61,29 @@ export const boards = pgTable(
     blockedEmails: text("blocked_emails").array(), // Array of specific blocked emails
     expirationDate: timestamp("expiration_date", { withTimezone: true }),
     typeConfig: json("type_config"), // Store type-specific configuration as JSON
+    themeId: varchar("theme_id", { length: 50 }).default("default").notNull(), // Theme ID for customization
+    customThemeConfig: json("custom_theme_config"), // Custom theme overrides as JSON
+    // Background customization fields
+    backgroundType: varchar("background_type", { length: 20 }).default("color").notNull(), // color, gradient, pattern, image, video
+    backgroundValue: varchar("background_value", { length: 500 }), // Color hex, gradient CSS, image URL, etc.
+    backgroundPattern: varchar("background_pattern", { length: 50 }), // Pattern name for pattern type
+    backgroundOverlay: varchar("background_overlay", { length: 20 }).default("none").notNull(), // none, light, dark, gradient, custom
+    backgroundOverlayColor: varchar("background_overlay_color", { length: 20 }), // Custom overlay color
+    backgroundOverlayOpacity: integer("background_overlay_opacity").default(0).notNull(), // 0-100
+    backgroundPosition: varchar("background_position", { length: 20 }).default("center").notNull(), // center, top, bottom, left, right, custom
+    backgroundSize: varchar("background_size", { length: 20 }).default("cover").notNull(), // cover, contain, tile, custom
+    backgroundParallax: boolean("background_parallax").default(false).notNull(), // Enable parallax scrolling
+    backgroundVideoUrl: varchar("background_video_url", { length: 500 }), // Video URL for video backgrounds
+    // Typography configuration
+    fontPairingId: varchar("font_pairing_id", { length: 50 }).default("modern").notNull(), // Typography pairing ID
+    fontScaleMultiplier: integer("font_scale_multiplier").default(100).notNull(), // Font size scale (percentage)
+    customTypographyConfig: json("custom_typography_config"), // Custom typography overrides as JSON
+    // Animation configuration
+    animationType: varchar("animation_type", { length: 20 }).default("none").notNull(), // Animation type
+    animationIntensity: integer("animation_intensity").default(5).notNull(), // 1-10
+    animationSpeed: varchar("animation_speed", { length: 10 }).default("normal").notNull(), // slow, normal, fast
+    animationColor: varchar("animation_color", { length: 20 }), // Custom animation color
     createdAt: timestamp("created_at", { withTimezone: true })
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
   },
